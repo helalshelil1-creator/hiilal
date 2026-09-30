@@ -1,0 +1,66 @@
+{
+  "name": "مكتب المهندس هلال شليل",
+  "short_name": "Eng. Helal",
+  "description": "منصة هندسية متكاملة لمهندس الكهرباء والـ MEP — التصميم، التنفيذ، المكتب الفني، الحصر، الأكواد، والمواصفات",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#050d1a",
+  "theme_color": "#06b6d4",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["engineering", "productivity", "education", "utilities"],
+  "shortcuts": [
+    {
+      "name": "الأدوات",
+      "short_name": "أدوات",
+      "description": "الأدوات الهندسية",
+      "url": "./tools.html",
+      "icons": [{ "src": "images/logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "الحاسبات",
+      "short_name": "حاسبات",
+      "description": "الحاسبات الهندسية",
+      "url": "./calculators.html",
+      "icons": [{ "src": "images/logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "الموسوعة",
+      "short_name": "موسوعة",
+      "description": "الموسوعة الهندسية",
+      "url": "./encyclopedia.html",
+      "icons": [{ "src": "images/logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "دليل AutoCAD & Revit",
+      "short_name": "أوامر",
+      "description": "أوامر AutoCAD و Revit",
+      "url": "./tools/software-guide.html",
+      "icons": [{ "src": "images/logo.png", "sizes": "192x192" }]
+    }
+  ],
+  "prefer_related_applications": false
+}

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+
+<title>المكتبة العامة | Eng. Helal Shalil</title>
+<meta name="description" content="المكتبة العامة — الأكواد والمعايير، المواصفات الفنية، المنتجات، المراجع، والملفات الهندسية في مكان واحد.">
+<meta name="keywords" content="مكتبة هندسية, أكواد, مواصفات, مراجع, ملفات هندسية">
+<meta name="author" content="Eng. Helal Shalil">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<link rel="canonical" href="https://hiilal.vercel.app/library.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="مكتب المهندس هلال شليل">
+<meta property="og:title" content="المكتبة العامة | Eng. Helal Shalil">
+<meta property="og:description" content="الأكواد، المواصفات، المنتجات، والمراجع الهندسية في مكان واحد.">
+<meta property="og:image" content="https://hiilal.vercel.app/images/og-image.jpg">
+<meta property="og:url" content="https://hiilal.vercel.app/library.html">
+<meta property="og:locale" content="ar_EG">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#06b6d4">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Eng. Helal">
+
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="apple-touch-icon" href="images/logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/animations.css">
+
+<!-- SEO Auto Injection -->
+<script src="js/seo-data.js"></script>
+<script src="js/seo.js"></script>
+
+<style>
+/* ========================================
+   LIBRARY HERO
+======================================== */
+.lib-hero {
+    padding: 60px 5% 40px;
+    text-align: center;
+    background: linear-gradient(135deg, #0a1628 0%, #1e4976 100%);
+    color: white;
+    border-radius: 0 0 40px 40px;
+    margin: 12px 14px 30px;
+    box-shadow: 0 20px 60px rgba(10,22,40,.3);
+    position: relative;
+    overflow: hidden;
+}
+.lib-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 20%, rgba(0,217,255,.2), transparent 60%);
+    pointer-events: none;
+}
+.lib-hero-icon {
+    width: 80px; height: 80px;
+    margin: 0 auto 18px;
+    background: rgba(255,255,255,.12);
+    border: 2px solid rgba(0,217,255,.4);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    position: relative;
+    z-index: 1;
+}
+.lib-hero h1 {
+    font-size: 30px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+}
+.lib-hero h1 span { color: #67e8f9; }
+.lib-hero p {
+    font-size: 14px;
+    color: rgba(255,255,255,.85);
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.8;
+    position: relative;
+    z-index: 1;
+}
+
+.lib-wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 5% 60px;
+}
+
+/* ========================================
+   LIBRARY CATEGORIES
+======================================== */
+.lib-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 22px;
+    margin-bottom: 40px;
+}
+.lib-card {
+    position: relative;
+    padding: 28px 24px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 24px;
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+    transition: all .4s cubic-bezier(.16,1,.3,1);
+}
+.lib-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    inset-inline-start: 0;
+    width: 0;
+    height: 4px;
+    background: var(--grad-theme);
+    transition: width .5s cubic-bezier(.16,1,.3,1);
+}
+.lib-card:hover::before { width: 100%; }
+.lib-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--cyan);
+    box-shadow: 0 25px 60px -15px rgba(0,217,255,.4);
+}
+.lib-card-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(0,217,255,.15), rgba(0,217,255,.05));
+    border: 2px solid rgba(0,217,255,.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cyan);
+    margin-bottom: 18px;
+    transition: all .4s;
+}
+.lib-card:hover .lib-card-icon {
+    transform: rotate(-8deg) scale(1.1);
+    background: var(--grad-theme);
+    color: var(--navy);
+    box-shadow: 0 15px 40px rgba(0,217,255,.4);
+}
+.lib-card-icon svg {
+    width: 34px;
+    height: 34px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.lib-card h3 {
+    color: var(--navy);
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 8px;
+}
+[data-theme="dark"] .lib-card h3 { color: var(--aqua); }
+.lib-card p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 14px;
+}
+.lib-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+}
+.lib-card-count {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--cyan);
+    padding: 4px 12px;
+    background: rgba(0,217,255,.1);
+    border-radius: 999px;
+}
+.lib-card-arrow {
+    color: var(--cyan);
+    font-weight: 900;
+    font-size: 14px;
+    transition: transform .3s;
+}
+.lib-card:hover .lib-card-arrow {
+    transform: translateX(-6px);
+}
+
+/* ========================================
+   RECENT / FEATURED
+======================================== */
+.lib-section-title {
+    color: var(--navy);
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 20px;
+    padding-inline-start: 16px;
+    border-inline-start: 5px solid var(--cyan);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+[data-theme="dark"] .lib-section-title { color: var(--aqua); }
+
+.lib-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+    margin-bottom: 40px;
+}
+.lib-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: all .3s;
+}
+.lib-link:hover {
+    border-color: var(--cyan);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px -10px rgba(0,217,255,.4);
+}
+.lib-link-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--grad-theme);
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+.lib-link-info {
+    flex: 1;
+    min-width: 0;
+}
+.lib-link-title {
+    color: var(--navy);
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+[data-theme="dark"] .lib-link-title { color: var(--aqua); }
+.lib-link-desc {
+    color: var(--muted);
+    font-size: 11.5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+@media (max-width: 700px) {
+    .lib-hero { padding: 40px 4% 30px; border-radius: 0 0 30px 30px; }
+    .lib-hero-icon { width: 60px; height: 60px; font-size: 30px; }
+    .lib-hero h1 { font-size: 22px; }
+    .lib-hero p { font-size: 13px; }
+    .lib-grid { grid-template-columns: 1fr; gap: 16px; }
+    .lib-card { padding: 22px 18px; }
+    .lib-card-icon { width: 60px; height: 60px; }
+    .lib-card h3 { font-size: 16px; }
+    .lib-section-title { font-size: 18px; }
+    .lib-links-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body data-page="library">
+
+<!-- Loader -->
+<div id="loader">
+    <img src="images/logo.png" alt="Eng. Helal Shalil" class="loader-logo-img" width="120" height="120">
+    <div class="loader-logo">المكتبة العامة</div>
+    <div class="loader-wave"></div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="index.html" class="logo" aria-label="الرئيسية">
+            <img src="images/logo.png" alt="Eng. Helal Shalil" class="logo-img" width="44" height="44">
+            <div class="logo-text">مكتب هندسي متكامل</div>
+        </a>
+        <div class="nav-links">
+            <a href="index.html">الرئيسية</a>
+            <a href="tools.html">الأدوات</a>
+            <a href="calculators.html">الحاسبات</a>
+            <a href="encyclopedia.html">الموسوعة</a>
+            <a href="content.html">المحتوى</a>
+            <a href="projects.html">المشاريع</a>
+        </div>
+        <div class="nav-actions">
+            <a href="admin.html" class="icon-btn" title="لوحة التحكم" aria-label="لوحة التحكم">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="lib-hero">
+    <div class="lib-hero-icon">📚</div>
+    <h1>المكتبة <span>العامة</span></h1>
+    <p>كل ما يحتاجه مهندس الكهرباء والـ MEP — أكواد، مواصفات، منتجات، مراجع، وملفات في مكان واحد.</p>
+</section>
+
+<!-- Main Content -->
+<div class="lib-wrap">
+
+    <!-- Categories -->
+    <div class="lib-grid" id="libGrid"></div>
+
+    <!-- Quick Access -->
+    <h2 class="lib-section-title">🚀 وصول سريع</h2>
+    <div class="lib-links-grid" id="quickLinks"></div>
+
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-wave">
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M0,40 C240,90 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="currentColor"/>
+        </svg>
+    </div>
+    <div class="footer-main">
+        <div class="footer-container">
+            <div class="footer-col footer-brand">
+                <div class="footer-logo">
+                    <img src="images/logo.png" alt="Eng. Helal Shalil" class="footer-logo-img" width="52" height="52" loading="lazy">
+                    <div class="footer-logo-text">
+                        مكتب هندسي متكامل
+                        <small>Eng. Helal Shalil</small>
+                    </div>
+                </div>
+                <p class="footer-desc">مكتب هندسي رقمي متكامل يحتوي على كل ما يحتاجه مهندس الكهرباء والـ MEP في مكان واحد.</p>
+                <div class="footer-social">
+                    <a href="https://wa.me/201124169656" target="_blank" rel="noopener" class="social-btn whatsapp" aria-label="WhatsApp">
+                        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                    </a>
+                    <a href="https://www.facebook.com/share/1LZyJP2zat/" target="_blank" rel="noopener" class="social-btn facebook" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a>
+                    <a href="tel:01124169656" class="social-btn phone" aria-label="Phone">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </a>
+                    <a href="mailto:helalshelil1@gmail.com" class="social-btn email" aria-label="Email">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">روابط سريعة</h4>
+                <ul class="footer-list">
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="tools.html">الأدوات</a></li>
+                    <li><a href="calculators.html">الحاسبات</a></li>
+                    <li><a href="encyclopedia.html">الموسوعة</a></li>
+                    <li><a href="projects.html">المشاريع</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">المكتبات</h4>
+                <ul class="footer-list">
+                    <li><a href="content.html">المحتوى</a></li>
+                    <li><a href="codes.html">الأكواد</a></li>
+                    <li><a href="specs.html">المواصفات</a></li>
+                    <li><a href="products.html">المنتجات</a></li>
+                    <li><a href="favorites.html">المفضلة</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">التواصل</h4>
+                <ul class="footer-contact">
+                    <li>
+                        <span class="fc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+                        <div><small>اتصل بنا</small><a href="tel:01124169656" dir="ltr">01124169656</a></div>
+                    </li>
+                    <li>
+                        <span class="fc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+                        <div><small>البريد</small><a href="mailto:helalshelil1@gmail.com">helalshelil1@gmail.com</a></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="footer-container">
+            <p class="copyright">© 2026 <strong>مكتب المهندس هلال شليل</strong> — جميع الحقوق محفوظة</p>
+            <p class="credit">
+                🎨 حقوق التصميم للمهندس <strong>هلال شليل</strong>
+                <span class="divider">|</span>
+                📞 <a href="tel:01124169656" dir="ltr">01124169656</a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="js/storage.js" defer></script>
+<script src="js/i18n.js" defer></script>
+<script src="js/icons.js" defer></script>
+<script src="js/data/categories.js" defer></script>
+<script src="js/data/codes.js" defer></script>
+<script src="js/data/specs.js" defer></script>
+<script src="js/data/products.js" defer></script>
+<script src="js/data/content.js" defer></script>
+<script src="js/app.js" defer></script>
+<script src="js/animations.js" defer></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+        const l = document.getElementById("loader");
+        if (l) l.classList.add("hide");
+    }, 400);
+
+    /* ========================================
+       Main Library Categories
+    ======================================== */
+    const libraries = [
+        {
+            title: "الأكواد والمعايير",
+            icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>',
+            desc: "IEC، NFPA، BS، IEEE، الكود المصري ECP",
+            url: "codes.html",
+            count: (typeof CODES !== "undefined") ? CODES.length + " كود" : "—"
+        },
+        {
+            title: "المواصفات الفنية",
+            icon: '<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 12h6"/><path d="M9 16h6"/>',
+            desc: "كابلات، قواطع، لوحات، محولات، إضاءة",
+            url: "specs.html",
+            count: (typeof SPECS !== "undefined") ? SPECS.length + " مواصفة" : "—"
+        },
+        {
+            title: "المنتجات والمعدات",
+            icon: '<line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>',
+            desc: "قاعدة بيانات المنتجات والمصنعين والأسعار",
+            url: "products.html",
+            count: (typeof PRODUCTS !== "undefined") ? PRODUCTS.length + " منتج" : "—"
+        },
+        {
+            title: "المحتوى الشامل",
+            icon: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+            desc: "ملفات، برامج، فيديوهات، مقالات، روابط",
+            url: "content.html",
+            count: (typeof CONTENT !== "undefined") ? CONTENT.length + " عنصر" : "—"
+        },
+        {
+            title: "الموسوعة الهندسية",
+            icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+            desc: "قوانين، مفاهيم، وجداول في كل التخصصات",
+            url: "encyclopedia.html",
+            count: (typeof ENCYCLOPEDIA !== "undefined") ? ENCYCLOPEDIA.length + " تصنيف" : "—"
+        },
+        {
+            title: "دليل AutoCAD & Revit",
+            icon: '<rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/>',
+            desc: "كل أوامر واختصارات AutoCAD و Revit",
+            url: "tools/software-guide.html",
+            count: "130+ أمر"
+        }
+    ];
+
+    const libGrid = document.getElementById("libGrid");
+    if (libGrid) {
+        libGrid.innerHTML = libraries.map(lib => `
+            <a href="${lib.url}" class="lib-card">
+                <div class="lib-card-icon">
+                    <svg viewBox="0 0 24 24">${lib.icon}</svg>
+                </div>
+                <h3>${lib.title}</h3>
+                <p>${lib.desc}</p>
+                <div class="lib-card-footer">
+                    <span class="lib-card-count">${lib.count}</span>
+                    <span class="lib-card-arrow">فتح ←</span>
+                </div>
+            </a>
+        `).join("");
+    }
+
+    /* ========================================
+       Quick Links
+    ======================================== */
+    const quickLinks = [
+        { icon: "🅰️", title: "دليل AutoCAD", desc: "كل الأوامر والاختصارات", url: "tools/software-guide.html#autocad" },
+        { icon: "🅱️", title: "دليل Revit", desc: "أوامر Revit و MEP", url: "tools/software-guide.html#revit" },
+        { icon: "⌨️", title: "اختصارات سريعة", desc: "Function Keys و Ctrl", url: "tools/software-guide.html#hotkeys" },
+        { icon: "🎥", title: "فيديوهات الشرح", desc: "شروحات AutoCAD & Revit", url: "tools/software-guide.html#videos" },
+        { icon: "🧮", title: "حاسبة الكابل", desc: "اختيار الكابل والقاطع", url: "calculators/cable-breaker.html" },
+        { icon: "🔧", title: "محول الوحدات", desc: "تحويل الوحدات الهندسية", url: "tools/unit-converter.html" },
+        { icon: "🛡️", title: "دليل IP", desc: "أكواد حماية المعدات", url: "tools/ip-rating.html" },
+        { icon: "📋", title: "Checklists", desc: "قوائم فحص هندسية", url: "tools/checklists.html" },
+        { icon: "📊", title: "الجداول", desc: "كابلات، لوحات، أحمال، BOQ", url: "tools/schedules.html" },
+        { icon: "📝", title: "نماذج المستندات", desc: "RFI, Submittal, VO", url: "tools/documents.html" },
+        { icon: "❤️", title: "المفضلة", desc: "كل ما حفظته", url: "favorites.html" },
+        { icon: "ℹ️", title: "عن المكتب", desc: "تعرف علينا", url: "about.html" }
+    ];
+
+    const quickLinksEl = document.getElementById("quickLinks");
+    if (quickLinksEl) {
+        quickLinksEl.innerHTML = quickLinks.map(link => `
+            <a href="${link.url}" class="lib-link">
+                <div class="lib-link-icon">${link.icon}</div>
+                <div class="lib-link-info">
+                    <div class="lib-link-title">${link.title}</div>
+                    <div class="lib-link-desc">${link.desc}</div>
+                </div>
+            </a>
+        `).join("");
+    }
+
+    if (window.Icons && Icons.replaceAll) Icons.replaceAll(document);
+});
+</script>
+
+</body>
+</html>

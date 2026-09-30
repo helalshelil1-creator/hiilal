@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دليل IP Ratings | Eng. Helal Shalil</title>
+<!-- SEO Auto Injection -->
+<script src="js/seo-data.js"></script>
+<script src="js/seo.js"></script>
+<link rel="icon" type="image/png" href="../images/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-wrap{max-width:1100px;margin:30px auto;padding:0 5%;}
+.tool-head{text-align:center;margin-bottom:30px;padding:30px;background:linear-gradient(135deg,#0a1628,#1e4976);color:#fff;border-radius:24px;}
+.tool-head-icon{width:80px;height:80px;margin:0 auto 15px;background:rgba(255,255,255,.12);border:2px solid rgba(0,217,255,.4);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:38px;}
+.tool-head h1{font-size:26px;font-weight:900;margin-bottom:6px;}
+.tool-head p{color:#b8d9e2;font-size:14px;}
+.ip-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:30px;}
+@media(max-width:768px){.ip-grid{grid-template-columns:1fr;}}
+.ip-card{background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:22px;}
+.ip-card h2{color:var(--navy);font-size:18px;font-weight:900;margin-bottom:14px;padding-bottom:12px;border-bottom:2px dashed var(--border);display:flex;align-items:center;gap:10px;}
+.ip-card h2 span{display:inline-flex;width:36px;height:36px;background:var(--grad-theme);color:var(--navy);border-radius:10px;align-items:center;justify-content:center;font-size:18px;font-weight:900;}
+.ip-table{width:100%;border-collapse:collapse;font-size:13px;}
+.ip-table th,.ip-table td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--border);}
+.ip-table th{background:linear-gradient(135deg,rgba(0,217,255,.1),rgba(0,217,255,.03));color:var(--navy);font-weight:800;font-size:12px;}
+.ip-code{font-family:'JetBrains Mono',monospace;font-weight:900;color:var(--cyan);font-size:14px;}
+.ip-table td strong{color:var(--navy);font-weight:800;}
+.ip-demo{background:linear-gradient(135deg,rgba(0,217,255,.08),rgba(0,217,255,.03));border:2px solid var(--cyan);border-radius:20px;padding:26px;text-align:center;margin-top:20px;}
+.ip-demo-input{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:900;color:var(--navy);margin-bottom:16px;}
+.ip-demo-input input{width:80px;padding:8px;border:2px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-family:inherit;font-size:32px;font-weight:900;text-align:center;outline:none;}
+.ip-demo-input input:focus{border-color:var(--cyan);}
+.ip-demo-result{font-size:15px;line-height:1.9;color:var(--text-2);}
+.ip-demo-result strong{color:var(--cyan);font-weight:800;}
+.ip-demo-result .badge{display:inline-block;padding:4px 12px;background:var(--grad-theme);color:var(--navy);border-radius:999px;font-weight:800;font-size:12px;margin:4px;}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="../index.html" class="logo">
+            <img src="../images/logo.png" alt="Logo" class="logo-img">
+            <div class="logo-text">مكتب هندسي متكامل</div>
+        </a>
+        <div class="nav-links">
+            <a href="../index.html">الرئيسية</a>
+            <a href="../tools.html" class="active">الأدوات</a>
+            <a href="../calculators.html">الحاسبات</a>
+            <a href="../encyclopedia.html">الموسوعة</a>
+        </div>
+        <div class="nav-actions"></div>
+    </div>
+</nav>
+
+<div class="tool-wrap">
+    <a href="../tools.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--cyan);font-weight:700;font-size:13px;text-decoration:none;margin-bottom:20px;">← كل الأدوات</a>
+
+    <div class="tool-head">
+        <div class="tool-head-icon">🛡️</div>
+        <h1>دليل أكواد الحماية IP</h1>
+        <p>كل ما تحتاجه عن حماية المعدات ضد الغبار والماء</p>
+    </div>
+
+    <div class="ip-grid">
+        <div class="ip-card">
+            <h2><span>1</span>الرقم الأول — ضد الأجسام الصلبة</h2>
+            <table class="ip-table">
+                <thead><tr><th>الكود</th><th>الحماية</th><th>الوصف</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="ip-code">0</span></td><td><strong>بدون</strong></td><td>لا حماية</td></tr>
+                    <tr><td><span class="ip-code">1</span></td><td><strong>≥ 50 mm</strong></td><td>حماية من الأجسام الكبيرة</td></tr>
+                    <tr><td><span class="ip-code">2</span></td><td><strong>≥ 12.5 mm</strong></td><td>حماية من الأصابع</td></tr>
+                    <tr><td><span class="ip-code">3</span></td><td><strong>≥ 2.5 mm</strong></td><td>أدوات وأسلاك سميكة</td></tr>
+                    <tr><td><span class="ip-code">4</span></td><td><strong>≥ 1 mm</strong></td><td>أسلاك رفيعة</td></tr>
+                    <tr><td><span class="ip-code">5</span></td><td><strong>ضد الغبار</strong></td><td>محدود</td></tr>
+                    <tr><td><span class="ip-code">6</span></td><td><strong>ضد الغبار</strong></td><td>كلياً</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="ip-card">
+            <h2><span>2</span>الرقم الثاني — ضد الماء</h2>
+            <table class="ip-table">
+                <thead><tr><th>الكود</th><th>الحماية</th><th>الوصف</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="ip-code">0</span></td><td><strong>بدون</strong></td><td>لا حماية</td></tr>
+                    <tr><td><span class="ip-code">1</span></td><td><strong>تقطير</strong></td><td>قطرات رأسية</td></tr>
+                    <tr><td><span class="ip-code">2</span></td><td><strong>تقطير 15°</strong></td><td>قطرات مائلة</td></tr>
+                    <tr><td><span class="ip-code">3</span></td><td><strong>رش 60°</strong></td><td>رش ماء</td></tr>
+                    <tr><td><span class="ip-code">4</span></td><td><strong>رش كلي</strong></td><td>من كل الاتجاهات</td></tr>
+                    <tr><td><span class="ip-code">5</span></td><td><strong>رش بقوة</strong></td><td>بضغط</td></tr>
+                    <tr><td><span class="ip-code">6</span></td><td><strong>غمر 1م</strong></td><td>30 دقيقة</td></tr>
+                    <tr><td><span class="ip-code">7</span></td><td><strong>غمر مؤقت</strong></td><td>1م / 30 دقيقة</td></tr>
+                    <tr><td><span class="ip-code">8</span></td><td><strong>غمر دائم</strong></td><td>تحت الماء</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="ip-demo">
+        <h3 style="color:var(--navy);font-size:16px;font-weight:900;margin-bottom:16px;">🔍 جرب أي كود IP</h3>
+        <div class="ip-demo-input">
+            IP <input type="text" id="ipInput" value="65" maxlength="3" oninput="showIP(this.value)">
+        </div>
+        <div class="ip-demo-result" id="ipResult"></div>
+    </div>
+</div>
+
+<script>
+const SOLID = {
+    "0":"لا توجد حماية ضد الأجسام الصلبة",
+    "1":"حماية من الأجسام ≥ 50 mm (لمس اليد)",
+    "2":"حماية من الأجسام ≥ 12.5 mm (الأصابع)",
+    "3":"حماية من الأجسام ≥ 2.5 mm (أدوات وأسلاك)",
+    "4":"حماية من الأجسام ≥ 1 mm (أسلاك رفيعة)",
+    "5":"محمي ضد الغبار (محدود)",
+    "6":"محمي ضد الغبار كلياً"
+};
+const WATER = {
+    "0":"لا توجد حماية ضد الماء",
+    "1":"قطرات ماء رأسية فقط",
+    "2":"قطرات ماء مائلة 15°",
+    "3":"رش ماء مائل حتى 60°",
+    "4":"رش ماء من جميع الاتجاهات",
+    "5":"رش بقوة من جميع الاتجاهات",
+    "6":"غمر مؤقت (1م / 30 دقيقة)",
+    "7":"غمر حتى 1م لمدة 30 دقيقة",
+    "8":"غمر دائم في الماء"
+};
+
+function showIP(val){
+    val = (val || "").toUpperCase().replace(/[^0-9]/g,"");
+    const el = document.getElementById("ipResult");
+    if(val.length < 2){ el.innerHTML = '<em style="color:var(--muted);">أدخل كود IP كامل (مثل 65 أو 68)</em>'; return; }
+    const solid = val[0];
+    const water = val[1];
+    const s = SOLID[solid] || "كود غير معروف";
+    const w = WATER[water] || "كود غير معروف";
+    el.innerHTML = `
+        <div style="margin-bottom:10px;"><strong>IP${val}</strong> = ضد الأجسام <strong>${solid}</strong> + ضد الماء <strong>${water}</strong></div>
+        <div style="margin-bottom:8px;">🟦 <strong>ضد الأجسام:</strong> ${s}</div>
+        <div style="margin-bottom:14px;">🟧 <strong>ضد الماء:</strong> ${w}</div>
+    `;
+}
+showIP("65");
+</script>
+</body>
+</html>

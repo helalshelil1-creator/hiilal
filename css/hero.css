@@ -1,0 +1,514 @@
+/* ========================================
+   HERO + ANIMATIONS + MODERN EFFECTS
+   الإصدار: 2.0 — نسخة آمنة
+======================================== */
+
+/* ========================================
+   1. HERO BACKGROUND WITH ELECTRICITY
+======================================== */
+.welcome {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(0,217,255,.18), transparent 55%),
+        radial-gradient(ellipse at 80% 80%, rgba(124,58,237,.15), transparent 55%),
+        linear-gradient(135deg, #050d1a 0%, #0a1628 40%, #12263f 100%);
+}
+
+.welcome::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url('../images/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: .35;
+    z-index: 0;
+    filter: saturate(1.2) contrast(1.05);
+    animation: heroZoom 25s ease-in-out infinite alternate;
+}
+
+.welcome::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+        rgba(5,13,26,.5) 0%,
+        rgba(5,13,26,.35) 40%,
+        rgba(5,13,26,.75) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+#heroCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    opacity: .85;
+    pointer-events: none;
+}
+
+.welcome-inner {
+    position: relative;
+    z-index: 5;
+}
+
+/* نقاط مضيئة عائمة */
+.electric-dots {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.electric-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #00d9ff, #22d3ee 50%, transparent 70%);
+    box-shadow:
+        0 0 12px #00d9ff,
+        0 0 24px rgba(0,217,255,.6),
+        0 0 40px rgba(0,217,255,.3);
+    animation: dotFloat linear infinite;
+}
+
+@keyframes dotFloat {
+    0%   { transform: translate(0,0) scale(.8); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translate(var(--dx, 60px), var(--dy, -120px)) scale(1.2); opacity: 0; }
+}
+
+@keyframes heroZoom {
+    0%   { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.08) translate(-10px, -8px); }
+}
+
+/* أشعة ضوئية */
+.welcome .light-rays {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(120deg, transparent 30%, rgba(0,217,255,.06) 50%, transparent 70%);
+    background-size: 200% 100%;
+    animation: raysSlide 8s linear infinite;
+    mix-blend-mode: screen;
+}
+
+@keyframes raysSlide {
+    0%   { background-position: -100% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* ========================================
+   2. WELCOME ICON
+======================================== */
+.welcome-icon {
+    transition: all .5s cubic-bezier(.16,1,.3,1);
+    position: relative;
+    animation: welcomeFloat 4s ease-in-out infinite;
+    cursor: pointer;
+}
+
+.welcome-icon:hover {
+    transform: scale(1.08) rotate(-2deg);
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.6),
+        0 0 60px rgba(0,217,255,.7);
+}
+
+.welcome-icon:active {
+    transform: scale(.96);
+}
+
+@keyframes welcomeFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+}
+
+/* ========================================
+   3. CARDS — SIMPLE + SAFE HOVER
+======================================== */
+.cat-card,
+.tool-card {
+    transition: transform .35s cubic-bezier(.16,1,.3,1),
+                box-shadow .35s cubic-bezier(.16,1,.3,1),
+                border-color .35s;
+}
+
+.cat-card:hover,
+.tool-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--cyan);
+    box-shadow:
+        0 20px 45px -15px rgba(0,217,255,.4),
+        0 0 20px rgba(0,217,255,.15);
+}
+
+.cat-card:hover .cat-icon,
+.tool-card:hover .cat-icon {
+    transform: rotate(-8deg) scale(1.08);
+    background: var(--grad-theme);
+    color: var(--navy);
+    box-shadow: 0 10px 30px rgba(0,217,255,.4);
+}
+
+.cat-icon {
+    transition: all .4s cubic-bezier(.16,1,.3,1);
+}
+
+/* ========================================
+   4. BUTTONS
+======================================== */
+.btn {
+    transition: transform .3s, box-shadow .3s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow:
+        0 15px 40px rgba(0,217,255,.5),
+        0 0 30px rgba(0,217,255,.3);
+}
+
+/* ========================================
+   5. SECTION HEAD
+======================================== */
+.section-head h2 {
+    position: relative;
+    display: inline-block;
+}
+
+.section-head h2::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    inset-inline-start: 18px;
+    width: 0;
+    height: 3px;
+    background: var(--grad-theme);
+    border-radius: 4px;
+    transition: width .6s cubic-bezier(.16,1,.3,1);
+}
+
+.section-head:hover h2::after {
+    width: calc(100% - 18px);
+}
+
+/* ========================================
+   6. SCROLL REVEAL
+======================================== */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity .8s cubic-bezier(.16,1,.3,1),
+                transform .8s cubic-bezier(.16,1,.3,1);
+    will-change: transform, opacity;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal.delay-1 { transition-delay: .1s; }
+.reveal.delay-2 { transition-delay: .2s; }
+.reveal.delay-3 { transition-delay: .3s; }
+.reveal.delay-4 { transition-delay: .4s; }
+.reveal.delay-5 { transition-delay: .5s; }
+
+/* ========================================
+   7. STAT CARDS
+======================================== */
+.stat-card-custom {
+    transition: transform .35s, box-shadow .35s, border-color .35s;
+}
+
+.stat-card-custom:hover {
+    transform: translateY(-6px);
+    border-color: var(--cyan);
+    box-shadow: 0 20px 50px -15px rgba(0,217,255,.4);
+}
+
+.stat-card-custom:hover .stat-icon-custom {
+    transform: rotate(-8deg) scale(1.15);
+}
+
+.stat-icon-custom {
+    transition: all .4s;
+}
+
+/* ========================================
+   8. NAVBAR
+======================================== */
+.nav-inner {
+    transition: all .3s;
+}
+
+.nav-inner .nav-links a {
+    position: relative;
+    transition: all .3s;
+}
+
+.nav-inner .nav-links a::after {
+    content: "";
+    position: absolute;
+    bottom: 4px;
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--aqua);
+    transition: width .3s;
+    border-radius: 2px;
+}
+
+.nav-inner .nav-links a:hover::after {
+    width: 60%;
+}
+
+.nav-inner .nav-links a.active::after {
+    display: none;
+}
+
+/* ========================================
+   9. FOOTER GLOW
+======================================== */
+footer {
+    position: relative;
+    overflow: hidden;
+}
+
+footer::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg,
+        transparent,
+        var(--cyan),
+        var(--cyan-2),
+        var(--cyan),
+        transparent);
+    background-size: 200% 100%;
+    animation: footerGlow 4s linear infinite;
+    z-index: 2;
+}
+
+@keyframes footerGlow {
+    0%   { background-position: -100% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* ========================================
+   10. LOADER
+======================================== */
+.loader-logo-img {
+    animation: loaderPulse 2s ease-in-out infinite;
+}
+
+@keyframes loaderPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 20px 50px rgba(0,217,255,.4);
+    }
+    50% {
+        transform: scale(1.06);
+        box-shadow: 0 30px 70px rgba(0,217,255,.7),
+                    0 0 60px rgba(0,217,255,.5);
+    }
+}
+
+.loader-wave::after {
+    animation: waveSlide 1.6s linear infinite;
+}
+
+@keyframes waveSlide {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(300%); }
+}
+
+/* ========================================
+   11. SCROLLBAR
+======================================== */
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00d9ff, #7c3aed);
+    border-radius: 999px;
+    border: 2px solid var(--bg);
+}
+
+/* ========================================
+   12. TITLE GRADIENT
+======================================== */
+.title-main {
+    background: linear-gradient(90deg,
+        #67e8f9 0%,
+        #ffffff 25%,
+        #c4b5fd 50%,
+        #ffffff 75%,
+        #67e8f9 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textShine 5s linear infinite;
+}
+
+@keyframes textShine {
+    0%   { background-position: 0% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* ========================================
+   13. RIPPLE
+======================================== */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,.5);
+    transform: scale(0);
+    animation: rippleAnim .6s ease-out;
+    pointer-events: none;
+}
+
+@keyframes rippleAnim {
+    to { transform: scale(4); opacity: 0; }
+}
+
+/* ========================================
+   14. FLOATING BUTTONS
+======================================== */
+.whatsapp-float,
+.engbot-toggle,
+#back-to-top {
+    transition: transform .35s cubic-bezier(.16,1,.3,1), filter .35s;
+}
+
+.whatsapp-float:hover,
+.engbot-toggle:hover,
+#back-to-top:hover {
+    transform: translateY(-4px) scale(1.1);
+    filter: brightness(1.1);
+}
+
+.whatsapp-float {
+    animation: pulseWhatsapp 2.5s ease-in-out infinite;
+}
+
+@keyframes pulseWhatsapp {
+    0%, 100% {
+        box-shadow: 0 8px 25px rgba(37,211,102,.5),
+                    0 0 0 0 rgba(37,211,102,.7);
+    }
+    50% {
+        box-shadow: 0 8px 25px rgba(37,211,102,.5),
+                    0 0 0 12px rgba(37,211,102,0);
+    }
+}
+
+/* ========================================
+   15. FILTER BUTTONS
+======================================== */
+.filter-btn,
+.calc-cat,
+.cat-filter,
+.tab {
+    transition: transform .3s, box-shadow .3s;
+}
+
+.filter-btn:hover,
+.calc-cat:hover,
+.cat-filter:hover,
+.tab:hover {
+    transform: translateY(-2px);
+}
+
+.filter-btn.active,
+.calc-cat.active,
+.cat-filter.active,
+.tab.active {
+    box-shadow:
+        0 8px 25px rgba(0,217,255,.4),
+        0 0 20px rgba(0,217,255,.25);
+}
+
+/* ========================================
+   16. TOAST
+======================================== */
+#app-toast {
+    transition: all .5s cubic-bezier(.16,1,.3,1);
+}
+
+#app-toast.show {
+    animation: toastPop .5s cubic-bezier(.16,1,.3,1);
+}
+
+@keyframes toastPop {
+    0%   { transform: translateX(-50%) translateY(100px) scale(.8); opacity: 0; }
+    60%  { transform: translateX(-50%) translateY(-8px) scale(1.05); opacity: 1; }
+    100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+}
+
+/* ========================================
+   17. HERO SEARCH
+======================================== */
+.search-input:focus {
+    animation: searchGlow 2s ease-in-out infinite;
+}
+
+@keyframes searchGlow {
+    0%, 100% {
+        box-shadow:
+            0 20px 60px rgba(0,0,0,.5),
+            0 0 0 4px rgba(0,217,255,.25);
+    }
+    50% {
+        box-shadow:
+            0 20px 60px rgba(0,0,0,.5),
+            0 0 0 4px rgba(0,217,255,.4),
+            0 0 40px rgba(0,217,255,.3);
+    }
+}
+
+/* ========================================
+   18. MOBILE
+======================================== */
+@media (max-width: 700px) {
+    .welcome::before {
+        background-attachment: scroll;
+        opacity: .28;
+    }
+
+    #heroCanvas {
+        opacity: .6;
+    }
+
+    .welcome-icon {
+        animation: none;
+    }
+
+    .cat-card:hover,
+    .tool-card:hover {
+        transform: translateY(-4px);
+    }
+}
+
+/* ========================================
+   19. REDUCED MOTION
+======================================== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+}

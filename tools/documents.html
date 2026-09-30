@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نماذج المستندات | Eng. Helal Shalil</title>
+<!-- SEO Auto Injection -->
+<script src="js/seo-data.js"></script>
+<script src="js/seo.js"></script>
+<link rel="icon" type="image/png" href="../images/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-wrap{max-width:1000px;margin:30px auto;padding:0 5%;}
+.tool-head{text-align:center;margin-bottom:30px;padding:30px;background:linear-gradient(135deg,#0a1628,#1e4976);color:#fff;border-radius:24px;}
+.tool-head-icon{width:80px;height:80px;margin:0 auto 15px;background:rgba(255,255,255,.12);border:2px solid rgba(0,217,255,.4);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:38px;}
+.tool-head h1{font-size:26px;font-weight:900;margin-bottom:6px;}
+.tool-head p{color:#b8d9e2;font-size:14px;}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:24px;}
+.tab{padding:10px 20px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;font-weight:800;font-size:13px;cursor:pointer;}
+.tab.active,.tab:hover{background:var(--grad-theme);color:var(--navy);border-color:transparent;}
+.panel{display:none;background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:26px;}
+.panel.active{display:block;}
+.doc-header{text-align:center;padding-bottom:18px;margin-bottom:20px;border-bottom:2px solid var(--border);}
+.doc-header h2{color:var(--navy);font-size:22px;font-weight:900;margin-bottom:6px;}
+.doc-header small{color:var(--muted);font-size:13px;font-weight:600;}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:14px;}
+.field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+.field input,.field textarea,.field select{width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--text);font-family:inherit;font-size:13.5px;font-weight:600;outline:none;}
+.field textarea{min-height:100px;resize:vertical;font-family:inherit;}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--cyan);box-shadow:0 0 0 4px rgba(0,217,255,.15);}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;padding-top:20px;border-top:1px dashed var(--border);}
+.btn{padding:12px 22px;border-radius:12px;border:none;background:var(--grad-primary);color:#fff;font-family:inherit;font-weight:800;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;}
+.btn:hover{transform:translateY(-2px);}
+.btn-outline{background:transparent;border:1.5px solid var(--cyan);color:var(--cyan);}
+.btn-outline:hover{background:var(--grad-theme);color:var(--navy);}
+.signature{margin-top:30px;padding-top:20px;border-top:2px solid var(--border);display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;}
+.sig-box{text-align:center;}
+.sig-line{border-top:1.5px solid var(--text);margin-bottom:8px;height:50px;}
+.sig-label{font-size:12px;font-weight:700;color:var(--muted);}
+@media(max-width:640px){.signature{grid-template-columns:1fr;}}
+@media print{.navbar,.tabs,.actions,footer,.social-buttons,#loader{display:none!important;}body{background:white;}.panel{display:block!important;page-break-after:always;border:none;box-shadow:none;}}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="../index.html" class="logo">
+            <img src="../images/logo.png" alt="Logo" class="logo-img">
+            <div class="logo-text">مكتب هندسي متكامل</div>
+        </a>
+        <div class="nav-links">
+            <a href="../index.html">الرئيسية</a>
+            <a href="../tools.html" class="active">الأدوات</a>
+            <a href="../calculators.html">الحاسبات</a>
+            <a href="../encyclopedia.html">الموسوعة</a>
+        </div>
+        <div class="nav-actions"></div>
+    </div>
+</nav>
+
+<div class="tool-wrap">
+    <a href="../tools.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--cyan);font-weight:700;font-size:13px;text-decoration:none;margin-bottom:20px;">← كل الأدوات</a>
+
+    <div class="tool-head">
+        <div class="tool-head-icon">📝</div>
+        <h1>نماذج المستندات الهندسية</h1>
+        <p>نماذج جاهزة للتعبئة والطباعة — RFI, Submittals, Progress, Payment, Variation</p>
+    </div>
+
+    <div class="tabs">
+        <button class="tab active" data-t="rfi">📩 RFI</button>
+        <button class="tab" data-t="submittal">📦 Material Submittal</button>
+        <button class="tab" data-t="progress">📈 Progress Report</button>
+        <button class="tab" data-t="payment">💰 Payment Certificate</button>
+        <button class="tab" data-t="variation">🔄 Variation Order</button>
+    </div>
+
+    <!-- RFI -->
+    <div class="panel active" data-p="rfi">
+        <div class="doc-header">
+            <h2>📩 طلب استفسار فني (RFI)</h2>
+            <small>Request for Information</small>
+        </div>
+        <div class="row">
+            <div class="field"><label>رقم RFI</label><input id="rfi_no" placeholder="RFI-001"></div>
+            <div class="field"><label>التاريخ</label><input id="rfi_date" type="date"></div>
+        </div>
+        <div class="row">
+            <div class="field"><label>المشروع</label><input id="rfi_project" placeholder="اسم المشروع"></div>
+            <div class="field"><label>المرسل إليه</label><input id="rfi_to" placeholder="الاستشاري / المالك"></div>
+        </div>
+        <div class="field" style="margin-bottom:14px;"><label>الموضوع</label><input id="rfi_subject" placeholder="موضوع الاستفسار"></div>
+        <div class="field" style="margin-bottom:14px;"><label>الاستفسار / الوصف</label><textarea id="rfi_desc" placeholder="اشرح الاستفسار بالتفصيل..."></textarea></div>
+        <div class="field" style="margin-bottom:14px;"><label>المرفقات / المراجع</label><textarea id="rfi_attach" placeholder="أرقام المخططات، الصور، الجداول..."></textarea></div>
+        <div class="field" style="margin-bottom:14px;"><label>الاقتراح / التوصية</label><textarea id="rfi_suggest" placeholder="اقتراحك لحل المشكلة..."></textarea></div>
+        <div class="signature">
+            <div class="sig-box"><div class="sig-line"></div><div class="sig-label">مقدم الطلب</div></div>
+            <div class="sig-box"><div class="sig-line"></div><div class="sig-label">المدير الفني</div></div>
+            <div class="sig-box"><div class="sig-line"></div><div class="sig-label">الاستشاري</div></div>
+        </div>
+        <div class="actions">
+            <button class="btn" onclick="window.print()">🖨️ طباعة</button>
+            <button class="btn btn-outline" onclick="clearPanel('rfi')">🗑️ مسح</button>
+        </div>
+    </div>
+
+    <!-- Submittal -->
+    <div class="panel" data-p="submittal">
+        <div class="doc-header">
+            <h2>📦 اعتماد المواد</h2>
+            <small>Material Submittal Form</small>
+        </div>
+        <div class="row">
+            <div class="field"><label>رقم Submittal</label><input placeholder="SUB-001"></div>
+            <div class="field"><label>التاريخ</label><input type="date"></div>
+        </div>
+        <div class="row">
+            <div class="field"><label>المشروع</label><input placeholder="اسم المشروع"></div>
+            <div class="field"><label>البند</label><input placeholder="مثلاً: كابلات نحاس"></div>
+        </div>
+        <div class="row">
+            <div class="field"><label>الماركة / الصانع</label><input placeholder="مثلاً: Schneider"></div>
+            <div class="field"><label>الموديل</label><input placeholder="Model Number"></div>
+        </div>
+        <div class="field" style="margin-bottom:14px;"><label>المواصفات الفنية</label><textarea placeholder="المواصفات الكاملة للمادة..."></textarea></div>
+        <div class="field" style="margin-bottom:14px;"><label>المرفقات</label><textarea placeholder="Datasheets, Certificates, Samples..."></textarea></div>
+        <div class="field" style="margin-bottom:14px;"><label>حالة الاعتماد</label><select><option>قيد المراجعة</option><option>معتمد</option><option>معتمد مع ملاحظات</option><option>مرفوض</option></select></div>
+        <div class="signature">
+            <div class="sig-box"><div class="sig-line"></div><div class="sig-label">المقاول</div></div>
+            <div class="sig-box"><div class="sig-line"></div><div class="sig-label">الاستشاري</div></div>
+            <div class="sig-box"><div class="sig-line"></div><div class="sig-label">المالك</div></div>
+        </div>
+        <div class="actions">
+            <button class="btn" onclick="window.print()">🖨️ طباعة</button>
+            <button class="btn btn-outline" onclick="clearPanel('submittal')">🗑️ مسح</button>
+        </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="panel" data-p="progress">
+        <div class="doc-header">
+            <h2>📈 تقرير التقدم</h2>
+            <small>Weekly Progress Report</small>
+        </div>
+        <div class="row">
+            <div class="field"><label>التاريخ</label><input type="date"></div>
+            <div class="field"><label>الفترة</label><input placeholder="من - إلى"></div>
+        </div>
+        <div class="field" style="margin-bottom:14px;"><label>المشروع</label><input placeholder="اسم المشروع"></div>
+        <div class="field" style="margin-bottom:14px;"><label>الأعمال المنجزة هذا الأسبوع</label><textarea placeholder="1. ...&#10;2. ...&#10;3. ..." style="min-height:130px;"></textarea></div>
+        <div class="field" style="margin-bottom:14px;"><label>نسبة التقدم الكلية</label><input type="number" min="0" max="100" placeholder="%"></div>
+        <div class="field" style="margin-bottom:14px;"><label>المشاكل / العوائق</label><textarea placeholder="أي مشاكل تعوق سير العمل..."></textarea></div>
+        <div class="field" style="margin-bottom:14px;"><label>خطة الأسبوع القادم</label><textarea placeholder="1. ...&#10;2. ..."></textarea></div>
+        <div class="actions">
+            <button class="btn" onclick="window.print()">🖨️ طباعة</button>
+            <button class="btn btn-outline" onclick="clearPanel('progress')">🗑️ مسح</button>
+        </div>
+    </div>
+
+    <!-- Payment -->
+    <div class="panel" data-p="payment">
+        <div class="doc-header">
+            <h2>💰 مستخلص الدفع</h2>
+            <small>Interim Payment Certificate</small>
+        </div>
+        <div class="row">
+            <div class="field"><label>رقم المستخلص</label><input placeholder="IPC-001"></div>
+            <div class="field"><label>التاريخ</label><input type="date"></div>
+        </div>
+        <div class="row">
+            <div class="field"><label>المشروع</label><input placeholder="اسم المشروع"></div>
+            <div class="field"><label>المقاول</label><input placeholder="اسم الشركة"></div>
+        </div>
+        <div class="row">
+            <div class="field"><label>قيمة العقد الإجمالية</label><input type="number" placeholder="0"></div>
+            <div class="field"><label>نسبة الإنجاز الكلية (%)</label><input type="number" min="0" max="100" placeholder="0"></div>
+        </div>
+        <div class="row">
+            <div class="field"><label>المستخلص السابق</label><input type="number" placeholder="0"></div>
+            <div class="field"><label>هذا المستخلص</label><input type="number" placeholder="0"></div>
+        </div>
+        <div class="field" style="margin-bottom:14px;"><label>ملاحظات</label><textarea placeholder="ملاحظات حول المستخلص..."></textarea></div>
+        <div class="signature">
+            <div class="sig-box"><div class="sig-line"></div><div class="sig-label">المقاول</div></div>
+            <div class="sig-box"><div class="sig-line"></div><div class="sig-label">المهندس</div></div>
+            <div class="sig-box"><div class="sig-line"></div><div class="sig-label">المالك</div></div>
+        </div>
+        <div class="actions">
+            <button class="btn" onclick="window.print()">🖨️ طباعة</button>
+            <button class="btn btn-outline" onclick="clearPanel('payment')">🗑️ مسح</button>
+        </div>
+    </div>
+
+    <!-- Variation -->
+    <div class="panel" data-p="variation">
+        <div class="doc-header">
+            <h2>🔄 أمر التغيير</h2>
+            <small>Variation Order</small>
+        </div>
+        <div class="row">
+            <div class="field"><label>رقم VO</label><input placeholder="VO-001"></div>
+            <div class="field"><label>التاريخ</label><input type="date"></div>
+        </div>
+        <div class="row">
+            <div class="field"><label>المشروع</label><input placeholder="اسم المشروع"></div>
+            <div class="field"><label>البند الأصلي</label><input placeholder="البند المتأثر"></div>
+        </div>
+        <div class="field" style="margin-bottom:14px;"><label>وصف التغيير</label><textarea placeholder="وصف تفصيلي للأعمال الإضافية..."></textarea></div>
+        <div class="row">
+            <div class="field"><label>القيمة (EGP)</label><input type="number" placeholder="0"></div>
+            <div class="field"><label>التأثير على الجدول الزمني</label><input placeholder="مثلاً: +7 أيام"></div>
+        </div>
+        <div class="field" style="margin-bottom:14px;"><label>المبرر</label><textarea placeholder="سبب الحاجة لهذا التغيير..."></textarea></div>
+        <div class="signature">
+            <div class="sig-box"><div class="sig-line"></div><div class="sig-label">مقدم الطلب</div></div>
+            <div class="sig-box"><div class="sig-line"></div><div class="sig-label">الاستشاري</div></div>
+            <div class="sig-box"><div class="sig-line"></div><div class="sig-label">المالك</div></div>
+        </div>
+        <div class="actions">
+            <button class="btn" onclick="window.print()">🖨️ طباعة</button>
+            <button class="btn btn-outline" onclick="clearPanel('variation')">🗑️ مسح</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const VALID_TABS = ["rfi", "submittal", "progress", "payment", "variation"];
+
+function switchTab(tabKey){
+    if (!VALID_TABS.includes(tabKey)) tabKey = "rfi";
+    document.querySelectorAll(".tab").forEach(t => {
+        t.classList.toggle("active", t.dataset.t === tabKey);
+    });
+    document.querySelectorAll(".panel").forEach(p => {
+        p.classList.toggle("active", p.dataset.p === tabKey);
+    });
+    if (history.replaceState) {
+        history.replaceState(null, "", "#" + tabKey);
+    }
+}
+
+document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => switchTab(tab.dataset.t));
+});
+
+function clearPanel(panelName){
+    if(!confirm("مسح محتوى النموذج؟")) return;
+    const panel = document.querySelector(`.panel[data-p="${panelName}"]`);
+    if(panel){
+        panel.querySelectorAll("input, textarea, select").forEach(el => el.value = "");
+    }
+}
+
+(function initFromHash(){
+    const hash = (location.hash || "").replace("#", "").trim();
+    if (hash && VALID_TABS.includes(hash)) {
+        switchTab(hash);
+        setTimeout(() => {
+            const panel = document.querySelector(`.panel[data-p="${hash}"]`);
+            if(panel) panel.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 150);
+    }
+})();
+
+window.addEventListener("hashchange", () => {
+    const hash = (location.hash || "").replace("#", "").trim();
+    if (hash && VALID_TABS.includes(hash)) switchTab(hash);
+});
+</script>
+</body>
+</html>
