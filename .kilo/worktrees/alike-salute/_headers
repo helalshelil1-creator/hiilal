@@ -1,0 +1,36 @@
+# ========================================
+# _headers — Netlify / Cloudflare Pages
+# ========================================
+
+/*
+    X-Frame-Options: SAMEORIGIN
+    X-Content-Type-Options: nosniff
+    Referrer-Policy: strict-origin-when-cross-origin
+    X-XSS-Protection: 1; mode=block
+
+# HTML — لا تخزين
+/*.html
+    Cache-Control: no-cache, no-store, must-revalidate
+
+/index.html
+    Cache-Control: no-cache, no-store, must-revalidate
+
+# Service Worker — لا تخزين
+/service-worker.js
+    Cache-Control: no-cache, no-store, must-revalidate
+    Service-Worker-Allowed: /
+
+# CSS & JS — يوم
+/css/*
+    Cache-Control: public, max-age=86400
+/js/*
+    Cache-Control: public, max-age=86400
+
+# Images — سنة
+/images/*
+    Cache-Control: public, max-age=31536000, immutable
+
+# Manifest
+/manifest.json
+    Cache-Control: public, max-age=604800
+    Content-Type: application/manifest+json

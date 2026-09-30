@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>لوحة التحكم | Eng. Helal Shalil</title>
+<!-- SEO Auto Injection -->
+<script src="js/seo-data.js"></script>
+<script src="js/seo.js"></script>
+
+<link rel="icon" type="image/png" href="images/logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+body { background: #050d1a; color: #f1f5f9; padding-bottom: 0; }
+
+/* ========================================
+   GATE
+======================================== */
+#adminGate {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(0,217,255,.15), transparent 60%),
+                linear-gradient(135deg, #050d1a 0%, #0a1628 50%, #12263f 100%);
+}
+.gate-box {
+    max-width: 440px;
+    width: 100%;
+    padding: 40px 32px;
+    background: rgba(255,255,255,.04);
+    backdrop-filter: blur(20px);
+    border-radius: 26px;
+    border: 1px solid rgba(0,217,255,.2);
+    box-shadow: 0 30px 80px rgba(0,0,0,.5);
+}
+.gate-logo { text-align: center; margin-bottom: 20px; }
+.gate-logo-img {
+    width: 100px; height: 100px;
+    border-radius: 24px;
+    object-fit: cover;
+    margin: 0 auto;
+    box-shadow: 0 20px 50px rgba(0,217,255,.4);
+    border: 2px solid rgba(0,217,255,.4);
+    display: block;
+    background: linear-gradient(135deg, #00d9ff, #22d3ee);
+}
+.gate-box h1 { color: #fff; font-size: 24px; font-weight: 900; margin: 15px 0 8px; text-align: center; }
+.gate-box > p { color: #94a3b8; font-size: 13px; margin-bottom: 25px; text-align: center; }
+.gate-form .form-group { margin-bottom: 16px; }
+.gate-form label { display: block; font-size: 13px; font-weight: 700; color: #cbd5e1; margin-bottom: 6px; }
+.gate-form input {
+    width: 100%; padding: 14px 16px;
+    border-radius: 12px;
+    border: 1.5px solid rgba(0,217,255,.2);
+    background: rgba(0,0,0,.3);
+    color: #fff;
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+    text-align: center;
+    letter-spacing: 4px;
+}
+.gate-form input:focus { border-color: #00d9ff; box-shadow: 0 0 0 4px rgba(0,217,255,.15); }
+.btn-gate {
+    width: 100%; padding: 15px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, #00d9ff, #22d3ee);
+    color: #0a1628;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 12px 30px rgba(0,217,255,.4);
+}
+.btn-gate:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(0,217,255,.5); }
+.btn-gate svg { width: 18px; height: 18px; }
+.gate-footer {
+    text-align: center;
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,.08);
+}
+.gate-footer a { color: #67e8f9; font-weight: 700; font-size: 13px; }
+
+/* ========================================
+   HEADER
+======================================== */
+.admin-header {
+    background: linear-gradient(135deg, #0a1628, #12263f);
+    border-bottom: 1px solid rgba(0,217,255,.2);
+    padding: 16px 5%;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 30px rgba(0,0,0,.4);
+}
+.admin-header-inner {
+    max-width: 1500px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+.admin-brand { display: flex; align-items: center; gap: 14px; }
+.admin-logo {
+    width: 48px; height: 48px;
+    border-radius: 13px;
+    object-fit: cover;
+    box-shadow: 0 6px 20px rgba(0,217,255,.4);
+    border: 1.5px solid rgba(0,217,255,.4);
+    background: linear-gradient(135deg, #00d9ff, #22d3ee);
+}
+.admin-brand-text h1 { color: #fff; font-size: 17px; font-weight: 900; line-height: 1.3; }
+.admin-brand-text h1 span { color: #67e8f9; }
+.admin-brand-text small { color: #94a3b8; font-size: 10px; font-weight: 600; font-family: 'JetBrains Mono', monospace; display: block; margin-top: 2px; }
+
+.admin-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.action-btn {
+    width: 40px; height: 40px;
+    border-radius: 11px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.05);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.action-btn svg { width: 18px; height: 18px; }
+.action-btn:hover { background: linear-gradient(135deg, #00d9ff, #22d3ee); color: #0a1628; border-color: transparent; }
+.admin-btn {
+    padding: 10px 18px;
+    border-radius: 12px;
+    border: none;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+.admin-btn svg { width: 16px; height: 16px; }
+.admin-btn-primary { background: linear-gradient(135deg, #00d9ff, #22d3ee); color: #0a1628; box-shadow: 0 8px 22px rgba(0,217,255,.35); }
+.admin-btn-primary:hover { transform: translateY(-2px); }
+.admin-btn-secondary { background: rgba(255,255,255,.08); color: #fff; border: 1px solid rgba(255,255,255,.15); }
+.admin-btn-secondary:hover { background: rgba(255,255,255,.15); }
+.admin-btn-danger { background: rgba(225,29,72,.2); color: #fecdd3; border: 1px solid rgba(225,29,72,.4); }
+.admin-btn-danger:hover { background: rgba(225,29,72,.35); }
+
+/* ========================================
+   MAIN
+======================================== */
+.admin-main { max-width: 1500px; margin: 0 auto; padding: 25px 5%; }
+.admin-section { margin-bottom: 25px; }
+
+/* ========================================
+   STATS
+======================================== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+}
+.stat-card {
+    padding: 20px;
+    background: linear-gradient(135deg, #0a1628 0%, #12263f 100%);
+    border: 1px solid #1e3450;
+    border-radius: 18px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.stat-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--stat-color, #00d9ff);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .5s;
+}
+.stat-card:hover::before { transform: scaleX(1); }
+.stat-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--stat-color, #00d9ff);
+    box-shadow: 0 20px 40px -10px rgba(0,217,255,.3);
+}
+.stat-ico {
+    width: 48px; height: 48px;
+    border-radius: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    color: #fff;
+    font-size: 22px;
+}
+.stat-num {
+    font-size: 28px;
+    font-weight: 900;
+    color: #67e8f9;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+.stat-lbl { font-size: 12px; color: #94a3b8; font-weight: 700; }
+
+/* ========================================
+   TABS
+======================================== */
+.tabs-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #1e3450;
+}
+.tab-btn {
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 1px solid #1e3450;
+    background: #0a1628;
+    color: #cbd5e1;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.tab-btn.active, .tab-btn:hover {
+    background: linear-gradient(135deg, #00d9ff, #22d3ee);
+    color: #0a1628;
+    border-color: transparent;
+    box-shadow: 0 6px 18px rgba(0,217,255,.35);
+}
+
+/* ========================================
+   PANELS
+======================================== */
+.panel {
+    background: #0a1628;
+    border: 1px solid #1e3450;
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+.panel h3 {
+    color: #67e8f9;
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #1e3450;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ========================================
+   FORMS
+======================================== */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+@media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+.form-group { margin-bottom: 14px; }
+.form-group label { display: block; font-size: 12px; font-weight: 700; color: #cbd5e1; margin-bottom: 6px; }
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1.5px solid #1e3450;
+    background: #050d1a;
+    color: #fff;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: #00d9ff;
+    box-shadow: 0 0 0 4px rgba(0,217,255,.15);
+}
+.form-group textarea { resize: vertical; min-height: 90px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; }
+.form-group select option { background: #0a1628; color: #fff; }
+
+.btn-save {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #00d9ff, #22d3ee);
+    color: #0a1628;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+}
+.btn-save:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,217,255,.5); }
+
+/* ========================================
+   ITEMS LIST
+======================================== */
+.items-list { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+.item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: #050d1a;
+    border: 1px solid #1e3450;
+    border-radius: 14px;
+}
+.item-row:hover { border-color: #00d9ff; background: rgba(0,217,255,.05); }
+.item-row-info { flex: 1; min-width: 0; }
+.item-row-info h4 { color: #67e8f9; font-size: 13.5px; font-weight: 800; margin-bottom: 3px; }
+.item-row-info p { color: #94a3b8; font-size: 11.5px; line-height: 1.5; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.item-row-info small { color: #00d9ff; font-size: 10px; font-weight: 700; display: block; margin-top: 3px; }
+.item-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.icon-action {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    border: 1px solid #1e3450;
+    background: #0a1628;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+}
+.icon-action:hover { background: linear-gradient(135deg, #00d9ff, #22d3ee); color: #0a1628; border-color: transparent; }
+.icon-action.danger { color: #e11d48; }
+.icon-action.danger:hover { background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; }
+
+/* ========================================
+   EMPTY STATE
+======================================== */
+.empty-state { text-align: center; padding: 50px 20px; color: #64748b; }
+.empty-state .ico {
+    width: 70px; height: 70px;
+    border-radius: 20px;
+    background: #050d1a;
+    border: 2px dashed #1e3450;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    font-size: 30px;
+}
+.empty-state h4 { color: #cbd5e1; font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+
+/* ========================================
+   WELCOME BANNER
+======================================== */
+.welcome-banner {
+    background: linear-gradient(135deg, rgba(0,217,255,.15), rgba(0,217,255,.03));
+    border: 1px solid rgba(0,217,255,.3);
+    border-radius: 18px;
+    padding: 24px;
+    text-align: center;
+}
+.welcome-banner h2 { color: #fff; font-size: 22px; font-weight: 900; margin-bottom: 10px; }
+.welcome-banner p { color: #cbd5e1; font-size: 13px; margin-bottom: 18px; }
+.quick-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.quick-btn {
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,217,255,.3);
+    background: rgba(0,217,255,.1);
+    color: #67e8f9;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+}
+.quick-btn:hover { background: linear-gradient(135deg, #00d9ff, #22d3ee); color: #0a1628; }
+
+/* ========================================
+   BACKUP BOX
+======================================== */
+.backup-box {
+    padding: 24px;
+    background: #0a1628;
+    border: 1px solid #1e3450;
+    border-radius: 18px;
+    margin-bottom: 15px;
+}
+.backup-box.danger { border-color: rgba(225,29,72,.4); background: rgba(225,29,72,.05); }
+.backup-box h3 { color: #67e8f9; font-size: 15px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.backup-box.danger h3 { color: #fecdd3; }
+.backup-box p { color: #94a3b8; font-size: 12.5px; line-height: 1.8; margin-bottom: 16px; }
+.backup-box input[type="file"] {
+    width: 100%; padding: 12px;
+    background: #050d1a;
+    border: 1px dashed #00d9ff;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 12px;
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+.progress-bar { height: 6px; background: #050d1a; border-radius: 999px; overflow: hidden; margin-top: 12px; }
+.progress-bar > div { height: 100%; background: linear-gradient(90deg, #00d9ff, #22d3ee); width: 0%; transition: width .4s; }
+
+/* ========================================
+   ANALYTICS
+======================================== */
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+}
+.analytics-card {
+    padding: 18px;
+    background: linear-gradient(135deg, #0a1628, #12263f);
+    border: 1px solid #1e3450;
+    border-radius: 16px;
+    text-align: center;
+}
+.analytics-num {
+    font-size: 26px;
+    font-weight: 900;
+    color: #67e8f9;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 6px;
+}
+.analytics-lbl { font-size: 11px; color: #94a3b8; font-weight: 700; }
+
+/* ========================================
+   TOAST
+======================================== */
+#adminToast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    padding: 14px 24px;
+    background: linear-gradient(135deg, #00d9ff, #22d3ee);
+    color: #0a1628;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 13px;
+    z-index: 9999;
+    transition: all .4s cubic-bezier(.16,1,.3,1);
+    box-shadow: 0 15px 40px rgba(0,217,255,.4);
+    max-width: 90%;
+    text-align: center;
+}
+#adminToast.show { transform: translateX(-50%) translateY(0); }
+#adminToast.error { background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; }
+#adminToast.success { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; }
+#adminToast.info { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; }
+#adminToast.warning { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #1f2937; }
+
+/* ========================================
+   MOBILE
+======================================== */
+@media (max-width: 700px) {
+    .admin-header { padding: 12px 4%; }
+    .admin-logo { width: 40px; height: 40px; }
+    .admin-brand-text h1 { font-size: 14px; }
+    .admin-main { padding: 18px 4%; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .stat-card { padding: 14px; }
+    .stat-num { font-size: 22px; }
+    .gate-box { padding: 30px 24px; }
+    .gate-logo-img { width: 80px; height: 80px; }
+    .admin-btn span { display: none; }
+    .tab-btn { font-size: 11px; padding: 8px 14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========================================
+     GATE
+======================================== -->
+<div id="adminGate">
+    <div class="gate-box">
+        <div class="gate-logo">
+            <img src="images/logo.png" alt="Eng. Helal Shalil" class="gate-logo-img" onerror="this.style.display='none'">
+        </div>
+        <h1>لوحة التحكم</h1>
+        <p>هذه الصفحة مخصصة للمهندس فقط</p>
+
+        <form onsubmit="unlockAdmin(event)" class="gate-form">
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="adminPass" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-gate">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                دخول
+            </button>
+        </form>
+
+        <div class="gate-footer">
+            <a href="index.html">← العودة للمنصة</a>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================
+     MAIN PANEL
+======================================== -->
+<div id="adminPanel" style="display:none;">
+
+    <header class="admin-header">
+        <div class="admin-header-inner">
+            <div class="admin-brand">
+                <img src="images/logo.png" alt="Logo" class="admin-logo" onerror="this.style.display='none'">
+                <div class="admin-brand-text">
+                    <h1>لوحة تحكم <span>المكتب</span></h1>
+                    <small>Eng. Helal Shalil — Admin Panel</small>
+                </div>
+            </div>
+            <div class="admin-actions">
+                <button class="action-btn" onclick="toggleTheme()" title="الوضع الليلي/النهاري">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+                <a href="index.html" class="admin-btn admin-btn-secondary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                    <span>المنصة</span>
+                </a>
+                <button class="admin-btn admin-btn-primary" onclick="quickExport()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>تصدير</span>
+                </button>
+                <button class="admin-btn admin-btn-danger" onclick="lockAdmin()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    <span>خروج</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <section class="admin-section">
+            <div class="stats-grid" id="statsGrid"></div>
+        </section>
+
+        <section class="admin-section">
+            <div class="tabs-bar" id="tabsBar">
+                <button class="tab-btn active" data-tab="dashboard">🏠 الرئيسية</button>
+                <button class="tab-btn" data-tab="content">📚 المحتوى</button>
+                <button class="tab-btn" data-tab="codes">📘 الأكواد</button>
+                <button class="tab-btn" data-tab="specs">📋 المواصفات</button>
+                <button class="tab-btn" data-tab="products">📦 المنتجات</button>
+                <button class="tab-btn" data-tab="projects">🏗️ المشاريع</button>
+                <button class="tab-btn" data-tab="software">🖥️ أدلة البرامج</button>
+                <button class="tab-btn" data-tab="analytics">📊 الإحصائيات</button>
+                <button class="tab-btn" data-tab="backup">💾 نسخ احتياطي</button>
+            </div>
+
+            <div id="tabContent"></div>
+        </section>
+    </main>
+</div>
+
+<div id="adminToast"></div>
+
+<!-- ========================================
+     SCRIPTS
+======================================== -->
+<script src="js/storage.js"></script>
+<script src="js/icons.js"></script>
+
+<script>
+(function() {
+    'use strict';
+
+    const ADMIN_PASSWORD = "hilal2026";
+    const ADMIN_UNLOCK_KEY = "engAdminUnlocked";
+    let currentTab = "dashboard";
+
+    /* ========================================
+       TOAST
+    ======================================== */
+    function adminToast(msg, type = "success") {
+        const el = document.getElementById("adminToast");
+        if (!el) return;
+        el.textContent = msg;
+        el.className = type;
+        el.classList.add("show");
+        clearTimeout(el._t);
+        el._t = setTimeout(() => el.classList.remove("show"), 2800);
+    }
+    window.adminToast = adminToast;
+
+    /* ========================================
+       AUTH
+    ======================================== */
+    window.unlockAdmin = function(e) {
+        e.preventDefault();
+        const p = document.getElementById("adminPass").value;
+        if (p === ADMIN_PASSWORD) {
+            sessionStorage.setItem(ADMIN_UNLOCK_KEY, "1");
+            showPanel();
+            adminToast("🔓 مرحبًا بك يا هندسة", "success");
+        } else {
+            adminToast("❌ كلمة المرور غلط", "error");
+            document.getElementById("adminPass").value = "";
+        }
+    };
+
+    window.lockAdmin = function() {
+        sessionStorage.removeItem(ADMIN_UNLOCK_KEY);
+        location.reload();
+    };
+
+    function showPanel() {
+        const gate = document.getElementById("adminGate");
+        const panel = document.getElementById("adminPanel");
+        if (gate) gate.style.display = "none";
+        if (panel) panel.style.display = "block";
+        renderStats();
+        renderTab("dashboard");
+    }
+
+    /* ========================================
+       STATS
+    ======================================== */
+    function renderStats() {
+        const grid = document.getElementById("statsGrid");
+        if (!grid) return;
+
+        const data = {
+            content: Store.get("custom_content", []).length,
+            codes: Store.getCustom("codes").length,
+            specs: Store.getCustom("specs").length,
+            products: Store.getCustom("products").length,
+            projects: Store.getCustom("projects").length,
+            favorites: Store.getFavorites().length,
+            software: (Store.get("custom_software_autocad", []).length +
+                       Store.get("custom_software_revit", []).length +
+                       Store.get("custom_software_hotkeys", []).length),
+            videos: Store.get("youtube_videos", []).length
+        };
+
+        const cards = [
+            { ico: "📚", num: data.content, lbl: "المحتوى", tab: "content", color: "#00d9ff" },
+            { ico: "📘", num: data.codes, lbl: "الأكواد", tab: "codes", color: "#22c55e" },
+            { ico: "📋", num: data.specs, lbl: "المواصفات", tab: "specs", color: "#f59e0b" },
+            { ico: "📦", num: data.products, lbl: "المنتجات", tab: "products", color: "#ec4899" },
+            { ico: "🏗️", num: data.projects, lbl: "المشاريع", tab: "projects", color: "#8b5cf6" },
+            { ico: "🖥️", num: data.software, lbl: "أقسام برامج", tab: "software", color: "#06b6d4" },
+            { ico: "🎥", num: data.videos, lbl: "فيديوهات", tab: "software", color: "#ef4444" },
+            { ico: "❤️", num: data.favorites, lbl: "المفضلة", tab: "dashboard", color: "#f97316" }
+        ];
+
+        grid.innerHTML = cards.map(c => `
+            <div class="stat-card" data-tab="${c.tab}" style="--stat-color:${c.color};">
+                <div class="stat-ico" style="background:linear-gradient(135deg, ${c.color}, ${c.color}dd);">${c.ico}</div>
+                <div class="stat-num">${c.num}</div>
+                <div class="stat-lbl">${c.lbl}</div>
+            </div>
+        `).join("");
+
+        grid.querySelectorAll(".stat-card").forEach(card => {
+            card.addEventListener("click", () => switchTab(card.dataset.tab));
+        });
+    }
+
+    /* ========================================
+       TABS
+    ======================================== */
+    function switchTab(tab) {
+        currentTab = tab;
+        document.querySelectorAll(".tab-btn").forEach(btn => {
+            btn.classList.toggle("active", btn.dataset.tab === tab);
+        });
+        renderTab(tab);
+    }
+    window.switchTab = switchTab;
+
+    function renderTab(tab) {
+        const el = document.getElementById("tabContent");
+        if (!el) return;
+
+        switch (tab) {
+            case "dashboard": el.innerHTML = renderDashboard(); break;
+            case "content":   el.innerHTML = renderContent(); break;
+            case "codes":     el.innerHTML = renderCodes(); break;
+            case "specs":     el.innerHTML = renderSpecs(); break;
+            case "products":  el.innerHTML = renderProducts(); break;
+            case "projects":  el.innerHTML = renderProjects(); break;
+            case "software":  el.innerHTML = renderSoftware(); break;
+            case "analytics": el.innerHTML = renderAnalytics(); break;
+            case "backup":    el.innerHTML = renderBackup(); break;
+            default:          el.innerHTML = renderDashboard();
+        }
+    }
+
+    /* ========================================
+       DASHBOARD
+    ======================================== */
+    function renderDashboard() {
+        return `
+            <div class="panel">
+                <h3>📊 نظرة سريعة</h3>
+                <div class="welcome-banner">
+                    <h2>أهلاً بك يا هندسة 👋</h2>
+                    <p>مركز التحكم الكامل بموقعك. أضف وعدّل واحذف كل المحتوى بسهولة.</p>
+                    <div class="quick-actions">
+                        <button onclick="switchTab('content')" class="quick-btn">📚 إضافة محتوى</button>
+                        <button onclick="switchTab('software')" class="quick-btn">🖥️ أدلة البرامج</button>
+                        <button onclick="switchTab('projects')" class="quick-btn">🏗️ مشروع جديد</button>
+                        <button onclick="switchTab('backup')" class="quick-btn">💾 نسخة احتياطية</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    /* ========================================
+       CONTENT
+    ======================================== */
+    function renderContent() {
+        const items = Store.get("custom_content", []);
+        return `
+            <div class="panel">
+                <h3>➕ إضافة محتوى جديد</h3>
+                <form onsubmit="saveContent(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>النوع *</label>
+                            <select id="ci_type" required>
+                                <option value="document">📑 مستند</option>
+                                <option value="file">📄 ملف</option>
+                                <option value="video">🎥 فيديو</option>
+                                <option value="article">📰 مقال</option>
+                                <option value="program">💻 برنامج</option>
+                                <option value="link">🔗 رابط</option>
+                                <option value="image">🖼️ صورة</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>العنوان *</label>
+                            <input type="text" id="ci_title" required placeholder="عنوان المحتوى">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف</label>
+                        <input type="text" id="ci_desc" placeholder="وصف مختصر">
+                    </div>
+                    <div class="form-group">
+                        <label>الرابط *</label>
+                        <input type="text" id="ci_url" required dir="ltr" placeholder="https://...">
+                    </div>
+                    <button type="submit" class="btn-save">💾 حفظ</button>
+                </form>
+            </div>
+            <div class="panel">
+                <h3>📚 المحتوى المضاف (${items.length})</h3>
+                ${items.length === 0 ? emptyState("لا يوجد محتوى بعد") :
+                    `<div class="items-list">${items.map(i => `
+                        <div class="item-row">
+                            <div class="item-row-info">
+                                <h4>${escapeHtml(i.title)}</h4>
+                                <small>${i.type} • ${escapeHtml((i.url || "").substring(0, 50))}</small>
+                                <p>${escapeHtml(i.description || "")}</p>
+                            </div>
+                            <div class="item-actions">
+                                <button class="icon-action danger" onclick="deleteItem('custom_content', '${i.id}')">🗑️</button>
+                            </div>
+                        </div>
+                    `).join("")}</div>`
+                }
+            </div>
+        `;
+    }
+
+    window.saveContent = function(e) {
+        e.preventDefault();
+        const item = {
+            id: "custom-" + Date.now(),
+            type: document.getElementById("ci_type").value,
+            title: document.getElementById("ci_title").value.trim(),
+            description: document.getElementById("ci_desc").value.trim(),
+            url: document.getElementById("ci_url").value.trim(),
+            isCustom: true
+        };
+        if (!item.title || !item.url) return;
+        const list = Store.get("custom_content", []);
+        list.unshift(item);
+        Store.set("custom_content", list);
+        e.target.reset();
+        adminToast("✅ تم الحفظ", "success");
+        renderTab("content"); renderStats();
+    };
+
+    /* ========================================
+       CODES
+    ======================================== */
+    function renderCodes() {
+        const items = Store.getCustom("codes");
+        return `
+            <div class="panel">
+                <h3>➕ إضافة كود</h3>
+                <form onsubmit="saveCodeAdmin(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>رقم الكود *</label>
+                            <input type="text" id="co_code" required dir="ltr" placeholder="IEC 60364">
+                        </div>
+                        <div class="form-group">
+                            <label>التصنيف *</label>
+                            <select id="co_cat" required>
+                                <option value="egyptian">الكود المصري</option>
+                                <option value="iec">IEC</option>
+                                <option value="nfpa">NFPA</option>
+                                <option value="bs">BS</option>
+                                <option value="ieee">IEEE</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>الاسم (عربي)</label>
+                            <input type="text" id="co_nameAr">
+                        </div>
+                        <div class="form-group">
+                            <label>الاسم (إنجليزي)</label>
+                            <input type="text" id="co_name" dir="ltr">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف</label>
+                        <textarea id="co_desc"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>الرابط (اختياري)</label>
+                        <input type="text" id="co_url" dir="ltr">
+                    </div>
+                    <button type="submit" class="btn-save">💾 حفظ</button>
+                </form>
+            </div>
+            <div class="panel">
+                <h3>📘 الأكواد (${items.length})</h3>
+                ${items.length === 0 ? emptyState("لا توجد أكواد") :
+                    `<div class="items-list">${items.map(c => `
+                        <div class="item-row">
+                            <div class="item-row-info">
+                                <h4>${escapeHtml(c.code || c.name)}</h4>
+                                <small>${escapeHtml(c.nameAr || "")}</small>
+                                <p>${escapeHtml(c.description || "")}</p>
+                            </div>
+                            <div class="item-actions">
+                                <button class="icon-action danger" onclick="deleteItem('custom_codes', '${c.id}')">🗑️</button>
+                            </div>
+                        </div>
+                    `).join("")}</div>`
+                }
+            </div>
+        `;
+    }
+
+    window.saveCodeAdmin = function(e) {
+        e.preventDefault();
+        const item = {
+            id: "code-" + Date.now(),
+            code: document.getElementById("co_code").value.trim(),
+            name: document.getElementById("co_name").value.trim(),
+            nameAr: document.getElementById("co_nameAr").value.trim(),
+            category: document.getElementById("co_cat").value,
+            description: document.getElementById("co_desc").value.trim(),
+            url: document.getElementById("co_url").value.trim(),
+            isCustom: true
+        };
+        if (!item.code) return;
+        const list = Store.getCustom("codes");
+        list.unshift(item);
+        Store.set("custom_codes", list);
+        e.target.reset();
+        adminToast("✅ تم حفظ الكود", "success");
+        renderTab("codes"); renderStats();
+    };
+
+    /* ========================================
+       SPECS
+    ======================================== */
+    function renderSpecs() {
+        const items = Store.getCustom("specs");
+        return `
+            <div class="panel">
+                <h3>➕ إضافة مواصفة</h3>
+                <form onsubmit="saveSpecAdmin(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>الاسم *</label>
+                            <input type="text" id="sp_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>الاسم الإنجليزي</label>
+                            <input type="text" id="sp_nameEn" dir="ltr">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>التصنيف</label>
+                            <select id="sp_cat">
+                                <option value="cables">كابلات</option>
+                                <option value="breakers">قواطع</option>
+                                <option value="panels">لوحات</option>
+                                <option value="lighting">إضاءة</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>الشركة المصنعة</label>
+                            <input type="text" id="sp_mfr">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف</label>
+                        <textarea id="sp_desc"></textarea>
+                    </div>
+                    <button type="submit" class="btn-save">💾 حفظ</button>
+                </form>
+            </div>
+            <div class="panel">
+                <h3>📋 المواصفات (${items.length})</h3>
+                ${items.length === 0 ? emptyState("لا توجد مواصفات") :
+                    `<div class="items-list">${items.map(s => `
+                        <div class="item-row">
+                            <div class="item-row-info">
+                                <h4>${escapeHtml(s.name)}</h4>
+                                <small>${escapeHtml(s.manufacturer || "")}</small>
+                                <p>${escapeHtml(s.description || "")}</p>
+                            </div>
+                            <div class="item-actions">
+                                <button class="icon-action danger" onclick="deleteItem('custom_specs', '${s.id}')">🗑️</button>
+                            </div>
+                        </div>
+                    `).join("")}</div>`
+                }
+            </div>
+        `;
+    }
+
+    window.saveSpecAdmin = function(e) {
+        e.preventDefault();
+        const item = {
+            id: "spec-" + Date.now(),
+            name: document.getElementById("sp_name").value.trim(),
+            nameEn: document.getElementById("sp_nameEn").value.trim(),
+            category: document.getElementById("sp_cat").value,
+            manufacturer: document.getElementById("sp_mfr").value.trim(),
+            description: document.getElementById("sp_desc").value.trim(),
+            isCustom: true
+        };
+        if (!item.name) return;
+        const list = Store.getCustom("specs");
+        list.unshift(item);
+        Store.set("custom_specs", list);
+        e.target.reset();
+        adminToast("✅ تم الحفظ", "success");
+        renderTab("specs"); renderStats();
+    };
+
+    /* ========================================
+       PRODUCTS
+    ======================================== */
+    function renderProducts() {
+        const items = Store.getCustom("products");
+        return `
+            <div class="panel">
+                <h3>➕ إضافة منتج</h3>
+                <form onsubmit="saveProductAdmin(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>الاسم *</label>
+                            <input type="text" id="pr_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>الاسم الإنجليزي</label>
+                            <input type="text" id="pr_nameEn" dir="ltr">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>التصنيف</label>
+                            <select id="pr_cat">
+                                <option value="breakers">قواطع</option>
+                                <option value="cables">كابلات</option>
+                                <option value="lighting">إضاءة</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>الشركة المصنعة</label>
+                            <input type="text" id="pr_mfr">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>الموديل</label>
+                            <input type="text" id="pr_model" dir="ltr">
+                        </div>
+                        <div class="form-group">
+                            <label>السعر</label>
+                            <input type="text" id="pr_price" placeholder="250 ج.م">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف</label>
+                        <textarea id="pr_desc"></textarea>
+                    </div>
+                    <button type="submit" class="btn-save">💾 حفظ</button>
+                </form>
+            </div>
+            <div class="panel">
+                <h3>📦 المنتجات (${items.length})</h3>
+                ${items.length === 0 ? emptyState("لا توجد منتجات") :
+                    `<div class="items-list">${items.map(p => `
+                        <div class="item-row">
+                            <div class="item-row-info">
+                                <h4>${escapeHtml(p.name)}</h4>
+                                <small>${escapeHtml(p.manufacturer || "")} ${p.model ? "• " + escapeHtml(p.model) : ""}</small>
+                                <p>${escapeHtml(p.description || "")}</p>
+                            </div>
+                            <div class="item-actions">
+                                <button class="icon-action danger" onclick="deleteItem('custom_products', '${p.id}')">🗑️</button>
+                            </div>
+                        </div>
+                    `).join("")}</div>`
+                }
+            </div>
+        `;
+    }
+
+    window.saveProductAdmin = function(e) {
+        e.preventDefault();
+        const item = {
+            id: "prod-" + Date.now(),
+            name: document.getElementById("pr_name").value.trim(),
+            nameEn: document.getElementById("pr_nameEn").value.trim(),
+            category: document.getElementById("pr_cat").value,
+            manufacturer: document.getElementById("pr_mfr").value.trim(),
+            model: document.getElementById("pr_model").value.trim(),
+            price: document.getElementById("pr_price").value.trim(),
+            description: document.getElementById("pr_desc").value.trim(),
+            isCustom: true
+        };
+        if (!item.name) return;
+        const list = Store.getCustom("products");
+        list.unshift(item);
+        Store.set("custom_products", list);
+        e.target.reset();
+        adminToast("✅ تم الحفظ", "success");
+        renderTab("products"); renderStats();
+    };
+
+    /* ========================================
+       PROJECTS
+    ======================================== */
+    function renderProjects() {
+        const items = Store.getCustom("projects");
+        return `
+            <div class="panel">
+                <h3>➕ إضافة مشروع</h3>
+                <form onsubmit="saveProjectAdmin(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>اسم المشروع *</label>
+                            <input type="text" id="pj_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>العميل</label>
+                            <input type="text" id="pj_client">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>الموقع</label>
+                            <input type="text" id="pj_location">
+                        </div>
+                        <div class="form-group">
+                            <label>النوع</label>
+                            <input type="text" id="pj_type">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>الحالة</label>
+                        <select id="pj_status">
+                            <option value="جديد">جديد</option>
+                            <option value="قيد التنفيذ">قيد التنفيذ</option>
+                            <option value="مكتمل">مكتمل</option>
+                            <option value="متوقف">متوقف</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف</label>
+                        <textarea id="pj_desc"></textarea>
+                    </div>
+                    <button type="submit" class="btn-save">💾 حفظ</button>
+                </form>
+            </div>
+            <div class="panel">
+                <h3>🏗️ المشاريع (${items.length})</h3>
+                ${items.length === 0 ? emptyState("لا توجد مشاريع") :
+                    `<div class="items-list">${items.map(p => `
+                        <div class="item-row">
+                            <div class="item-row-info">
+                                <h4>${escapeHtml(p.name)}</h4>
+                                <small>${escapeHtml(p.location || "")} • ${escapeHtml(p.status || "")}</small>
+                                <p>${escapeHtml(p.description || "")}</p>
+                            </div>
+                            <div class="item-actions">
+                                <button class="icon-action danger" onclick="deleteItem('custom_projects', '${p.id}')">🗑️</button>
+                            </div>
+                        </div>
+                    `).join("")}</div>`
+                }
+            </div>
+        `;
+    }
+
+    window.saveProjectAdmin = function(e) {
+        e.preventDefault();
+        const item = {
+            id: "proj-" + Date.now(),
+            name: document.getElementById("pj_name").value.trim(),
+            client: document.getElementById("pj_client").value.trim(),
+            location: document.getElementById("pj_location").value.trim(),
+            type: document.getElementById("pj_type").value.trim(),
+            status: document.getElementById("pj_status").value,
+            description: document.getElementById("pj_desc").value.trim(),
+            isCustom: true
+        };
+        if (!item.name) return;
+        const list = Store.getCustom("projects");
+        list.unshift(item);
+        Store.set("custom_projects", list);
+        e.target.reset();
+        adminToast("✅ تم الحفظ", "success");
+        renderTab("projects"); renderStats();
+    };
+
+    /* ========================================
+       SOFTWARE GUIDE
+    ======================================== */
+    function renderSoftware() {
+        const customAutocad = Store.get("custom_software_autocad", []);
+        const customRevit = Store.get("custom_software_revit", []);
+        const customHotkeys = Store.get("custom_software_hotkeys", []);
+        const videos = Store.get("youtube_videos", []);
+        const links = Store.get("software_guide_links", []);
+
+        return `
+            <!-- إضافة قسم أوامر -->
+            <div class="panel">
+                <h3>➕ إضافة قسم أوامر جديد</h3>
+                <form onsubmit="saveSoftwareSection(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>البرنامج *</label>
+                            <select id="sw_type" required>
+                                <option value="autocad">🅰️ AutoCAD</option>
+                                <option value="revit">🅱️ Revit</option>
+                                <option value="hotkeys">⌨️ اختصارات عامة</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>الأيقونة (Emoji)</label>
+                            <input type="text" id="sw_icon" placeholder="⭐" maxlength="4" value="⭐">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>عنوان القسم *</label>
+                        <input type="text" id="sw_title" required placeholder="مثال: أوامر مخصصة">
+                    </div>
+                    <div class="form-group">
+                        <label>الأوامر (سطر لكل أمر — الصيغة: KEY|الاسم) *</label>
+                        <textarea id="sw_commands" required placeholder="XX|أمر مخصص 1&#10;YY|أمر مخصص 2&#10;ZZ|أمر مخصص 3" style="min-height:130px;"></textarea>
+                    </div>
+                    <button type="submit" class="btn-save">💾 حفظ القسم</button>
+                </form>
+            </div>
+
+            <!-- قائمة الأقسام المخصصة -->
+            <div class="panel">
+                <h3>📋 الأقسام المخصصة</h3>
+                ${renderSoftwareList("autocad", "🅰️ AutoCAD", customAutocad)}
+                ${renderSoftwareList("revit", "🅱️ Revit", customRevit)}
+                ${renderSoftwareList("hotkeys", "⌨️ اختصارات", customHotkeys)}
+            </div>
+
+            <!-- إضافة فيديو YouTube -->
+            <div class="panel">
+                <h3>🎥 إضافة فيديو YouTube</h3>
+                <form onsubmit="saveYouTubeVideo(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>عنوان الفيديو *</label>
+                            <input type="text" id="yt_title" required placeholder="شرح أوامر AutoCAD">
+                        </div>
+                        <div class="form-group">
+                            <label>التصنيف</label>
+                            <select id="yt_cat">
+                                <option value="AutoCAD">AutoCAD</option>
+                                <option value="Revit">Revit</option>
+                                <option value="MEP">MEP</option>
+                                <option value="عام">عام</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>رابط الفيديو *</label>
+                        <input type="text" id="yt_url" required dir="ltr" placeholder="https://www.youtube.com/watch?v=...">
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف (اختياري)</label>
+                        <input type="text" id="yt_desc" placeholder="وصف مختصر للفيديو">
+                    </div>
+                    <button type="submit" class="btn-save">🎥 إضافة الفيديو</button>
+                </form>
+            </div>
+
+            <!-- قائمة الفيديوهات -->
+            <div class="panel">
+                <h3>🎬 الفيديوهات المضافة (${videos.length})</h3>
+                ${videos.length === 0
+                    ? emptyState("لا توجد فيديوهات بعد")
+                    : `<div class="items-list">
+                        ${videos.map(v => `
+                            <div class="item-row">
+                                <div class="item-row-info">
+                                    <h4>🎥 ${escapeHtml(v.title)}</h4>
+                                    <small>${escapeHtml(v.category || "عام")} • ${escapeHtml((v.url || "").substring(0, 55))}</small>
+                                    <p>${escapeHtml(v.desc || "")}</p>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="icon-action danger" onclick="deleteYouTubeVideo('${v.id}')">🗑️</button>
+                                </div>
+                            </div>
+                        `).join("")}
+                    </div>`
+                }
+            </div>
+
+            <!-- روابط مفيدة -->
+            <div class="panel">
+                <h3>🔗 إضافة رابط مفيد</h3>
+                <form onsubmit="saveUsefulLink(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>أيقونة (Emoji)</label>
+                            <input type="text" id="ln_icon" placeholder="🔗" maxlength="4" value="🔗">
+                        </div>
+                        <div class="form-group">
+                            <label>العنوان *</label>
+                            <input type="text" id="ln_title" required placeholder="قناة AutoCAD الرسمية">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>الرابط *</label>
+                        <input type="text" id="ln_url" required dir="ltr" placeholder="https://...">
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف</label>
+                        <input type="text" id="ln_desc" placeholder="وصف مختصر">
+                    </div>
+                    <button type="submit" class="btn-save">🔗 إضافة الرابط</button>
+                </form>
+            </div>
+
+            <!-- قائمة الروابط -->
+            <div class="panel">
+                <h3>🔗 الروابط المضافة (${links.length})</h3>
+                ${links.length === 0
+                    ? emptyState("لا توجد روابط مخصصة (سيتم استخدام الافتراضية)")
+                    : `<div class="items-list">
+                        ${links.map(l => `
+                            <div class="item-row">
+                                <div class="item-row-info">
+                                    <h4>${l.icon || "🔗"} ${escapeHtml(l.title)}</h4>
+                                    <small>${escapeHtml(l.url)}</small>
+                                    <p>${escapeHtml(l.desc || "")}</p>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="icon-action danger" onclick="deleteUsefulLink('${escapeHtml(l.url)}')">🗑️</button>
+                                </div>
+                            </div>
+                        `).join("")}
+                    </div>`
+                }
+            </div>
+
+            <!-- زر فتح الصفحة -->
+            <div class="panel" style="text-align: center;">
+                <a href="tools/software-guide.html" target="_blank" class="admin-btn admin-btn-primary" style="display: inline-flex;">
+                    🖥️ فتح صفحة دليل AutoCAD & Revit
+                </a>
+            </div>
+        `;
+    }
+
+    function renderSoftwareList(type, label, list) {
+        if (!list || list.length === 0) {
+            return `<div style="margin-bottom: 18px;">
+                <h4 style="color: #67e8f9; font-size: 14px; margin-bottom: 10px;">${label} (0)</h4>
+                <p style="color: #64748b; font-size: 12.5px; padding: 12px; background: #050d1a; border-radius: 10px; text-align: center;">لا توجد أقسام مخصصة</p>
+            </div>`;
+        }
+
+        return `<div style="margin-bottom: 18px;">
+            <h4 style="color: #67e8f9; font-size: 14px; margin-bottom: 10px;">${label} (${list.length})</h4>
+            <div class="items-list">
+                ${list.map((s, idx) => `
+                    <div class="item-row">
+                        <div class="item-row-info">
+                            <h4>${s.icon || "⭐"} ${escapeHtml(s.title)}</h4>
+                            <small>${s.commands ? s.commands.length : 0} أمر</small>
+                            <p>${s.commands ? s.commands.map(c => c.key).join(" · ") : ""}</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="icon-action danger" onclick="deleteSoftwareSection('${type}', ${idx})">🗑️</button>
+                        </div>
+                    </div>
+                `).join("")}
+            </div>
+        </div>`;
+    }
+
+    /* ========================================
+       SAVE SOFTWARE SECTION
+    ======================================== */
+    window.saveSoftwareSection = function(e) {
+        e.preventDefault();
+        const type = document.getElementById("sw_type").value;
+        const icon = document.getElementById("sw_icon").value.trim() || "⭐";
+        const title = document.getElementById("sw_title").value.trim();
+        const commandsRaw = document.getElementById("sw_commands").value.trim();
+
+        if (!title || !commandsRaw) return;
+
+        const commands = commandsRaw
+            .split("\n")
+            .map(line => line.trim())
+            .filter(line => line)
+            .map(line => {
+                const parts = line.split("|");
+                return {
+                    key: (parts[0] || "").trim(),
+                    name: (parts.slice(1).join("|") || parts[0] || "").trim()
+                };
+            })
+            .filter(c => c.key);
+
+        if (commands.length === 0) {
+            adminToast("⚠️ لا توجد أوامر صحيحة", "error");
+            return;
+        }
+
+        const list = Store.get("custom_software_" + type, []);
+        list.push({ icon, title, commands, isCustom: true });
+        Store.set("custom_software_" + type, list);
+
+        e.target.reset();
+        document.getElementById("sw_icon").value = "⭐";
+        adminToast(`✅ تم حفظ ${commands.length} أمر في "${title}"`, "success");
+        renderTab("software");
+        renderStats();
+    };
+
+    window.deleteSoftwareSection = function(type, idx) {
+        if (!confirm("حذف هذا القسم المخصص؟")) return;
+        const list = Store.get("custom_software_" + type, []);
+        list.splice(idx, 1);
+        Store.set("custom_software_" + type, list);
+        adminToast("🗑️ تم الحذف", "info");
+        renderTab("software");
+        renderStats();
+    };
+
+    /* ========================================
+       SAVE YOUTUBE VIDEO
+    ======================================== */
+    window.saveYouTubeVideo = function(e) {
+        e.preventDefault();
+        const title = document.getElementById("yt_title").value.trim();
+        const url = document.getElementById("yt_url").value.trim();
+        const category = document.getElementById("yt_cat").value;
+        const desc = document.getElementById("yt_desc").value.trim();
+
+        if (!title || !url) return;
+
+        const videoId = extractYtId(url);
+        if (!videoId) {
+            adminToast("❌ رابط YouTube غير صالح", "error");
+            return;
+        }
+
+        const videos = Store.get("youtube_videos", []);
+        videos.unshift({
+            id: "yt-" + Date.now(),
+            title, url, category, desc,
+            videoId,
+            addedAt: new Date().toISOString()
+        });
+        Store.set("youtube_videos", videos);
+
+        e.target.reset();
+        adminToast("🎥 تم إضافة الفيديو", "success");
+        renderTab("software");
+        renderStats();
+    };
+
+    function extractYtId(url) {
+        let m = url.match(/[?&]v=([^&]+)/);
+        if (m) return m[1];
+        m = url.match(/youtu\.be\/([^?&]+)/);
+        if (m) return m[1];
+        m = url.match(/embed\/([^?&]+)/);
+        if (m) return m[1];
+        m = url.match(/shorts\/([^?&]+)/);
+        if (m) return m[1];
+        return null;
+    }
+
+    window.deleteYouTubeVideo = function(id) {
+        if (!confirm("حذف هذا الفيديو؟")) return;
+        const videos = Store.get("youtube_videos", []).filter(v => v.id !== id);
+        Store.set("youtube_videos", videos);
+        adminToast("🗑️ تم الحذف", "info");
+        renderTab("software");
+        renderStats();
+    };
+
+    /* ========================================
+       SAVE USEFUL LINK
+    ======================================== */
+    window.saveUsefulLink = function(e) {
+        e.preventDefault();
+        const icon = document.getElementById("ln_icon").value.trim() || "🔗";
+        const title = document.getElementById("ln_title").value.trim();
+        const url = document.getElementById("ln_url").value.trim();
+        const desc = document.getElementById("ln_desc").value.trim();
+
+        if (!title || !url) return;
+
+        const links = Store.get("software_guide_links", []);
+        links.push({ icon, title, url, desc });
+        Store.set("software_guide_links", links);
+
+        e.target.reset();
+        document.getElementById("ln_icon").value = "🔗";
+        adminToast("🔗 تم إضافة الرابط", "success");
+        renderTab("software");
+    };
+
+    window.deleteUsefulLink = function(url) {
+        if (!confirm("حذف هذا الرابط؟")) return;
+        const links = Store.get("software_guide_links", []).filter(l => l.url !== url);
+        Store.set("software_guide_links", links);
+        adminToast("🗑️ تم الحذف", "info");
+        renderTab("software");
+    };
+
+    /* ========================================
+       ANALYTICS
+    ======================================== */
+    function renderAnalytics() {
+        const data = Store.getAnalytics();
+        const pageNames = {
+            index: "🏠 الرئيسية",
+            tools: "🧰 الأدوات",
+            calculators: "🧮 الحاسبات",
+            calculator: "🔢 حاسبة",
+            encyclopedia: "📚 الموسوعة",
+            topic: "📄 موضوع",
+            content: "📁 المحتوى",
+            codes: "📘 الأكواد",
+            specs: "📋 المواصفات",
+            products: "📦 المنتجات",
+            projects: "🏗️ المشاريع",
+            favorites: "❤️ المفضلة",
+            about: "ℹ️ عن المكتب",
+            admin: "🔐 لوحة التحكم"
+        };
+
+        const topPages = Object.entries(data.pageVisits || {})
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 8);
+
+        const lastVisit = data.lastVisit
+            ? new Date(data.lastVisit).toLocaleString("ar-EG")
+            : "—";
+        const firstVisit = data.firstVisit
+            ? new Date(data.firstVisit).toLocaleString("ar-EG")
+            : "—";
+
+        return `
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <div class="analytics-num">${data.totalVisits || 0}</div>
+                    <div class="analytics-lbl">إجمالي الزيارات</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-num">${Object.keys(data.pageVisits || {}).length}</div>
+                    <div class="analytics-lbl">صفحات تمت زيارتها</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-num">${(data.history || []).length}</div>
+                    <div class="analytics-lbl">آخر الزيارات</div>
+                </div>
+            </div>
+
+            <div class="panel" style="margin-top:20px;">
+                <h3>🔥 أكثر الصفحات زيارة</h3>
+                ${topPages.length === 0
+                    ? emptyState("لا توجد بيانات بعد")
+                    : `<div class="items-list">
+                        ${topPages.map(([page, count]) => `
+                            <div class="item-row">
+                                <div class="item-row-info">
+                                    <h4>${pageNames[page] || page}</h4>
+                                    <small>${count} زيارة</small>
+                                </div>
+                                <div style="font-family:'JetBrains Mono', monospace; font-weight:900; color:#67e8f9; font-size:20px;">
+                                    ${count}
+                                </div>
+                            </div>
+                        `).join("")}
+                    </div>`
+                }
+            </div>
+
+            <div class="panel">
+                <h3>📅 معلومات إضافية</h3>
+                <div style="line-height:2.2; font-size:14px; color:#cbd5e1;">
+                    <div><strong style="color:#67e8f9;">أول زيارة:</strong> ${firstVisit}</div>
+                    <div><strong style="color:#67e8f9;">آخر زيارة:</strong> ${lastVisit}</div>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin-top:20px;">
+                <button onclick="resetAnalytics()" class="admin-btn admin-btn-danger" style="display:inline-flex;">
+                    🗑️ مسح الإحصائيات
+                </button>
+            </div>
+        `;
+    }
+
+    window.resetAnalytics = function() {
+        if (!confirm("هل تريد مسح كل الإحصائيات؟")) return;
+        if (!confirm("تأكيد أخير: لا يمكن التراجع!")) return;
+        Store.resetAnalytics();
+        renderTab("analytics");
+        adminToast("🗑️ تم مسح الإحصائيات", "info");
+    };
+
+    /* ========================================
+       BACKUP
+    ======================================== */
+    function renderBackup() {
+        return `
+            <div class="backup-box">
+                <h3>📥 تصدير البيانات</h3>
+                <p>احفظ نسخة كاملة من كل البيانات في ملف JSON واحد.</p>
+                <button onclick="quickExport()" class="admin-btn admin-btn-primary">📥 تصدير JSON</button>
+            </div>
+
+            <div class="backup-box">
+                <h3>📤 استيراد البيانات</h3>
+                <p>ارفع ملف JSON سبق تصديره لاستعادة البيانات.</p>
+                <input type="file" id="importFile" accept=".json">
+                <button onclick="quickImport()" class="admin-btn admin-btn-primary">📤 استيراد</button>
+                <div class="progress-bar" id="importProgress" style="display:none;"><div></div></div>
+            </div>
+
+            <div class="backup-box danger">
+                <h3>⚠️ إعادة ضبط شاملة</h3>
+                <p>سيتم حذف كل المحتوى المخصص. لا يمكن التراجع.</p>
+                <button onclick="resetAll()" class="admin-btn admin-btn-danger">🗑️ حذف كل البيانات</button>
+            </div>
+        `;
+    }
+
+    window.quickExport = function() {
+        const data = {
+            exportDate: new Date().toISOString(),
+            siteName: "Eng. Helal Shalil Office",
+            version: "2.0",
+            custom: {
+                content: Store.get("custom_content", []),
+                codes: Store.getCustom("codes"),
+                specs: Store.getCustom("specs"),
+                products: Store.getCustom("products"),
+                projects: Store.getCustom("projects"),
+                software_autocad: Store.get("custom_software_autocad", []),
+                software_revit: Store.get("custom_software_revit", []),
+                software_hotkeys: Store.get("custom_software_hotkeys", []),
+                youtube_videos: Store.get("youtube_videos", []),
+                software_links: Store.get("software_guide_links", [])
+            }
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "eng-office-backup-" + Date.now() + ".json";
+        a.click();
+        URL.revokeObjectURL(url);
+        adminToast("📥 تم تصدير النسخة", "success");
+    };
+
+    window.quickImport = function() {
+        const file = document.getElementById("importFile").files[0];
+        if (!file) { adminToast("⚠️ اختر ملف", "error"); return; }
+
+        const prog = document.getElementById("importProgress");
+        prog.style.display = "block";
+        prog.querySelector("div").style.width = "30%";
+
+        const reader = new FileReader();
+        reader.onload = e => {
+            prog.querySelector("div").style.width = "70%";
+            try {
+                const data = JSON.parse(e.target.result);
+                if (!data.custom) throw new Error("ملف غير صالح");
+
+                if (data.custom.content) Store.set("custom_content", data.custom.content);
+                if (data.custom.codes) Store.set("custom_codes", data.custom.codes);
+                if (data.custom.specs) Store.set("custom_specs", data.custom.specs);
+                if (data.custom.products) Store.set("custom_products", data.custom.products);
+                if (data.custom.projects) Store.set("custom_projects", data.custom.projects);
+                if (data.custom.software_autocad) Store.set("custom_software_autocad", data.custom.software_autocad);
+                if (data.custom.software_revit) Store.set("custom_software_revit", data.custom.software_revit);
+                if (data.custom.software_hotkeys) Store.set("custom_software_hotkeys", data.custom.software_hotkeys);
+                if (data.custom.youtube_videos) Store.set("youtube_videos", data.custom.youtube_videos);
+                if (data.custom.software_links) Store.set("software_guide_links", data.custom.software_links);
+
+                prog.querySelector("div").style.width = "100%";
+                setTimeout(() => {
+                    prog.style.display = "none";
+                    prog.querySelector("div").style.width = "0%";
+                    adminToast("✅ تم الاستيراد بنجاح", "success");
+                    renderStats();
+                    renderTab(currentTab);
+                }, 400);
+            } catch (err) {
+                prog.style.display = "none";
+                prog.querySelector("div").style.width = "0%";
+                adminToast("❌ ملف غير صالح: " + err.message, "error");
+            }
+        };
+        reader.readAsText(file);
+    };
+
+    window.resetAll = function() {
+        if (!confirm("⚠️ هل أنت متأكد؟ سيتم حذف كل المحتوى المخصص نهائياً.")) return;
+        if (!confirm("⚠️ تأكيد أخير!")) return;
+
+        [
+            "custom_content", "custom_codes", "custom_specs", "custom_products", "custom_projects",
+            "custom_software_autocad", "custom_software_revit", "custom_software_hotkeys",
+            "youtube_videos", "software_guide_links"
+        ].forEach(k => Store.remove(k));
+
+        adminToast("🗑️ تم حذف كل البيانات", "info");
+        renderStats();
+        renderTab(currentTab);
+    };
+
+    /* ========================================
+       HELPERS
+    ======================================== */
+    function escapeHtml(s) {
+        if (s == null) return "";
+        const d = document.createElement("div");
+        d.textContent = String(s);
+        return d.innerHTML;
+    }
+    window.escapeHtml = escapeHtml;
+
+    function emptyState(msg) {
+        return `<div class="empty-state"><div class="ico">📁</div><h4>${msg}</h4></div>`;
+    }
+
+    /* ========================================
+       DELETE ITEM
+    ======================================== */
+    window.deleteItem = function(storageKey, id) {
+        if (!confirm("حذف هذا العنصر؟")) return;
+        const list = Store.get(storageKey, []).filter(x => x.id !== id);
+        Store.set(storageKey, list);
+        adminToast("🗑️ تم الحذف", "info");
+        renderTab(currentTab);
+        renderStats();
+    };
+
+    /* ========================================
+       THEME TOGGLE
+    ======================================== */
+    window.toggleTheme = function() {
+        const current = localStorage.getItem("engOffice_theme") || "light";
+        const next = current === "dark" ? "light" : "dark";
+        localStorage.setItem("engOffice_theme", next);
+        if (next === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+            document.documentElement.removeAttribute("data-theme");
+        }
+        adminToast(next === "dark" ? "🌙 الوضع الليلي" : "☀️ الوضع النهاري", "info");
+    };
+
+    /* ========================================
+       INIT
+    ======================================== */
+    document.addEventListener("DOMContentLoaded", function() {
+        // تطبيق الثيم
+        const theme = localStorage.getItem("engOffice_theme") || "light";
+        if (theme === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+        }
+
+        // فحص الجلسة
+        if (sessionStorage.getItem(ADMIN_UNLOCK_KEY) === "1") {
+            showPanel();
+        }
+
+        // ربط أزرار التاب
+        document.querySelectorAll(".tab-btn").forEach(btn => {
+            btn.addEventListener("click", function() {
+                switchTab(this.dataset.tab);
+            });
+        });
+
+        // فتح التبويب المحدد في الـ hash (زي admin.html#software)
+        const hash = (location.hash || "").replace("#", "");
+        if (hash && ["dashboard", "content", "codes", "specs", "products", "projects", "software", "analytics", "backup"].includes(hash)) {
+            setTimeout(() => {
+                if (sessionStorage.getItem(ADMIN_UNLOCK_KEY) === "1") {
+                    switchTab(hash);
+                } else {
+                    // احفظ الـ hash لحد ما يدخل
+                    window._pendingTab = hash;
+                }
+            }, 100);
+        }
+    });
+
+    // بعد فتح اللوحة، افتح التبويب المحدد
+    const originalShowPanel = showPanel;
+    showPanel = function() {
+        originalShowPanel();
+        if (window._pendingTab) {
+            switchTab(window._pendingTab);
+            window._pendingTab = null;
+        }
+    };
+})();
+</script>
+
+</body>
+</html>

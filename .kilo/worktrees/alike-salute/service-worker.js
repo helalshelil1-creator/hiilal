@@ -1,7 +1,7 @@
 /* ========================================
    SERVICE WORKER — Production Ready
    Eng. Helal Shalil
-   الإصدار: 3.1
+   الإصدار: 3.0
 ========================================
    
    الاستراتيجية:
@@ -12,7 +12,7 @@
    
 ======================================== */
 
-const CACHE_VERSION = "v3.1.0";
+const CACHE_VERSION = "v3.0.0";
 const STATIC_CACHE = `eng-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `eng-runtime-${CACHE_VERSION}`;
 
@@ -48,7 +48,6 @@ const CORE_ASSETS = [
     "./css/style.css",
     "./css/animations.css",
     "./css/welcome.css",
-    "./css/hero.css",
 
     // JS Core
     "./js/storage.js",
@@ -61,7 +60,6 @@ const CORE_ASSETS = [
     "./js/favorites.js",
     "./js/content-manager.js",
     "./js/analytics.js",
-    "./js/data.js",
 
     // JS SEO
     "./js/seo-data.js",
@@ -78,13 +76,12 @@ const CORE_ASSETS = [
     "./js/data/products.js",
     "./js/data/projects.js",
 
-    // Tools Pages
+    // Tools
     "./tools/software-guide.html",
     "./tools/unit-converter.html",
     "./tools/ip-rating.html",
     "./tools/checklists.html",
     "./tools/schedules.html",
-    "./tools/schedules-reference.html",
     "./tools/documents.html",
 
     // Calculators
@@ -92,7 +89,6 @@ const CORE_ASSETS = [
 
     // Images
     "./images/logo.png",
-    "./images/alamein.jpg",
     "./images/hero-bg.jpg"
 ];
 
@@ -187,8 +183,7 @@ self.addEventListener("fetch", (event) => {
     if (
         url.hostname.includes("google-analytics.com") ||
         url.hostname.includes("googletagmanager.com") ||
-        url.hostname.includes("vercel.com/_vercel") ||
-        url.hostname.includes("pollinations.ai")
+        url.hostname.includes("vercel.com/_vercel")
     ) {
         return;
     }
@@ -205,14 +200,7 @@ self.addEventListener("fetch", (event) => {
     }
 
     // ========================================
-    // 2. YouTube embeds → Network only
-    // ========================================
-    if (url.hostname.includes("youtube.com") || url.hostname.includes("ytimg.com")) {
-        return;
-    }
-
-    // ========================================
-    // 3. Images / Fonts / Icons → Cache First
+    // 2. Images / Fonts / Icons → Cache First
     // ========================================
     if (/\.(png|jpg|jpeg|gif|webp|svg|ico|woff2?|ttf|eot)$/i.test(url.pathname)) {
         event.respondWith(cacheFirst(request, RUNTIME_CACHE));
@@ -220,7 +208,7 @@ self.addEventListener("fetch", (event) => {
     }
 
     // ========================================
-    // 4. HTML / JS / CSS / JSON → Network First
+    // 3. HTML / JS / CSS / JSON → Network First
     // ========================================
     if (
         request.mode === "navigate" ||
@@ -232,7 +220,7 @@ self.addEventListener("fetch", (event) => {
     }
 
     // ========================================
-    // 5. الباقي → Network First (افتراضي)
+    // 4. الباقي → Network First (افتراضي)
     // ========================================
     event.respondWith(networkFirst(request, RUNTIME_CACHE));
 });

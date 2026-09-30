@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklists هندسية | Eng. Helal Shalil</title>
+<!-- SEO Auto Injection -->
+<script src="js/seo-data.js"></script>
+<script src="js/seo.js"></script>
+<link rel="icon" type="image/png" href="../images/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-wrap{max-width:1000px;margin:30px auto;padding:0 5%;}
+.tool-head{text-align:center;margin-bottom:30px;padding:30px;background:linear-gradient(135deg,#0a1628,#1e4976);color:#fff;border-radius:24px;}
+.tool-head-icon{width:80px;height:80px;margin:0 auto 15px;background:rgba(255,255,255,.12);border:2px solid rgba(0,217,255,.4);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:38px;}
+.tool-head h1{font-size:26px;font-weight:900;margin-bottom:6px;}
+.tool-head p{color:#b8d9e2;font-size:14px;}
+.cl-tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:24px;}
+.cl-tab{padding:10px 18px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;font-weight:800;font-size:12.5px;cursor:pointer;}
+.cl-tab.active,.cl-tab:hover{background:var(--grad-theme);color:var(--navy);border-color:transparent;}
+.cl-panel{display:none;}
+.cl-panel.active{display:block;}
+.cl-header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 22px;background:var(--surface);border:2px solid var(--border);border-radius:18px;margin-bottom:16px;flex-wrap:wrap;}
+.cl-header h2{color:var(--navy);font-size:18px;font-weight:900;}
+.cl-print{padding:10px 18px;border-radius:12px;border:none;background:var(--grad-primary);color:#fff;font-family:inherit;font-weight:800;font-size:12px;cursor:pointer;}
+.cl-group{background:var(--surface);border:1px solid var(--border);border-radius:18px;margin-bottom:14px;overflow:hidden;}
+.cl-group-head{padding:14px 20px;background:linear-gradient(135deg,rgba(0,217,255,.1),rgba(0,217,255,.03));border-bottom:2px solid rgba(0,217,255,.2);display:flex;align-items:center;gap:10px;}
+.cl-group-head h3{color:var(--navy);font-size:15px;font-weight:800;}
+.cl-items{padding:10px 20px 16px;}
+.cl-item{display:flex;align-items:flex-start;gap:12px;padding:11px 0;border-bottom:1px dashed var(--border);cursor:pointer;}
+.cl-item:last-child{border-bottom:none;}
+.cl-item input[type="checkbox"]{display:none;}
+.cl-check{width:22px;height:22px;border:2px solid var(--border-2);border-radius:6px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;}
+.cl-check::after{content:"✓";font-size:14px;font-weight:900;color:var(--navy);opacity:0;}
+.cl-item input:checked + .cl-check{background:var(--grad-theme);border-color:transparent;}
+.cl-item input:checked + .cl-check::after{opacity:1;}
+.cl-item-text{flex:1;font-size:14px;line-height:1.7;color:var(--text);}
+.cl-item input:checked ~ .cl-item-text{color:var(--muted);text-decoration:line-through;opacity:.7;}
+.cl-progress{margin-top:20px;padding:18px 22px;background:var(--surface);border:2px solid var(--border);border-radius:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.cl-progress-info{flex:1;min-width:200px;}
+.cl-progress-info h4{color:var(--navy);font-size:14px;font-weight:800;margin-bottom:4px;}
+.cl-progress-info p{color:var(--muted);font-size:12px;}
+@media print{.navbar,.cl-tabs,.cl-print,.cl-progress,footer,.social-buttons,#loader{display:none!important;}.cl-panel{display:block!important;}}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="../index.html" class="logo">
+            <img src="../images/logo.png" alt="Logo" class="logo-img">
+            <div class="logo-text">مكتب هندسي متكامل</div>
+        </a>
+        <div class="nav-links">
+            <a href="../index.html">الرئيسية</a>
+            <a href="../tools.html" class="active">الأدوات</a>
+            <a href="../calculators.html">الحاسبات</a>
+            <a href="../encyclopedia.html">الموسوعة</a>
+        </div>
+        <div class="nav-actions"></div>
+    </div>
+</nav>
+
+<div class="tool-wrap">
+    <a href="../tools.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--cyan);font-weight:700;font-size:13px;text-decoration:none;margin-bottom:20px;">← كل الأدوات</a>
+
+    <div class="tool-head">
+        <div class="tool-head-icon">✅</div>
+        <h1>Checklists هندسية</h1>
+        <p>قوائم فحص شاملة لتغطية كل مراحل المشروع</p>
+    </div>
+
+    <div class="cl-tabs" id="clTabs"></div>
+    <div id="clContent"></div>
+</div>
+
+<script>
+const CHECKLISTS = {
+    site: {
+        title: "فحص الموقع",
+        icon: "🏗️",
+        desc: "قائمة فحص زيارة الموقع — الكهرباء و MEP",
+        groups: [
+            { icon: "👷", title: "التحضير قبل الزيارة", items: [
+                "<strong>مراجعة المخططات</strong> المحدثة",
+                "<strong>التأكد من تصاريح الدخول</strong>",
+                "<strong>معدات السلامة</strong> (خوذة، سترة، حذاء)",
+                "<strong>الأدوات المطلوبة</strong>: شريط قياس، كاميرا، دفاتر",
+                "<strong>قائمة النقاط</strong> التي يجب فحصها"
+            ]},
+            { icon: "⚡", title: "الفحص الكهربائي", items: [
+                "<strong>غرفة الكهرباء</strong> — الموقع والأبعاد",
+                "<strong>لوحة التوزيع الرئيسية MDP</strong>",
+                "<strong>مدخل الكابل الرئيسي</strong>",
+                "<strong>مسارات الترايات</strong> المخطط لها",
+                "<strong>مواسير الكهرباء المدفونة</strong>",
+                "<strong>نقاط الكهرباء</strong> المخطط لها",
+                "<strong>موقع التأريض</strong> الرئيسي"
+            ]},
+            { icon: "🌡️", title: "فحص HVAC", items: [
+                "<strong>مواقع وحدات التكييف</strong>",
+                "<strong>مسارات الدكتات</strong>",
+                "<strong>مواسير الفريون</strong> ومساراتها",
+                "<strong>إمكانية تصريف المكثفات</strong>"
+            ]},
+            { icon: "💧", title: "فحص السباكة", items: [
+                "<strong>مصادر المياه</strong> الرئيسية",
+                "<strong>مواسير المياه</strong> الصاعدة والهابطة",
+                "<strong>نقاط الصرف</strong>",
+                "<strong>خزان المياه</strong>"
+            ]}
+        ]
+    },
+    testing: {
+        title: "الاختبار والتشغيل",
+        icon: "🧪",
+        desc: "قائمة اختبارات الأنظمة الكهربائية والـ MEP",
+        groups: [
+            { icon: "⚡", title: "اختبارات الكابلات", items: [
+                "<strong>Megger Test</strong> لكل كابل",
+                "<strong>Continuity Test</strong>",
+                "<strong>Phase Sequence Test</strong>",
+                "<strong>Earth Loop Impedance</strong>",
+                "<strong>HV Test</strong> للكابلات المتوسطة"
+            ]},
+            { icon: "🔌", title: "اختبارات اللوحات", items: [
+                "<strong>فحص بصري</strong> للتوصيلات",
+                "<strong>شد البراغي</strong> على البارات",
+                "<strong>اختبار القواطع</strong>",
+                "<strong>اختبار RCD</strong>",
+                "<strong>قياس التيار</strong> على كل دائرة",
+                "<strong>قياس الجهد</strong> بين الأوجه"
+            ]},
+            { icon: "🚨", title: "اختبارات الحريق", items: [
+                "<strong>اختبار كل كاشف</strong>",
+                "<strong>اختبار لوحة الإنذار</strong>",
+                "<strong>اختبار الأجراس</strong>",
+                "<strong>اختبار مضخة الحريق</strong>",
+                "<strong>محاكاة إنذار</strong> كامل"
+            ]}
+        ]
+    },
+    safety: {
+        title: "السلامة HSE",
+        icon: "🦺",
+        desc: "قائمة فحص السلامة اليومية",
+        groups: [
+            { icon: "🦺", title: "معدات الوقاية PPE", items: [
+                "<strong>خوذة السلامة</strong> — سليمة",
+                "<strong>سترة عاكسة</strong>",
+                "<strong>حذاء السلامة</strong>",
+                "<strong>قفازات</strong> مناسبة",
+                "<strong>نظارات واقية</strong>",
+                "<strong>حزام السلامة</strong> عند العمل على ارتفاع"
+            ]},
+            { icon: "⚠️", title: "مخاطر الموقع", items: [
+                "<strong>فحص السقالات</strong>",
+                "<strong>تأمين الحفر</strong>",
+                "<strong>علامات تحذيرية</strong>",
+                "<strong>إضاءة كافية</strong>",
+                "<strong>تهوية جيدة</strong>"
+            ]},
+            { icon: "📢", title: "Toolbox Talk", items: [
+                "<strong>مناقشة مهام اليوم</strong>",
+                "<strong>مراجعة الحوادث</strong>",
+                "<strong>توزيع الأدوار</strong>",
+                "<strong>توقيع الحضور</strong>"
+            ]}
+        ]
+    }
+};
+
+function renderTabs() {
+    const el = document.getElementById("clTabs");
+    if (!el) return;
+    const keys = Object.keys(CHECKLISTS);
+    el.innerHTML = keys.map((key, i) => {
+        const cl = CHECKLISTS[key];
+        return `<button class="cl-tab ${i === 0 ? 'active' : ''}" data-cl="${key}">${cl.icon} ${cl.title}</button>`;
+    }).join("");
+    el.querySelectorAll(".cl-tab").forEach(btn => {
+        btn.addEventListener("click", () => switchTab(btn.dataset.cl));
+    });
+}
+
+function switchTab(key) {
+    document.querySelectorAll(".cl-tab").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.cl === key);
+    });
+    renderChecklist(key);
+    if (history.replaceState) history.replaceState(null, "", "#" + key);
+}
+
+function renderChecklist(key) {
+    const cl = CHECKLISTS[key];
+    if (!cl) return;
+    const el = document.getElementById("clContent");
+    if (!el) return;
+
+    const savedState = getSavedState(key);
+    let totalItems = 0;
+    let checkedItems = 0;
+
+    const groupsHTML = cl.groups.map((g, gi) => {
+        const itemsHTML = g.items.map((item, ii) => {
+            const itemId = `${key}-${gi}-${ii}`;
+            totalItems++;
+            const checked = savedState[itemId] ? "checked" : "";
+            if (checked) checkedItems++;
+            return `
+                <label class="cl-item">
+                    <input type="checkbox" id="${itemId}" data-cl="${key}" ${checked}>
+                    <span class="cl-check"></span>
+                    <span class="cl-item-text">${item}</span>
+                </label>
+            `;
+        }).join("");
+        return `
+            <div class="cl-group">
+                <div class="cl-group-head">
+                    <span style="font-size:20px;">${g.icon}</span>
+                    <h3>${g.title}</h3>
+                </div>
+                <div class="cl-items">${itemsHTML}</div>
+            </div>
+        `;
+    }).join("");
+
+    const percent = totalItems > 0 ? Math.round((checkedItems / totalItems) * 100) : 0;
+
+    el.innerHTML = `
+        <div class="cl-panel active">
+            <div class="cl-header">
+                <h2>${cl.icon} ${cl.title}</h2>
+                <button class="cl-print" onclick="window.print()">🖨️ طباعة</button>
+            </div>
+            ${groupsHTML}
+            <div class="cl-progress">
+                <div class="cl-progress-info">
+                    <h4>التقدم: ${percent}%</h4>
+                    <p>${checkedItems} من ${totalItems} بند</p>
+                </div>
+                <button class="cl-print" onclick="checkAll('${key}')">✅ تحديد الكل</button>
+                <button class="cl-print" style="background:rgba(239,68,68,.2);color:#ef4444;" onclick="clearAll('${key}')">🗑️ مسح</button>
+            </div>
+        </div>
+    `;
+
+    el.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener("change", () => {
+            saveState(cb.dataset.cl, cb.id, cb.checked);
+            renderChecklist(key);
+        });
+    });
+}
+
+function getSavedState(clKey) {
+    try {
+        return JSON.parse(localStorage.getItem("checklist_" + clKey) || "{}");
+    } catch(e) { return {}; }
+}
+
+function saveState(clKey, itemId, checked) {
+    const state = getSavedState(clKey);
+    state[itemId] = checked;
+    localStorage.setItem("checklist_" + clKey, JSON.stringify(state));
+}
+
+function checkAll(clKey) {
+    const cl = CHECKLISTS[clKey];
+    if (!cl) return;
+    const state = {};
+    cl.groups.forEach((g, gi) => {
+        g.items.forEach((_, ii) => {
+            state[`${clKey}-${gi}-${ii}`] = true;
+        });
+    });
+    localStorage.setItem("checklist_" + clKey, JSON.stringify(state));
+    renderChecklist(clKey);
+}
+
+function clearAll(clKey) {
+    if (!confirm("مسح كل التحديدات؟")) return;
+    localStorage.removeItem("checklist_" + clKey);
+    renderChecklist(clKey);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderTabs();
+    const hash = location.hash.replace("#", "");
+    const initial = CHECKLISTS[hash] ? hash : "site";
+    switchTab(initial);
+});
+</script>
+</body>
+</html>

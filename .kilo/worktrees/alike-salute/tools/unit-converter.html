@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>محول الوحدات | Eng. Helal Shalil</title>
+<!-- SEO Auto Injection -->
+<script src="js/seo-data.js"></script>
+<script src="js/seo.js"></script>
+<link rel="icon" type="image/png" href="../images/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-wrap{max-width:900px;margin:30px auto;padding:0 5%;}
+.tool-head{text-align:center;margin-bottom:30px;padding:30px;background:linear-gradient(135deg,#0a1628,#1e4976);color:#fff;border-radius:24px;}
+.tool-head-icon{width:80px;height:80px;margin:0 auto 15px;background:rgba(255,255,255,.12);border:2px solid rgba(0,217,255,.4);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:38px;}
+.tool-head h1{font-size:26px;font-weight:900;margin-bottom:6px;}
+.tool-head p{color:#b8d9e2;font-size:14px;}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:24px;}
+.tab{padding:10px 20px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;font-weight:800;font-size:13px;cursor:pointer;}
+.tab.active,.tab:hover{background:var(--grad-theme);color:var(--navy);border-color:transparent;}
+.conv-panel{display:none;background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:26px;}
+.conv-panel.active{display:block;}
+.conv-row{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:end;margin-bottom:20px;}
+@media(max-width:640px){.conv-row{grid-template-columns:1fr;}}
+.conv-field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+.conv-field input,.conv-field select{width:100%;padding:14px 16px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;outline:none;}
+.conv-field input:focus,.conv-field select:focus{border-color:var(--cyan);}
+.conv-arrow{font-size:24px;color:var(--cyan);padding-bottom:14px;text-align:center;}
+.conv-info{margin-top:20px;padding:16px 20px;background:rgba(0,217,255,.08);border-inline-start:4px solid var(--cyan);border-radius:12px;font-size:13px;line-height:1.8;}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="../index.html" class="logo">
+            <img src="../images/logo.png" alt="Logo" class="logo-img">
+            <div class="logo-text">مكتب هندسي متكامل</div>
+        </a>
+        <div class="nav-links">
+            <a href="../index.html">الرئيسية</a>
+            <a href="../tools.html" class="active">الأدوات</a>
+            <a href="../calculators.html">الحاسبات</a>
+            <a href="../encyclopedia.html">الموسوعة</a>
+        </div>
+        <div class="nav-actions"></div>
+    </div>
+</nav>
+
+<div class="tool-wrap">
+    <a href="../tools.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--cyan);font-weight:700;font-size:13px;text-decoration:none;margin-bottom:20px;">← كل الأدوات</a>
+
+    <div class="tool-head">
+        <div class="tool-head-icon">🔄</div>
+        <h1>محول الوحدات الهندسية</h1>
+        <p>تحويل سريع بين الوحدات في كل التخصصات</p>
+    </div>
+
+    <div class="tabs" id="tabs">
+        <button class="tab active" data-cat="length">📏 الطول</button>
+        <button class="tab" data-cat="area">▭ المساحة</button>
+        <button class="tab" data-cat="weight">⚖️ الوزن</button>
+        <button class="tab" data-cat="power">⚡ القدرة</button>
+        <button class="tab" data-cat="pressure">🌡️ الضغط</button>
+        <button class="tab" data-cat="temp">🌡️ الحرارة</button>
+        <button class="tab" data-cat="current">⚡ التيار</button>
+        <button class="tab" data-cat="energy">🔋 الطاقة</button>
+    </div>
+
+    <div id="panels"></div>
+</div>
+
+<script src="../js/icons.js"></script>
+<script>
+const UNITS = {
+    length: { name:"الطول", icon:"📏", units:{ m:{name:"متر", f:1}, cm:{name:"سنتيمتر", f:0.01}, mm:{name:"ملليمتر", f:0.001}, km:{name:"كيلومتر", f:1000}, inch:{name:"بوصة", f:0.0254}, ft:{name:"قدم", f:0.3048}, yd:{name:"يارد", f:0.9144}, mile:{name:"ميل", f:1609.34} } },
+    area: { name:"المساحة", icon:"▭", units:{ "m²":{name:"متر مربع", f:1}, "cm²":{name:"سم مربع", f:0.0001}, "mm²":{name:"مم مربع", f:0.000001}, "km²":{name:"كم مربع", f:1e6}, "ft²":{name:"قدم مربع", f:0.0929}, hectare:{name:"هكتار", f:10000} } },
+    weight: { name:"الوزن", icon:"⚖️", units:{ kg:{name:"كيلوجرام", f:1}, g:{name:"جرام", f:0.001}, ton:{name:"طن", f:1000}, lb:{name:"باوند", f:0.4536}, oz:{name:"أونصة", f:0.0283} } },
+    power: { name:"القدرة", icon:"⚡", units:{ kW:{name:"كيلوواط", f:1}, W:{name:"واط", f:0.001}, MW:{name:"ميجاواط", f:1000}, HP:{name:"حصان", f:0.7457}, TR:{name:"طن تبريد", f:3.517}, kVA:{name:"كيلوفولت أمبير", f:0.8} } },
+    pressure: { name:"الضغط", icon:"🌡️", units:{ bar:{name:"بار", f:1}, Pa:{name:"باسكال", f:1e-5}, kPa:{name:"كيلوباسكال", f:0.01}, MPa:{name:"ميجاباسكال", f:10}, psi:{name:"PSI", f:0.0689}, atm:{name:"ضغط جوي", f:1.01325} } },
+    temp: { name:"الحرارة", icon:"🌡️", special:"temp", units:{ C:{name:"سيلزيوس", f:1}, F:{name:"فهرنهايت", f:1}, K:{name:"كلفن", f:1} } },
+    current: { name:"التيار", icon:"⚡", units:{ A:{name:"أمبير", f:1}, mA:{name:"مللي أمبير", f:0.001}, kA:{name:"كيلو أمبير", f:1000} } },
+    energy: { name:"الطاقة", icon:"🔋", units:{ kWh:{name:"كيلوواط-ساعة", f:1}, Wh:{name:"واط-ساعة", f:0.001}, MWh:{name:"ميجاواط-ساعة", f:1000}, J:{name:"جول", f:2.778e-7}, BTU:{name:"BTU", f:0.000293} } }
+};
+
+function renderPanels(){
+    const c = document.getElementById("panels");
+    c.innerHTML = Object.keys(UNITS).map((key,i)=>{
+        const cat = UNITS[key];
+        const opts = Object.keys(cat.units).map(u=>`<option value="${u}">${cat.units[u].name} (${u})</option>`).join("");
+        return `<div class="conv-panel ${i===0?'active':''}" data-cat="${key}">
+            <div class="conv-row">
+                <div class="conv-field">
+                    <label>القيمة</label>
+                    <input type="number" id="${key}_val" value="1" step="any" oninput="convert('${key}')">
+                </div>
+                <div class="conv-arrow">⇄</div>
+                <div class="conv-field">
+                    <label>النتيجة</label>
+                    <input type="text" id="${key}_out" readonly>
+                </div>
+            </div>
+            <div class="conv-row">
+                <div class="conv-field">
+                    <label>من وحدة</label>
+                    <select id="${key}_from" onchange="convert('${key}')">${opts}</select>
+                </div>
+                <div class="conv-arrow"></div>
+                <div class="conv-field">
+                    <label>إلى وحدة</label>
+                    <select id="${key}_to" onchange="convert('${key}')">${opts}</select>
+                </div>
+            </div>
+            <div class="conv-info">
+                <strong>${cat.icon} ${cat.name}</strong> — التحويل يتم بناءً على الوحدات القياسية الدولية (SI).
+            </div>
+        </div>`;
+    }).join("");
+
+    Object.keys(UNITS).forEach(key=>{
+        const sel = document.getElementById(key+"_to");
+        if(sel && sel.options.length > 1) sel.selectedIndex = 1;
+    });
+    Object.keys(UNITS).forEach(k=>convert(k));
+}
+
+function convert(key){
+    const cat = UNITS[key];
+    const val = parseFloat(document.getElementById(key+"_val").value) || 0;
+    const from = document.getElementById(key+"_from").value;
+    const to = document.getElementById(key+"_to").value;
+    const out = document.getElementById(key+"_out");
+    if(!out) return;
+    let result;
+    if(cat.special === "temp"){
+        let celsius;
+        if(from==="C") celsius = val;
+        else if(from==="F") celsius = (val-32)*5/9;
+        else celsius = val - 273.15;
+        if(to==="C") result = celsius;
+        else if(to==="F") result = celsius*9/5+32;
+        else result = celsius + 273.15;
+    } else {
+        const baseVal = val * cat.units[from].f;
+        result = baseVal / cat.units[to].f;
+    }
+    out.value = isFinite(result) ? result.toFixed(6).replace(/\.?0+$/,"") : "—";
+}
+
+document.getElementById("tabs").addEventListener("click", e=>{
+    const btn = e.target.closest(".tab");
+    if(!btn) return;
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+    btn.classList.add("active");
+    document.querySelectorAll(".conv-panel").forEach(p=>p.classList.toggle("active", p.dataset.cat === btn.dataset.cat));
+});
+
+renderPanels();
+</script>
+</body>
+</html>

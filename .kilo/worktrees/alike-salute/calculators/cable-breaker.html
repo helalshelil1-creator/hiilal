@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>حاسبة الكابل والقاطع | Eng. Helal Shalil</title>
+<link rel="icon" type="image/png" href="../images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #EDE7DA;
+    --bg-grid: #E3DCC9;
+    --panel: #FFFFFF;
+    --panel-2: #F6F1E6;
+    --panel-3: #EFE9DA;
+    --ink: #1B2430;
+    --ink-dim: #5B6472;
+    --line: #D8D0BC;
+    --line-strong:#C2B89E;
+    --amber: #B4720A;
+    --amber-strong:#8A5808;
+    --amber-soft:#F3E3C4;
+    --ok: #1B7A43;
+    --ok-bg:#E3F3E8;
+    --bad: #B23A2E;
+    --bad-bg:#FBE7E4;
+    --shadow: 0 1px 2px rgba(27,36,48,.06);
+    --shadow-lg: 0 6px 20px rgba(27,36,48,.10);
+    --body-plastic:#3A3F46;
+    --body-plastic-2:#4A5058;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0D1117; --bg-grid:#131B24; --panel:#161F2B; --panel-2:#1B2530; --panel-3:#202B38;
+      --ink:#EDEFF2; --ink-dim:#9AA5B1; --line:#2A3543; --line-strong:#3A4759;
+      --amber:#F0A93B; --amber-strong:#F7C066; --amber-soft:#3A2E14;
+      --ok:#3ECB78; --ok-bg:#123322; --bad:#FF6B5E; --bad-bg:#3A1A18;
+      --shadow: 0 1px 2px rgba(0,0,0,.4); --shadow-lg:0 10px 30px rgba(0,0,0,.45);
+      --body-plastic:#20242B; --body-plastic-2:#2C3239;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0D1117; --bg-grid:#131B24; --panel:#161F2B; --panel-2:#1B2530; --panel-3:#202B38;
+    --ink:#EDEFF2; --ink-dim:#9AA5B1; --line:#2A3543; --line-strong:#3A4759;
+    --amber:#F0A93B; --amber-strong:#F7C066; --amber-soft:#3A2E14;
+    --ok:#3ECB78; --ok-bg:#123322; --bad:#FF6B5E; --bad-bg:#3A1A18;
+    --shadow: 0 1px 2px rgba(0,0,0,.4); --shadow-lg:0 10px 30px rgba(0,0,0,.45);
+    --body-plastic:#20242B; --body-plastic-2:#2C3239;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      linear-gradient(var(--bg-grid) 1px, transparent 1px) 0 0/100% 28px,
+      linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px) 0 0/28px 100%,
+      var(--bg);
+    color:var(--ink);
+    font-family:'Tajawal',system-ui,sans-serif;
+    min-height:100vh;
+    padding:18px 14px 60px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:640px;margin:0 auto;}
+
+  .back-link{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:9px 16px;margin-bottom:14px;
+    background:var(--panel);border:1px solid var(--line);
+    border-radius:9px;color:var(--ink);
+    text-decoration:none;font-weight:700;font-size:13px;
+    box-shadow:var(--shadow);
+  }
+  .back-link:hover{background:var(--panel-2);border-color:var(--amber);color:var(--amber-strong);}
+
+  header{margin-bottom:18px;}
+  .eyebrow{
+    display:flex;align-items:center;gap:8px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;color:var(--amber);
+    letter-spacing:.02em;
+  }
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 3px color-mix(in srgb, var(--amber) 25%, transparent);}
+  h1{ font-size:26px;font-weight:900;margin:6px 0 2px;line-height:1.25; }
+  .sub{color:var(--ink-dim);font-size:13.5px;line-height:1.6;max-width:52ch;}
+
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    box-shadow:var(--shadow); margin-bottom:14px; overflow:hidden;
+  }
+  .card-head{
+    padding:12px 16px;border-bottom:1px solid var(--line);
+    font-weight:700;font-size:14px;
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--panel-2);
+  }
+  .card-head span.tag{ font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-dim);font-weight:500; }
+  .card-body{padding:14px 16px 16px;}
+
+  .field{margin-bottom:13px;}
+  .field:last-child{margin-bottom:0;}
+  label{ display:block;font-size:12.5px;color:var(--ink-dim);margin-bottom:5px;font-weight:500; }
+  label .hint{font-size:11px;opacity:.75;}
+  input[type=number], select{
+    width:100%; background:var(--bg); border:1px solid var(--line); color:var(--ink);
+    border-radius:7px; padding:10px 11px; font-family:'JetBrains Mono',monospace;
+    font-size:14.5px; font-weight:500; -moz-appearance:textfield;
+  }
+  select{font-family:'Tajawal',sans-serif;font-weight:500;}
+  input:focus, select:focus{ outline:2px solid var(--amber);outline-offset:1px;border-color:var(--amber); }
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+  .hero{ display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 16px 6px; }
+  .stat{ background:var(--panel-2);border:1px solid var(--line);border-radius:9px; padding:12px 12px;text-align:center; }
+  .stat .k{font-size:11px;color:var(--ink-dim);margin-bottom:6px;font-weight:500;}
+  .stat .v{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:20px;color:var(--ink);}
+  .stat .v small{font-size:12px;font-weight:500;color:var(--ink-dim);}
+  .stat.accent .v{color:var(--amber-strong);}
+
+  .status-bar{
+    margin:12px 16px 0;padding:11px 13px;border-radius:8px;
+    font-size:13px;font-weight:700;display:flex;align-items:center;gap:9px;
+  }
+  .status-bar.ok{background:var(--ok-bg);color:var(--ok);}
+  .status-bar.bad{background:var(--bad-bg);color:var(--bad);}
+  .status-bar .ico{font-size:15px;}
+
+  .plates{ display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:16px; }
+  @media (max-width:400px){ .plates{grid-template-columns:1fr;} }
+  .plate{
+    background:var(--panel-3); border:1px solid var(--line-strong); border-radius:10px;
+    padding:10px 10px 12px; text-align:center;
+  }
+  .plate .plate-label{
+    font-size:11px; color:var(--ink-dim); font-weight:700; margin-bottom:8px;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .plate svg{ width:100%; height:auto; display:block; }
+  .plate .plate-caption{
+    margin-top:8px; font-family:'JetBrains Mono',monospace; font-size:12px;
+    color:var(--ink); font-weight:600; line-height:1.6;
+  }
+  .plate .plate-caption b{color:var(--amber-strong);}
+
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  th,td{padding:8px 6px;text-align:center;border-bottom:1px solid var(--line);}
+  th{ font-family:'JetBrains Mono',monospace;font-weight:500;font-size:10.5px; color:var(--ink-dim);background:var(--panel-2); }
+  td{font-family:'JetBrains Mono',monospace;}
+  tr.recommended td{background:var(--ok-bg);color:var(--ok);font-weight:700;}
+  .badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:11px;font-weight:700;}
+  .badge.yes{background:var(--ok-bg);color:var(--ok);}
+  .badge.no{background:var(--bad-bg);color:var(--bad);}
+  .table-scroll{overflow-x:auto;}
+
+  footer{ text-align:center;color:var(--ink-dim);font-size:11px;line-height:1.7;margin-top:8px;padding:0 10px; }
+  footer .credit{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);}
+  footer .credit strong{color:var(--amber-strong);}
+  footer .credit a{color:var(--amber);text-decoration:none;font-weight:700;font-family:'JetBrains Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a href="../calculators.html" class="back-link">← كل الحاسبات</a>
+
+  <header>
+    <div class="eyebrow"><span class="dot"></span>MEP · IEC 60364</div>
+    <h1>حاسبة الكابل والقاطع</h1>
+    <p class="sub">دخّل بيانات الحمل، والحاسبة هتختار مقاس الكابل والقاطع المناسبين تلقائيًا، وتوريك شكلهم الفعلي.</p>
+  </header>
+
+  <div class="card">
+    <div class="card-head">بيانات الحمل<span class="tag">LOAD</span></div>
+    <div class="card-body">
+      <div class="field">
+        <label>نوع الحمل</label>
+        <select id="loadType">
+          <option value="motor">موتور (Motor)</option>
+          <option value="general">حمل عام (إضاءة / مقاومي)</option>
+        </select>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>النظام</label>
+          <select id="system">
+            <option value="3">ثلاثي الأوجه</option>
+            <option value="1">أحادي الطور</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>الجهد (V)</label>
+          <input type="number" id="voltage" value="380" inputmode="decimal">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>القدرة (kW) <span class="hint">— اتركه 0 لو هتدخل التيار</span></label>
+          <input type="number" id="kw" value="11.2" step="0.1" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label>التيار المعروف (A) <span class="hint">— اختياري</span></label>
+          <input type="number" id="iknown" value="0" step="0.1" inputmode="decimal">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">معاملات كهربية<span class="tag">PARAMS</span></div>
+    <div class="card-body">
+      <div class="row2">
+        <div class="field">
+          <label>معامل القدرة (cosφ)</label>
+          <input type="number" id="pf" value="0.85" step="0.01" inputmode="decimal">
+        </div>
+        <div class="field" id="effField">
+          <label>كفاءة الموتور (%)</label>
+          <input type="number" id="eff" value="90" step="1" inputmode="decimal">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>عامل الأمان <span class="hint">(Ib = FLC × factor)</span></label>
+          <input type="number" id="margin" value="1.25" step="0.05" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label>معامل التخفيض Cg <span class="hint">(تجميع/حرارة)</span></label>
+          <input type="number" id="cg" value="1.0" step="0.05" inputmode="decimal">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>طول الكابل (م)</label>
+          <input type="number" id="length" value="30" step="1" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label>أقصى هبوط جهد مسموح (%)</label>
+          <input type="number" id="maxvd" value="5" step="0.5" inputmode="decimal">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">النتائج<span class="tag">RESULT</span></div>
+    <div class="hero">
+      <div class="stat"><div class="k">FLC (تيار الحمل الكامل)</div><div class="v" id="outFlc">–</div></div>
+      <div class="stat"><div class="k">تيار التصميم Ib</div><div class="v" id="outIb">–</div></div>
+    </div>
+
+    <div class="plates">
+      <div class="plate">
+        <div class="plate-label">القاطع الموصى به · BREAKER</div>
+        <div id="breakerSvg"></div>
+        <div class="plate-caption" id="breakerCaption">–</div>
+      </div>
+      <div class="plate">
+        <div class="plate-label">مقطع الكابل الموصى به · CABLE</div>
+        <div id="cableSvg"></div>
+        <div class="plate-caption" id="cableCaption">–</div>
+      </div>
+    </div>
+
+    <div class="hero" style="padding-top:0;">
+      <div class="stat accent"><div class="k">هبوط الجهد عند الكابل المختار</div><div class="v" id="outVd">–</div></div>
+    </div>
+    <div class="status-bar" id="statusBar"><span class="ico">●</span><span id="statusTxt">–</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">جدول مقارنة المقاسات<span class="tag">TABLE</span></div>
+    <div class="table-scroll">
+    <table>
+      <thead><tr>
+        <th>مم²</th><th>Iz أساسي</th><th>Iz مخفّض</th><th>سعة؟</th><th>VD%</th><th>VD؟</th>
+      </tr></thead>
+      <tbody id="tblBody"></tbody>
+    </table>
+    </div>
+  </div>
+
+  <footer>
+    القيم المرجعية (السعة الحرارية وmV/A/m) تقريبية طبقًا لأسلوب جداول IEC 60364-5-52، ورسوم القاطع والكابل توضيحية وليست بديلاً عن الداتاشيت الفعلي —
+    راجعها مع الداتاشيت والكود المصري (ECP 2015) قبل التنفيذ النهائي.
+    <div class="credit">
+      © 2026 مكتب المهندس <strong>هلال شليل</strong> — 📞 <a href="tel:01124169656">01124169656</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+const CABLE = [
+  [1.5, 19.5, 29.00, 33.50],
+  [2.5, 27,   18.00, 20.80],
+  [4,   36,   11.00, 12.70],
+  [6,   46,   7.30,  8.40],
+  [10,  63,   4.40,  5.10],
+  [16,  85,   2.80,  3.20],
+  [25,  112,  1.75,  2.00],
+  [35,  138,  1.25,  1.40],
+  [50,  168,  0.93,  1.10],
+  [70,  213,  0.63,  0.73],
+  [95,  258,  0.47,  0.54],
+  [120, 299,  0.37,  0.43],
+  [150, 344,  0.30,  0.35],
+  [185, 392,  0.24,  0.28],
+  [240, 461,  0.19,  0.22],
+];
+const BREAKERS = [6,10,16,20,25,32,40,50,63,80,100,125,160,200,250,315,400];
+
+const ids = ['loadType','system','voltage','kw','iknown','pf','eff','margin','cg','length','maxvd'];
+const el = {};
+ids.forEach(id => el[id] = document.getElementById(id));
+const effFieldDiv = document.getElementById('effField');
+
+function loadState(){
+  try{
+    const saved = JSON.parse(localStorage.getItem('cableCalcState') || '{}');
+    ids.forEach(id => { if(saved[id] !== undefined) el[id].value = saved[id]; });
+  }catch(e){}
+}
+function saveState(){
+  try{
+    const state = {};
+    ids.forEach(id => state[id] = el[id].value);
+    localStorage.setItem('cableCalcState', JSON.stringify(state));
+  }catch(e){}
+}
+function num(id){ return parseFloat(el[id].value) || 0; }
+
+function breakerSVG(ratingLabel, poles, curve, isOn){
+  const moduleW = 62, h = 150, gap = 3;
+  const bodyW = poles * moduleW - gap;
+  const vb = `0 0 ${bodyW} ${h}`;
+  let dividers = '';
+  for(let i=1;i<poles;i++){
+    const x = i*moduleW - gap/2;
+    dividers += `<line x1="${x}" y1="10" x2="${x}" y2="${h-10}" stroke="var(--body-plastic-2)" stroke-width="1.5" opacity=".6"/>`;
+  }
+  const leverW = bodyW*0.34, leverH = 46, leverX = bodyW/2 - leverW/2, leverYon = 20, leverYoff = 52;
+  const leverY = isOn ? leverYon : leverYoff;
+  const ledColor = isOn ? 'var(--ok)' : 'var(--bad)';
+
+  return `
+  <svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="var(--body-plastic-2)"/>
+        <stop offset="1" stop-color="var(--body-plastic)"/>
+      </linearGradient>
+      <linearGradient id="leverGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="var(--amber-strong)"/>
+        <stop offset="1" stop-color="var(--amber)"/>
+      </linearGradient>
+    </defs>
+    <rect x="${bodyW/2-16}" y="2" width="32" height="8" rx="2" fill="var(--body-plastic-2)"/>
+    <rect x="1" y="8" width="${bodyW-2}" height="${h-16}" rx="6" fill="url(#bodyGrad)" stroke="var(--body-plastic)" stroke-width="1"/>
+    ${dividers}
+    <rect x="${bodyW/2-leverW/2-6}" y="14" width="${leverW+12}" height="66" rx="5" fill="rgba(0,0,0,.18)"/>
+    <rect x="${leverX}" y="${leverY}" width="${leverW}" height="${leverH}" rx="4" fill="url(#leverGrad)" stroke="var(--amber-strong)" stroke-width="1"/>
+    <line x1="${bodyW/2-leverW*0.22}" y1="${leverY+10}" x2="${bodyW/2+leverW*0.22}" y2="${leverY+10}" stroke="rgba(0,0,0,.25)" stroke-width="2"/>
+    <line x1="${bodyW/2-leverW*0.22}" y1="${leverY+leverH-10}" x2="${bodyW/2+leverW*0.22}" y2="${leverY+leverH-10}" stroke="rgba(0,0,0,.25)" stroke-width="2"/>
+    <text x="${bodyW/2}" y="24" text-anchor="middle" font-size="9" font-weight="700" fill="#EDEFF2" font-family="JetBrains Mono, monospace">I</text>
+    <text x="${bodyW/2}" y="76" text-anchor="middle" font-size="9" font-weight="700" fill="#EDEFF2" font-family="JetBrains Mono, monospace">O</text>
+    <circle cx="${bodyW/2}" cy="90" r="4" fill="${ledColor}"/>
+    <text x="${bodyW/2}" y="112" text-anchor="middle" font-size="17" font-weight="700" fill="#F5F6F8" font-family="JetBrains Mono, monospace">${ratingLabel}</text>
+    <text x="10" y="${h-16}" font-size="10" font-weight="600" fill="#C9CFD6" font-family="JetBrains Mono, monospace">Type ${curve}</text>
+    <text x="${bodyW-10}" y="${h-16}" text-anchor="end" font-size="10" font-weight="600" fill="#C9CFD6" font-family="JetBrains Mono, monospace">${poles}P</text>
+  </svg>`;
+}
+
+const CORE_COLORS_3PH = ['#8B5A2B', '#111318', '#8A939C'];
+const CORE_COLORS_1PH = ['#8B5A2B', '#2C6FBB'];
+const PE_COLOR_A = '#3E9B4F', PE_COLOR_B = '#E7C93B';
+
+function cableSVG(size, threePhase){
+  const vb = 220;
+  const cx = vb/2, cy = vb/2;
+  const jacketR = 50 + 48*Math.sqrt(size/240);
+  const cores = threePhase ? [...CORE_COLORS_3PH, 'PE'] : [...CORE_COLORS_1PH, 'PE'];
+  const n = cores.length;
+  const coreR = jacketR*0.30;
+  const orbit = jacketR*0.46;
+
+  let coreEls = '';
+  for(let i=0;i<n;i++){
+    const angle = -Math.PI/2 + i*(2*Math.PI/n);
+    const x = cx + orbit*Math.cos(angle);
+    const y = cy + orbit*Math.sin(angle);
+    if(cores[i] === 'PE'){
+      coreEls += `
+        <clipPath id="peClip${i}"><circle cx="${x}" cy="${y}" r="${coreR}"/></clipPath>
+        <g clip-path="url(#peClip${i})">
+          <rect x="${x-coreR}" y="${y-coreR}" width="${coreR*2}" height="${coreR*2}" fill="${PE_COLOR_A}"/>
+          <g stroke="${PE_COLOR_B}" stroke-width="${coreR*0.5}">
+            <line x1="${x-coreR*1.4}" y1="${y-coreR*0.5}" x2="${x+coreR*1.4}" y2="${y+coreR*2.3}"/>
+            <line x1="${x-coreR*1.4}" y1="${y-coreR*1.9}" x2="${x+coreR*1.4}" y2="${y+coreR*0.9}"/>
+          </g>
+        </g>
+        <circle cx="${x}" cy="${y}" r="${coreR}" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="1"/>`;
+    } else {
+      coreEls += `<circle cx="${x}" cy="${y}" r="${coreR}" fill="${cores[i]}" stroke="rgba(0,0,0,.25)" stroke-width="1"/>
+        <circle cx="${x-coreR*0.3}" cy="${y-coreR*0.3}" r="${coreR*0.28}" fill="rgba(255,255,255,.18)"/>`;
+    }
+  }
+
+  return `
+  <svg viewBox="0 0 ${vb} ${vb}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="jacketGrad" cx="35%" cy="30%" r="75%">
+        <stop offset="0" stop-color="var(--panel-2)"/>
+        <stop offset="1" stop-color="var(--line-strong)"/>
+      </radialGradient>
+    </defs>
+    <circle cx="${cx}" cy="${cy}" r="${jacketR}" fill="url(#jacketGrad)" stroke="var(--ink-dim)" stroke-width="1.5"/>
+    <circle cx="${cx}" cy="${cy}" r="${jacketR-4}" fill="none" stroke="rgba(0,0,0,.08)" stroke-width="1" stroke-dasharray="2 3"/>
+    ${coreEls}
+    <text x="${cx}" y="${vb-14}" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)" font-family="JetBrains Mono, monospace">${size} mm²</text>
+  </svg>`;
+}
+
+function compute(){
+  effFieldDiv.style.display = el.loadType.value === 'motor' ? 'block' : 'none';
+
+  const voltage = num('voltage');
+  const kw = num('kw');
+  const iknown = num('iknown');
+  const pf = num('pf') || 0.85;
+  const eff = num('eff') || 100;
+  const margin = num('margin') || 1;
+  const cg = num('cg') || 1;
+  const length = num('length');
+  const maxvd = num('maxvd') || 5;
+  const threePhase = el.system.value === '3';
+  const isMotor = el.loadType.value === 'motor';
+
+  let flc;
+  if(iknown > 0){
+    flc = iknown;
+  } else {
+    const base = threePhase ? Math.sqrt(3) : 1;
+    const effFactor = isMotor ? (eff/100) : 1;
+    flc = voltage > 0 ? (kw*1000)/(base*voltage*pf*effFactor) : 0;
+  }
+  const ib = flc * margin;
+
+  let breaker = BREAKERS.find(b => b >= ib) || null;
+  const checkAgainst = breaker || ib;
+
+  const rows = CABLE.map(([size, amp, mv3, mv1]) => {
+    const derated = amp * cg;
+    const ampOK = derated >= checkAgainst;
+    const mvam = threePhase ? mv3 : mv1;
+    const vdV = (mvam * ib * length) / 1000;
+    const vdPct = voltage > 0 ? (vdV / voltage) * 100 : 0;
+    const vdOK = vdPct <= maxvd;
+    return {size, amp, derated, ampOK, vdPct, vdOK, suitable: ampOK && vdOK};
+  });
+  const rec = rows.find(r => r.suitable);
+
+  document.getElementById('outFlc').innerHTML = flc.toFixed(1) + ' <small>A</small>';
+  document.getElementById('outIb').innerHTML = ib.toFixed(1) + ' <small>A</small>';
+  document.getElementById('outVd').innerHTML = rec ? rec.vdPct.toFixed(2) + ' <small>%</small>' : '—';
+
+  const poles = threePhase ? 3 : 1;
+  const curve = isMotor ? 'C' : 'B';
+  document.getElementById('breakerSvg').innerHTML = breakerSVG(breaker ? breaker+'A' : '—', poles, curve, !!breaker);
+  document.getElementById('breakerCaption').innerHTML = breaker
+    ? `<b>${breaker} A</b> · ${poles}P · Type ${curve}`
+    : 'خارج المدى القياسي';
+
+  if(rec){
+    document.getElementById('cableSvg').innerHTML = cableSVG(rec.size, threePhase);
+    document.getElementById('cableCaption').innerHTML = `<b>${rec.size} مم²</b> · Cu/PVC · ${threePhase? '3 أوجه+أرضي':'طور+أرضي'}`;
+  } else {
+    document.getElementById('cableSvg').innerHTML = cableSVG(CABLE[CABLE.length-1][0], threePhase);
+    document.getElementById('cableCaption').textContent = 'لا يوجد مقاس مناسب ضمن الجدول';
+  }
+
+  const bar = document.getElementById('statusBar');
+  const txt = document.getElementById('statusTxt');
+  if(rec){
+    bar.className = 'status-bar ok';
+    txt.textContent = 'المقاس المختار يحقق شرطي السعة الحرارية وهبوط الجهد معًا';
+  } else {
+    bar.className = 'status-bar bad';
+    txt.textContent = 'مفيش مقاس قياسي في الجدول بيحقق الشرطين — راجع الطول أو معامل التخفيض';
+  }
+
+  const tbody = document.getElementById('tblBody');
+  tbody.innerHTML = rows.map(r => `
+    <tr class="${rec && r.size === rec.size ? 'recommended' : ''}">
+      <td>${r.size}</td>
+      <td>${r.amp}</td>
+      <td>${r.derated.toFixed(1)}</td>
+      <td><span class="badge ${r.ampOK?'yes':'no'}">${r.ampOK?'✓':'✕'}</span></td>
+      <td>${r.vdPct.toFixed(2)}%</td>
+      <td><span class="badge ${r.vdOK?'yes':'no'}">${r.vdOK?'✓':'✕'}</span></td>
+    </tr>
+  `).join('');
+
+  saveState();
+}
+
+loadState();
+ids.forEach(id => el[id].addEventListener('input', compute));
+el.loadType.addEventListener('change', compute);
+el.system.addEventListener('change', compute);
+compute();
+</script>
+</body>
+</html>

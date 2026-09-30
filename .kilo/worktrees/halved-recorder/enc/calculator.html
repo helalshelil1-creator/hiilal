@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<title>حاسبة هندسية | Eng. Helal Shalil</title>
+<!-- SEO Auto Injection -->
+<script src="js/seo-data.js"></script>
+<script src="js/seo.js"></script>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#06b6d4">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Eng. Helal">
+
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="apple-touch-icon" href="images/logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--cyan);
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(0,217,255,.08);
+    border: 1px solid rgba(0,217,255,.2);
+}
+.back-link:hover {
+    background: var(--grad-theme);
+    color: var(--navy);
+    border-color: transparent;
+}
+
+.calc-header {
+    padding: 28px;
+    background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow-sm);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+    align-items: center;
+    position: relative;
+}
+.calc-header-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 20px;
+    background: var(--grad-theme);
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.calc-header-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+}
+.calc-header-info h1 {
+    color: var(--navy);
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 4px;
+}
+[data-theme="dark"] .calc-header-info h1 { color: var(--aqua); }
+.calc-header-en {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--font-mono);
+}
+.calc-header-desc {
+    grid-column: 1 / -1;
+    color: var(--text-2);
+    font-size: 13.5px;
+    line-height: 1.8;
+    margin-top: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+.calc-header .fav-badge {
+    position: absolute;
+    top: 16px;
+    inset-inline-end: 16px;
+    width: 40px;
+    height: 40px;
+}
+
+.calc-form {
+    padding: 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 22px;
+}
+.form-title {
+    color: var(--navy);
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 22px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+[data-theme="dark"] .form-title { color: var(--aqua); }
+.form-title svg {
+    width: 18px;
+    height: 18px;
+    color: var(--cyan);
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+}
+
+.form-group { margin-bottom: 16px; }
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+.form-group label .unit {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    font-family: var(--font-mono);
+}
+.form-group label .req {
+    color: #e11d48;
+    font-weight: 900;
+}
+.form-help {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.6;
+}
+.form-input, .form-select {
+    width: 100%;
+    padding: 13px 16px;
+    border-radius: 14px;
+    border: 1.5px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
+}
+.form-select { font-family: var(--font-main); }
+.form-input:focus, .form-select:focus {
+    border-color: var(--cyan);
+    background: var(--surface);
+    box-shadow: 0 0 0 4px rgba(0,217,255,.15);
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+}
+.form-actions .btn {
+    flex: 1;
+    min-width: 120px;
+}
+.form-actions .btn svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+}
+
+.result-box {
+    background: linear-gradient(135deg, rgba(0,217,255,.08), rgba(0,217,255,.02));
+    border: 2px solid var(--cyan);
+    border-radius: 28px;
+    padding: 26px;
+    margin: 22px 0;
+    box-shadow: 0 15px 40px rgba(0,217,255,.15);
+}
+.result-box h3 {
+    color: var(--navy);
+    font-size: 17px;
+    font-weight: 900;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 14px;
+    border-bottom: 2px dashed var(--cyan);
+}
+[data-theme="dark"] .result-box h3 { color: var(--aqua); }
+.result-box h3 svg {
+    width: 20px;
+    height: 20px;
+    color: var(--cyan);
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+}
+.result-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px dashed rgba(0,217,255,.25);
+    flex-wrap: wrap;
+}
+.result-line:last-child { border-bottom: none; }
+.result-line .rl-label {
+    color: var(--text-2);
+    font-size: 14px;
+    font-weight: 600;
+}
+.result-line .rl-value-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+.result-line .rl-value {
+    color: var(--navy);
+    font-size: 22px;
+    font-weight: 900;
+    direction: ltr;
+    font-family: var(--font-mono);
+    line-height: 1;
+}
+[data-theme="dark"] .result-line .rl-value { color: var(--aqua); }
+.result-line .rl-unit {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+}
+
+.formula-box, .warning-box, .ref-box, .error-box {
+    padding: 18px 22px;
+    border-radius: 14px;
+    margin: 14px 0;
+    font-size: 13px;
+    line-height: 1.9;
+}
+.formula-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-inline-start: 4px solid var(--cyan);
+}
+.formula-box strong, .warning-box strong, .ref-box strong, .error-box strong {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: var(--navy);
+    font-size: 13.5px;
+    font-weight: 800;
+}
+[data-theme="dark"] .formula-box strong,
+[data-theme="dark"] .warning-box strong,
+[data-theme="dark"] .ref-box strong { color: var(--aqua); }
+.formula-box strong svg, .warning-box strong svg, .ref-box strong svg, .error-box strong svg {
+    width: 16px;
+    height: 16px;
+    color: var(--cyan);
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+}
+.formula-code {
+    display: block;
+    background: rgba(0,217,255,.08);
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    direction: ltr;
+    color: var(--navy);
+    margin: 6px 0;
+    font-weight: 700;
+    text-align: center;
+}
+[data-theme="dark"] .formula-code { color: var(--aqua); }
+.warning-box {
+    background: rgba(245,158,11,.1);
+    border-inline-start: 4px solid #f59e0b;
+    color: #78350f;
+}
+[data-theme="dark"] .warning-box {
+    background: rgba(245,158,11,.15);
+    color: #fcd34d;
+}
+.ref-box {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+}
+.error-box {
+    background: rgba(239,68,68,.1);
+    border-inline-start: 4px solid #ef4444;
+    color: #7f1d1d;
+}
+[data-theme="dark"] .error-box {
+    background: rgba(239,68,68,.15);
+    color: #fecdd3;
+}
+.error-box p {
+    color: inherit;
+    font-size: 13.5px;
+    line-height: 1.8;
+}
+
+.result-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--border);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.result-actions .btn {
+    flex: 1;
+    min-width: 140px;
+    justify-content: center;
+}
+
+@media (max-width: 640px) {
+    .calc-header { padding: 20px; gap: 14px; }
+    .calc-header-icon { width: 55px; height: 55px; }
+    .calc-header-icon svg { width: 26px; height: 26px; }
+    .calc-header-info h1 { font-size: 17px; }
+    .calc-form { padding: 20px; }
+    .form-title { font-size: 14px; }
+    .result-box { padding: 20px; }
+    .result-line .rl-value { font-size: 18px; }
+    .form-actions { flex-direction: column; }
+    .form-actions .btn { width: 100%; }
+    .result-actions { flex-direction: column; }
+    .result-actions .btn { width: 100%; }
+}
+</style>
+</head>
+<body data-page="calculator">
+
+<!-- Loader -->
+<div id="loader">
+    <img src="images/logo.png" alt="Eng. Helal Shalil" class="loader-logo-img">
+    <div class="loader-logo">حاسبة هندسية</div>
+    <div class="loader-wave"></div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="Eng. Helal Shalil" class="logo-img">
+            <div class="logo-text">
+                مكتب هندسي متكامل
+                <small>Eng. Helal Shalil</small>
+            </div>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" data-i18n="nav.home">الرئيسية</a>
+            <a href="tools.html" data-i18n="nav.tools">الأدوات</a>
+            <a href="calculators.html" class="active" data-i18n="nav.calculators">الحاسبات</a>
+            <a href="encyclopedia.html" data-i18n="nav.encyclopedia">الموسوعة</a>
+            <a href="content.html" data-i18n="nav.content">المحتوى</a>
+            <a href="projects.html" data-i18n="nav.projects">المشاريع</a>
+        </div>
+        <div class="nav-actions">
+            <a href="admin.html" class="icon-btn" title="لوحة التحكم">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- Main -->
+<div class="container section">
+    <a href="calculators.html" class="back-link">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        <span>كل الحاسبات</span>
+    </a>
+    <div id="calcBody"></div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-main">
+        <div class="footer-container">
+            <div class="footer-col footer-brand">
+                <div class="footer-logo">
+                    <img src="images/logo.png" alt="Logo" class="footer-logo-img">
+                    <div class="footer-logo-text">
+                        مكتب هندسي متكامل
+                        <small>Eng. Helal Shalil</small>
+                    </div>
+                </div>
+                <p class="footer-desc">مكتب هندسي رقمي متكامل يحتوي على كل ما يحتاجه مهندس الكهرباء والـ MEP في مكان واحد.</p>
+                <div class="footer-social">
+                    <a href="https://wa.me/201124169656" target="_blank" class="social-btn whatsapp" aria-label="WhatsApp">
+                        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                    </a>
+                    <a href="https://www.facebook.com/share/1LZyJP2zat/" target="_blank" class="social-btn facebook" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">روابط سريعة</h4>
+                <ul class="footer-list">
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="tools.html">الأدوات</a></li>
+                    <li><a href="calculators.html">الحاسبات</a></li>
+                    <li><a href="encyclopedia.html">الموسوعة</a></li>
+                    <li><a href="projects.html">المشاريع</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">المكتبات</h4>
+                <ul class="footer-list">
+                    <li><a href="content.html">المحتوى</a></li>
+                    <li><a href="codes.html">الأكواد</a></li>
+                    <li><a href="specs.html">المواصفات</a></li>
+                    <li><a href="products.html">المنتجات</a></li>
+                    <li><a href="about.html">عن المكتب</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">التواصل</h4>
+                <ul class="footer-contact">
+                    <li>
+                        <span class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+                        <div><small>اتصل بنا</small><a href="tel:01124169656" dir="ltr">01124169656</a></div>
+                    </li>
+                    <li>
+                        <span class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+                        <div><small>البريد</small><a href="mailto:helalshelil1@gmail.com">helalshelil1@gmail.com</a></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="footer-container">
+            <p class="copyright">© 2026 <strong>مكتب المهندس هلال شليل</strong> — جميع الحقوق محفوظة</p>
+            <p class="credit">
+                🎨 حقوق التصميم للمهندس <strong>هلال شليل</strong>
+                <span class="divider">|</span>
+                📞 <a href="tel:01124169656" dir="ltr">01124169656</a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="js/storage.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/eng-bot.js"></script>
+<script src="js/pdf-export.js"></script>
+
+<script>
+const CalcEngine = {
+    current: null,
+    lastResult: null,
+
+    render(id) {
+        const body = document.getElementById("calcBody");
+        if (!body) return;
+
+        if (typeof CALCULATORS === "undefined" || !Array.isArray(CALCULATORS)) {
+            body.innerHTML = this.errorHTML("محرك الحاسبات غير محمّل");
+            return;
+        }
+
+        const calc = CALCULATORS.find(c => c.id === id);
+        if (!calc) {
+            body.innerHTML = this.errorHTML("الحاسبة غير موجودة");
+            return;
+        }
+
+        this.current = calc;
+        document.title = calc.name + " | Eng. Helal Shalil";
+
+        const ic = (name, size = 24) => (window.Icons && Icons.build) ? Icons.build(name, "", size) : "";
+        const isFav = (window.Store && Store.isFavorite("calc:" + calc.id));
+        const favIconHTML = (window.Icons && Icons.build) ? Icons.build("heart", "", 18) : "";
+
+        const headerHTML = `
+            <div class="calc-header">
+                <div class="fav-badge ${isFav ? 'active' : ''}" onclick="toggleFav(this, 'calc:${calc.id}')" title="حفظ في المفضلة">
+                    ${favIconHTML}
+                </div>
+                <div class="calc-header-icon">${ic(calc.icon, 32)}</div>
+                <div class="calc-header-info">
+                    <h1>${calc.name}</h1>
+                    <span class="calc-header-en">${calc.nameEn}</span>
+                </div>
+                <p class="calc-header-desc">${calc.desc}</p>
+            </div>
+        `;
+
+        const formHTML = `
+            <form id="calcForm" class="calc-form">
+                <h3 class="form-title">${ic("download", 18)} المدخلات</h3>
+                ${calc.inputs.map(inp => this.renderInput(inp)).join("")}
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">${ic("settings", 18)} احسب</button>
+                    <button type="button" class="btn btn-secondary" onclick="CalcEngine.reset()">${ic("refresh", 18)} إعادة</button>
+                </div>
+            </form>
+        `;
+
+        body.innerHTML = headerHTML + formHTML + '<div id="calcResult"></div>';
+
+        document.getElementById("calcForm").addEventListener("submit", e => {
+            e.preventDefault();
+            this.calculate();
+        });
+    },
+
+    renderInput(inp) {
+        const req = inp.required ? '<span class="req">*</span>' : "";
+        const unitTxt = inp.unit ? `<span class="unit">(${inp.unit})</span>` : "";
+        const help = inp.help ? `<div class="form-help">${inp.help}</div>` : "";
+        let field;
+        if (inp.type === "select" && inp.options) {
+            field = `<select id="in_${inp.id}" class="form-select">
+                ${inp.options.map(o => `<option value="${o.value}">${o.label}</option>`).join("")}
+            </select>`;
+        } else {
+            const def = inp.default !== undefined ? `value="${inp.default}"` : "";
+            const min = inp.min !== undefined ? `min="${inp.min}"` : "";
+            const max = inp.max !== undefined ? `max="${inp.max}"` : "";
+            const step = inp.step !== undefined ? `step="${inp.step}"` : "any";
+            field = `<input type="number" id="in_${inp.id}" class="form-input" ${def} ${min} ${max} step="${step}" inputmode="decimal" ${inp.required ? "required" : ""}>`;
+        }
+        return `
+            <div class="form-group">
+                <label>${inp.label} ${unitTxt} ${req}</label>
+                ${field}
+                ${help}
+            </div>
+        `;
+    },
+
+    getValues() {
+        const values = {};
+        if (!this.current || !this.current.inputs) return values;
+        this.current.inputs.forEach(inp => {
+            const el = document.getElementById("in_" + inp.id);
+            values[inp.id] = el ? el.value : "";
+        });
+        return values;
+    },
+
+    reset() {
+        const form = document.getElementById("calcForm");
+        const result = document.getElementById("calcResult");
+        if (form) form.reset();
+        if (result) result.innerHTML = "";
+        this.lastResult = null;
+    },
+
+    calculate() {
+        if (!this.current || typeof this.current.calculate !== "function") return;
+        const values = this.getValues();
+        const resultEl = document.getElementById("calcResult");
+        if (!resultEl) return;
+
+        let res;
+        try {
+            res = this.current.calculate(values);
+        } catch (err) {
+            resultEl.innerHTML = this.errorHTML("حدث خطأ: " + (err.message || "غير معروف"));
+            return;
+        }
+
+        if (!res || res.error) {
+            resultEl.innerHTML = this.errorHTML(res ? res.error : "لا توجد نتيجة");
+            return;
+        }
+
+        this.lastResult = { values, res };
+        resultEl.innerHTML = this.resultHTML(res);
+        try { resultEl.scrollIntoView({ behavior: "smooth", block: "nearest" }); } catch(e) {}
+    },
+
+    resultHTML(res) {
+        const ic = (name, size = 18) => (window.Icons && Icons.build) ? Icons.build(name, "", size) : "";
+
+        const lines = (res.results || []).map(r => `
+            <div class="result-line">
+                <span class="rl-label">${r.label}</span>
+                <span class="rl-value-wrap">
+                    <span class="rl-value">${r.value}</span>
+                    <span class="rl-unit">${r.unit || ""}</span>
+                </span>
+            </div>
+        `).join("");
+
+        const steps = (res.steps && res.steps.length)
+            ? `<div class="formula-box"><strong>${ic("calculator", 16)} خطوات الحساب</strong>${res.steps.map(s => `<div class="formula-code">${this.escape(s)}</div>`).join("")}</div>`
+            : "";
+
+        const notes = (res.notes && res.notes.length)
+            ? `<div class="warning-box"><strong>${ic("alert-triangle", 16)} ملاحظات مهمة</strong>${res.notes.map(n => `<div>• ${this.escape(n)}</div>`).join("")}</div>`
+            : "";
+
+        const refs = (res.references && res.references.length)
+            ? `<div class="ref-box"><strong>${ic("book-open", 16)} المراجع</strong>${res.references.map(r => `<div>• ${this.escape(r)}</div>`).join("")}</div>`
+            : "";
+
+        return `
+            <div class="result-box">
+                <h3>${ic("check", 20)} النتيجة</h3>
+                ${lines}
+                <div class="result-actions">
+                    <button class="btn btn-primary" onclick="CalcEngine.saveToFav()">
+                        ${ic("save", 16)} حفظ في المفضلة
+                    </button>
+                    <button class="btn btn-secondary" onclick="CalcEngine.exportPDF()">
+                        ${ic("download", 16)} تصدير PDF
+                    </button>
+                    <button class="btn btn-secondary" onclick="CalcEngine.copyResult()">
+                        ${ic("check", 16)} نسخ النتيجة
+                    </button>
+                </div>
+            </div>
+            ${res.formula ? `<div class="formula-box"><strong>${ic("ruler", 16)} القانون المستخدم</strong><div class="formula-code">${this.escape(res.formula)}</div></div>` : ""}
+            ${steps}
+            ${notes}
+            ${refs}
+        `;
+    },
+
+    saveToFav() {
+        if (!this.lastResult || !window.Store) return;
+        const calc = this.current;
+        try {
+            Store.saveCalculation(calc.id, this.lastResult.values, this.lastResult.res, calc.name);
+            if (typeof toast === "function") toast("💾 تم حفظ الحساب", "success");
+        } catch(e) {
+            if (typeof toast === "function") toast("❌ فشل الحفظ", "error");
+        }
+    },
+
+    exportPDF() {
+        if (!this.lastResult || !window.PDFExport) return;
+        PDFExport.exportElement("calcResult", this.current.name);
+    },
+
+    copyResult() {
+        if (!this.lastResult) return;
+        const res = this.lastResult.res;
+        const lines = (res.results || []).map(r => `${r.label}: ${r.value} ${r.unit || ""}`).join("\n");
+        const text = `${this.current.name}\n\n${lines}\n\n${res.formula || ""}`;
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(text).then(() => {
+                if (typeof toast === "function") toast("📋 تم النسخ", "success");
+            });
+        }
+    },
+
+    errorHTML(msg) {
+        const ic = (window.Icons && Icons.build) ? Icons.build("alert-circle", "", 20) : "";
+        return `<div class="error-box"><strong>${ic} خطأ</strong><p>${this.escape(msg)}</p></div>`;
+    },
+
+    escape(s) {
+        const d = document.createElement("div");
+        d.textContent = s == null ? "" : String(s);
+        return d.innerHTML;
+    }
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(location.search);
+    const id = params.get("id");
+    const body = document.getElementById("calcBody");
+    if (!body) return;
+
+    if (!id) {
+        body.innerHTML = '<div class="error-box"><strong>⚠️ لم يتم تحديد حاسبة</strong></div>';
+        return;
+    }
+
+    CalcEngine.render(id);
+});
+</script>
+
+</body>
+</html>

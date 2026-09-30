@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>دليل AutoCAD & Revit | Eng. Helal Shalil</title>
+<!-- SEO Auto Injection -->
+<script src="js/seo-data.js"></script>
+<script src="js/seo.js"></script>
+<meta name="theme-color" content="#06b6d4">
+
+<link rel="icon" type="image/png" href="../images/logo.png">
+<link rel="apple-touch-icon" href="../images/logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/animations.css">
+
+<style>
+/* HERO */
+.sg-hero {
+    padding: 60px 5% 40px;
+    text-align: center;
+    background: linear-gradient(135deg, #0a1628 0%, #1e4976 100%);
+    color: white;
+    border-radius: 0 0 40px 40px;
+    margin: 12px 14px 30px;
+    box-shadow: 0 20px 60px rgba(10,22,40,.3);
+    position: relative;
+    overflow: hidden;
+}
+.sg-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 20%, rgba(0,217,255,.2), transparent 60%);
+    pointer-events: none;
+}
+.sg-hero-icon {
+    width: 80px; height: 80px;
+    margin: 0 auto 18px;
+    background: rgba(255,255,255,.12);
+    border: 2px solid rgba(0,217,255,.4);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    position: relative;
+    z-index: 1;
+}
+.sg-hero h1 {
+    font-size: 30px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+}
+.sg-hero h1 span { color: #67e8f9; }
+.sg-hero p {
+    font-size: 14px;
+    color: rgba(255,255,255,.85);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.8;
+    position: relative;
+    z-index: 1;
+}
+
+.sg-wrap { max-width: 1200px; margin: 0 auto; padding: 0 5% 60px; }
+
+/* SEARCH */
+.sg-search { position: relative; max-width: 640px; margin: 0 auto 24px; }
+.sg-search input {
+    width: 100%;
+    padding: 16px 50px 16px 20px;
+    border-radius: 100px;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
+    transition: all .3s;
+}
+.sg-search input:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 4px rgba(0,217,255,.15);
+}
+.sg-search::before {
+    content: "🔎";
+    position: absolute;
+    inset-inline-end: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    pointer-events: none;
+}
+
+/* TABS */
+.sg-tabs {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+.sg-tab {
+    padding: 12px 22px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all .3s;
+}
+.sg-tab:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    transform: translateY(-2px);
+}
+.sg-tab.active {
+    background: var(--grad-theme);
+    color: var(--navy);
+    border-color: transparent;
+    box-shadow: 0 8px 25px rgba(0,217,255,.4);
+}
+
+.sg-panel { display: none; }
+.sg-panel.active { display: block; animation: sgFadeIn .4s ease; }
+@keyframes sgFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* SECTION CARD */
+.sg-section {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all .3s;
+}
+.sg-section.custom-section {
+    border-color: rgba(124,58,237,.4);
+    box-shadow: 0 0 0 3px rgba(124,58,237,.08);
+}
+.sg-section-head {
+    padding: 16px 22px;
+    background: linear-gradient(135deg, rgba(0,217,255,.1), rgba(0,217,255,.03));
+    border-bottom: 2px solid rgba(0,217,255,.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+}
+.sg-section.custom-section .sg-section-head {
+    background: linear-gradient(135deg, rgba(124,58,237,.12), rgba(124,58,237,.04));
+    border-bottom-color: rgba(124,58,237,.3);
+}
+.sg-section-head:hover {
+    background: linear-gradient(135deg, rgba(0,217,255,.15), rgba(0,217,255,.05));
+}
+.sg-section-head .sg-icon { font-size: 22px; flex-shrink: 0; }
+.sg-section-head h3 {
+    color: var(--navy);
+    font-size: 16px;
+    font-weight: 800;
+    flex: 1;
+    margin: 0;
+}
+[data-theme="dark"] .sg-section-head h3 { color: var(--aqua); }
+.sg-section-head .sg-count {
+    padding: 4px 12px;
+    background: var(--grad-theme);
+    color: var(--navy);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 900;
+    font-family: var(--font-mono);
+}
+.sg-section-head .sg-chevron {
+    color: var(--cyan);
+    font-size: 18px;
+    transition: transform .3s;
+}
+.sg-section.collapsed .sg-chevron { transform: rotate(-90deg); }
+.sg-section.collapsed .sg-section-body { display: none; }
+
+.sg-section-body { padding: 16px 20px 20px; }
+
+.sg-cmd-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 8px;
+}
+.sg-cmd {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+    transition: all .2s;
+}
+.sg-cmd:hover {
+    border-color: var(--cyan);
+    background: rgba(0,217,255,.05);
+    transform: translateX(-3px);
+}
+.sg-cmd-key {
+    font-family: var(--font-mono);
+    font-weight: 900;
+    font-size: 12.5px;
+    color: var(--cyan);
+    background: rgba(0,217,255,.1);
+    padding: 4px 8px;
+    border-radius: 6px;
+    min-width: 46px;
+    text-align: center;
+    flex-shrink: 0;
+    letter-spacing: .5px;
+}
+.sg-cmd-name {
+    color: var(--text);
+    font-weight: 600;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* YOUTUBE VIDEOS */
+.sg-videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+.sg-video-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: all .3s;
+    box-shadow: var(--shadow-sm);
+}
+.sg-video-card:hover {
+    border-color: var(--cyan);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px -15px rgba(0,217,255,.4);
+}
+.sg-video-frame {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    background: #000;
+    overflow: hidden;
+}
+.sg-video-frame iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+.sg-video-info { padding: 16px 18px; }
+.sg-video-info h4 {
+    color: var(--navy);
+    font-size: 14.5px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    line-height: 1.5;
+}
+[data-theme="dark"] .sg-video-info h4 { color: var(--aqua); }
+.sg-video-info p {
+    color: var(--muted);
+    font-size: 12.5px;
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+.sg-video-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--grad-theme);
+    color: var(--navy);
+    border-radius: 999px;
+    font-size: 10.5px;
+    font-weight: 900;
+}
+.sg-video-tag.youtube {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff;
+}
+
+/* CUSTOM LINKS */
+.sg-custom-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+.sg-link-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    transition: all .3s;
+    text-decoration: none;
+    color: inherit;
+}
+.sg-link-card:hover {
+    border-color: var(--cyan);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px -10px rgba(0,217,255,.4);
+}
+.sg-link-icon {
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    background: var(--grad-theme);
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+.sg-link-info { flex: 1; min-width: 0; }
+.sg-link-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+[data-theme="dark"] .sg-link-title { color: var(--aqua); }
+.sg-link-desc {
+    font-size: 11.5px;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* EMPTY */
+.sg-empty {
+    text-align: center;
+    padding: 50px 20px;
+    background: var(--surface);
+    border: 2px dashed var(--border);
+    border-radius: 20px;
+    color: var(--muted);
+}
+.sg-empty-icon { font-size: 55px; margin-bottom: 14px; opacity: .5; }
+.sg-empty h4 {
+    color: var(--text-2);
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+.sg-empty p { font-size: 13px; line-height: 1.7; }
+.sg-empty a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    padding: 10px 22px;
+    background: var(--grad-primary);
+    color: #fff;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+/* ADMIN BAR */
+.sg-admin-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+.sg-admin-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #7c3aed, #06b6d4);
+    color: #fff;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 12.5px;
+    text-decoration: none;
+    box-shadow: 0 10px 25px rgba(124,58,237,.35);
+    transition: all .3s;
+}
+.sg-admin-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(124,58,237,.5);
+}
+
+/* MOBILE */
+@media (max-width: 700px) {
+    .sg-hero { padding: 40px 4% 30px; border-radius: 0 0 30px 30px; }
+    .sg-hero-icon { width: 60px; height: 60px; font-size: 30px; }
+    .sg-hero h1 { font-size: 20px; }
+    .sg-hero p { font-size: 13px; }
+    .sg-tab { padding: 9px 16px; font-size: 11.5px; }
+    .sg-cmd-grid { grid-template-columns: 1fr; }
+    .sg-cmd-key { min-width: 40px; font-size: 11px; }
+    .sg-cmd-name { font-size: 12px; }
+    .sg-section-head { padding: 14px 16px; }
+    .sg-section-head h3 { font-size: 14px; }
+    .sg-section-body { padding: 12px 14px 16px; }
+    .sg-videos-grid { grid-template-columns: 1fr; }
+}
+
+@media print {
+    .navbar, .sg-tabs, .sg-search, footer, .social-buttons, #loader, .sg-admin-bar { display: none !important; }
+    .sg-section { break-inside: avoid; border: 1px solid #ccc; }
+    .sg-section.collapsed .sg-section-body { display: block !important; }
+}
+</style>
+</head>
+<body data-page="tools">
+
+<div id="loader">
+    <img src="../images/logo.png" alt="Eng. Helal Shalil" class="loader-logo-img">
+    <div class="loader-logo">دليل AutoCAD & Revit</div>
+    <div class="loader-wave"></div>
+</div>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="../index.html" class="logo">
+            <img src="../images/logo.png" alt="Eng. Helal Shalil" class="logo-img">
+            <div class="logo-text">مكتب هندسي متكامل</div>
+        </a>
+        <div class="nav-links">
+            <a href="../index.html">الرئيسية</a>
+            <a href="../tools.html" class="active">الأدوات</a>
+            <a href="../calculators.html">الحاسبات</a>
+            <a href="../encyclopedia.html">الموسوعة</a>
+            <a href="../content.html">المحتوى</a>
+            <a href="../projects.html">المشاريع</a>
+        </div>
+        <div class="nav-actions"></div>
+    </div>
+</nav>
+
+<section class="sg-hero">
+    <div class="sg-hero-icon">🖥️</div>
+    <h1>دليل <span>AutoCAD & Revit</span></h1>
+    <p>كل أوامر واختصارات AutoCAD و Revit في مكان واحد — مع شرح مبسط وفيديوهات</p>
+</section>
+
+<div class="sg-wrap">
+
+    <div class="sg-admin-bar">
+        <a href="../admin.html#software" class="sg-admin-btn">
+            ⚙️ إدارة الأوامر والفيديوهات
+        </a>
+    </div>
+
+    <div class="sg-search">
+        <input type="text" id="sgSearch" placeholder="ابحث عن أمر... مثال: Line, Trim, Wall">
+    </div>
+
+    <div class="sg-tabs">
+        <button class="sg-tab active" data-tab="autocad">🅰️ AutoCAD</button>
+        <button class="sg-tab" data-tab="revit">🅱️ Revit</button>
+        <button class="sg-tab" data-tab="hotkeys">⌨️ اختصارات عامة</button>
+        <button class="sg-tab" data-tab="videos">🎥 فيديوهات وروابط</button>
+    </div>
+
+    <div class="sg-panel active" data-panel="autocad" id="autocadPanel"></div>
+    <div class="sg-panel" data-panel="revit" id="revitPanel"></div>
+    <div class="sg-panel" data-panel="hotkeys" id="hotkeysPanel"></div>
+
+    <div class="sg-panel" data-panel="videos">
+        <h2 style="color: var(--navy); font-size: 20px; font-weight: 900; margin: 0 0 20px; padding-inline-start: 14px; border-inline-start: 4px solid var(--cyan);">
+            🎥 فيديوهات الشرح
+        </h2>
+        <div id="sgVideosGrid" class="sg-videos-grid"></div>
+
+        <h2 style="color: var(--navy); font-size: 20px; font-weight: 900; margin: 30px 0 20px; padding-inline-start: 14px; border-inline-start: 4px solid var(--cyan);">
+            🔗 روابط مفيدة
+        </h2>
+        <div class="sg-custom-links" id="sgCustomLinks"></div>
+    </div>
+
+</div>
+
+<footer>
+    <div class="footer-main">
+        <div class="footer-container">
+            <div class="footer-col footer-brand">
+                <div class="footer-logo">
+                    <img src="../images/logo.png" alt="Logo" class="footer-logo-img">
+                    <div class="footer-logo-text">
+                        مكتب هندسي متكامل
+                        <small>Eng. Helal Shalil</small>
+                    </div>
+                </div>
+                <p class="footer-desc">مكتب هندسي رقمي متكامل يحتوي على كل ما يحتاجه مهندس الكهرباء والـ MEP في مكان واحد.</p>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">روابط سريعة</h4>
+                <ul class="footer-list">
+                    <li><a href="../index.html">الرئيسية</a></li>
+                    <li><a href="../tools.html">الأدوات</a></li>
+                    <li><a href="../calculators.html">الحاسبات</a></li>
+                    <li><a href="../encyclopedia.html">الموسوعة</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">التواصل</h4>
+                <ul class="footer-contact">
+                    <li>
+                        <span class="fc-icon">📞</span>
+                        <div><small>اتصل بنا</small><a href="tel:01124169656" dir="ltr">01124169656</a></div>
+                    </li>
+                    <li>
+                        <span class="fc-icon">✉️</span>
+                        <div><small>البريد</small><a href="mailto:helalshelil1@gmail.com">helalshelil1@gmail.com</a></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="footer-container">
+            <p class="copyright">© 2026 <strong>مكتب المهندس هلال شليل</strong> — جميع الحقوق محفوظة</p>
+        </div>
+    </div>
+</footer>
+
+<script src="../js/storage.js"></script>
+<script src="../js/i18n.js"></script>
+<script src="../js/icons.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/animations.js"></script>
+
+<script>
+/* ========================================
+   AUTOCAD COMMANDS (Default)
+======================================== */
+const AUTOCAD_DATA = [
+    {
+        icon: "✏️", title: "أوامر الرسم — Draw",
+        commands: [
+            { key: "L", name: "Line — خط" },
+            { key: "PL", name: "Polyline — خط متعدد" },
+            { key: "C", name: "Circle — دائرة" },
+            { key: "A", name: "Arc — قوس" },
+            { key: "REC", name: "Rectangle — مستطيل" },
+            { key: "POL", name: "Polygon — مضلع" },
+            { key: "EL", name: "Ellipse — بيضاوي" },
+            { key: "SPL", name: "Spline — منحنى" },
+            { key: "XL", name: "Xline — خط لا نهائي" },
+            { key: "RAY", name: "Ray — شعاع" },
+            { key: "PO", name: "Point — نقطة" },
+            { key: "DO", name: "Donut — حلقة" },
+            { key: "H", name: "Hatch — تظليل" },
+            { key: "ML", name: "Mline — خط مزدوج" }
+        ]
+    },
+    {
+        icon: "🔧", title: "أوامر التعديل — Modify",
+        commands: [
+            { key: "E", name: "Erase — مسح" },
+            { key: "CO / CP", name: "Copy — نسخ" },
+            { key: "M", name: "Move — تحريك" },
+            { key: "RO", name: "Rotate — تدوير" },
+            { key: "SC", name: "Scale — تغيير الحجم" },
+            { key: "MI", name: "Mirror — انعكاس" },
+            { key: "O", name: "Offset — إزاحة" },
+            { key: "AR", name: "Array — مصفوفة" },
+            { key: "TR", name: "Trim — قص" },
+            { key: "EX", name: "Extend — تمديد" },
+            { key: "F", name: "Fillet — تدوير الحواف" },
+            { key: "CHA", name: "Chamfer — شطف الحواف" },
+            { key: "S", name: "Stretch — تمدد" },
+            { key: "LEN", name: "Lengthen — تعديل الطول" },
+            { key: "BR", name: "Break — قطع" },
+            { key: "J", name: "Join — دمج" },
+            { key: "X", name: "Explode — تفكيك" }
+        ]
+    },
+    {
+        icon: "📐", title: "الأبعاد — Dimensions",
+        commands: [
+            { key: "D", name: "Dim Style — إعدادات الأبعاد" },
+            { key: "DLI", name: "Dim Linear — بُعد خطي" },
+            { key: "DAL", name: "Dim Aligned — بُعد محاذي" },
+            { key: "DAN", name: "Dim Angular — بُعد زاوي" },
+            { key: "DDI", name: "Dim Diameter — قطر" },
+            { key: "DRA", name: "Dim Radius — نصف قطر" },
+            { key: "DCO", name: "Dim Continue — متتابع" },
+            { key: "DCE", name: "Dim Center — مركز" },
+            { key: "DOR", name: "Dim Ordinate — إحداثي" }
+        ]
+    },
+    {
+        icon: "📝", title: "النصوص — Text",
+        commands: [
+            { key: "T / MT", name: "Mtext — نص متعدد" },
+            { key: "DT", name: "Dtext — نص سطر واحد" },
+            { key: "ST", name: "Style — إعدادات النص" },
+            { key: "SPE", name: "Spell — تدقيق إملائي" },
+            { key: "ED", name: "Edit — تعديل النص" }
+        ]
+    },
+    {
+        icon: "🗂️", title: "الطبقات — Layers",
+        commands: [
+            { key: "LA", name: "Layer — إدارة الطبقات" },
+            { key: "LAYISO", name: "Layer Isolate" },
+            { key: "LAYUNISO", name: "Layer Unisolate" },
+            { key: "LAYOFF", name: "Layer Off" },
+            { key: "LAYON", name: "Layer On" },
+            { key: "LAYFRZ", name: "Layer Freeze" },
+            { key: "LAYTHW", name: "Layer Thaw" },
+            { key: "LAYMCH", name: "Layer Match" }
+        ]
+    },
+    {
+        icon: "🧱", title: "البلوكات — Blocks",
+        commands: [
+            { key: "B", name: "Block — إنشاء بلوك" },
+            { key: "I", name: "Insert — إدراج" },
+            { key: "W", name: "Wblock — كتابة بلوك" },
+            { key: "BE", name: "Block Editor" },
+            { key: "BATT", name: "Block Attribute" },
+            { key: "ATTDEF", name: "Attribute Definition" }
+        ]
+    },
+    {
+        icon: "👁️", title: "العرض — View",
+        commands: [
+            { key: "Z", name: "Zoom — تكبير" },
+            { key: "P", name: "Pan — تحريك" },
+            { key: "RE", name: "Regen — إعادة توليد" },
+            { key: "REGENALL", name: "Regen All" },
+            { key: "V", name: "View — إدارة المناظر" },
+            { key: "VP", name: "Viewport" },
+            { key: "MS", name: "Model Space" },
+            { key: "PS", name: "Paper Space" }
+        ]
+    },
+    {
+        icon: "📄", title: "الطباعة والتصدير",
+        commands: [
+            { key: "PLOT / Ctrl+P", name: "طباعة" },
+            { key: "PRE", name: "Preview — معاينة" },
+            { key: "PUBLISH", name: "نشر عدة ملفات" },
+            { key: "EXPORT", name: "تصدير" },
+            { key: "IMPORT", name: "استيراد" },
+            { key: "PW", name: "Page Setup" }
+        ]
+    },
+    {
+        icon: "🛠️", title: "أدوات متقدمة",
+        commands: [
+            { key: "MA", name: "Match Properties" },
+            { key: "DI", name: "Distance — قياس المسافة" },
+            { key: "AA", name: "Area — قياس المساحة" },
+            { key: "LI", name: "List — معلومات" },
+            { key: "ID", name: "Point ID" },
+            { key: "MEA", name: "Measure" },
+            { key: "PU", name: "Purge — تنظيف" },
+            { key: "AUDIT", name: "فحص الملف" },
+            { key: "OVERKILL", name: "إزالة المتكرر" },
+            { key: "FILTER / FI", name: "Filter" },
+            { key: "QSELECT", name: "تحديد سريع" }
+        ]
+    }
+];
+
+/* ========================================
+   REVIT COMMANDS (Default)
+======================================== */
+const REVIT_DATA = [
+    {
+        icon: "🏗️", title: "المعماري — Architecture",
+        commands: [
+            { key: "WA", name: "Wall — حائط" },
+            { key: "DR", name: "Door — باب" },
+            { key: "WN", name: "Window — نافذة" },
+            { key: "CM", name: "Component — مكوّن" },
+            { key: "CL", name: "Column — عمود" },
+            { key: "SB", name: "Stair — سلم" },
+            { key: "RA", name: "Railing — درابزين" },
+            { key: "RF", name: "Roof — سقف" },
+            { key: "CE", name: "Ceiling — سقف معلق" },
+            { key: "FL", name: "Floor — أرضية" },
+            { key: "OP", name: "Opening — فتحة" }
+        ]
+    },
+    {
+        icon: "🔩", title: "الإنشائي — Structure",
+        commands: [
+            { key: "BS", name: "Structural Beam" },
+            { key: "CL", name: "Column — عمود خرساني" },
+            { key: "FW", name: "Foundation Wall" },
+            { key: "IS", name: "Isolated Foundation" },
+            { key: "FS", name: "Floor Slab" },
+            { key: "BM", name: "Beam System" },
+            { key: "RF", name: "Rebar — تسليح" }
+        ]
+    },
+    {
+        icon: "⚡", title: "الكهرباء — Electrical",
+        commands: [
+            { key: "EL", name: "Electrical Equipment" },
+            { key: "LE", name: "Lighting Fixture — إضاءة" },
+            { key: "SD", name: "Switch — مفتاح" },
+            { key: "SO", name: "Socket — بريزة" },
+            { key: "CB", name: "Cable Tray — تراي" },
+            { key: "CO", name: "Conduit — ماسورة" },
+            { key: "FP", name: "Fire Alarm" },
+            { key: "DP", name: "Data Panel" }
+        ]
+    },
+    {
+        icon: "💧", title: "الميكانيكا — Mechanical",
+        commands: [
+            { key: "DU", name: "Duct — دكت" },
+            { key: "PP", name: "Pipe — ماسورة" },
+            { key: "FP", name: "Flex Pipe" },
+            { key: "SP", name: "Sprinkler" },
+            { key: "AHU", name: "Air Handling Unit" },
+            { key: "FCU", name: "Fan Coil Unit" },
+            { key: "P", name: "Plumbing Fixture" }
+        ]
+    },
+    {
+        icon: "✏️", title: "أدوات التعديل — Modify",
+        commands: [
+            { key: "MV", name: "Move" },
+            { key: "CO", name: "Copy" },
+            { key: "RO", name: "Rotate" },
+            { key: "MM", name: "Mirror" },
+            { key: "AR", name: "Array" },
+            { key: "TR", name: "Trim" },
+            { key: "EX", name: "Extend" },
+            { key: "SL", name: "Split" },
+            { key: "OF", name: "Offset" },
+            { key: "AL", name: "Align" },
+            { key: "DE", name: "Delete" },
+            { key: "PN", name: "Pin" },
+            { key: "UP", name: "Unpin" }
+        ]
+    },
+    {
+        icon: "👁️", title: "المناظر — Views",
+        commands: [
+            { key: "VP", name: "Viewport" },
+            { key: "3D", name: "Default 3D View" },
+            { key: "EL", name: "Elevation — واجهة" },
+            { key: "SE", name: "Section — قطاع" },
+            { key: "DD", name: "Detail View" },
+            { key: "DG", name: "Drafting View" },
+            { key: "CL", name: "Callout" },
+            { key: "VG", name: "Visibility/Graphics" }
+        ]
+    },
+    {
+        icon: "📄", title: "التوثيق — Annotation",
+        commands: [
+            { key: "DI", name: "Dimension — بُعد" },
+            { key: "TX", name: "Text — نص" },
+            { key: "TG", name: "Tag — تاج" },
+            { key: "EL", name: "Spot Elevation" },
+            { key: "SL", name: "Spot Slope" }
+        ]
+    },
+    {
+        icon: "⚙️", title: "إدارة المشروع — Manage",
+        commands: [
+            { key: "SU", name: "Sun Settings" },
+            { key: "PR", name: "Project Settings" },
+            { key: "UN", name: "Project Units" },
+            { key: "MM", name: "Materials" },
+            { key: "LL", name: "Levels — المناسيب" },
+            { key: "GR", name: "Grids — الشبكات" },
+            { key: "RP", name: "Reference Planes" },
+            { key: "WS", name: "Worksets" },
+            { key: "RL", name: "Reload Latest" },
+            { key: "SWC", name: "Sync with Central" }
+        ]
+    }
+];
+
+/* ========================================
+   HOTKEYS (Default)
+======================================== */
+const HOTKEYS_DATA = [
+    {
+        icon: "🅰️", title: "AutoCAD — Function Keys",
+        commands: [
+            { key: "F1", name: "Help" },
+            { key: "F2", name: "Text Window" },
+            { key: "F3", name: "Object Snap" },
+            { key: "F4", name: "3D Object Snap" },
+            { key: "F5", name: "Isoplane" },
+            { key: "F6", name: "Dynamic UCS" },
+            { key: "F7", name: "Grid" },
+            { key: "F8", name: "Ortho" },
+            { key: "F9", name: "Snap Mode" },
+            { key: "F10", name: "Polar Tracking" },
+            { key: "F11", name: "Object Snap Tracking" },
+            { key: "F12", name: "Dynamic Input" }
+        ]
+    },
+    {
+        icon: "⌨️", title: "AutoCAD — Ctrl Combinations",
+        commands: [
+            { key: "Ctrl+N", name: "New" },
+            { key: "Ctrl+O", name: "Open" },
+            { key: "Ctrl+S", name: "Save" },
+            { key: "Ctrl+Shift+S", name: "Save As" },
+            { key: "Ctrl+P", name: "Print" },
+            { key: "Ctrl+Z", name: "Undo" },
+            { key: "Ctrl+Y", name: "Redo" },
+            { key: "Ctrl+X", name: "Cut" },
+            { key: "Ctrl+C", name: "Copy" },
+            { key: "Ctrl+V", name: "Paste" },
+            { key: "Ctrl+A", name: "Select All" },
+            { key: "Ctrl+1", name: "Properties" },
+            { key: "Ctrl+2", name: "DesignCenter" },
+            { key: "Ctrl+8", name: "QuickCalc" },
+            { key: "Ctrl+9", name: "Command Line" },
+            { key: "Ctrl+0", name: "Clean Screen" },
+            { key: "Esc", name: "إلغاء الأمر" }
+        ]
+    },
+    {
+        icon: "🅱️", title: "Revit — Keyboard Shortcuts",
+        commands: [
+            { key: "Esc", name: "إلغاء الأمر" },
+            { key: "Tab", name: "تدوير العناصر للتحديد" },
+            { key: "Shift+Tab", name: "تدوير عكسي" },
+            { key: "Ctrl+Z", name: "Undo" },
+            { key: "Ctrl+Y", name: "Redo" },
+            { key: "Ctrl+S", name: "Save" },
+            { key: "Ctrl+P", name: "Print" },
+            { key: "Ctrl+C", name: "Copy" },
+            { key: "Ctrl+V", name: "Paste Aligned" },
+            { key: "Ctrl+A", name: "Select All" },
+            { key: "Ctrl+1", name: "Properties Palette" },
+            { key: "Ctrl+2", name: "Project Browser" },
+            { key: "Ctrl+3", name: "System Browser" },
+            { key: "Ctrl+4", name: "Reveal Constraints" },
+            { key: "Ctrl+5", name: "Reveal Hidden Elements" },
+            { key: "Ctrl+Tab", name: "Switch Views" },
+            { key: "F1", name: "Help" },
+            { key: "F2", name: "Rename" },
+            { key: "F4", name: "Show/Hide Ref Planes" },
+            { key: "F5", name: "Refresh" },
+            { key: "F8", name: "Constrain" },
+            { key: "F9", name: "Disallow Join" },
+            { key: "F10", name: "Show Constraints" },
+            { key: "F12", name: "3D Snapping" }
+        ]
+    }
+];
+
+/* ========================================
+   HELPERS
+======================================== */
+function escapeHtml(s) {
+    if (s == null) return "";
+    const d = document.createElement("div");
+    d.textContent = String(s);
+    return d.innerHTML;
+}
+
+/* ========================================
+   LOAD CUSTOM DATA
+======================================== */
+function getCustomData(type) {
+    if (!window.Store) return [];
+    return Store.get("custom_software_" + type, []);
+}
+
+function mergeData(defaultData, customType) {
+    const custom = getCustomData(customType);
+    if (!custom || custom.length === 0) return defaultData;
+
+    const merged = JSON.parse(JSON.stringify(defaultData));
+
+    custom.forEach(customSection => {
+        const existing = merged.find(s => s.title === customSection.title);
+        if (existing) {
+            customSection.commands.forEach(cmd => {
+                if (!existing.commands.some(c => c.key === cmd.key)) {
+                    existing.commands.push(cmd);
+                }
+            });
+        } else {
+            merged.push({ ...customSection, isCustom: true });
+        }
+    });
+
+    return merged;
+}
+
+/* ========================================
+   RENDER SECTION
+======================================== */
+function renderCommandSection(section) {
+    const commandsHTML = section.commands.map(cmd => `
+        <div class="sg-cmd">
+            <span class="sg-cmd-key">${escapeHtml(cmd.key)}</span>
+            <span class="sg-cmd-name">${escapeHtml(cmd.name)}</span>
+        </div>
+    `).join("");
+
+    const customClass = section.isCustom ? "custom-section" : "";
+
+    return `
+        <div class="sg-section ${customClass}">
+            <div class="sg-section-head" onclick="this.parentElement.classList.toggle('collapsed')">
+                <span class="sg-icon">${section.icon || "⭐"}</span>
+                <h3>${escapeHtml(section.title)}</h3>
+                <span class="sg-count">${section.commands.length}</span>
+                <span class="sg-chevron">▼</span>
+            </div>
+            <div class="sg-section-body">
+                <div class="sg-cmd-grid">${commandsHTML}</div>
+            </div>
+        </div>
+    `;
+}
+
+function renderPanel(panelId, data) {
+    const el = document.getElementById(panelId);
+    if (!el) return;
+    el.innerHTML = data.map(renderCommandSection).join("");
+}
+
+/* ========================================
+   YOUTUBE API — استخراج معرّف الفيديو
+======================================== */
+function extractYouTubeId(url) {
+    if (!url) return null;
+    let match = url.match(/[?&]v=([^&]+)/);
+    if (match) return match[1];
+    match = url.match(/youtu\.be\/([^?&]+)/);
+    if (match) return match[1];
+    match = url.match(/embed\/([^?&]+)/);
+    if (match) return match[1];
+    match = url.match(/shorts\/([^?&]+)/);
+    if (match) return match[1];
+    return null;
+}
+
+function getYouTubeVideos() {
+    if (!window.Store) return [];
+    return Store.get("youtube_videos", []);
+}
+
+function renderYouTubeVideos() {
+    const container = document.getElementById("sgVideosGrid");
+    if (!container) return;
+
+    const videos = getYouTubeVideos();
+
+    if (!videos || videos.length === 0) {
+        container.innerHTML = `
+            <div class="sg-empty" style="grid-column: 1 / -1;">
+                <div class="sg-empty-icon">🎥</div>
+                <h4>لا توجد فيديوهات بعد</h4>
+                <p>أضف فيديوهات YouTube من لوحة التحكم لتظهر هنا</p>
+                <a href="../admin.html#software">➕ إضافة فيديو</a>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = videos.map(v => {
+        const videoId = extractYouTubeId(v.url) || v.videoId;
+        if (!videoId) return "";
+
+        return `
+            <div class="sg-video-card">
+                <div class="sg-video-frame">
+                    <iframe
+                        src="https://www.youtube.com/embed/${videoId}"
+                        title="${escapeHtml(v.title)}"
+                        loading="lazy"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="sg-video-info">
+                    <h4>${escapeHtml(v.title)}</h4>
+                    ${v.desc ? `<p>${escapeHtml(v.desc)}</p>` : ""}
+                    <span class="sg-video-tag youtube">▶️ YouTube</span>
+                    ${v.category ? `<span class="sg-video-tag" style="margin-inline-start:6px;">${escapeHtml(v.category)}</span>` : ""}
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+
+/* ========================================
+   CUSTOM LINKS
+======================================== */
+function renderCustomLinks() {
+    const container = document.getElementById("sgCustomLinks");
+    if (!container) return;
+
+    const defaultLinks = [
+        { icon: "🎓", title: "قناة AutoCAD الرسمية", desc: "دروس رسمية من Autodesk", url: "https://www.youtube.com/@AutoCAD" },
+        { icon: "📚", title: "Autodesk Knowledge Network", desc: "قاعدة معارف Autodesk", url: "https://knowledge.autodesk.com/" },
+        { icon: "🎬", title: "قناة Revit الرسمية", desc: "شروحات Revit من المصدر", url: "https://www.youtube.com/@AutodeskRevit" }
+    ];
+
+    let links = defaultLinks;
+    if (window.Store) {
+        const saved = Store.get("software_guide_links", null);
+        if (saved && Array.isArray(saved) && saved.length > 0) {
+            links = saved;
+        }
+    }
+
+    container.innerHTML = links.map(link => `
+        <a href="${link.url}" target="_blank" rel="noopener" class="sg-link-card">
+            <div class="sg-link-icon">${link.icon || "🔗"}</div>
+            <div class="sg-link-info">
+                <div class="sg-link-title">${escapeHtml(link.title)}</div>
+                <div class="sg-link-desc">${escapeHtml(link.desc || "")}</div>
+            </div>
+        </a>
+    `).join("");
+}
+
+/* ========================================
+   SEARCH
+======================================== */
+function initSearch() {
+    const input = document.getElementById("sgSearch");
+    if (!input) return;
+
+    let timer;
+    input.addEventListener("input", (e) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            const q = e.target.value.trim().toLowerCase();
+            filterAll(q);
+        }, 200);
+    });
+}
+
+function filterAll(query) {
+    ["autocadPanel", "revitPanel", "hotkeysPanel"].forEach(panelId => {
+        const panel = document.getElementById(panelId);
+        if (!panel) return;
+
+        const sections = panel.querySelectorAll(".sg-section");
+        let totalVisible = 0;
+
+        sections.forEach(section => {
+            const cmds = section.querySelectorAll(".sg-cmd");
+            let visibleInSection = 0;
+
+            cmds.forEach(cmd => {
+                const text = cmd.textContent.toLowerCase();
+                const match = !query || text.includes(query);
+                cmd.style.display = match ? "" : "none";
+                if (match) visibleInSection++;
+            });
+
+            if (visibleInSection > 0 || !query) {
+                section.style.display = "";
+                section.classList.remove("collapsed");
+                totalVisible += visibleInSection;
+            } else {
+                section.style.display = "none";
+            }
+
+            const countEl = section.querySelector(".sg-count");
+            if (countEl && query) countEl.textContent = visibleInSection;
+        });
+
+        let noResults = panel.querySelector(".sg-no-results");
+        if (query && totalVisible === 0) {
+            if (!noResults) {
+                noResults = document.createElement("div");
+                noResults.className = "sg-no-results";
+                noResults.innerHTML = `<div class="sg-empty"><div class="sg-empty-icon">🔍</div><h4>لا توجد نتائج</h4><p>جرب كلمة بحث مختلفة</p></div>`;
+                panel.appendChild(noResults);
+            }
+            noResults.style.display = "";
+        } else if (noResults) {
+            noResults.style.display = "none";
+        }
+    });
+}
+
+/* ========================================
+   TABS
+======================================== */
+function initTabs() {
+    document.querySelectorAll(".sg-tab").forEach(tab => {
+        tab.addEventListener("click", () => {
+            const target = tab.dataset.tab;
+
+            document.querySelectorAll(".sg-tab").forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+
+            document.querySelectorAll(".sg-panel").forEach(p => {
+                p.classList.toggle("active", p.dataset.panel === target);
+            });
+
+            const search = document.getElementById("sgSearch");
+            if (search) search.value = "";
+            filterAll("");
+        });
+    });
+
+    const hash = (location.hash || "").replace("#", "");
+    if (hash && ["autocad", "revit", "hotkeys", "videos"].includes(hash)) {
+        const tab = document.querySelector(`.sg-tab[data-tab="${hash}"]`);
+        if (tab) tab.click();
+    }
+}
+
+/* ========================================
+   INIT
+======================================== */
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+        const l = document.getElementById("loader");
+        if (l) l.classList.add("hide");
+    }, 400);
+
+    const autocad = mergeData(AUTOCAD_DATA, "autocad");
+    const revit = mergeData(REVIT_DATA, "revit");
+    const hotkeys = mergeData(HOTKEYS_DATA, "hotkeys");
+
+    renderPanel("autocadPanel", autocad);
+    renderPanel("revitPanel", revit);
+    renderPanel("hotkeysPanel", hotkeys);
+    renderYouTubeVideos();
+    renderCustomLinks();
+
+    initTabs();
+    initSearch();
+
+    if (window.Icons && Icons.replaceAll) Icons.replaceAll(document);
+});
+</script>
+
+</body>
+</html>

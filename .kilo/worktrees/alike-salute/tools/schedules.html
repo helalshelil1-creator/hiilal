@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الجداول الهندسية | Eng. Helal Shalil</title>
+<!-- SEO Auto Injection -->
+<script src="js/seo-data.js"></script>
+<script src="js/seo.js"></script>
+<link rel="icon" type="image/png" href="../images/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-wrap{max-width:1300px;margin:30px auto;padding:0 3%;}
+.tool-head{text-align:center;margin-bottom:30px;padding:30px;background:linear-gradient(135deg,#0a1628,#1e4976);color:#fff;border-radius:24px;}
+.tool-head-icon{width:80px;height:80px;margin:0 auto 15px;background:rgba(255,255,255,.12);border:2px solid rgba(0,217,255,.4);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:38px;}
+.tool-head h1{font-size:26px;font-weight:900;margin-bottom:6px;}
+.tool-head p{color:#b8d9e2;font-size:14px;}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:24px;}
+.tab{padding:10px 20px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;font-weight:800;font-size:13px;cursor:pointer;}
+.tab.active,.tab:hover{background:var(--grad-theme);color:var(--navy);border-color:transparent;}
+.panel{display:none;}
+.panel.active{display:block;}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 22px;background:var(--surface);border:2px solid var(--border);border-radius:18px;margin-bottom:16px;flex-wrap:wrap;}
+.panel-head h2{color:var(--navy);font-size:18px;font-weight:900;}
+.panel-head .actions{display:flex;gap:8px;flex-wrap:wrap;}
+.btn{padding:10px 18px;border-radius:12px;border:none;background:var(--grad-primary);color:#fff;font-family:inherit;font-weight:800;font-size:12px;cursor:pointer;}
+.btn-outline{background:transparent;border:1.5px solid var(--cyan);color:var(--cyan);}
+.btn-outline:hover{background:var(--grad-theme);color:var(--navy);}
+.btn-danger{background:rgba(239,68,68,.15);color:#ef4444;border:1.5px solid rgba(239,68,68,.3);}
+.btn-danger:hover{background:#ef4444;color:#fff;}
+.sch-wrap{background:var(--surface);border:2px solid var(--border);border-radius:18px;overflow:hidden;}
+.sch-table{width:100%;border-collapse:collapse;font-size:13px;}
+.sch-table th{background:linear-gradient(135deg,#0a1628,#1e4976);color:#fff;padding:12px 8px;font-weight:800;font-size:12px;text-align:center;white-space:nowrap;}
+.sch-table td{padding:6px;border-bottom:1px solid var(--border);text-align:center;}
+.sch-table td input,.sch-table td select{width:100%;padding:8px 6px;border:none;background:transparent;color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;outline:none;text-align:center;}
+.sch-table td input:focus,.sch-table td select:focus{background:rgba(0,217,255,.1);border-radius:6px;}
+.sch-table tr:hover td{background:var(--surface-2);}
+.sch-table .row-num{font-family:'JetBrains Mono',monospace;color:var(--muted);font-weight:900;font-size:11px;}
+.sch-table .del-btn{padding:4px 10px;border-radius:8px;border:none;background:rgba(239,68,68,.15);color:#ef4444;font-weight:900;cursor:pointer;font-size:12px;}
+.sch-table .del-btn:hover{background:#ef4444;color:#fff;}
+@media(max-width:640px){.sch-table{font-size:11px;}.sch-table th,.sch-table td{padding:4px 2px;}.sch-table td input{font-size:11px;padding:6px 3px;}}
+@media print{.navbar,.tabs,.panel-head .actions,footer,.social-buttons,#loader{display:none!important;}body{background:white;}.sch-table th{background:#0a1628!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.panel{display:block!important;page-break-after:always;}}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="../index.html" class="logo">
+            <img src="../images/logo.png" alt="Logo" class="logo-img">
+            <div class="logo-text">مكتب هندسي متكامل</div>
+        </a>
+        <div class="nav-links">
+            <a href="../index.html">الرئيسية</a>
+            <a href="../tools.html" class="active">الأدوات</a>
+            <a href="../calculators.html">الحاسبات</a>
+            <a href="../encyclopedia.html">الموسوعة</a>
+        </div>
+        <div class="nav-actions"></div>
+    </div>
+</nav>
+
+<div class="tool-wrap">
+    <a href="../tools.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--cyan);font-weight:700;font-size:13px;text-decoration:none;margin-bottom:20px;">← كل الأدوات</a>
+
+    <div class="tool-head">
+        <div class="tool-head-icon">📊</div>
+        <h1>الجداول الهندسية الجاهزة</h1>
+        <p>نماذج جاهزة للتعبئة والطباعة — Cable, Panel, Load, BOQ</p>
+    </div>
+
+    <div class="tabs">
+        <button class="tab active" data-t="cable">🔌 جدول الكابلات</button>
+        <button class="tab" data-t="panel">🔲 جدول اللوحة</button>
+        <button class="tab" data-t="load">⚡ جدول الأحمال</button>
+        <button class="tab" data-t="boq">💰 جدول الكميات BOQ</button>
+    </div>
+
+    <!-- Cable Schedule -->
+    <div class="panel active" data-p="cable">
+        <div class="panel-head">
+            <h2>🔌 جدول الكابلات (Cable Schedule)</h2>
+            <div class="actions">
+                <button class="btn" onclick="addRow('cableTable', cableRow)">➕ إضافة</button>
+                <button class="btn btn-outline" onclick="window.print()">🖨️ طباعة</button>
+                <button class="btn btn-danger" onclick="if(confirm('مسح الكل؟')) clearTable('cableTable')">🗑️ مسح</button>
+            </div>
+        </div>
+        <div class="sch-wrap">
+            <table class="sch-table" id="cableTable">
+                <thead>
+                    <tr>
+                        <th style="width:40px;">#</th>
+                        <th>كود الكابل</th>
+                        <th>من (Source)</th>
+                        <th>إلى (Destination)</th>
+                        <th>النوع</th>
+                        <th>المقطع (mm²)</th>
+                        <th>الطول (m)</th>
+                        <th>طريقة التركيب</th>
+                        <th style="width:50px;"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Panel Schedule -->
+    <div class="panel" data-p="panel">
+        <div class="panel-head">
+            <h2>🔲 جدول اللوحة (Panel Schedule)</h2>
+            <div class="actions">
+                <button class="btn" onclick="addRow('panelTable', panelRow)">➕ إضافة</button>
+                <button class="btn btn-outline" onclick="window.print()">🖨️ طباعة</button>
+                <button class="btn btn-danger" onclick="if(confirm('مسح الكل؟')) clearTable('panelTable')">🗑️ مسح</button>
+            </div>
+        </div>
+        <div class="sch-wrap">
+            <table class="sch-table" id="panelTable">
+                <thead>
+                    <tr>
+                        <th style="width:40px;">دائرة</th>
+                        <th>الوصف</th>
+                        <th>النوع</th>
+                        <th>القاطع (A)</th>
+                        <th>الأوجه</th>
+                        <th>الكابل</th>
+                        <th>الحمل (kW)</th>
+                        <th style="width:50px;"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Load Schedule -->
+    <div class="panel" data-p="load">
+        <div class="panel-head">
+            <h2>⚡ جدول الأحمال (Load Schedule)</h2>
+            <div class="actions">
+                <button class="btn" onclick="addRow('loadTable', loadRow)">➕ إضافة</button>
+                <button class="btn btn-outline" onclick="window.print()">🖨️ طباعة</button>
+                <button class="btn btn-danger" onclick="if(confirm('مسح الكل؟')) clearTable('loadTable')">🗑️ مسح</button>
+            </div>
+        </div>
+        <div class="sch-wrap">
+            <table class="sch-table" id="loadTable">
+                <thead>
+                    <tr>
+                        <th style="width:40px;">#</th>
+                        <th>النوع / الوصف</th>
+                        <th>الكمية</th>
+                        <th>القدرة (kW)</th>
+                        <th>معامل التباين</th>
+                        <th>الحمل التصميمي</th>
+                        <th style="width:50px;"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- BOQ -->
+    <div class="panel" data-p="boq">
+        <div class="panel-head">
+            <h2>💰 جدول الكميات (BOQ)</h2>
+            <div class="actions">
+                <button class="btn" onclick="addRow('boqTable', boqRow)">➕ إضافة</button>
+                <button class="btn btn-outline" onclick="window.print()">🖨️ طباعة</button>
+                <button class="btn btn-danger" onclick="if(confirm('مسح الكل؟')) clearTable('boqTable')">🗑️ مسح</button>
+            </div>
+        </div>
+        <div class="sch-wrap">
+            <table class="sch-table" id="boqTable">
+                <thead>
+                    <tr>
+                        <th style="width:40px;">#</th>
+                        <th>البند</th>
+                        <th>الوصف</th>
+                        <th>الوحدة</th>
+                        <th>الكمية</th>
+                        <th>سعر الوحدة</th>
+                        <th>الإجمالي</th>
+                        <th style="width:50px;"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+const cableRow = `
+    <td class="row-num"></td>
+    <td><input placeholder="C-001"></td>
+    <td><input placeholder="MDP"></td>
+    <td><input placeholder="Panel 1"></td>
+    <td><select><option>Cu/PVC</option><option>Cu/XLPE</option><option>Cu/XLPE/SWA</option><option>Al/PVC</option></select></td>
+    <td><input placeholder="4×16" style="font-family:'JetBrains Mono',monospace;"></td>
+    <td><input type="number" placeholder="0"></td>
+    <td><select><option>ماسورة</option><option>تراي</option><option>مدفون</option><option>هوائي</option></select></td>
+    <td><button class="del-btn" onclick="this.closest('tr').remove();renumber()">✕</button></td>
+`;
+const panelRow = `
+    <td><input placeholder="1" style="width:50px;"></td>
+    <td><input placeholder="إضاءة"></td>
+    <td><select><option>1P</option><option>2P</option><option>3P</option><option>4P</option></select></td>
+    <td><input placeholder="16"></td>
+    <td><select><option>L1</option><option>L2</option><option>L3</option><option>L1-L2</option><option>L1-L3</option><option>L2-L3</option></select></td>
+    <td><input placeholder="3×2.5"></td>
+    <td><input type="number" placeholder="0"></td>
+    <td><button class="del-btn" onclick="this.closest('tr').remove()">✕</button></td>
+`;
+const loadRow = `
+    <td class="row-num"></td>
+    <td><input placeholder="إضاءة - دور 1"></td>
+    <td><input type="number" placeholder="1"></td>
+    <td><input type="number" placeholder="0" oninput="calcLoadRow(this)"></td>
+    <td><input type="number" value="1" step="0.05" oninput="calcLoadRow(this)"></td>
+    <td><input placeholder="0" readonly style="background:rgba(0,217,255,.05);"></td>
+    <td><button class="del-btn" onclick="this.closest('tr').remove();renumber()">✕</button></td>
+`;
+const boqRow = `
+    <td class="row-num"></td>
+    <td><input placeholder="EL-001"></td>
+    <td><input placeholder="كابل نحاس 4×16"></td>
+    <td><select><option>m</option><option>عدد</option><option>kg</option><option>م²</option><option>م³</option><option>طن</option></select></td>
+    <td><input type="number" placeholder="0" oninput="calcBoqRow(this)"></td>
+    <td><input type="number" placeholder="0" oninput="calcBoqRow(this)"></td>
+    <td><input placeholder="0" readonly style="background:rgba(0,217,255,.05);"></td>
+    <td><button class="del-btn" onclick="this.closest('tr').remove();renumber()">✕</button></td>
+`;
+
+function addRow(tableId, template){
+    const tbody = document.querySelector(`#${tableId} tbody`);
+    const tr = document.createElement("tr");
+    tr.innerHTML = template;
+    tbody.appendChild(tr);
+    renumber();
+    saveAll();
+}
+
+function clearTable(tableId){
+    document.querySelector(`#${tableId} tbody`).innerHTML = "";
+    saveAll();
+}
+
+function renumber(){
+    document.querySelectorAll(".sch-table").forEach(table => {
+        table.querySelectorAll("tbody tr").forEach((tr, i) => {
+            const cell = tr.querySelector(".row-num");
+            if(cell) cell.textContent = (i+1).toString().padStart(2, '0');
+        });
+    });
+}
+
+function calcLoadRow(input){
+    const tr = input.closest("tr");
+    const qty = parseFloat(tr.cells[2].querySelector("input").value) || 0;
+    const kw = parseFloat(tr.cells[3].querySelector("input").value) || 0;
+    const div = parseFloat(tr.cells[4].querySelector("input").value) || 1;
+    const result = qty * kw * div;
+    tr.cells[5].querySelector("input").value = result.toFixed(2);
+    saveAll();
+}
+
+function calcBoqRow(input){
+    const tr = input.closest("tr");
+    const qty = parseFloat(tr.cells[4].querySelector("input").value) || 0;
+    const price = parseFloat(tr.cells[5].querySelector("input").value) || 0;
+    const total = qty * price;
+    tr.cells[6].querySelector("input").value = total.toFixed(2);
+    saveAll();
+}
+
+function saveAll(){
+    const data = {};
+    ["cableTable", "panelTable", "loadTable", "boqTable"].forEach(id => {
+        const rows = [];
+        document.querySelectorAll(`#${id} tbody tr`).forEach(tr => {
+            const row = [];
+            tr.querySelectorAll("input, select").forEach(el => row.push(el.value));
+            rows.push(row);
+        });
+        data[id] = rows;
+    });
+    try {
+        localStorage.setItem("schedules_data", JSON.stringify(data));
+    } catch(e) {}
+}
+
+function loadAll(){
+    try {
+        const data = JSON.parse(localStorage.getItem("schedules_data") || "{}");
+        ["cableTable", "panelTable", "loadTable", "boqTable"].forEach(id => {
+            if(!data[id] || !data[id].length) return;
+            const tbody = document.querySelector(`#${id} tbody`);
+            data[id].forEach(row => {
+                const tr = document.createElement("tr");
+                const temp = { cableTable: cableRow, panelTable: panelRow, loadTable: loadRow, boqTable: boqRow }[id];
+                tr.innerHTML = temp;
+                const inputs = tr.querySelectorAll("input, select");
+                row.forEach((v, i) => { if(inputs[i]) inputs[i].value = v; });
+                tbody.appendChild(tr);
+            });
+        });
+        renumber();
+    } catch(e){}
+}
+
+/* ==========================================
+   Deep Linking
+========================================== */
+const VALID_TABS = ["cable", "panel", "load", "boq"];
+
+function switchTab(tabKey){
+    if (!VALID_TABS.includes(tabKey)) tabKey = "cable";
+    document.querySelectorAll(".tab").forEach(t => {
+        t.classList.toggle("active", t.dataset.t === tabKey);
+    });
+    document.querySelectorAll(".panel").forEach(p => {
+        p.classList.toggle("active", p.dataset.p === tabKey);
+    });
+    if (history.replaceState) {
+        history.replaceState(null, "", "#" + tabKey);
+    }
+}
+
+document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => switchTab(tab.dataset.t));
+});
+
+loadAll();
+if(document.querySelector("#cableTable tbody tr") === null){
+    addRow("cableTable", cableRow);
+    addRow("cableTable", cableRow);
+    addRow("panelTable", panelRow);
+    addRow("panelTable", panelRow);
+    addRow("loadTable", loadRow);
+    addRow("loadTable", loadRow);
+    addRow("boqTable", boqRow);
+    addRow("boqTable", boqRow);
+}
+
+(function initFromHash(){
+    const hash = (location.hash || "").replace("#", "").trim();
+    if (hash && VALID_TABS.includes(hash)) switchTab(hash);
+})();
+
+window.addEventListener("hashchange", () => {
+    const hash = (location.hash || "").replace("#", "").trim();
+    if (hash && VALID_TABS.includes(hash)) switchTab(hash);
+});
+
+document.addEventListener("input", saveAll);
+</script>
+</body>
+</html>

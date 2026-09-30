@@ -143,18 +143,7 @@ const TOOLS = [
         desc: "نموذج أمر التغيير للأعمال الإضافية مع التسعير.",
         url: "tools/documents.html#variation",
         badge: "NEW"
-    },
-    {
-    id: "schedules-reference",
-    name: "جدول اللبنات الاسترشادي",
-    nameEn: "Circuit Schedules Reference",
-    category: "technical",
-    icon: "clipboard-list",
-    desc: "جدول مرجعي لملء فرغات اللبنات — ماسورة، سلك، قاطع، معامل الطلب والقدرة",
-    url: "tools/schedules-reference.html",
-    badge: "NEW"
     }
 ];
-
 
 window.TOOLS = TOOLS;

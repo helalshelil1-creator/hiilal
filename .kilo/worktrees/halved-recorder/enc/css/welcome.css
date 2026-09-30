@@ -1,0 +1,431 @@
+/* ========================================
+   WELCOME / HERO SECTION
+   خلفية كهربائية متحركة + تأثيرات عصرية
+======================================== */
+
+/* ========================================
+   الحاوية الرئيسية
+======================================== */
+.welcome {
+    position: relative;
+    padding: 90px 5% 100px;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+    min-height: 620px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 14px 14px 0;
+    border-radius: 40px;
+    background:
+        radial-gradient(ellipse at 15% 20%, rgba(0,217,255,.22), transparent 55%),
+        radial-gradient(ellipse at 85% 80%, rgba(124,58,237,.18), transparent 55%),
+        linear-gradient(135deg, #050d1a 0%, #0a1628 40%, #12263f 100%);
+    border: 1px solid rgba(0,217,255,.18);
+    box-shadow:
+        0 0 40px rgba(0,217,255,.15),
+        inset 0 0 80px rgba(0,217,255,.05);
+}
+
+/* صورة الخلفية */
+.welcome::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url('../images/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: .32;
+    z-index: 0;
+    filter: saturate(1.2) contrast(1.05);
+    animation: heroZoom 30s ease-in-out infinite alternate;
+}
+
+.welcome::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+        rgba(5,13,26,.55) 0%,
+        rgba(5,13,26,.35) 40%,
+        rgba(5,13,26,.78) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+@keyframes heroZoom {
+    0%   { transform: scale(1); }
+    100% { transform: scale(1.08); }
+}
+
+/* ========================================
+   الخلفية الكهربائية (SVG + Sparks)
+======================================== */
+.electric-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.circuit-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: .85;
+}
+
+/* خطوط الدائرة الكهربائية */
+.circuit-line {
+    stroke-dasharray: 12 8;
+    animation: circuitFlow 4s linear infinite;
+}
+
+@keyframes circuitFlow {
+    0%   { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: -40; }
+}
+
+/* عُقد النبض */
+.pulse-node {
+    filter: url(#glow);
+    animation: nodePulse 2s ease-in-out infinite;
+    transform-origin: center;
+    transform-box: fill-box;
+}
+
+@keyframes nodePulse {
+    0%, 100% {
+        opacity: .6;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.8);
+    }
+}
+
+/* الشرر المتصاعد */
+.sparks {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.spark {
+    position: absolute;
+    bottom: -10px;
+    width: 4px;
+    height: 4px;
+    background: #00d9ff;
+    border-radius: 50%;
+    box-shadow:
+        0 0 8px #00d9ff,
+        0 0 16px rgba(0,217,255,.8),
+        0 0 24px rgba(0,217,255,.5);
+    animation: sparkRise 6s linear infinite;
+    opacity: 0;
+}
+
+.spark:nth-child(2) { background: #c4b5fd; box-shadow: 0 0 8px #c4b5fd, 0 0 16px rgba(196,181,253,.8); }
+.spark:nth-child(4) { background: #c4b5fd; box-shadow: 0 0 8px #c4b5fd, 0 0 16px rgba(196,181,253,.8); }
+.spark:nth-child(6) { background: #22d3ee; box-shadow: 0 0 8px #22d3ee, 0 0 16px rgba(34,211,238,.8); }
+
+@keyframes sparkRise {
+    0% {
+        transform: translateY(0) scale(.5);
+        opacity: 0;
+    }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% {
+        transform: translateY(-100vh) scale(1.4);
+        opacity: 0;
+    }
+}
+
+/* البرق */
+.lightning {
+    position: absolute;
+    top: 0;
+    right: 20%;
+    width: 100px;
+    height: 100%;
+    opacity: 0;
+    animation: lightningFlash 8s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes lightningFlash {
+    0%, 88%, 100% { opacity: 0; }
+    89%           { opacity: .9; }
+    90%           { opacity: .2; }
+    91%           { opacity: .8; }
+    92%           { opacity: 0; }
+}
+
+/* ========================================
+   المحتوى الداخلي
+======================================== */
+.welcome-inner {
+    position: relative;
+    z-index: 5;
+    max-width: 900px;
+    margin: auto;
+}
+
+/* ========================================
+   صورة Welcome (البورتريه)
+======================================== */
+.welcome-icon {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    background: transparent;
+    border: 2px solid rgba(0,217,255,.6);
+    border-radius: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.5),
+        0 0 40px rgba(0,217,255,.5);
+    overflow: visible;
+    padding: 0;
+    cursor: pointer;
+    transition: all .4s cubic-bezier(.16,1,.3,1);
+    animation: welcomeFloat 4s ease-in-out infinite;
+}
+
+.welcome-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 26px;
+}
+
+.welcome-icon:hover {
+    transform: scale(1.08) rotate(-2deg);
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.6),
+        0 0 80px rgba(0,217,255,.8);
+}
+
+.welcome-icon:active {
+    transform: scale(.96);
+}
+
+@keyframes welcomeFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+}
+
+/* حلقتا النبض */
+.icon-pulse,
+.icon-pulse-2 {
+    position: absolute;
+    inset: -6px;
+    border-radius: 32px;
+    border: 2px solid rgba(0,217,255,.6);
+    pointer-events: none;
+    opacity: 0;
+    animation: iconPulse 3s ease-out infinite;
+}
+
+.icon-pulse-2 {
+    inset: -14px;
+    border-color: rgba(196,181,253,.4);
+    animation-delay: 1.5s;
+}
+
+@keyframes iconPulse {
+    0% {
+        transform: scale(.9);
+        opacity: .8;
+    }
+    100% {
+        transform: scale(1.35);
+        opacity: 0;
+    }
+}
+
+/* ========================================
+   العنوان الرئيسي
+======================================== */
+.welcome-title {
+    font-size: clamp(26px, 5vw, 48px);
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+}
+
+.title-top {
+    display: block;
+    font-size: 0.55em;
+    color: rgba(255,255,255,.85);
+    font-weight: 600;
+    letter-spacing: 3px;
+}
+
+.title-main {
+    display: block;
+    background: linear-gradient(90deg,
+        #67e8f9 0%,
+        #ffffff 25%,
+        #c4b5fd 50%,
+        #ffffff 75%,
+        #67e8f9 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textShine 5s linear infinite;
+}
+
+@keyframes textShine {
+    0%   { background-position: 0% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* ========================================
+   الوصف
+======================================== */
+.welcome-inner > p {
+    font-size: 16px;
+    color: rgba(255,255,255,.88);
+    line-height: 1.9;
+    max-width: 680px;
+    margin: 0 auto 32px;
+}
+
+/* ========================================
+   البحث
+======================================== */
+.search-wrap {
+    position: relative;
+    max-width: 640px;
+    margin: auto;
+}
+
+.search-input {
+    width: 100%;
+    padding: 18px 24px 18px 60px;
+    border-radius: 100px;
+    border: 1.5px solid rgba(0,217,255,.4);
+    background: rgba(10,22,40,.75);
+    backdrop-filter: blur(12px);
+    color: white;
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.4),
+        0 0 30px rgba(0,217,255,.2);
+    transition: all .3s;
+}
+
+.search-input::placeholder {
+    color: rgba(255,255,255,.55);
+}
+
+.search-input:focus {
+    background: rgba(10,22,40,.95);
+    border-color: #67e8f9;
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.5),
+        0 0 0 4px rgba(0,217,255,.25);
+}
+
+.search-icon {
+    position: absolute;
+    left: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #67e8f9;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* ========================================
+   الموبايل
+======================================== */
+@media (max-width: 700px) {
+    .welcome {
+        padding: 60px 5% 70px;
+        min-height: 540px;
+        margin: 10px 10px 0;
+        border-radius: 30px;
+    }
+
+    .welcome::before {
+        opacity: .28;
+    }
+
+    .welcome-icon {
+        width: 100px;
+        height: 100px;
+        border-radius: 22px;
+        animation: none;
+    }
+
+    .welcome-icon img { border-radius: 20px; }
+
+    .welcome-title {
+        font-size: 24px;
+    }
+
+    .welcome-inner > p {
+        font-size: 13px;
+    }
+
+    .search-input {
+        padding: 15px 50px 15px 20px;
+        font-size: 13px;
+    }
+
+    .search-icon {
+        left: 18px;
+        font-size: 16px;
+    }
+
+    .lightning { display: none; }
+}
+
+/* ========================================
+   RTL
+======================================== */
+[dir="ltr"] .search-input {
+    padding: 18px 60px 18px 24px;
+}
+
+[dir="ltr"] .search-icon {
+    left: auto;
+    right: 22px;
+}
+
+/* ========================================
+   REDUCED MOTION
+======================================== */
+@media (prefers-reduced-motion: reduce) {
+    .welcome::before,
+    .welcome-icon,
+    .spark,
+    .pulse-node,
+    .lightning,
+    .title-main,
+    .icon-pulse,
+    .icon-pulse-2 {
+        animation: none !important;
+    }
+}
