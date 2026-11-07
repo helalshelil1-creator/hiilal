@@ -81,8 +81,7 @@
 <!-- ========================================
      STRUCTURED DATA
 ======================================== -->
-<script type="application/ld+json">
-{
+<script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
     {
@@ -93,7 +92,9 @@
       "alternateName": "Eng. Helal Shalil Office",
       "description": "منصة هندسية متكاملة لمهندس الكهرباء والـ MEP",
       "inLanguage": "ar",
-      "publisher": { "@id": "https://hiilal.vercel.app/#person" },
+      "publisher": {
+        "@id": "https://hiilal.vercel.app/#person"
+      },
       "potentialAction": {
         "@type": "SearchAction",
         "target": {
@@ -107,26 +108,49 @@
       "@type": "Person",
       "@id": "https://hiilal.vercel.app/#person",
       "name": "هلال شليل",
-      "alternateName": ["Eng. Helal Shalil", "المهندس هلال شليل"],
+      "alternateName": [
+        "Eng. Helal Shalil",
+        "المهندس هلال شليل"
+      ],
       "jobTitle": "Electrical & MEP Engineer",
       "url": "https://hiilal.vercel.app/about.html",
       "image": "https://hiilal.vercel.app/images/alamein.jpg",
-      "sameAs": ["https://www.facebook.com/share/1LZyJP2zat/"],
+      "sameAs": [
+        "https://www.facebook.com/share/1LZyJP2zat/",
+        "https://alnaqeebgroup.vercel.app/"
+      ],
       "telephone": "+201124169656",
       "email": "helalshelil1@gmail.com",
-      "knowsAbout": ["Electrical Engineering", "MEP Engineering", "AutoCAD", "Revit", "IEC 60364", "Fire Alarm Systems", "Lighting Design"]
+      "knowsAbout": [
+        "Electrical Engineering",
+        "MEP Engineering",
+        "AutoCAD",
+        "Revit",
+        "IEC 60364",
+        "Fire Alarm Systems",
+        "Lighting Design"
+      ],
+      "worksFor": {
+        "@id": "https://alnaqeebgroup.vercel.app/#org"
+      }
     },
     {
       "@type": "Organization",
       "@id": "https://hiilal.vercel.app/#organization",
       "name": "مكتب المهندس هلال شليل",
       "url": "https://hiilal.vercel.app/",
-      "logo": { "@type": "ImageObject", "url": "https://hiilal.vercel.app/images/logo.png" },
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://hiilal.vercel.app/images/logo.png"
+      },
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+201124169656",
         "contactType": "customer service",
-        "availableLanguage": ["Arabic", "English"],
+        "availableLanguage": [
+          "Arabic",
+          "English"
+        ],
         "areaServed": "EG"
       }
     },
@@ -137,11 +161,30 @@
       "url": "https://hiilal.vercel.app/",
       "applicationCategory": "EngineeringApplication",
       "operatingSystem": "Any",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EGP" }
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EGP"
+      }
+    },
+    {
+      "@type": [
+        "GeneralContractor",
+        "Organization"
+      ],
+      "@id": "https://alnaqeebgroup.vercel.app/#org",
+      "name": "AL NAQEEB GROUP",
+      "alternateName": "مجموعة النقيب",
+      "url": "https://alnaqeebgroup.vercel.app/",
+      "email": "alnaqeebgroup@gmail.com",
+      "telephone": "+20 112 416 9656",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Egypt"
+      }
     }
   ]
-}
-</script>
+}</script>
 
 <!-- ========================================
      STAT CARDS — Pulsing Dark Border
@@ -583,6 +626,7 @@
             <div class="footer-col">
                 <h4 class="footer-title" data-i18n="footer.quick">روابط سريعة</h4>
                 <ul class="footer-list">
+                    <li><a href="https://alnaqeebgroup.vercel.app/" target="_blank" rel="noopener">مجموعة النقيب — AL NAQEEB GROUP</a></li>
                     <li><a href="index.html">الرئيسية</a></li>
                     <li><a href="tools.html">الأدوات الهندسية</a></li>
                     <li><a href="calculators.html">الحاسبات</a></li>

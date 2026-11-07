@@ -82,15 +82,18 @@
 <!-- ========================================
      STRUCTURED DATA — Person + WebPage + Breadcrumb
 ======================================== -->
-<script type="application/ld+json">
-{
+<script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "Person",
       "@id": "https://hiilal.vercel.app/#person",
       "name": "هلال شليل",
-      "alternateName": ["Eng. Helal Shalil", "Helal Shalil", "المهندس هلال شليل"],
+      "alternateName": [
+        "Eng. Helal Shalil",
+        "Helal Shalil",
+        "المهندس هلال شليل"
+      ],
       "givenName": "هلال",
       "familyName": "شليل",
       "jobTitle": "Electrical & MEP Engineer",
@@ -127,13 +130,17 @@
       ],
       "sameAs": [
         "https://www.facebook.com/share/1LZyJP2zat/",
-        "https://hiilal.vercel.app/"
+        "https://hiilal.vercel.app/",
+        "https://alnaqeebgroup.vercel.app/"
       ],
       "worksFor": {
         "@type": "Organization",
         "@id": "https://hiilal.vercel.app/#organization",
         "name": "مكتب المهندس هلال شليل",
         "url": "https://hiilal.vercel.app/"
+      },
+      "affiliation": {
+        "@id": "https://alnaqeebgroup.vercel.app/#org"
       }
     },
     {
@@ -146,14 +153,19 @@
         "@type": "ImageObject",
         "url": "https://hiilal.vercel.app/images/logo.png"
       },
-      "founder": { "@id": "https://hiilal.vercel.app/#person" },
+      "founder": {
+        "@id": "https://hiilal.vercel.app/#person"
+      },
       "foundingDate": "2024",
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+201124169656",
         "contactType": "customer service",
         "email": "helalshelil1@gmail.com",
-        "availableLanguage": ["Arabic", "English"],
+        "availableLanguage": [
+          "Arabic",
+          "English"
+        ],
         "areaServed": {
           "@type": "Country",
           "name": "Egypt"
@@ -167,8 +179,12 @@
       "name": "عن المكتب | المهندس هلال شليل",
       "description": "تعرف على المهندس هلال شليل — مهندس كهرباء و MEP",
       "inLanguage": "ar",
-      "isPartOf": { "@id": "https://hiilal.vercel.app/#website" },
-      "about": { "@id": "https://hiilal.vercel.app/#person" },
+      "isPartOf": {
+        "@id": "https://hiilal.vercel.app/#website"
+      },
+      "about": {
+        "@id": "https://hiilal.vercel.app/#person"
+      },
       "primaryImageOfPage": {
         "@type": "ImageObject",
         "url": "https://hiilal.vercel.app/images/alamein.jpg"
@@ -190,10 +206,25 @@
           "item": "https://hiilal.vercel.app/about.html"
         }
       ]
+    },
+    {
+      "@type": [
+        "GeneralContractor",
+        "Organization"
+      ],
+      "@id": "https://alnaqeebgroup.vercel.app/#org",
+      "name": "AL NAQEEB GROUP",
+      "alternateName": "مجموعة النقيب",
+      "url": "https://alnaqeebgroup.vercel.app/",
+      "email": "alnaqeebgroup@gmail.com",
+      "telephone": "+20 112 416 9656",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Egypt"
+      }
     }
   ]
-}
-</script>
+}</script>
 
 <style>
 /* ========================================
@@ -787,6 +818,18 @@
         </div>
     </div>
 
+    <!-- AL NAQEEB GROUP -->
+    <div class="skills-section">
+        <h2>🏢 مجموعة النقيب — AL NAQEEB GROUP</h2>
+        <p>شركة مقاولات في مدينة السادس من أكتوبر بمصر، يرأس مجلس إدارتها المهندس هلال شليل. تنفذ أعمال الكهرباء والميكانيكا والتكييف ومكافحة الحريق ولوحات التحكم والأنظمة الذكية والصيانة — من خلال فريق هندسي متكامل على مستوى عالٍ من الخبرة.</p>
+        <p style="margin-top:14px;">
+            <a href="https://alnaqeebgroup.vercel.app/" target="_blank" rel="noopener"
+               style="display:inline-block;padding:12px 22px;border-radius:10px;background:linear-gradient(135deg,#DCA52E,#b8860b);color:#062B52;font-weight:700;text-decoration:none;">
+                زيارة موقع المجموعة ←
+            </a>
+        </p>
+    </div>
+
     <!-- Contact -->
     <div class="skills-section">
         <h2>📞 التواصل</h2>
@@ -870,6 +913,7 @@
             <div class="footer-col">
                 <h4 class="footer-title">روابط سريعة</h4>
                 <ul class="footer-list">
+                    <li><a href="https://alnaqeebgroup.vercel.app/" target="_blank" rel="noopener">مجموعة النقيب — AL NAQEEB GROUP</a></li>
                     <li><a href="index.html">الرئيسية</a></li>
                     <li><a href="tools.html">الأدوات</a></li>
                     <li><a href="calculators.html">الحاسبات</a></li>
