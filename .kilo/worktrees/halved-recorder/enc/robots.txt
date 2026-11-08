@@ -1,9 +1,0 @@
-# robots.txt — Eng. Helal Shalil
-User-agent: *
-Allow: /
-Disallow: /admin.html
-Disallow: /js/
-Disallow: /css/
-
-# Sitemap
-Sitemap: https://your-domain.com/sitemap.xml
