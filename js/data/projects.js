@@ -12,12 +12,12 @@ const PROJECT_CATEGORIES = [
 ];
 
 const PROJECTS = [
-    { id: "p1", title: "مقر شركة النقيب — تجهيز كهروميكانيكي", category: "commercial", status: "مكتمل", location: "مدينة السادس من أكتوبر", year: "2025", desc: "تجهيز كهروميكانيكي متكامل لمقر شركة مقاولات: كهرباء، تكييف، مكافحة حريق، لوحات تحكم، أنظمة ذكية." },
-    { id: "p2", title: "مجتمع سكني — بنية تحتية", category: "residential", status: "مكتمل", location: "القاهرة الجديدة", year: "2024", desc: "شبكات مياه وصرف وكهرباء لمجمع سكني من فلل وشقق." },
-    { id: "p3", title: "مستودع لوجستي — طاقة", category: "industrial", status: "مكتمل", location: "مدينة العاشر من رمضان", year: "2024", desc: "توزيع HV/LV، إضاءة، وطاقة احتياطية لمستودع لوجستي." },
-    { id: "p4", title: "تحديث تكييف — مركز تجاري", category: "commercial", status: "مكتمل", location: "بغداد", year: "2023", desc: "تحديث محطة تبريد ماء مبرد وتوزيع هواء." },
-    { id: "p5", title: "شبكة مكافحة حريق — مجمع", category: "infrastructure", status: "مكتمل", location: "مكّة", year: "2023", desc: "شبكة مكافحة حريق كاملة: مضخات، رشاشات، إنذار." },
-    { id: "p6", title: "لوحات تحكم MCC — Suite", category: "industrial", status: "مكتمل", location: "الدمام", year: "2024", desc: "تصميم وتنفيذ لوحات تحكم MCC و PLC." }
+    { name: "مقر شركة النقيب — تجهيز كهروميكانيكي", client: "AL NAQEEB GROUP", description: "تجهيز كهروميكانيكي متكامل: كهرباء، تكييف، مكافحة حريق، لوحات تحكم، أنظمة ذكية.", location: "مدينة السادس من أكتوبر", type: "تجاري", status: "مكتمل" },
+    { name: "مجتمع سكني — بنية تحتية", client: "عميل خاص", description: "شبكات مياه وصرف وكهرباء لمجمع سكني من فلل وشقق.", location: "القاهرة الجديدة", type: "سكني", status: "مكتمل" },
+    { name: "مستودع لوجستي — طاقة", client: "عميل لوجستي", description: "توزيع HV/LV، إضاءة، وطاقة احتياطية لمستودع لوجستي.", location: "مدينة العاشر من رمضان", type: "صناعي", status: "مكتمل" },
+    { name: "تحديث تكييف — مركز تجاري", client: "مركز تجاري", description: "تحديث محطة تبريد ماء مبرد وتوزيع هواء.", location: "بغداد", type: "تجاري", status: "مكتمل" },
+    { name: "شبكة مكافحة حريق — مجمع", client: "مجمع سكني", description: "شبكة مكافحة حريق كاملة: مضخات، رشاشات، إنذار.", location: "مكّة", type: "بنية تحتية", status: "مكتمل" },
+    { name: "لوحات تحكم MCC — Suite", client: "عميل صناعي", description: "تصميم وتنفيذ لوحات تحكم MCC و PLC.", location: "الدمام", type: "صناعي", status: "مكتمل" }
 ];
 
 window.PROJECT_CATEGORIES = PROJECT_CATEGORIES;
