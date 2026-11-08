@@ -509,17 +509,6 @@
 </section>
 
 <!-- ========================================
-     Categories
-======================================== -->
-<section class="container section">
-    <div class="section-head">
-        <h2 data-i18n="section.cat">التصنيفات الرئيسية</h2>
-        <a href="tools.html" data-i18n="section.viewAll">عرض الكل ←</a>
-    </div>
-    <div class="grid grid-4" id="categoriesGrid"></div>
-</section>
-
-<!-- ========================================
      Libraries
 ======================================== -->
 <section class="container section">
@@ -531,11 +520,6 @@
             <div class="cat-icon" data-icon="book-open" aria-hidden="true"></div>
             <h3>المحتوى الشامل</h3>
             <p>ملفات، برامج، صور، فيديوهات، مقالات</p>
-        </a>
-        <a href="encyclopedia.html" class="cat-card">
-            <div class="cat-icon" data-icon="library" aria-hidden="true"></div>
-            <h3>الموسوعة الهندسية</h3>
-            <p>قوانين ومفاهيم في كل التخصصات</p>
         </a>
         <a href="codes.html" class="cat-card">
             <div class="cat-icon" data-icon="file-text" aria-hidden="true"></div>
@@ -762,7 +746,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }).join("");
     }
 
-    if (typeof renderCategories === "function") renderCategories("categoriesGrid", 8);
     if (typeof renderCalculators === "function") renderCalculators("calcGrid");
 
     document.querySelectorAll("[data-icon]").forEach(el => {
