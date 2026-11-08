@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<title>مستخلص مشروع إنذار وإطفاء حريق – مصنع كوفرتينا</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0f2744;--navy-2:#16375c;--gold:#c9a227;--gold-l:#e8c766;
+  --red:#b3261e;--green:#1b7a4b;--bg:#eef1f5;--card:#fff;--line:#d7dde5;
+  --txt:#1c2530;--muted:#5b6b7d;
+  --copper:#b87333;--copper-l:#e8c766;--copper-d:#8a5a2b;
+  --gold-bg:#fdf5dd;--gold-bg-dark:#fcefc7;--gold-bg-hover:#fce4a8;
+  --shadow:0 6px 24px rgba(15,39,68,.10);
+  --shadow-hover:0 15px 35px rgba(15,39,68,.18);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #eef1f5; }
+::-webkit-scrollbar-thumb { background: var(--navy); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+body{font-family:'Cairo',system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--txt);line-height:1.75;font-size:15px;padding-bottom:80px;overflow-x:hidden}
+
+/* ===== العلامة المائية ===== */
+.watermark {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-12deg) scale(1);
+    width: 80vmin; height: 80vmin; opacity: 0.06;
+    pointer-events: none; z-index: 0;
+    background-image: url('watermark.png');
+    background-repeat: no-repeat; background-position: center; background-size: contain;
+    mix-blend-mode: multiply;
+    animation: watermarkPulse 10s ease-in-out infinite;
+}
+@keyframes watermarkPulse {
+    0% { opacity: 0.05; transform: translate(-50%, -50%) rotate(-12deg) scale(1); }
+    50% { opacity: 0.11; transform: translate(-50%, -50%) rotate(-12deg) scale(1.04); }
+    100% { opacity: 0.05; transform: translate(-50%, -50%) rotate(-12deg) scale(1); }
+}
+
+.wrap{max-width:1280px;margin:0 auto;padding:26px 18px;position:relative;z-index:1}
+
+/* ===== HERO SECTION ===== */
+.hero {
+    position: relative;
+    background: linear-gradient(135deg, #0c1e35 0%, #16375c 45%, #1e4a73 75%, #16375c 100%);
+    border-radius: 20px;
+    padding: 30px 25px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(10, 26, 46, .45), inset 0 0 60px rgba(201,162,39,.05);
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 260px;
+    border: 1px solid rgba(201,162,39,.15);
+}
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -20%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(201,162,39,.18), transparent 70%);
+    border-radius: 50%;
+    animation: heroGlow 8s ease-in-out infinite;
+}
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60%; left: -10%;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(184,115,51,.15), transparent 70%);
+    border-radius: 50%;
+    animation: heroGlow 10s ease-in-out infinite reverse;
+}
+@keyframes heroGlow {
+    0%, 100% { transform: scale(1) translate(0, 0); opacity: .8; }
+    50% { transform: scale(1.15) translate(20px, -20px); opacity: 1; }
+}
+
+.hero-content {
+    flex: 1;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+/* ===== شعار الهيرو ===== */
+.hero-logo-badge {
+    display: inline-block;
+    width: 240px;
+    height: 240px;
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 3;
+    transition: transform 0.4s ease;
+    filter: drop-shadow(0 12px 30px rgba(0,0,0,.6));
+}
+.hero-logo-badge img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 25px rgba(201,162,39,.35));
+    transition: transform 0.4s ease, filter 0.4s ease;
+}
+.hero-logo-badge:hover {
+    transform: scale(1.05);
+}
+.hero-logo-badge:hover img {
+    filter: drop-shadow(0 0 35px rgba(201,162,39,.6));
+}
+
+.hero-title {
+    font-size: 30px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+.hero-title span {
+    background: linear-gradient(135deg, var(--gold), var(--copper-l), #f5d98a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.hero-subtitle {
+    font-size: 14px;
+    color: #a8c0d8;
+    margin-bottom: 18px;
+    line-height: 1.7;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ===== 11 أيقونة (بدون نصوص) ===== */
+.hero-icons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 15px;
+    position: relative;
+    z-index: 2;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.hero-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 65px;
+    transition: all .4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    animation: iconPulse 3s ease-in-out infinite;
+    position: relative;
+    cursor: pointer;
+}
+.hero-icon:nth-child(1) { animation-delay: 0s; }
+.hero-icon:nth-child(2) { animation-delay: 0.2s; }
+.hero-icon:nth-child(3) { animation-delay: 0.4s; }
+.hero-icon:nth-child(4) { animation-delay: 0.6s; }
+.hero-icon:nth-child(5) { animation-delay: 0.8s; }
+.hero-icon:nth-child(6) { animation-delay: 1.0s; }
+.hero-icon:nth-child(7) { animation-delay: 1.2s; }
+.hero-icon:nth-child(8) { animation-delay: 1.4s; }
+.hero-icon:nth-child(9) { animation-delay: 1.6s; }
+.hero-icon:nth-child(10) { animation-delay: 1.8s; }
+.hero-icon:nth-child(11) { animation-delay: 2.0s; }
+
+@keyframes iconPulse {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-4px);
+    }
+}
+.hero-icon:hover {
+    transform: translateY(-8px) scale(1.05);
+}
+.hero-icon img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    transition: transform .3s ease, filter .3s ease;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,.5));
+}
+.hero-icon:hover img {
+    filter: drop-shadow(0 6px 15px rgba(201,162,39,.8));
+    transform: scale(1.12);
+}
+
+/* ===== Scroll Reveal ===== */
+.reveal { opacity: 0; transform: translateY(40px); transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.reveal.active { opacity: 1; transform: translateY(0); }
+
+/* ===== COPPER BRAND TAG ===== */
+.brand-tag {
+    display: inline-block;
+    padding: 3px 12px;
+    margin: 0 3px;
+    border: 2px solid var(--copper);
+    border-radius: 50px;
+    background: linear-gradient(135deg, #fbf1e0, #e8d0a8);
+    color: var(--copper-d);
+    font-weight: 800;
+    font-size: 11.5px;
+    box-shadow: 0 2px 6px rgba(184,115,51,.25), inset 0 1px 2px rgba(255,255,255,.6);
+    transition: all .3s ease;
+    white-space: nowrap;
+    line-height: 1.6;
+    cursor: pointer;
+}
+.brand-tag:hover, .brand-tag:active {
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba(184,115,51,.45);
+    background: linear-gradient(135deg, #fff8ec, #f0d9b5);
+}
+
+/* ===== Qty buttons ===== */
+.qty-cell { display: flex; align-items: center; justify-content: center; gap: 5px; }
+.qty-btn {
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 0; cursor: pointer;
+    font-weight: 900; font-size: 16px; line-height: 1;
+    display: grid; place-items: center;
+    transition: all .2s ease;
+    font-family: inherit;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,.1);
+}
+.qty-btn.minus { background: linear-gradient(135deg, #f5c6c2, #e8a09b); color: #7a1e17; }
+.qty-btn.minus:hover, .qty-btn.minus:active { background: linear-gradient(135deg, #e8a09b, #d8837c); transform: scale(1.15); }
+.qty-btn.plus { background: linear-gradient(135deg, #b8e0c2, #8dcc9d); color: #0f4a25; }
+.qty-btn.plus:hover, .qty-btn.plus:active { background: linear-gradient(135deg, #8dcc9d, #6bbd80); transform: scale(1.15); }
+.qty-value {
+    display: inline-block; min-width: 50px;
+    font-weight: 800; font-variant-numeric: tabular-nums;
+    color: var(--navy); text-align: center;
+    background: #f3f6fa; border-radius: 8px;
+    padding: 4px 10px; font-size: 14px;
+    border: 1px solid #e2e8f0;
+    transition: all .2s;
+}
+.qty-value.flash { background: #fff3cd; border-color: #f0dfa8; }
+
+/* ===== Total Currency Label ===== */
+.total-currency {
+    display: inline-block;
+    background: #eef1f5;
+    border: 1px solid #d7dde5;
+    border-radius: 6px;
+    padding: 1px 6px;
+    font-size: 10.5px;
+    color: var(--muted);
+    margin-right: 4px;
+    font-weight: 700;
+}
+
+.toolbar{position:fixed;bottom:22px;left:50%;transform:translate(-50%, 20px);display:flex;gap:10px;z-index:999;background:rgba(15,39,68,.94);padding:10px 14px;border-radius:60px;box-shadow:0 10px 30px rgba(0,0,0,.28);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)}
+.toolbar.visible{opacity:1;transform:translate(-50%, 0);pointer-events:auto}
+.toolbar button{font-family:inherit;font-size:14px;font-weight:700;border:0;cursor:pointer;border-radius:40px;padding:10px 22px;transition:.3s;display:flex;align-items:center;gap:7px}
+.btn-print{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#2b2200}
+.btn-print:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 10px 25px rgba(201,162,39,.55)}
+.btn-top{background:rgba(255,255,255,.12);color:#fff}
+.btn-top:hover{background:rgba(255,255,255,.28);transform:translateY(-3px)}
+
+.section{margin-top:30px}
+.sec-head{display:flex;align-items:center;gap:14px;background:linear-gradient(90deg,var(--navy),var(--navy-2));color:#fff;border-radius:14px 14px 0 0;padding:14px 20px;box-shadow:var(--shadow)}
+.sec-num{width:38px;height:38px;flex-shrink:0;border-radius:10px;background:linear-gradient(135deg,var(--gold),#93731a);color:#17130a;display:grid;place-items:center;font-weight:900;font-size:15px}
+.sec-head h3{font-size:17px;font-weight:800;flex:1}
+.sec-head .tag{font-size:11.5px;font-weight:700;background:rgba(255,255,255,.14);padding:5px 13px;border-radius:30px;border:1px solid rgba(255,255,255,.2)}
+.sec-body{background:var(--card);border:1px solid var(--line);border-top:0;border-radius:0 0 14px 14px;box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .4s ease}
+.sec-body:hover { box-shadow: var(--shadow-hover); }
+.sec-body.pad{padding:22px}
+
+/* ===== FIXED TABLE LAYOUT ===== */
+.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.6px;
+    table-layout: fixed;
+    min-width: 900px;
+}
+thead th{
+    background:#f3f6fa;
+    color:var(--navy);
+    font-weight:800;
+    font-size:12.8px;
+    text-align:center;
+    padding:14px 9px;
+    border-bottom:2px solid var(--line);
+    white-space:nowrap;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+/* ===== رأس الجدول - تمييز عمود "البيان" ===== */
+thead th.desc-header {
+    background: linear-gradient(135deg, #fdf5dd, #fce4a8);
+    color: var(--copper-d);
+    font-weight: 900;
+    border-bottom: 3px solid var(--copper);
+    border-right: 4px solid var(--copper);
+}
+thead th.value-header {
+    background: linear-gradient(135deg, #e8f0fa, #d4e4f5);
+    color: var(--navy);
+    font-weight: 800;
+}
+
+tbody td{padding:12px 9px;border-bottom:1px solid #eaeef3;text-align:center;vertical-align:middle;transition:background .2s}
+tbody tr:nth-child(even){background:#fafcfe}
+tbody tr:hover{background:#f0f6ff}
+tbody td.desc{text-align:right;font-weight:600;color:var(--navy)}
+tbody td.spec{text-align:right;font-size:12.6px;color:var(--muted);font-weight:400}
+tbody td.money{font-weight:700;font-variant-numeric:tabular-nums;direction:ltr}
+tbody td.total{font-weight:900;color:var(--green);background:#f2fbf6;font-size:14.5px}
+tfoot td{background:linear-gradient(90deg,#0f2744,#1b4470);color:#fff;font-weight:800;font-size:14.5px;padding:16px 12px}
+tfoot td.money{color:var(--gold-l)}
+
+/* ===== تنسيق خلايا عمود "البيان" المميز ===== */
+tbody td.desc {
+    text-align: right;
+    font-weight: 700;
+    color: var(--navy);
+    background: var(--gold-bg);
+    border-right: 4px solid var(--copper);
+}
+tbody tr:nth-child(even) td.desc {
+    background: var(--gold-bg-dark);
+}
+tbody tr:hover td.desc {
+    background: var(--gold-bg-hover);
+}
+
+/* تنسيق خلايا عمود "القيمة" */
+tbody td.spec {
+    background: #f8fbfe;
+}
+tbody tr:nth-child(even) td.spec {
+    background: #eef5fb;
+}
+
+.sum-wrap{display:grid;grid-template-columns:1.35fr .9fr;gap:22px}
+@media(max-width:900px){.sum-wrap{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;transition:all .4s ease}
+.card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); border-color: var(--gold); }
+.card-head{background:linear-gradient(90deg,var(--navy),var(--navy-2));color:#fff;padding:13px 20px;font-weight:800;font-size:15.5px;display:flex;align-items:center;gap:10px}
+.card-head .dot{width:10px;height:10px;border-radius:50%;background:var(--gold)}
+.sum-row{display:flex;justify-content:space-between;align-items:center;padding:11px 20px;border-bottom:1px solid #eef1f5;font-size:14px}
+.sum-row:nth-child(even){background:#fafcfe}
+.sum-row .lbl{display:flex;align-items:center;gap:10px;font-weight:600}
+.sum-row .n{width:26px;height:26px;border-radius:8px;background:#e9eef5;color:var(--navy);display:grid;place-items:center;font-size:12px;font-weight:800;flex-shrink:0}
+.sum-row .val{font-weight:800;font-variant-numeric:tabular-nums;direction:ltr;color:var(--navy);transition: color .3s}
+.sum-row .val.flash { color: var(--red); transform: scale(1.1); }
+.grand{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:linear-gradient(90deg,#0f2744,#1b4470);color:#fff;font-weight:800;font-size:16px}
+.grand .val{color:var(--gold-l);font-size:19px;font-variant-numeric:tabular-nums;direction:ltr}
+.grand.vat{background:#16375c;font-size:14.5px}
+.grand.vat .val{font-size:16px;color:#fff}
+.grand.final{background:linear-gradient(90deg,#8a6d10,#c9a227);color:#1a1503;font-size:17px;box-shadow: 0 0 20px rgba(201,162,39,0.6); animation: glow 3s infinite alternate;}
+@keyframes glow {
+    from { box-shadow: 0 0 10px rgba(201,162,39,0.4); }
+    to { box-shadow: 0 0 25px rgba(201,162,39,0.8); }
+}
+.grand.final .val{color:#1a1503;font-size:21px}
+
+.notes{list-style:none;counter-reset:n}
+.notes li{counter-increment:n;position:relative;padding:11px 52px 11px 18px;border-bottom:1px solid #eef1f5;font-size:14px;transition:background .2s}
+.notes li:nth-child(even){background:#fafcfe}
+.notes li:hover { background: #f0f6ff; padding-right: 60px; }
+.notes li::before{content:counter(n);position:absolute;right:16px;top:50%;transform:translateY(-50%);width:25px;height:25px;border-radius:8px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;transition:.3s}
+.notes li:hover::before { background: var(--gold); color: var(--navy); }
+
+.sign-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:26px 20px 30px}
+.sign{border:1.5px dashed #b9c4d2;border-radius:12px;padding:18px;text-align:center;background:#fbfcfe;transition:all .4s ease}
+.sign:hover { border-color: var(--gold); background: #fffdf5; transform: translateY(-5px); }
+.sign h5{font-size:14px;color:var(--navy);font-weight:800;margin-bottom:6px}
+.sign .who{font-size:13.5px;font-weight:700;color:var(--gold);background:#fdf5dd;border:1px solid #eddc9f;border-radius:30px;padding:4px 12px;display:inline-block;margin-top:4px}
+.sign .role{font-size:12.5px;color:var(--muted);margin-top:8px}
+.sign .line{margin-top:34px;border-top:1.5px solid #8e9cad;padding-top:8px;font-size:12px;color:var(--muted)}
+
+/* ===== Brand Modal ===== */
+.brand-modal-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15,39,68,.75);
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn .3s ease;
+}
+.brand-modal-overlay.active { display: flex; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.brand-modal {
+    background: #fff;
+    border-radius: 20px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 70px rgba(0,0,0,.4);
+    animation: slideUp .35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+}
+@keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+.brand-modal-header {
+    background: linear-gradient(135deg, var(--navy), var(--navy-2));
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 20px 20px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+.brand-modal-header h3 { font-size: 17px; font-weight: 800; }
+.brand-modal-header h3 span { color: var(--copper-l); }
+.brand-modal-close {
+    background: rgba(255,255,255,.15);
+    border: 0;
+    color: #fff;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: grid; place-items: center;
+    transition: .25s;
+    font-family: inherit;
+}
+.brand-modal-close:hover { background: rgba(255,255,255,.3); transform: rotate(90deg); }
+
+.brand-modal-body { padding: 20px 22px 24px; }
+
+.brand-modal-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eef1f5;
+}
+
+.brand-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.brand-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border: 2px solid #eef1f5;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all .3s ease;
+    background: #fbfcfe;
+    gap: 12px;
+}
+.brand-item:hover {
+    border-color: var(--copper);
+    background: #fdf8f0;
+    transform: translateX(-4px);
+    box-shadow: 0 6px 18px rgba(184,115,51,.15);
+}
+.brand-item.selected {
+    border-color: var(--green);
+    background: #f0faf4;
+    box-shadow: 0 0 0 3px rgba(27,122,75,.15);
+}
+.brand-item .brand-name {
+    font-weight: 800;
+    color: var(--navy);
+    font-size: 14.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.brand-item .brand-name .rank-badge {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--copper), #d4a05e);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 900;
+    display: grid; place-items: center;
+    flex-shrink: 0;
+}
+.brand-item .brand-price {
+    font-weight: 800;
+    color: var(--green);
+    font-size: 15px;
+    direction: ltr;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.brand-item .brand-price .currency { font-size: 11px; color: var(--muted); font-weight: 600; }
+
+.brand-modal-note {
+    margin-top: 16px;
+    padding: 10px 14px;
+    background: #fdf5dd;
+    border: 1px solid #eddc9f;
+    border-radius: 10px;
+    font-size: 12px;
+    color: #6d5a12;
+    line-height: 1.6;
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+  body{font-size:15px;padding-bottom:100px;line-height:1.8}
+  .wrap{padding:10px 8px}
+  .hero{padding:22px 14px;border-radius:16px;min-height:auto;margin-bottom:18px}
+  .hero-logo-badge{width:170px;height:170px;margin-bottom:14px}
+  .hero-title{font-size:19px;line-height:1.5;margin-bottom:6px}
+  .hero-subtitle{font-size:12.5px;line-height:1.65;margin-bottom:14px}
+  .hero-icons{gap:8px;margin-top:10px}
+  .hero-icon{width:58px}
+  .hero-icon img{width:42px;height:42px}
+  .section{margin-top:18px}
+  .sec-head{padding:12px 14px;gap:10px;border-radius:12px 12px 0 0;flex-wrap:nowrap}
+  .sec-num{width:34px;height:34px;font-size:13px;border-radius:9px;flex-shrink:0}
+  .sec-head h3{font-size:13.5px;line-height:1.4;font-weight:800}
+  .sec-head .tag{display:none}
+  .sec-body{border-radius:0 0 12px 12px}
+  .sec-body.pad{padding:14px}
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+  .tbl-scroll::-webkit-scrollbar{height:6px}
+  .tbl-scroll::-webkit-scrollbar-thumb{background:var(--navy);border-radius:3px}
+  table{font-size:12.5px;min-width:850px}
+  thead th{font-size:11.5px;padding:11px 8px;line-height:1.4}
+  tbody td{padding:11px 8px;font-size:12.5px}
+  tbody td.desc{font-size:12.5px;font-weight:700;line-height:1.55;border-right: 3px solid var(--copper);}
+  tbody td.spec{font-size:11.5px;line-height:1.6}
+  tbody td.total{font-size:13px}
+  tfoot td{font-size:13px;padding:13px 10px}
+  .brand-tag{font-size:10.5px;padding:3px 10px;font-weight:800}
+  .qty-btn{width:30px;height:30px;font-size:15px}
+  .qty-value{min-width:40px;font-size:13px;padding:4px 8px}
+  .qty-cell{gap:4px}
+  .total-currency{font-size:9px;padding:1px 4px;margin-right:2px;margin-top:2px;display:inline-block}
+  .sum-wrap{gap:14px}
+  .card-head{font-size:14px;padding:12px 15px;line-height:1.5}
+  .sum-row{padding:11px 14px;font-size:13.5px;gap:8px;line-height:1.5}
+  .sum-row .n{width:24px;height:24px;font-size:11px}
+  .sum-row .lbl{gap:8px;font-weight:700}
+  .sum-row .val{font-size:13.5px}
+  .grand{font-size:14px;padding:14px 15px;line-height:1.5}
+  .grand .val{font-size:16px}
+  .grand.vat{font-size:13px}
+  .grand.vat .val{font-size:14.5px}
+  .grand.final{font-size:14.5px}
+  .grand.final .val{font-size:18px}
+  .notes li{font-size:13px;padding:11px 46px 11px 14px;line-height:1.75}
+  .notes li::before{width:24px;height:24px;font-size:11px;right:13px}
+  .sign-grid{grid-template-columns:1fr;padding:18px 14px 22px;gap:14px}
+  .sign{padding:18px 16px}
+  .sign .line{margin-top:30px}
+  .sign h5{font-size:14.5px}
+  .sign .who{font-size:13.5px;padding:5px 14px}
+  .sign .role{font-size:12.5px}
+  .toolbar{bottom:12px;left:10px;right:10px;transform:translate(0, 20px);width:auto;padding:8px 9px;gap:8px;justify-content:center;border-radius:40px}
+  .toolbar.visible{transform:translate(0, 0)}
+  .toolbar button{font-size:12.5px;padding:10px 14px;flex:1;justify-content:center;white-space:nowrap}
+  .toolbar button .lbl-full{display:none}
+  .watermark{width:130vmin;height:130vmin;opacity:.04}
+  .brand-modal-overlay{padding:12px}
+  .brand-modal{border-radius:16px;max-height:90vh}
+  .brand-modal-header{padding:15px 18px;border-radius:16px 16px 0 0}
+  .brand-modal-header h3{font-size:14px;line-height:1.5;padding-left:40px}
+  .brand-modal-close{width:32px;height:32px;font-size:18px}
+  .brand-modal-body{padding:16px 18px 20px}
+  .brand-modal-subtitle{font-size:12.5px;line-height:1.7}
+  .brand-item{padding:14px 14px;gap:10px;border-radius:12px;flex-wrap:wrap}
+  .brand-item .brand-name{font-size:13.5px;gap:7px}
+  .brand-item .brand-name .rank-badge{width:24px;height:24px;font-size:11px}
+  .brand-item .brand-price{font-size:14px;font-weight:900}
+  .brand-modal-note{font-size:11.5px;line-height:1.7;padding:10px 12px}
+}
+
+@media(max-width:500px){
+  .hero-logo-badge{width:150px;height:150px}
+  .hero-icon{width:52px}
+  .hero-icon img{width:38px;height:38px}
+  .hero-icons{gap:5px}
+}
+
+@media(max-width:400px){
+  body{font-size:14px}
+  .hero-title{font-size:16px}
+  .hero-subtitle{font-size:12px}
+  .hero-logo-badge{width:130px;height:130px}
+  .hero-icon{width:46px}
+  .hero-icon img{width:34px;height:34px}
+  .hero-icons{gap:4px}
+  .sec-head h3{font-size:12.5px}
+  .sum-row{font-size:12.5px}
+  .sum-row .val{font-size:12.5px}
+  .toolbar button{font-size:11.5px;padding:9px 10px}
+  .grand{font-size:13px}
+  .grand .val{font-size:15px}
+  .grand.final .val{font-size:17px}
+  tbody td.desc{border-right: 2px solid var(--copper);}
+}
+
+/* ===== PRINT ===== */
+@media print{
+  @page{size:A4 landscape;margin:10mm}
+  body{background:#fff;font-size:10.5pt;padding:0}
+  .toolbar{display:none!important}
+  .wrap{max-width:100%;padding:0}
+  .hero{box-shadow:none;border-radius:0;padding:18px 20px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .section{break-inside:avoid;margin-top:14px}
+  .sec-head,.card-head,.grand,tfoot td,thead th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  table{font-size:9pt;min-width:0}
+  thead th{font-size:8.5pt;padding:7px 5px}
+  tbody td{padding:6px 5px}
+  tbody tr{break-inside:avoid}
+  .sum-wrap{grid-template-columns:1fr}
+  .sign-grid{grid-template-columns:repeat(3,1fr)}
+  .hero::before, .hero::after{display:none}
+  .hero-icon{animation:none!important}
+  .no-print{display:none!important}
+  .sec-body.pad{padding:12px}
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .watermark { animation: none !important; opacity: 0.05 !important; transform: translate(-50%, -50%) rotate(-12deg) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .card, .sign { transition: none !important; transform: none !important; box-shadow: none !important; }
+  .grand.final { animation: none !important; box-shadow: none !important; }
+  .qty-btn { display: none !important; }
+  .brand-tag { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .brand-modal-overlay { display: none !important; }
+  .total-currency { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  tbody td.desc { background: #fdf5dd !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; border-right: 4px solid var(--copper); }
+  thead th.desc-header { background: #fce4a8 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+</style>
+</head>
+<body>
+
+<div class="watermark"></div>
+
+<!-- ===== Brand Modal ===== -->
+<div class="brand-modal-overlay" id="brandModal" onclick="closeBrandModal(event)">
+  <div class="brand-modal" onclick="event.stopPropagation()">
+    <div class="brand-modal-header">
+      <h3>بدائل <span id="modalBrandName">Dahua</span> – أفضل 5 ماركات</h3>
+      <button class="brand-modal-close" onclick="closeBrandModal()">&times;</button>
+    </div>
+    <div class="brand-modal-body">
+      <p class="brand-modal-subtitle">اختر الماركة البديلة لتحديث السعر تلقائياً في الجدول</p>
+      <ul class="brand-list" id="brandList"></ul>
+      <div class="brand-modal-note">
+        <b>ملاحظة:</b> الأسعار المعروضة هي متوسطات تقريبية في السوق المصري لعام 2026 وقد تختلف حسب المورد والكمية.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- ===== HERO SECTION ===== -->
+  <div class="hero" id="top">
+    <div class="hero-content">
+      <!-- شعار الهيرو -->
+      <div class="hero-logo-badge">
+        <img src="hero-logo.png" alt="Electro Alarm Logo">
+      </div>
+      
+      <h1 class="hero-title">
+        مستخلص أعمال <span>أنظمة الكتروميكانيكال الإنذار والإطفاء</span><br>
+        مصنع كوفرتينا
+      </h1>
+      <p class="hero-subtitle">
+        توريد وتركيب وتشغيل واختبار – مبنى إداري/إنتاجي دورين
+      </p>
+      
+      <!-- 11 أيقونة بدون نصوص -->
+      <div class="hero-icons">
+        <div class="hero-icon" title="كاميرا مراقبة">
+          <img src="icon-camera.png" alt="كاميرا مراقبة">
+        </div>
+        <div class="hero-icon" title="لوحة تحكم">
+          <img src="icon-control-panel.png" alt="لوحة تحكم">
+        </div>
+        <div class="hero-icon" title="مخرج طوارئ">
+          <img src="icon-exit.png" alt="مخرج طوارئ">
+        </div>
+        <div class="hero-icon" title="طفاية حريق">
+          <img src="icon-extinguisher.png" alt="طفاية حريق">
+        </div>
+        <div class="hero-icon" title="بكرة خرطوم">
+          <img src="icon-hose.png" alt="بكرة خرطوم">
+        </div>
+        <div class="hero-icon" title="حنفية حريق">
+          <img src="icon-hydrant.png" alt="حنفية حريق">
+        </div>
+        <div class="hero-icon" title="كاسر زجاج">
+          <img src="icon-mcp.png" alt="كاسر زجاج">
+        </div>
+        <div class="hero-icon" title="لوحة إنذار">
+          <img src="icon-panel.png" alt="لوحة إنذار">
+        </div>
+        <div class="hero-icon" title="كاشف دخان">
+          <img src="icon-smoke.png" alt="كاشف دخان">
+        </div>
+        <div class="hero-icon" title="صافرة إنذار">
+          <img src="icon-sounder.png" alt="صافرة إنذار">
+        </div>
+        <div class="hero-icon" title="رشاش مياه">
+          <img src="icon-sprinkler.png" alt="رشاش مياه">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- بيانات المشروع -->
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">00</div><h3>بيانات المشروع الأساسية</h3><span class="tag">Project Information</span></div>
+    <div class="sec-body"><div class="tbl-scroll"><table>
+      <colgroup>
+        <col style="width:26%"><col style="width:auto"><col style="width:26%"><col style="width:auto">
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="desc-header">البيان</th>
+          <th class="value-header">القيمة</th>
+          <th class="desc-header">البيان</th>
+          <th class="value-header">القيمة</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="desc">اسم المشروع</td><td class="spec">توريد وتركيب أنظمة الإنذار والإطفاء – مصنع كوفرتينا</td><td class="desc">المالك</td><td class="spec">اللواء هشام غلام – شركة كوفرتينا للصناعات الغذائية</td></tr>
+        <tr><td class="desc">موقع العمل</td><td class="spec">المنطقة الصناعية – العاشر من رمضان</td><td class="desc">نوع المبنى</td><td class="spec">مصنع – دورين</td></tr>
+        <tr><td class="desc">الشركة المنفذة</td><td class="spec">شركة الكترو ألارم للأنظمة الكهربائية ومكافحة الحريق</td><td class="desc">مدة التنفيذ</td><td class="spec">6 – 8 أشهر</td></tr>
+        <tr><td class="desc">مهندس الموقع</td><td class="spec">م. هلال شليل</td><td class="desc">المهندس الاستشاري</td><td class="spec">العميد المهندس / مصطفى عبد الرازق</td></tr>
+        <tr><td class="desc">المساحة الداخلية</td><td class="spec">90م × 18م = 1,620 م² للدور × 2 = 3,240 م²</td><td class="desc">محيط المبنى (خط الحريق)</td><td class="spec">2 × (90 + 18) = 216 متر</td></tr>
+        <tr><td class="desc">تصنيف الخطر</td><td class="spec">Ordinary Hazard Group 2</td><td class="desc">الأكواد المرجعية</td><td class="spec">NFPA 13 / NFPA 72 / NFPA 20</td></tr>
+      </tbody>
+    </table></div></div>
+  </div>
+
+  <!-- القسم 1 -->
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">01</div><h3>نظام إنذار الحريق المعنون (Addressable Fire Alarm)</h3><span class="tag">NFPA 72</span></div>
+    <div class="sec-body"><div class="tbl-scroll"><table data-section="1">
+      <colgroup>
+        <col style="width:46px"><col style="width:200px"><col style="width:auto"><col style="width:70px"><col style="width:140px"><col style="width:130px"><col style="width:140px">
+      </colgroup>
+      <thead><tr><th>م</th><th>البند</th><th>المواصفات الفنية</th><th>الوحدة</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي (ج.م)</th></tr></thead>
+      <tbody>
+        <tr data-price="44000"><td>1</td><td class="desc">لوحة إنذار حريق معنونة 2 لوب</td><td class="spec">2 Loop – <span class="brand-tag" data-category="panel" data-brand="Dahua" data-current-price="44000">Dahua</span> DHI-HY-1025 – سعة 254 نقطة لكل لوب – شاشة LCD 4.3" – معتمد EN54 – مع بطاريات احتياطية 2×12V/5Ah</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">2</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">44,000</td><td class="money total line-total">88,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="1500"><td>2</td><td class="desc">كاشف دخان ضوئي معنون</td><td class="spec"><span class="brand-tag" data-category="smoke" data-brand="HST" data-current-price="1500">HST</span> HD203B – Addressable Optical Smoke Detector</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">180</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">1,500</td><td class="money total line-total">270,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="950"><td>3</td><td class="desc">كاشف حرارة معنون</td><td class="spec"><span class="brand-tag" data-category="heat" data-brand="HST" data-current-price="950">HST</span> Addressable Heat Detector</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">60</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">950</td><td class="money total line-total">57,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="650"><td>4</td><td class="desc">كاسر زجاج (Manual Call Point)</td><td class="spec"><span class="brand-tag" data-category="mcp" data-brand="HST" data-current-price="650">HST</span> Addressable MCP</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">30</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">650</td><td class="money total line-total">19,500 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="475"><td>5</td><td class="desc">صفارة إنذار مع فلاش</td><td class="spec"><span class="brand-tag" data-category="sounder" data-brand="System Sensor" data-current-price="475">System Sensor</span> – Sounder with Strobe – 24V DC</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">40</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">475</td><td class="money total line-total">19,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="62"><td>6</td><td class="desc">كابل إنذار حريق محجب</td><td class="spec">2×1.5 مم² – <span class="brand-tag" data-category="cable" data-brand="السويدي" data-current-price="62">السويدي</span> أو معادل – Shielded</td><td>م.ط</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">4500</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">62</td><td class="money total line-total">279,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="15"><td>7</td><td class="desc">مواسير مرنة مقاومة للحريق</td><td class="spec">قطر 25 مم – <span class="brand-tag" data-category="pipe" data-brand="المنير" data-current-price="15">المنير</span> UPVC</td><td>م.ط</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">3000</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">15</td><td class="money total line-total">45,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="1745"><td>8</td><td class="desc">بطاريات احتياطية للوحات</td><td class="spec">24V / 12Ah – <span class="brand-tag" data-category="battery" data-brand="Panasonic" data-current-price="1745">Panasonic</span></td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">4</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">1,745</td><td class="money total line-total">6,980 <span class="total-currency">ج.م</span></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="6" style="text-align:right">إجمالي القسم الأول</td><td class="money section-total">784,480 <span class="total-currency">ج.م</span></td></tr></tfoot>
+    </table></div></div>
+  </div>
+
+  <!-- القسم 2 -->
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">02</div><h3>نظام مكافحة الحريق بالمياه – رشاشات تلقائية (Wet Pipe Sprinkler)</h3><span class="tag">NFPA 13</span></div>
+    <div class="sec-body"><div class="tbl-scroll"><table data-section="2">
+      <colgroup>
+        <col style="width:46px"><col style="width:200px"><col style="width:auto"><col style="width:70px"><col style="width:140px"><col style="width:130px"><col style="width:140px">
+      </colgroup>
+      <thead><tr><th>م</th><th>البند</th><th>المواصفات الفنية</th><th>الوحدة</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي (ج.م)</th></tr></thead>
+      <tbody>
+        <tr data-price="75"><td>1</td><td class="desc">رأس رشاش تلقائي</td><td class="spec"><span class="brand-tag" data-category="sprinkler" data-brand="Viking" data-current-price="75">Viking</span> Sprinkler Head 68°C – K5.6 – Pendent</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">450</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">75</td><td class="money total line-total">33,750 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="1053"><td>2</td><td class="desc">مواسير سيملس جدول 40 – <b style="color:#b87333">خط الحريق الرئيسي (4 بوصة)</b></td><td class="spec">4 بوصة – Schedule 40 – <span class="brand-tag" data-category="pipe" data-brand="المنير" data-current-price="1053">المنير</span> – محيط المبنى (90×18) = 216 م</td><td>م.ط</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">216</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">1,053</td><td class="money total line-total">227,448 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="750"><td>3</td><td class="desc">مواسير سيملس جدول 40</td><td class="spec">2.5 بوصة – Schedule 40 – <span class="brand-tag" data-category="pipe" data-brand="المنير" data-current-price="750">المنير</span></td><td>م.ط</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">270</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">750</td><td class="money total line-total">202,500 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="400"><td>4</td><td class="desc">مواسير سيملس جدول 40</td><td class="spec">1.5 بوصة – Schedule 40 – <span class="brand-tag" data-category="pipe" data-brand="المنير" data-current-price="400">المنير</span></td><td>م.ط</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">324</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">400</td><td class="money total line-total">129,600 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="180000"><td>5</td><td class="desc">وصلات وفلنجات واكسسوارات</td><td class="spec">Fittings – Welded &amp; Grooved – <span class="brand-tag" data-category="fitting" data-brand="Victaulic" data-current-price="180000">Victaulic</span></td><td>مقطوعية</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">1</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">180,000</td><td class="money total line-total">180,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="12500"><td>6</td><td class="desc">محبس رئيسي OS&amp;Y – <b style="color:#b87333">Main Gate Valve 3"</b></td><td class="spec">3 بوصة – <span class="brand-tag" data-category="valve" data-brand="Lifeco" data-current-price="12500">Lifeco</span> – مثبت على خط الحريق الرئيسي 4" – للتحكم في الشبكة بالكامل</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">8</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">12,500</td><td class="money total line-total">100,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="10000"><td>7</td><td class="desc">محبس منطقة OS&amp;Y – <b style="color:#b87333">Zone Gate Valve 3"</b></td><td class="spec">3 بوصة – <span class="brand-tag" data-category="valve" data-brand="Lifeco" data-current-price="10000">Lifeco</span> – مثبت على خط الحريق 4" – للتحكم في منطقة محددة من الشبكة</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">12</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">10,000</td><td class="money total line-total">120,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="53189"><td>8</td><td class="desc">صمامات تحكم – Zone Control Valve</td><td class="spec">4 بوصة مع Flow Switch – <span class="brand-tag" data-category="valve" data-brand="Tyco" data-current-price="53189">Tyco</span></td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">6</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">53,189</td><td class="money total line-total">319,134 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="8500"><td>9</td><td class="desc">شيك فالف (Check Valve) – <b style="color:#b87333">4 بوصة</b></td><td class="spec">4 بوصة – Swing Check Valve – <span class="brand-tag" data-category="checkvalve" data-brand="Lifeco" data-current-price="8500">Lifeco</span> – UL/FM</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">4</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">8,500</td><td class="money total line-total">34,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="150000"><td>10</td><td class="desc">اختبار وتشغيل الشبكة</td><td class="spec">Flushing &amp; Hydrostatic Test – <span class="brand-tag" data-category="service" data-brand="Electro Alarm" data-current-price="150000">Electro Alarm</span></td><td>مقطوعية</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">1</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">150,000</td><td class="money total line-total">150,000 <span class="total-currency">ج.م</span></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="6" style="text-align:right">إجمالي القسم الثاني</td><td class="money section-total">1,496,432 <span class="total-currency">ج.م</span></td></tr></tfoot>
+    </table></div></div>
+  </div>
+
+  <!-- القسم 3 -->
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">03</div><h3>نظام مضخات الحريق (Fire Pump System)</h3><span class="tag">NFPA 20</span></div>
+    <div class="sec-body"><div class="tbl-scroll"><table data-section="3">
+      <colgroup>
+        <col style="width:46px"><col style="width:200px"><col style="width:auto"><col style="width:70px"><col style="width:140px"><col style="width:130px"><col style="width:140px">
+      </colgroup>
+      <thead><tr><th>م</th><th>البند</th><th>المواصفات الفنية</th><th>الوحدة</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي (ج.م)</th></tr></thead>
+      <tbody>
+        <tr data-price="4500000"><td>1</td><td class="desc">مضخة حريق رئيسية (كهربائية)</td><td class="spec">500 GPM @ 115 PSI – <span class="brand-tag" data-category="pump" data-brand="Pentair Fairbanks" data-current-price="4500000">Pentair Fairbanks</span> – UL/FM</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">1</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">4,500,000</td><td class="money total line-total">4,500,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="5500000"><td>2</td><td class="desc">مضخة حريق احتياطية (ديزل) – <small style="color:#b87333;font-size:11px">تشمل المحرك + لوحة التحكم + UL/FM</small></td><td class="spec">500 GPM @ 115 PSI – <span class="brand-tag" data-category="pump" data-brand="Pentair Fairbanks" data-current-price="5500000">Pentair Fairbanks</span> – محرك ديزل معتمد UL/FM + نظام تبريد + شكمان + خزان وقود يومي</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">1</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">5,500,000</td><td class="money total line-total">5,500,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="150000"><td>3</td><td class="desc">مضخة جوكي (Jockey Pump)</td><td class="spec">5.5 kW – 250 GPM – <span class="brand-tag" data-category="pump" data-brand="Grundfos" data-current-price="150000">Grundfos</span></td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">1</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">150,000</td><td class="money total line-total">150,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="250000"><td>4</td><td class="desc">لوحة تحكم المضخة الكهربائية</td><td class="spec">Fire Pump Controller – <span class="brand-tag" data-category="controller" data-brand="Firetrol" data-current-price="250000">Firetrol</span> – UL/FM</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">1</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">250,000</td><td class="money total line-total">250,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="300000"><td>5</td><td class="desc">لوحة تحكم مضخة الديزل</td><td class="spec">Diesel Engine Controller – <span class="brand-tag" data-category="controller" data-brand="Firetrol" data-current-price="300000">Firetrol</span></td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">1</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">300,000</td><td class="money total line-total">300,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="45000"><td>6</td><td class="desc">لوحة تحكم مضخة الجوكي</td><td class="spec">Jockey Pump Controller – <span class="brand-tag" data-category="controller" data-brand="Firetrol" data-current-price="45000">Firetrol</span></td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">1</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">45,000</td><td class="money total line-total">45,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="85000"><td>7</td><td class="desc">خزان وقود ديزل</td><td class="spec">500 لتر – Steel – <span class="brand-tag" data-category="tank" data-brand="محلي" data-current-price="85000">محلي</span></td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">1</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">85,000</td><td class="money total line-total">85,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="120000"><td>8</td><td class="desc">قواعد خرسانية ومثبتات</td><td class="spec">Concrete Pad &amp; Anchors – <span class="brand-tag" data-category="service" data-brand="Electro Alarm" data-current-price="120000">Electro Alarm</span></td><td>مقطوعية</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">1</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">120,000</td><td class="money total line-total">120,000 <span class="total-currency">ج.م</span></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="6" style="text-align:right">إجمالي القسم الثالث</td><td class="money section-total">10,950,000 <span class="total-currency">ج.م</span></td></tr></tfoot>
+    </table></div></div>
+  </div>
+
+  <!-- القسم 4 -->
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">04</div><h3>خزان مياه الحريق (Fire Water Storage Tank)</h3><span class="tag">NFPA 22</span></div>
+    <div class="sec-body"><div class="tbl-scroll"><table data-section="4">
+      <colgroup>
+        <col style="width:46px"><col style="width:200px"><col style="width:auto"><col style="width:70px"><col style="width:140px"><col style="width:130px"><col style="width:140px">
+      </colgroup>
+      <thead><tr><th>م</th><th>البند</th><th>المواصفات الفنية</th><th>الوحدة</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي (ج.م)</th></tr></thead>
+      <tbody>
+        <tr data-price="350000"><td>1</td><td class="desc">خزان مياه حريق – بولي إيثيلين</td><td class="spec">50,000 لتر – HDPE معالج – <span class="brand-tag" data-category="tank" data-brand="النصر" data-current-price="350000">النصر</span> – يشمل النقل والتركيب</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">2</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">350,000</td><td class="money total line-total">700,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="4500"><td>2</td><td class="desc">خزان فوم – <small style="color:#b87333;font-size:11px">مخصص لغرفة المضخات + FM200</small></td><td class="spec">50 لتر – <span class="brand-tag" data-category="foam" data-brand="HIMCO" data-current-price="4500">HIMCO</span> – AFFF 3% – يستخدم فقط لمنطقة غرفة المضخات وغرف الكهرباء (لا يشمل باقي المصنع)</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">2</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">4,500</td><td class="money total line-total">9,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="95000"><td>3</td><td class="desc">توصيلات ومواسير سحب</td><td class="spec">6 بوصة – Suction &amp; Delivery – <span class="brand-tag" data-category="fitting" data-brand="Victaulic" data-current-price="95000">Victaulic</span></td><td>مقطوعية</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">1</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">95,000</td><td class="money total line-total">95,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="250000"><td>4</td><td class="desc">أعمال مدنية (قواعد + غرفة مضخات)</td><td class="spec">Civil Works – <span class="brand-tag" data-category="service" data-brand="Electro Alarm" data-current-price="250000">Electro Alarm</span></td><td>مقطوعية</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">1</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">250,000</td><td class="money total line-total">250,000 <span class="total-currency">ج.م</span></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="6" style="text-align:right">إجمالي القسم الرابع</td><td class="money section-total">1,054,000 <span class="total-currency">ج.م</span></td></tr></tfoot>
+    </table></div></div>
+  </div>
+
+  <!-- القسم 5 – FM200 (متكامل) -->
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">05</div><h3>نظام الإطفاء الغازي FM200 (غرفة الكهرباء / السيرفر) – نظام متكامل</h3><span class="tag">NFPA 2001</span></div>
+    <div class="sec-body"><div class="tbl-scroll"><table data-section="5">
+      <colgroup>
+        <col style="width:46px"><col style="width:200px"><col style="width:auto"><col style="width:70px"><col style="width:140px"><col style="width:130px"><col style="width:140px">
+      </colgroup>
+      <thead><tr><th>م</th><th>البند</th><th>المواصفات الفنية</th><th>الوحدة</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي (ج.م)</th></tr></thead>
+      <tbody>
+        <tr data-price="504893"><td>1</td><td class="desc">نظام FM200 كامل (أسطوانات + شبكة + نوزلات)</td><td class="spec">120 كجم – <span class="brand-tag" data-category="fm200" data-brand="Naffco" data-current-price="504893">Naffco</span> – يشمل الأسطوانات والصمامات والشبكة والنوزلات</td><td>مقطوعية</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">1</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">504,893</td><td class="money total line-total">504,893 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="95000"><td>2</td><td class="desc">🔴 لوحة إطلاق الإطفاء (Releasing Panel)</td><td class="spec">4 Zones – <span class="brand-tag" data-category="releasing" data-brand="Naffco" data-current-price="95000">Naffco</span> – معتمدة EN54-2/4 &amp; UL 864 – Delay Timer 30 ثانية + Abort + Cross Zoning + Battery Backup</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">1</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">95,000</td><td class="money total line-total">95,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="4500"><td>3</td><td class="desc">زر إيقاف طارئ (Abort Switch)</td><td class="spec">مثبت خارج غرفة FM200 – معتمد – مع مؤشر LED</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">2</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">4,500</td><td class="money total line-total">9,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="5500"><td>4</td><td class="desc">زر إطلاق يدوي (Manual Release Station)</td><td class="spec">Pull Station – مع غطاء أكريليك – معتمد UL</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">2</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">5,500</td><td class="money total line-total">11,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="3500"><td>5</td><td class="desc">لوحات تحذير + فلاش خارج الغرفة</td><td class="spec">Warning Sign + Strobe – FM200 Discharge Indicator</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">2</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">3,500</td><td class="money total line-total">7,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="6500"><td>6</td><td class="desc">مؤشر إطلاق الغاز (Gas Discharge Indicator)</td><td class="spec">Pressure Gauge + Discharge Confirmation – معتمد</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">1</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">6,500</td><td class="money total line-total">6,500 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="12000"><td>7</td><td class="desc">حساسات كشف مزدوجة (Cross-Zoned Detection)</td><td class="spec">Smoke + Heat Detector – للكشف المزدوج قبل الإطلاق</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">6</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">12,000</td><td class="money total line-total">72,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="15000"><td>8</td><td class="desc">كابلات ومواسير وتوصيلات الإطلاق</td><td class="spec">Fire-Rated Cables + Conduits – مقاومة للحريق</td><td>مقطوعية</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">1</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">15,000</td><td class="money total line-total">15,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="25000"><td>9</td><td class="desc">اختبار وتشغيل نظام الإطلاق</td><td class="spec">Commissioning &amp; Integration Test – مع FM200</td><td>مقطوعية</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">1</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">25,000</td><td class="money total line-total">25,000 <span class="total-currency">ج.م</span></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="6" style="text-align:right">إجمالي القسم الخامس</td><td class="money section-total">745,393 <span class="total-currency">ج.م</span></td></tr></tfoot>
+    </table></div></div>
+  </div>
+
+  <!-- القسم 6 -->
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">06</div><h3>صنابير الحريق وخراطيم الإطفاء (Fire Hydrants &amp; Hose Reels)</h3><span class="tag">NFPA 14</span></div>
+    <div class="sec-body"><div class="tbl-scroll"><table data-section="6">
+      <colgroup>
+        <col style="width:46px"><col style="width:200px"><col style="width:auto"><col style="width:70px"><col style="width:140px"><col style="width:130px"><col style="width:140px">
+      </colgroup>
+      <thead><tr><th>م</th><th>البند</th><th>المواصفات الفنية</th><th>الوحدة</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي (ج.م)</th></tr></thead>
+      <tbody>
+        <tr data-price="4500"><td>1</td><td class="desc">حنفية حريق (Fire Hydrant) – <b style="color:#b87333">3 بوصة</b></td><td class="spec">3 بوصة – برونز – <span class="brand-tag" data-category="hydrant" data-brand="Naffco" data-current-price="4500">Naffco</span> – على خط الحريق 4"</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">6</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">4,500</td><td class="money total line-total">27,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="5000"><td>2</td><td class="desc">دولاب خراطيم حريق (Hose Reel)</td><td class="spec">30 متر – 1 بوصة – <span class="brand-tag" data-category="hosereel" data-brand="Naffco" data-current-price="5000">Naffco</span> – مع بكرة</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">12</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">5,000</td><td class="money total line-total">60,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="4500"><td>3</td><td class="desc">خرطوم حريق مقاوم للحريق</td><td class="spec">2.5 بوصة – 30 متر – PVC – <span class="brand-tag" data-category="hose" data-brand="Naffco" data-current-price="4500">Naffco</span> – مع لواكير ألومنيوم</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">8</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">4,500</td><td class="money total line-total">36,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="25000"><td>4</td><td class="desc">مدفع حريق (Fire Monitor)</td><td class="spec">2.5 بوصة – متحرك – <span class="brand-tag" data-category="monitor" data-brand="Naffco" data-current-price="25000">Naffco</span></td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">2</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">25,000</td><td class="money total line-total">50,000 <span class="total-currency">ج.م</span></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="6" style="text-align:right">إجمالي القسم السادس</td><td class="money section-total">173,000 <span class="total-currency">ج.م</span></td></tr></tfoot>
+    </table></div></div>
+  </div>
+
+  <!-- القسم 7 -->
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">07</div><h3>أجهزة الإطفاء اليدوي (Portable Fire Extinguishers)</h3><span class="tag">NFPA 10</span></div>
+    <div class="sec-body"><div class="tbl-scroll"><table data-section="7">
+      <colgroup>
+        <col style="width:46px"><col style="width:200px"><col style="width:auto"><col style="width:70px"><col style="width:140px"><col style="width:130px"><col style="width:140px">
+      </colgroup>
+      <thead><tr><th>م</th><th>البند</th><th>المواصفات الفنية</th><th>الوحدة</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي (ج.م)</th></tr></thead>
+      <tbody>
+        <tr data-price="3280"><td>1</td><td class="desc">طفاية بودرة جافة</td><td class="spec">6 كجم – <span class="brand-tag" data-category="extinguisher" data-brand="إنتاج حربي" data-current-price="3280">إنتاج حربي</span></td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">40</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">3,280</td><td class="money total line-total">131,200 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="4278"><td>2</td><td class="desc">طفاية بودرة جافة</td><td class="spec">12 كجم – <span class="brand-tag" data-category="extinguisher" data-brand="بافاريا" data-current-price="4278">بافاريا</span></td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">10</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">4,278</td><td class="money total line-total">42,780 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="7500"><td>3</td><td class="desc">طفاية CO₂</td><td class="spec">5 كجم – <span class="brand-tag" data-category="extinguisher" data-brand="Naffco" data-current-price="7500">Naffco</span> – للغرف الكهربائية</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">8</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">7,500</td><td class="money total line-total">60,000 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="1200"><td>4</td><td class="desc">طفاية ماء / رغوة</td><td class="spec">9 لتر – <span class="brand-tag" data-category="extinguisher" data-brand="بافاريا" data-current-price="1200">بافاريا</span> – للفئة A</td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">12</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">1,200</td><td class="money total line-total">14,400 <span class="total-currency">ج.م</span></td></tr>
+        <tr data-price="150"><td>5</td><td class="desc">حوامل ولوحات إرشادية</td><td class="spec">Signage &amp; Brackets – <span class="brand-tag" data-category="service" data-brand="Electro Alarm" data-current-price="150">Electro Alarm</span></td><td>عدد</td><td class="qty-cell"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-value">70</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></td><td class="money unit-price">150</td><td class="money total line-total">10,500 <span class="total-currency">ج.م</span></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="6" style="text-align:right">إجمالي القسم السابع</td><td class="money section-total">258,880 <span class="total-currency">ج.م</span></td></tr></tfoot>
+    </table></div></div>
+  </div>
+
+  <!-- الملخص -->
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">Σ</div><h3>ملخص المستخلص والإجمالي العام</h3><span class="tag">Summary</span></div>
+    <div class="sec-body pad">
+      <div class="sum-wrap">
+        <div class="card">
+          <div class="card-head"><span class="dot"></span> تفصيل أقسام المستخلص</div>
+          <div class="sum-row"><span class="lbl"><span class="n">1</span> نظام إنذار الحريق المعنون</span><span class="val summary-val" data-section="1">784,480 <span class="total-currency">ج.م</span></span></div>
+          <div class="sum-row"><span class="lbl"><span class="n">2</span> نظام الرشاشات التلقائية</span><span class="val summary-val" data-section="2">1,496,432 <span class="total-currency">ج.م</span></span></div>
+          <div class="sum-row"><span class="lbl"><span class="n">3</span> نظام مضخات الحريق</span><span class="val summary-val" data-section="3">10,950,000 <span class="total-currency">ج.م</span></span></div>
+          <div class="sum-row"><span class="lbl"><span class="n">4</span> خزان مياه الحريق</span><span class="val summary-val" data-section="4">1,054,000 <span class="total-currency">ج.م</span></span></div>
+          <div class="sum-row"><span class="lbl"><span class="n">5</span> نظام الإطفاء الغازي FM200</span><span class="val summary-val" data-section="5">745,393 <span class="total-currency">ج.م</span></span></div>
+          <div class="sum-row"><span class="lbl"><span class="n">6</span> صنابير وخراطيم الحريق</span><span class="val summary-val" data-section="6">173,000 <span class="total-currency">ج.م</span></span></div>
+          <div class="sum-row"><span class="lbl"><span class="n">7</span> أجهزة الإطفاء اليدوي</span><span class="val summary-val" data-section="7">258,880 <span class="total-currency">ج.م</span></span></div>
+        </div>
+        <div class="card" style="align-self:start">
+          <div class="card-head"><span class="dot"></span> الإجمالي النهائي</div>
+          <div class="grand"><span>الإجمالي قبل الضريبة</span><span class="val" id="grand-total">15,462,185 <span class="total-currency">ج.م</span></span></div>
+          <div class="grand vat"><span>ضريبة القيمة المضافة (14%)</span><span class="val" id="vat-total">2,164,706 <span class="total-currency">ج.م</span></span></div>
+          <div class="grand final"><span>الإجمالي شامل الضريبة</span><span class="val" id="final-total">17,626,891 <span class="total-currency">ج.م</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- جدول التدفق النقدي -->
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">$</div><h3>جدول التدفق النقدي ودفعات المستخلص (Cash Flow)</h3><span class="tag">Payment Schedule</span></div>
+    <div class="sec-body"><div class="tbl-scroll"><table>
+      <colgroup>
+        <col style="width:60px"><col style="width:auto"><col style="width:100px"><col style="width:180px"><col style="width:220px">
+      </colgroup>
+      <thead><tr><th>م</th><th class="desc-header">البيان</th><th class="value-header">النسبة</th><th class="value-header">المبلغ (ج.م)</th><th class="desc-header">التوقيت / الشرط</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td class="desc">دفعة مقدمة (Advance Payment)</td><td style="font-weight:800;color:var(--navy)">20%</td><td class="money" style="color:var(--green);font-weight:800">3,092,437 <span class="total-currency">ج.م</span></td><td class="spec">عند توقيع العقد وتسليم خطاب الضمان</td></tr>
+        <tr><td>2</td><td class="desc">دفعة التوريد الرئيسية (Major Equipment Delivery)</td><td style="font-weight:800;color:var(--navy)">30%</td><td class="money" style="color:var(--green);font-weight:800">4,638,655 <span class="total-currency">ج.م</span></td><td class="spec">بعد توريد المضخات واللوحات الرئيسية للموقع</td></tr>
+        <tr><td>3</td><td class="desc">دفعة التركيب (Installation Progress)</td><td style="font-weight:800;color:var(--navy)">30%</td><td class="money" style="color:var(--green);font-weight:800">4,638,655 <span class="total-currency">ج.م</span></td><td class="spec">بعد إتمام تركيب 75% من الأعمال الميكانيكية والكهربائية</td></tr>
+        <tr><td>4</td><td class="desc">دفعة الاختبارات والاستلام الابتدائي</td><td style="font-weight:800;color:var(--navy)">15%</td><td class="money" style="color:var(--green);font-weight:800">2,319,328 <span class="total-currency">ج.م</span></td><td class="spec">بعد الاختبارات النهائية وتسليم المستندات الفنية</td></tr>
+        <tr><td>5</td><td class="desc">دفعة الصيانة / الضمان</td><td style="font-weight:800;color:var(--navy)">5%</td><td class="money" style="color:var(--green);font-weight:800">773,109 <span class="total-currency">ج.م</span></td><td class="spec">بعد انتهاء فترة الضمان (12 شهر) وحسن سير التشغيل</td></tr>
+      </tbody>
+      <tfoot>
+        <tr><td colspan="2" style="text-align:right">الإجمالي قبل الضريبة</td><td style="font-weight:900">100%</td><td class="money" colspan="2">15,462,185 <span class="total-currency">ج.م</span></td></tr>
+      </tfoot>
+    </table></div></div>
+  </div>
+
+  <!-- الشروط -->
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">!</div><h3>الشروط والملاحظات الفنية</h3><span class="tag">Technical Notes</span></div>
+    <div class="sec-body"><ol class="notes">
+      <li>جميع الأسعار بالجنيه المصري وقابلة للتغيير حسب أسعار الصرف والبورصة العالمية.</li>
+      <li>سعر الصرف المرجعي المستخدم في التسعير: <b>1 دولار أمريكي = 48.75 جنيه مصري</b> (متوسط السوق 2026) – أي تغيير في سعر الصرف بنسبة ±5% يستدعي إعادة التسعير.</li>
+      <li>الأسعار شاملة التوريد والتركيب والتشغيل والاختبارات.</li>
+      <li>يجب أن تكون جميع المواد معتمدة من الحماية المدنية المصرية.</li>
+      <li>الكابلات المستخدمة: السويدي للكابلات أو ما يعادلها.</li>
+      <li>المواسير: سيملس Schedule 40 معتمدة UL / FM.</li>
+      <li>المضخات: UL Listed / FM Approved – طبقًا لـ NFPA 20.</li>
+      <li>ضمان لمدة 12 شهرًا على التركيبات و24 شهرًا على المعدات.</li>
+      <li>مدة التنفيذ التقديرية: 6 – 8 أشهر.</li>
+      <li>الأسعار لا تشمل أعمال التكييف أو الصحي أو الكهرباء العامة.</li>
+      <li>يُفضل مراجعة عرض السعر النهائي مع الموردين للحصول على خصومات الكميات.</li>
+    </ol></div>
+  </div>
+
+  <!-- التوقيعات -->
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">✍</div><h3>الاعتماد والتوقيعات</h3><span class="tag">Signatures</span></div>
+    <div class="sec-body"><div class="sign-grid">
+      <div class="sign">
+        <h5>الشركة المنفذة</h5>
+        <div class="who">شركة الكترو ألارم</div>
+        <div class="role">مهندس الموقع: م. هلال شليل</div>
+        <div class="line">الاسم – التوقيع – التاريخ</div>
+      </div>
+      <div class="sign">
+        <h5>المهندس الاستشاري</h5>
+        <div class="who">العميد المهندس / مصطفى عبد الرازق</div>
+        <div class="role">المراجع والاعتماد</div>
+        <div class="line">الاسم – التوقيع – التاريخ</div>
+      </div>
+      <div class="sign">
+        <h5>المالك / جهة الإشراف</h5>
+        <div class="who">اللواء / هشام غلام</div>
+        <div class="role">الموافقة النهائية</div>
+        <div class="line">الاسم – التوقيع – التاريخ</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div style="text-align:center;color:var(--muted);font-size:12.5px;margin:34px 0 10px" class="no-print">
+    مستخلص رقم 001/2026 – مصنع كوفرتينا – العاشر من رمضان – جميع الحقوق محفوظة © شركة الكترو ألارم
+  </div>
+</div>
+
+<div class="toolbar no-print" id="floatingToolbar">
+  <button class="btn-print" onclick="window.print()">🖨️ طباعة<span class="lbl-full"> / حفظ PDF</span></button>
+  <button class="btn-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ أعلى الصفحة</button>
+</div>
+
+<script>
+// ===== قاعدة بيانات الماركات والأسعار التقريبية =====
+const BRANDS_DB = {
+  panel: [
+    { name: 'Honeywell', price: 35000 }, { name: 'Apollo', price: 26250 }, { name: 'Hochiki', price: 16500 }, { name: 'Simplex', price: 45000 }, { name: 'Dahua', price: 44000 }
+  ],
+  smoke: [
+    { name: 'Honeywell', price: 2000 }, { name: 'HST', price: 1500 }, { name: 'Simplex', price: 2665 }, { name: 'Apollo', price: 1800 }, { name: 'Hochiki', price: 1700 }
+  ],
+  heat: [
+    { name: 'HST', price: 950 }, { name: 'Honeywell', price: 1200 }, { name: 'Apollo', price: 1100 }, { name: 'System Sensor', price: 1050 }, { name: 'Bosch', price: 1300 }
+  ],
+  mcp: [
+    { name: 'HST', price: 650 }, { name: 'Honeywell', price: 850 }, { name: 'Apollo', price: 750 }, { name: 'System Sensor', price: 700 }, { name: 'Bosch', price: 800 }
+  ],
+  sounder: [
+    { name: 'System Sensor', price: 475 }, { name: 'Honeywell', price: 550 }, { name: 'Apollo', price: 500 }, { name: 'Hochiki', price: 480 }, { name: 'Wheelock', price: 600 }
+  ],
+  cable: [
+    { name: 'السويدي', price: 62 }, { name: 'نحاس', price: 55 }, { name: 'أبو صليب', price: 48 }, { name: 'مصر للكابلات', price: 52 }, { name: 'الشرق', price: 58 }
+  ],
+  pipe: [
+    { name: 'المنير', price: 1053 }, { name: 'الجوهرة', price: 980 }, { name: 'سيملس محلي', price: 850 }, { name: 'مستورد', price: 1200 }, { name: 'النصر', price: 1100 }
+  ],
+  fitting: [
+    { name: 'Victaulic', price: 180000 }, { name: 'Tyco', price: 195000 }, { name: 'Grinnell', price: 185000 }, { name: 'Shurjoint', price: 170000 }, { name: 'Naffco', price: 160000 }
+  ],
+  valve: [
+    { name: 'Lifeco', price: 12500 }, { name: 'Tyco', price: 14000 }, { name: 'Viking', price: 13500 }, { name: 'Naffco', price: 11000 }, { name: 'Victaulic', price: 15000 }
+  ],
+  checkvalve: [
+    { name: 'Lifeco', price: 8500 }, { name: 'Tyco', price: 9500 }, { name: 'Viking', price: 9000 }, { name: 'Naffco', price: 8000 }, { name: 'Victaulic', price: 10000 }
+  ],
+  pump: [
+    { name: 'Pentair Fairbanks', price: 4500000 }, { name: 'Grundfos', price: 3800000 }, { name: 'Flowserve', price: 3500000 }, { name: 'Sulzer', price: 4000000 }, { name: 'Watex', price: 2500000 }
+  ],
+  controller: [
+    { name: 'Firetrol', price: 250000 }, { name: 'Tornatech', price: 280000 }, { name: 'Hubbell', price: 260000 }, { name: 'Metron', price: 240000 }, { name: 'Naffco', price: 220000 }
+  ],
+  tank: [
+    { name: 'النصر', price: 350000 }, { name: 'المهندس', price: 320000 }, { name: 'HDPE محلي', price: 300000 }, { name: 'مستورد', price: 400000 }, { name: 'البحر الأحمر', price: 340000 }
+  ],
+  foam: [
+    { name: 'HIMCO', price: 4500 }, { name: 'Naffco', price: 5200 }, { name: 'Tyco', price: 4800 }, { name: 'Viking', price: 5500 }, { name: 'Buckeye', price: 5000 }
+  ],
+  fm200: [
+    { name: 'Naffco', price: 504893 }, { name: 'HIMCO', price: 480000 }, { name: 'Tyco', price: 520000 }, { name: 'Chemetron', price: 550000 }, { name: 'Ansul', price: 530000 }
+  ],
+  releasing: [
+    { name: 'Naffco', price: 95000 }, { name: 'Tyco', price: 110000 }, { name: 'Honeywell Morley', price: 85000 }, { name: 'Kentec', price: 130000 }, { name: 'Zeta', price: 120000 }
+  ],
+  hydrant: [
+    { name: 'Naffco', price: 4500 }, { name: 'Tyco', price: 5000 }, { name: 'Viking', price: 4800 }, { name: 'Lifeco', price: 4200 }, { name: 'محلي', price: 3500 }
+  ],
+  hosereel: [
+    { name: 'Naffco', price: 5000 }, { name: 'Tyco', price: 5500 }, { name: 'Viking', price: 5200 }, { name: 'Lifeco', price: 4800 }, { name: 'محلي', price: 4000 }
+  ],
+  hose: [
+    { name: 'Naffco', price: 4500 }, { name: 'Tyco', price: 5000 }, { name: 'Viking', price: 4800 }, { name: 'Lifeco', price: 4200 }, { name: 'محلي', price: 3500 }
+  ],
+  monitor: [
+    { name: 'Naffco', price: 25000 }, { name: 'Tyco', price: 28000 }, { name: 'Viking', price: 26000 }, { name: 'Lifeco', price: 24000 }, { name: 'محلي', price: 20000 }
+  ],
+  extinguisher: [
+    { name: 'إنتاج حربي', price: 3280 }, { name: 'بافاريا', price: 4278 }, { name: 'Naffco', price: 3800 }, { name: 'Tyco', price: 3500 }, { name: 'Amerex', price: 4000 }
+  ],
+  sprinkler: [
+    { name: 'Viking', price: 75 }, { name: 'Tyco', price: 85 }, { name: 'Victaulic', price: 80 }, { name: 'Naffco', price: 70 }, { name: 'محلي', price: 60 }
+  ],
+  battery: [
+    { name: 'Panasonic', price: 1745 }, { name: 'Yuasa', price: 1900 }, { name: 'CSB', price: 1650 }, { name: 'Sonnenchein', price: 2000 }, { name: 'محلي', price: 1500 }
+  ],
+  service: [
+    { name: 'Electro Alarm', price: 150000 }, { name: 'Naffco', price: 180000 }, { name: 'Tyco', price: 200000 }, { name: 'Viking', price: 190000 }, { name: 'محلي', price: 120000 }
+  ]
+};
+
+// ===== فتح النافذة المنبثقة =====
+function openBrandModal(tagElement) {
+  const category = tagElement.dataset.category;
+  const currentBrand = tagElement.dataset.brand;
+  const currentPrice = parseFloat(tagElement.dataset.currentPrice);
+  
+  const brands = BRANDS_DB[category];
+  if (!brands) return;
+  
+  const sorted = [...brands].sort((a, b) => Math.abs(a.price - currentPrice) - Math.abs(b.price - currentPrice));
+  
+  document.getElementById('modalBrandName').textContent = currentBrand;
+  
+  const listEl = document.getElementById('brandList');
+  listEl.innerHTML = sorted.map((brand, i) => `
+    <li class="brand-item ${brand.name === currentBrand ? 'selected' : ''}" 
+        onclick="selectBrand(this, '${brand.name}', ${brand.price}, '${category}', '${currentBrand}')">
+      <span class="brand-name">
+        <span class="rank-badge">${i + 1}</span>
+        ${brand.name}
+      </span>
+      <span class="brand-price">
+        ${brand.price.toLocaleString('en-US')} <span class="currency">ج.م</span>
+      </span>
+    </li>
+  `).join('');
+  
+  document.getElementById('brandModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+// ===== إغلاق النافذة =====
+function closeBrandModal(event) {
+  if (event && event.target !== event.currentTarget) return;
+  document.getElementById('brandModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// ===== اختيار ماركة =====
+function selectBrand(el, brandName, brandPrice, category, originalBrand) {
+  document.querySelectorAll('.brand-item').forEach(item => item.classList.remove('selected'));
+  el.classList.add('selected');
+  
+  const rows = document.querySelectorAll(`tr[data-price]`);
+  rows.forEach(row => {
+    const tag = row.querySelector(`.brand-tag[data-category="${category}"][data-brand="${originalBrand}"]`);
+    if (tag) {
+      row.dataset.price = brandPrice;
+      const priceCell = row.querySelector('.unit-price');
+      if (priceCell) {
+          priceCell.textContent = brandPrice.toLocaleString('en-US');
+      }
+      
+      tag.textContent = brandName;
+      tag.dataset.brand = brandName;
+      tag.dataset.currentPrice = brandPrice;
+      
+      tag.style.background = '#e9f8f0';
+      setTimeout(() => tag.style.background = '', 600);
+      
+      updateAll();
+    }
+  });
+  
+  setTimeout(() => {
+    document.getElementById('brandModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }, 400);
+}
+
+// ===== ربط الأحداث =====
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('brand-tag')) {
+    e.stopPropagation();
+    openBrandModal(e.target);
+  }
+});
+
+// ===== تغيير الكمية =====
+function formatNumber(n) {
+    return Math.round(n).toLocaleString('en-US');
+}
+
+function changeQty(btn, delta) {
+    const row = btn.closest('tr');
+    const qtySpan = row.querySelector('.qty-value');
+    const unitPrice = parseFloat(row.dataset.price);
+    const lineTotal = row.querySelector('.line-total');
+    
+    let qty = parseInt(qtySpan.textContent);
+    qty += delta;
+    if (qty < 0) qty = 0;
+    qtySpan.textContent = qty;
+    
+    qtySpan.classList.add('flash');
+    setTimeout(() => { qtySpan.classList.remove('flash'); }, 200);
+    
+    const total = qty * unitPrice;
+    lineTotal.innerHTML = formatNumber(total) + ' <span class="total-currency">ج.م</span>';
+    
+    updateAll();
+}
+
+// ===== تحديث جميع الإجماليات =====
+function updateAll() {
+    const sections = document.querySelectorAll('table[data-section]');
+    let grandTotal = 0;
+    
+    sections.forEach(table => {
+        let sum = 0;
+        table.querySelectorAll('tbody tr[data-price]').forEach(row => {
+            const unitPrice = parseFloat(row.dataset.price);
+            const qty = parseInt(row.querySelector('.qty-value').textContent);
+            const total = qty * unitPrice;
+            row.querySelector('.line-total').innerHTML = formatNumber(total) + ' <span class="total-currency">ج.م</span>';
+            sum += total;
+        });
+        
+        const sectionTotalEl = table.querySelector('tfoot .section-total');
+        if (sectionTotalEl) sectionTotalEl.innerHTML = formatNumber(sum) + ' <span class="total-currency">ج.م</span>';
+        
+        const sectionNum = table.dataset.section;
+        const summaryRow = document.querySelector(`.summary-val[data-section="${sectionNum}"]`);
+        if (summaryRow) {
+            summaryRow.innerHTML = formatNumber(sum) + ' <span class="total-currency">ج.م</span>';
+            summaryRow.classList.add('flash');
+            setTimeout(() => summaryRow.classList.remove('flash'), 400);
+        }
+        
+        grandTotal += sum;
+    });
+    
+    const vat = grandTotal * 0.14;
+    const finalTotal = grandTotal + vat;
+    
+    document.getElementById('grand-total').innerHTML = formatNumber(grandTotal) + ' <span class="total-currency">ج.م</span>';
+    document.getElementById('vat-total').innerHTML = formatNumber(vat) + ' <span class="total-currency">ج.م</span>';
+    document.getElementById('final-total').innerHTML = formatNumber(finalTotal) + ' <span class="total-currency">ج.م</span>';
+    
+    [document.getElementById('grand-total'), document.getElementById('vat-total'), document.getElementById('final-total')].forEach(el => {
+        el.classList.add('flash');
+        setTimeout(() => el.classList.remove('flash'), 400);
+    });
+}
+
+// ===== Scroll Reveal & Toolbar Visibility =====
+document.addEventListener('DOMContentLoaded', () => {
+    const revealElements = document.querySelectorAll('.section, .hero, .card, .sign');
+    revealElements.forEach(el => el.classList.add('reveal'));
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+    revealElements.forEach(el => observer.observe(el));
+    
+    // Toolbar visibility logic
+    const toolbar = document.getElementById('floatingToolbar');
+    window.addEventListener('scroll', () => {
+        const isBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
+        if (isBottom) {
+            toolbar.classList.add('visible');
+        } else {
+            toolbar.classList.remove('visible');
+        }
+    });
+    
+    // Trigger scroll event on load
+    window.dispatchEvent(new Event('scroll'));
+    
+    updateAll();
+});
+</script>
+
+</body>
+</html>

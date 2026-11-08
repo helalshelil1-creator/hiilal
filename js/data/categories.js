@@ -14,7 +14,8 @@ const CATEGORIES = [
     { id: "bim",           name: "BIM / Revit",        icon: "box",            desc: "نمذجة معلومات البناء" },
     { id: "testing",       name: "الاختبار والتشغيل",  icon: "activity",       desc: "اختبار وتشغيل الأنظمة" },
     { id: "maintenance",   name: "الصيانة",            icon: "settings",       desc: "الصيانة الدورية" },
-    { id: "library",       name: "المكتبة",            icon: "library",        desc: "الأكواد والمواصفات والمراجع" }
+    { id: "library",       name: "المكتبة",            icon: "library",        desc: "الأكواد والمواصفات والمراجع" },
+    { id: "platform",      name: "منصات",             icon: "layers",         desc: "منصات هندسية متكاملة" }
 ];
 
 window.CATEGORIES = CATEGORIES;

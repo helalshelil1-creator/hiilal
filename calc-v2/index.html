@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>حاسبة الكابل والقاطع الذكية | م. هلال شليل</title>
+<meta name="theme-color" content="#0b0f17">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="حاسبة الكابل">
+<link rel="apple-touch-icon" id="appleIcon">
+<style>
+:root{--bg:#0b0f17;--card:#141b27;--in:#080c13;--bd:#243044;--tx:#e8edf5;--mt:#8a97ab;--ac:#f5b042;--ok:#2fd27a;--bad:#ff5a5f;--blue:#4ea8ff;--purple:#a06bff;--shadow:0 4px 24px rgba(0,0,0,.4);--radius:14px}
+[data-theme="light"]{--bg:#f3f5f9;--card:#fff;--in:#f7f9fc;--bd:#d5dce8;--tx:#141b27;--mt:#5d6b80;--shadow:0 4px 24px rgba(0,0,0,.08)}
+*{box-sizing:border-box;transition:background-color .25s,color .25s,border-color .25s}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,"Segoe UI",Tahoma,sans-serif;padding:16px;max-width:700px;margin-inline:auto;overflow-x:hidden}
+
+.topbar{display:flex;justify-content:flex-end;gap:8px;margin-bottom:8px}
+.topbar button{padding:8px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-size:12px;font-family:inherit;cursor:pointer;font-weight:700;display:flex;align-items:center;gap:5px}
+.topbar button:hover{border-color:var(--ac)}
+.topbar .share{background:var(--ac);color:#141b27;border-color:var(--ac)}
+
+.hdr{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 0 8px;margin-bottom:6px}
+.tag{color:var(--ac);font-size:11px;letter-spacing:1.2px;display:inline-block;padding:3px 10px;border:1px solid var(--bd);border-radius:999px;background:var(--card)}
+h1{font-size:22px;margin:8px 0 4px;background:linear-gradient(90deg,var(--tx),var(--ac));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.sub{color:var(--mt);font-size:12.5px;margin:0 0 6px;line-height:1.6}
+.theme-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-size:20px;cursor:pointer;display:grid;place-items:center;flex-shrink:0;margin-top:6px}
+
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--radius);margin-bottom:14px;overflow:hidden;box-shadow:var(--shadow)}
+.card>h2{margin:0;padding:12px 14px;font-size:14.5px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px}
+.card>h2 .dot{width:8px;height:8px;border-radius:50%;background:var(--ac);box-shadow:0 0 12px var(--ac);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.body{padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.full{grid-column:1/-1}
+label{display:block;font-size:12px;color:var(--mt);margin-bottom:5px}
+input,select{width:100%;padding:11px;background:var(--in);color:var(--tx);border:1px solid var(--bd);border-radius:10px;font-size:15px;font-family:inherit}
+input:focus,select:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px rgba(245,176,66,.18)}
+.m{display:none}.show .m{display:block}.show .m.full{grid-column:1/-1}
+.hint{font-size:11px;color:var(--mt);margin-top:4px;line-height:1.5}
+
+.result-head{padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}
+.result-head .rlabel{font-size:11px;color:var(--mt);letter-spacing:2px;text-transform:uppercase}
+.result-head h2{margin:0;font-size:18px;color:var(--ac)}
+.ib-flc{padding:14px 16px 0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ib-flc .item{background:var(--in);border:1px solid var(--bd);border-radius:14px;padding:14px;text-align:center}
+.ib-flc .item small{display:block;color:var(--mt);font-size:12px;margin-bottom:6px}
+.ib-flc .item b{font-size:24px;font-weight:800;direction:ltr;display:inline-block;font-variant-numeric:tabular-nums}
+.ib-flc .item .unit{font-size:13px;color:var(--mt);margin-left:4px}
+
+.cb-row{padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cb-card{background:var(--in);border:1px solid var(--bd);border-radius:14px;padding:14px 10px;text-align:center}
+.cb-card .cb-lbl{font-size:10px;color:var(--mt);letter-spacing:1.5px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:10px}
+.cb-card .cb-lbl::before,.cb-card .cb-lbl::after{content:"";height:1px;background:var(--bd);flex:1}
+.cb-card .cable-vis,.cb-card .breaker-vis{display:grid;place-items:center;height:120px;margin:0 auto}
+.cb-card .cable-vis svg{width:120px;height:120px}
+.cb-card .breaker-vis svg{width:110px;height:120px}
+.cb-card .cb-main{font-size:26px;font-weight:800;color:var(--ac);direction:ltr;margin-top:6px;font-variant-numeric:tabular-nums}
+.cb-card .cb-main .unit{font-size:14px;color:var(--mt);margin-left:2px}
+.cb-card .cb-sub{font-size:11.5px;color:var(--mt);margin-top:6px;direction:ltr;line-height:1.6}
+
+.vd-card{margin:0 14px 14px;background:var(--in);border:1px solid var(--bd);border-radius:14px;padding:14px;text-align:center}
+.vd-card small{display:block;color:var(--mt);font-size:12px;margin-bottom:6px}
+.vd-card b{font-size:26px;color:var(--ac);direction:ltr;font-variant-numeric:tabular-nums}
+.vd-card b .unit{font-size:14px;color:var(--mt);margin-left:2px}
+
+.msg{margin:0 14px 14px;padding:12px;border-radius:10px;font-size:13.5px;line-height:1.7;border:1px solid transparent}
+.ok{background:rgba(47,210,122,.12);color:var(--ok);border-color:rgba(47,210,122,.3)}
+.bad{background:rgba(255,90,95,.12);color:var(--bad);border-color:rgba(255,90,95,.3)}
+.warn{background:rgba(245,176,66,.12);color:var(--ac);border-color:rgba(245,176,66,.3)}
+
+.spec{margin:0 14px 14px;background:linear-gradient(135deg,rgba(245,176,66,.08),rgba(78,168,255,.06));border:1px solid var(--bd);border-radius:12px;padding:14px;direction:ltr;font-family:'Courier New',monospace;font-size:12.5px;line-height:1.8;word-break:break-word}
+.spec b{color:var(--ac)}
+.spec .reduced{color:var(--ok);font-weight:700}
+.spec .info-line{color:var(--mt);font-size:11px;margin-top:8px;border-top:1px dashed var(--bd);padding-top:8px;direction:rtl;text-align:right;font-family:system-ui}
+
+.chart{padding:14px}
+.bar{display:grid;grid-template-columns:90px 1fr 60px;gap:10px;align-items:center;margin-bottom:9px;font-size:13px}
+.bar .nm{color:var(--mt);font-size:11px;text-align:left;direction:ltr}
+.bar .tr{background:var(--in);border:1px solid var(--bd);border-radius:8px;height:22px;overflow:hidden;position:relative}
+.bar .fl{height:100%;border-radius:7px;width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.bar .vl{font-weight:800;direction:ltr;text-align:right;font-size:12px;font-variant-numeric:tabular-nums}
+.bar.hi .tr{border-color:var(--ac);box-shadow:0 0 12px rgba(245,176,66,.25)}
+.bar.hi .vl{color:var(--ac)}
+.bar .badge{position:absolute;top:-9px;right:-4px;background:var(--ac);color:#141b27;font-size:9px;padding:2px 6px;border-radius:999px;font-weight:900}
+
+.sug{padding:14px;display:grid;gap:10px}
+.sug-item{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:11px;border-radius:11px;background:var(--in);border:1px solid var(--bd)}
+.sug-item .ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-size:18px;background:rgba(245,176,66,.12);color:var(--ac)}
+.sug-item.ok .ic{background:rgba(47,210,122,.14);color:var(--ok)}
+.sug-item.bad .ic{background:rgba(255,90,95,.14);color:var(--bad)}
+.sug-item.blue .ic{background:rgba(78,168,255,.14);color:var(--blue)}
+.sug-item.purple .ic{background:rgba(160,107,255,.14);color:var(--purple)}
+.sug-item h4{margin:0 0 3px;font-size:13px}
+.sug-item p{margin:0;font-size:12.5px;color:var(--mt);line-height:1.65}
+
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12.5px;text-align:center}
+th{color:var(--mt);font-weight:500;padding:10px 6px;font-size:11px;background:var(--card);position:sticky;top:0}
+td{padding:8px 6px;border-top:1px solid var(--bd);direction:ltr;font-variant-numeric:tabular-nums}
+tr.sel td{background:rgba(47,210,122,.12);color:var(--ok);font-weight:700}
+tr.sel td:first-child::after{content:" ✓";font-size:11px}
+
+.ptoggle{display:flex;gap:0;border:1px solid var(--bd);border-radius:10px;overflow:hidden;margin-top:6px;flex-wrap:wrap}
+.ptoggle button{flex:1;min-width:60px;padding:9px 6px;background:var(--in);color:var(--mt);border:none;font-family:inherit;font-size:12px;cursor:pointer;transition:all .2s}
+.ptoggle button.on{background:var(--ac);color:#141b27;font-weight:700}
+
+.pbadge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(78,168,255,.12),rgba(160,107,255,.12));border:1px solid rgba(78,168,255,.35);color:var(--blue);font-size:11px;font-weight:700;padding:6px 12px;border-radius:999px;margin:0 14px 14px}
+.pbadge .pd{width:7px;height:7px;border-radius:50%;background:var(--blue);box-shadow:0 0 10px var(--blue);animation:pulse 2s infinite}
+.pbadge.green{background:linear-gradient(135deg,rgba(47,210,122,.12),rgba(47,210,122,.06));border-color:rgba(47,210,122,.35);color:var(--ok)}
+.pbadge.green .pd{background:var(--ok);box-shadow:0 0 10px var(--ok)}
+
+.cost-compare{padding:14px;display:grid;gap:8px}
+.cost-item{background:var(--in);border:1px solid var(--bd);border-radius:10px;padding:11px}
+.cost-item.best{border-color:var(--ok);background:rgba(47,210,122,.08)}
+.cost-item .ci-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.cost-item .ci-head .ttl{font-weight:700;direction:ltr;font-size:13px}
+.cost-item .ci-head .ttl .tag-best{font-size:10px;background:var(--ok);color:#141b27;padding:2px 6px;border-radius:6px;margin-left:6px}
+.cost-item .ci-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11.5px;color:var(--mt)}
+.cost-item .ci-grid b{color:var(--tx)}
+
+.signature{margin-top:20px;padding:18px;background:linear-gradient(135deg,rgba(245,176,66,.10),rgba(78,168,255,.06));border:1px solid var(--bd);border-radius:16px;text-align:center;position:relative;overflow:hidden}
+.signature::before{content:"";position:absolute;inset:-50% -50% auto auto;width:200px;height:200px;background:radial-gradient(circle,rgba(245,176,66,.15),transparent 70%);border-radius:50%;animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(-20px,10px)}}
+.signature .s-icon{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#1e2a42,#0b0f17);display:inline-grid;place-items:center;font-size:26px;margin-bottom:10px;border:2px solid var(--ac);box-shadow:0 0 20px rgba(245,176,66,.35)}
+.signature .s-title{font-size:14px;font-weight:800;color:var(--ac);letter-spacing:.5px;margin-bottom:4px}
+.signature .s-name{font-size:18px;font-weight:900;margin:6px 0;letter-spacing:.3px;background:linear-gradient(90deg,var(--ac),var(--purple));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.signature .s-desc{font-size:11.5px;color:var(--mt);line-height:1.7;margin-top:6px}
+.signature .s-badge{display:inline-flex;align-items:center;gap:6px;background:var(--in);border:1px solid var(--bd);padding:4px 12px;border-radius:999px;font-size:10.5px;color:var(--mt);margin-top:10px}
+.signature .s-badge .pdot{width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);animation:pulse 2s infinite}
+
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--card);color:var(--tx);padding:12px 20px;border-radius:12px;border:1px solid var(--ac);box-shadow:0 8px 24px rgba(0,0,0,.4);font-size:13px;font-weight:700;z-index:1000;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-10px)}
+</style></head><body>
+
+<!-- شريط الأدوات العلوي -->
+<div class="topbar">
+  <button class="share" id="shareBtn">📤 مشاركة</button>
+  <button id="downloadBtn">💾 تحميل</button>
+</div>
+
+<div class="hdr">
+  <div>
+    <div class="tag">MEP · الكود المصري 2025 · IEC 60364</div>
+    <h1>حاسبة الكابل والقاطع الذكية</h1>
+    <p class="sub">معامل أمان 1.25 · تقليل اقتصادي تلقائي للنيوترال والأرضي</p>
+  </div>
+  <button class="theme-btn" id="themeBtn">🌙</button>
+</div>
+
+<div class="card"><h2><span class="dot"></span> نوع الحمل</h2><div class="body">
+<div class="full">
+  <div class="ptoggle" id="loadType">
+    <button data-v="static" class="on">Static ثابت</button>
+    <button data-v="dynamic">Dynamic موتور</button>
+    <button data-v="hvac">HVAC تكييف</button>
+  </div>
+  <div class="hint" id="loadHint">🏠 إضاءة ومآخذ — معامل الأمان 1.25 مطبق.</div>
+</div>
+<div><label>النظام</label><select id="ph">
+  <option value="3">3-Phase (380V)</option>
+  <option value="1">1-Phase (220V)</option></select></div>
+<div><label>الجهد (V)</label><input id="v" type="number" value="380" inputmode="decimal"></div>
+<div><label id="kwLabel">القدرة (kW)</label><input id="kw" type="number" value="17" inputmode="decimal"></div>
+<div><label>التيار (A) – اختياري</label><input id="ia" type="number" inputmode="decimal"></div>
+<div class="full"><label>cosφ</label><input id="pf" type="number" step="0.01" value="0.85"></div>
+</div></div>
+
+<div class="card m" id="hvacCard"><h2><span class="dot"></span> HVAC</h2><div class="body">
+<div class="full"><label>طريقة الإدخال</label><select id="hvacMode">
+  <option value="kw">قدرة معروفة (kW)</option>
+  <option value="area">من المساحة (100 VA/m²)</option>
+  <option value="ton">من الطن (×3.5 kW)</option></select></div>
+<div class="m" id="hvacAreaBox"><label>المساحة (m²)</label><input id="hvacArea" type="number" value="100"></div>
+<div class="m" id="hvacTonBox"><label>سعة (Ton)</label><input id="hvacTon" type="number" step="0.5" value="2"></div>
+</div></div>
+
+<div class="card m" id="motorCard"><h2><span class="dot"></span> بيانات الموتور (IEC 60034-12)</h2><div class="body">
+<div><label>طريقة البدء</label><select id="meth">
+  <option value="7">مباشر DOL (7×)</option>
+  <option value="2.2">نجمة-دلتا (2.2×)</option>
+  <option value="3">سوفت ستارتر (3×)</option>
+  <option value="1.25">VFD (1.25×)</option></select></div>
+<div><label>مضاعف البدء</label><input id="mult" type="number" step="0.1" value="7"></div>
+<div><label>هامش القاطع</label><input id="mg" type="number" step="0.1" value="1.2"></div>
+</div></div>
+
+<div class="card"><h2><span class="dot"></span> معاملات التصميم</h2><div class="body">
+<div><label>نوع العزل</label><select id="insul">
+  <option value="xlpe">Cu/XLPE (السويدي)</option>
+  <option value="pvc">Cu/PVC</option></select></div>
+<div><label>طريقة التركيب</label><select id="installMethod">
+  <option value="ground">مدفون في الأرض</option>
+  <option value="duct">في ماسورة</option>
+  <option value="air">في الهواء الطلق</option></select></div>
+<div><label>درجة حرارة الجو °C</label><input id="amb" type="number" value="40"></div>
+<div><label>عدد الدوائر المتجاورة</label><select id="cgsel">
+  <option value="1">دائرة واحدة (K=1.00)</option>
+  <option value="2">2 دوائر (K=0.80)</option>
+  <option value="3">3 دوائر (K=0.70)</option>
+  <option value="4">4 دوائر (K=0.65)</option></select></div>
+<div><label>الطول (م)</label><input id="len" type="number" value="30"></div>
+<div><label>معيار هبوط الجهد</label><select id="vdStandard">
+  <option value="egyptian" selected>🇪🇬 الكود المصري (2.5%)</option>
+  <option value="iec">🌍 IEC (5%)</option></select></div>
+<div><label>نوع الكابل</label><select id="cableType">
+  <option value="arm" selected>Cu/XLPE/SWA/PVC</option>
+  <option value="pvcarm">Cu/PVC/SWA/PVC</option>
+  <option value="unarm">Cu/PVC/PVC</option></select></div>
+<div><label>عدد الكابلات</label><select id="parMode">
+  <option value="auto">🧠 تلقائي (الأرخص)</option>
+  <option value="1">1 كابل</option>
+  <option value="2">2 كابلات متوازية</option>
+  <option value="3">3 كابلات متوازية</option></select></div>
+<div class="full">
+  <label>توصيف النيوترال والأرضي</label>
+  <select id="neutralMode">
+    <option value="auto">🧠 اقتصادي تلقائي (تقليل فوق 35mm²)</option>
+    <option value="full">نفس مقطع الوجه</option>
+  </select>
+</div>
+</div></div>
+
+<div class="card" id="rCard">
+<div class="result-head">
+  <h2>النتائج</h2>
+  <span class="rlabel">RESULT</span>
+</div>
+<div class="ib-flc">
+  <div class="item"><small>تيار التصميم Ib</small><b id="rib">-</b><span class="unit">A</span></div>
+  <div class="item"><small>تيار الحمل FLC</small><b id="rflc">-</b><span class="unit">A</span></div>
+</div>
+<div class="cb-row">
+  <div class="cb-card">
+    <div class="cb-lbl">CABLE · الكابل</div>
+    <div class="cable-vis" id="cableView"></div>
+    <div class="cb-main"><span id="rcab">-</span><span class="unit">mm²</span></div>
+    <div class="cb-sub" id="rcabSub">-</div>
+  </div>
+  <div class="cb-card">
+    <div class="cb-lbl">BREAKER · القاطع</div>
+    <div class="breaker-vis" id="breakerView"></div>
+    <div class="cb-main"><span id="rbr">-</span><span class="unit">A</span></div>
+    <div class="cb-sub" id="rbrSub">-</div>
+  </div>
+</div>
+<div id="parallelBadge"></div>
+<div class="vd-card">
+  <small>هبوط الجهد عند الحمل الكامل</small>
+  <b id="rvd">-</b><b class="unit">%</b>
+</div>
+<div class="msg" id="msg"></div>
+<div class="spec" id="spec">—</div>
+</div>
+
+<div class="card"><h2><span class="dot"></span> مقارنة اقتصادية</h2>
+<div class="cost-compare" id="costCompare"></div></div>
+
+<div class="card m2" style="display:none" id="chartCard"><h2><span class="dot"></span> تيارات البدء</h2>
+<div class="chart" id="chart"></div>
+<div class="msg" id="mmsg" style="margin:0 14px 14px"></div>
+</div>
+
+<div class="card"><h2><span class="dot"></span> اقتراحات ذكية</h2>
+<div class="sug" id="sug"></div></div>
+
+<div class="card"><h2><span class="dot"></span> جدول المقاسات (السويدي + IEC)</h2><div class="tw"><table>
+<thead><tr><th>مم²</th><th>Iz قاعدة</th><th>Iz بعد المعاملات</th><th>Iz كلي</th><th>سعة</th><th>VD%</th><th>حماية</th></tr></thead>
+<tbody id="tb"></tbody></table></div></div>
+
+<div class="signature">
+  <div class="s-icon">⚡</div>
+  <div class="s-title">تم تصميم وتطوير الأداة</div>
+  <div class="s-name">المهندس / هلال شليل</div>
+  <div class="s-desc">حاسبة متقدمة لاختيار الكابلات والقواطع<br>وفق الكود المصري 2025 والمعايير الدولية IEC 60364</div>
+  <div class="s-badge"><span class="pdot"></span>مهندس كهرباء · MEP Design</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ==================================================================
+   Share + Download
+================================================================== */
+function buildCleanHTML(){
+  // إزالة العناصر المؤقتة قبل التصدير
+  const clone = document.documentElement.cloneNode(true);
+  return '<!DOCTYPE html>\n' + clone.outerHTML;
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+function downloadSelf(){
+  try {
+    const html = buildCleanHTML();
+    const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'حاسبة-الكابل-هلال-شليل.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    showToast('✅ تم حفظ الملف — ابحث عنه في التنزيلات');
+  } catch(e) {
+    showToast('⚠️ تعذّر الحفظ — جرّب من متصفح آخر');
+  }
+}
+
+async function shareSelf(){
+  try {
+    const html = buildCleanHTML();
+    const file = new File([html], 'حاسبة-الكابل-هلال-شليل.html', {type:'text/html'});
+
+    if (navigator.canShare && navigator.canShare({files:[file]})) {
+      await navigator.share({
+        title: 'حاسبة الكابل والقاطع',
+        text: 'أداة ذكية لاختيار الكابلات والقواطع وفق الكود المصري 2025',
+        files: [file]
+      });
+      showToast('✅ تمت المشاركة');
+    } else {
+      // fallback: download
+      downloadSelf();
+      showToast('💾 الجهاز لا يدعم المشاركة — تم التحميل');
+    }
+  } catch(e) {
+    if (e.name !== 'AbortError'){
+      downloadSelf();
+    }
+  }
+}
+
+document.getElementById('shareBtn').addEventListener('click', shareSelf);
+document.getElementById('downloadBtn').addEventListener('click', downloadSelf);
+
+/* ==================================================================
+   Icon Generator
+================================================================== */
+function makeBeautifulIcon(size, maskable){
+  const s = size;
+  const c = document.createElement('canvas');
+  c.width = c.height = s;
+  const x = c.getContext('2d');
+  const cx = s / 2, cy = s / 2;
+  const inner = s * (maskable ? 0.76 : 1);
+
+  const bgGrad = x.createRadialGradient(cx, cy * 0.7, 0, cx, cy, s * 0.8);
+  bgGrad.addColorStop(0, '#1e2a42');
+  bgGrad.addColorStop(0.55, '#0f1828');
+  bgGrad.addColorStop(1, '#060a12');
+  x.fillStyle = bgGrad;
+  x.fillRect(0, 0, s, s);
+
+  const ringR = inner * 0.42;
+  const ringGrad = x.createLinearGradient(cx - ringR, cy - ringR, cx + ringR, cy + ringR);
+  ringGrad.addColorStop(0, '#ffd97a');
+  ringGrad.addColorStop(0.5, '#f5b042');
+  ringGrad.addColorStop(1, '#c88a3a');
+  x.strokeStyle = ringGrad;
+  x.lineWidth = s * 0.032;
+  x.beginPath();
+  x.arc(cx, cy, ringR, 0, Math.PI * 2);
+  x.stroke();
+
+  x.strokeStyle = 'rgba(245, 176, 66, 0.20)';
+  x.lineWidth = s * 0.008;
+  x.beginPath();
+  x.arc(cx, cy, ringR * 1.10, 0, Math.PI * 2);
+  x.stroke();
+
+  const coreR = inner * 0.095;
+  const coreDist = ringR * 0.62;
+  const cores = [
+    { ang: -Math.PI / 2, color: '#8B4513' },
+    { ang: -Math.PI / 2 + Math.PI * 2 / 3, color: '#1a1a1a' },
+    { ang: -Math.PI / 2 + Math.PI * 4 / 3, color: '#555555' }
+  ];
+
+  cores.forEach(co => {
+    const px = cx + Math.cos(co.ang) * coreDist;
+    const py = cy + Math.sin(co.ang) * coreDist;
+    x.fillStyle = co.color;
+    x.beginPath();
+    x.arc(px, py, coreR, 0, Math.PI * 2);
+    x.fill();
+    x.strokeStyle = 'rgba(0,0,0,0.5)';
+    x.lineWidth = Math.max(1, s * 0.005);
+    x.stroke();
+    const hl = x.createRadialGradient(px - coreR * 0.35, py - coreR * 0.35, 0, px, py, coreR * 0.85);
+    hl.addColorStop(0, 'rgba(255,255,255,0.25)');
+    hl.addColorStop(1, 'rgba(255,255,255,0)');
+    x.fillStyle = hl;
+    x.beginPath();
+    x.arc(px, py, coreR, 0, Math.PI * 2);
+    x.fill();
+  });
+
+  x.save();
+  x.translate(cx, cy);
+  const scale = inner * 0.5;
+  const P = [[0.12,-0.55],[0.00,-0.05],[0.18,-0.05],[0.03,0.55],[0.32,-0.08],[0.14,-0.08]];
+  x.beginPath();
+  P.forEach(([px, py], i) => {
+    const X = px * scale, Y = py * scale;
+    i ? x.lineTo(X, Y) : x.moveTo(X, Y);
+  });
+  x.closePath();
+  const boltGrad = x.createLinearGradient(0, -scale * 0.6, 0, scale * 0.6);
+  boltGrad.addColorStop(0, '#ffd97a');
+  boltGrad.addColorStop(0.5, '#f5b042');
+  boltGrad.addColorStop(1, '#c88a3a');
+  x.fillStyle = boltGrad;
+  x.shadowColor = '#f5b042';
+  x.shadowBlur = s * 0.05;
+  x.fill();
+  x.shadowBlur = 0;
+  x.restore();
+
+  return c.toDataURL('image/png');
+}
+
+(function(){
+  const i192  = makeBeautifulIcon(192, false);
+  const i512  = makeBeautifulIcon(512, false);
+  const i512m = makeBeautifulIcon(512, true);
+  const i180  = makeBeautifulIcon(180, false);
+  document.getElementById('appleIcon').href = i180;
+
+  const base = location.href.split(/[?#]/)[0];
+  const manifest = {
+    name: 'حاسبة الكابل والقاطع الذكية',
+    short_name: 'حاسبة الكابل',
+    description: 'حاسبة متقدمة لاختيار الكابلات والقواطع — م. هلال شليل',
+    lang: 'ar', dir: 'rtl',
+    start_url: base,
+    scope: base.replace(/[^/]*$/, ''),
+    display: 'standalone',
+    orientation: 'portrait',
+    background_color: '#0b0f17',
+    theme_color: '#0b0f17',
+    icons: [
+      { src: i192,  sizes: '192x192', type: 'image/png', purpose: 'any' },
+      { src: i512,  sizes: '512x512', type: 'image/png', purpose: 'any' },
+      { src: i512m, sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+    ]
+  };
+  const lk = document.createElement('link');
+  lk.rel = 'manifest';
+  lk.href = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifest));
+  document.head.appendChild(lk);
+})();
+
+/* ==================================================================
+   Theme
+================================================================== */
+(function(){
+  const html = document.documentElement;
+  const btn = document.getElementById('themeBtn');
+  if (localStorage.getItem('theme') === 'light') {
+    html.setAttribute('data-theme', 'light');
+    btn.textContent = '☀️';
+  }
+  btn.addEventListener('click', () => {
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      html.setAttribute('data-theme', 'light');
+      btn.textContent = '☀️';
+      localStorage.setItem('theme', 'light');
+    } else {
+      html.setAttribute('data-theme', 'dark');
+      btn.textContent = '🌙';
+      localStorage.setItem('theme', 'dark');
+    }
+    calc();
+  });
+})();
+
+/* ==================================================================
+   Data
+================================================================== */
+const CABLE_DATA = [
+  [1.5,24,20,27,25],[2.5,32,27,36,15],[4,42,35,46,9.5],[6,53,44,58,6.4],
+  [10,71,59,78,3.8],[16,94,78,103,2.4],[25,122,101,132,1.5],[35,148,123,160,1.1],
+  [50,178,148,192,0.82],[70,218,181,235,0.57],[95,262,218,283,0.42],
+  [120,300,249,325,0.34],[150,340,283,368,0.29],[185,385,320,417,0.24],
+  [240,448,372,484,0.20],[300,507,421,547,0.17],[400,570,473,616,0.14],
+  [500,640,531,692,0.12]
+];
+const CB = [6,10,16,20,25,32,40,50,63,80,100,125,160,200,250,315,400,500,630,800,1000,1250,1600];
+const STD_SIZES = [1.5,2.5,4,6,10,16,25,35,50,70,95,120,150,185,240,300,400,500];
+const MCB_CURVES = {B:{min:3,max:5,desc:'إضاءة'},C:{min:5,max:10,desc:'مآخذ'},D:{min:10,max:20,desc:'محركات'}};
+const TEMP_PVC  = [[10,1.22],[15,1.17],[20,1.12],[25,1.06],[30,1.00],[35,0.94],[40,0.87],[45,0.79],[50,0.71],[55,0.61],[60,0.50]];
+const TEMP_XLPE = [[10,1.15],[15,1.12],[20,1.08],[25,1.04],[30,1.00],[35,0.96],[40,0.91],[45,0.87],[50,0.82],[55,0.76],[60,0.71]];
+
+function tempFactor(insul, t){
+  const T = insul === 'xlpe' ? TEMP_XLPE : TEMP_PVC;
+  if (t <= T[0][0]) return T[0][1];
+  if (t >= T[T.length - 1][0]) return T[T.length - 1][1];
+  for (let i = 0; i < T.length - 1; i++){
+    if (t >= T[i][0] && t <= T[i+1][0]){
+      const r = (t - T[i][0]) / (T[i+1][0] - T[i][0]);
+      return T[i][1] + (T[i+1][1] - T[i][1]) * r;
+    }
+  }
+  return 1;
+}
+function groupingFactor(n){
+  return {1:1.00, 2:0.80, 3:0.70, 4:0.65, 5:0.60, 6:0.57}[n] || 1.00;
+}
+const PAR_FACTOR = {1:1.00, 2:0.80, 3:0.70};
+const VD_STD = {
+  egyptian: {normal:2.5, max:2.5, motorStart:80, label:'🇪🇬 الكود المصري 2025'},
+  iec: {normal:3.0, max:5.0, motorStart:80, label:'🌍 IEC 60364-5-52'}
+};
+const SF = 1.25;
+const MIN_KW = 0.01;
+
+const $ = id => document.getElementById(id);
+const n = id => parseFloat($(id).value) || 0;
+const f = (x, d = 1) => isFinite(x) ? x.toFixed(d) : '—';
+let loadType = 'static';
+
+function getBreakerType(In){
+  if (In <= 125) return 'MCB';
+  if (In <= 1600) return 'MCCB';
+  return 'ACB';
+}
+function getCurveForLoad(loadType, In){
+  const type = getBreakerType(In);
+  if (type !== 'MCB') return 'Adj';
+  if (loadType === 'dynamic') return 'D';
+  if (loadType === 'hvac') return 'C';
+  return 'B';
+}
+function getConductorSizes(phaseSize, phases, mode){
+  const findStd = v => STD_SIZES.find(s => s >= v) || v;
+  let earth;
+  if (phaseSize <= 16) earth = phaseSize;
+  else if (phaseSize <= 35) earth = 16;
+  else earth = findStd(phaseSize / 2);
+  let neutral, note = '';
+  if (mode === 'full'){
+    neutral = phaseSize;
+    note = 'توافقيات عالية — N بنفس المقطع';
+    return { neutral, earth, note };
+  }
+  if (phases === 1) neutral = phaseSize;
+  else neutral = phaseSize <= 16 ? phaseSize : findStd(phaseSize / 2);
+  if (neutral < phaseSize || earth < phaseSize){
+    note = `تقليل اقتصادي: N=${neutral}mm²، E=${earth}mm² (وفق IEC)`;
+  }
+  return { neutral, earth, note };
+}
+
+function drawCableSVG(size, phases, insul, par){
+  const W=140, H=140, cx=70, cy=70, R=58;
+  const sheathColor = insul === 'xlpe' ? '#a06bff' : '#f5b042';
+  if (!size || size <= 0){
+    return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"><circle cx="${cx}" cy="${cy}" r="${R}" fill="#1a1a1a" stroke="${sheathColor}" stroke-width="2" opacity=".35"/><text x="${cx}" y="${cy+8}" text-anchor="middle" fill="${sheathColor}" font-size="28" font-weight="900" font-family="system-ui">?</text></svg>`;
+  }
+  const cores = [{c:'#8B4513'}];
+  if (phases === 3){ cores.push({c:'#1a1a1a'}); cores.push({c:'#666666'}); }
+  cores.push({c:'#2563eb'});
+  cores.push({c:'#1f9d4a', striped:true});
+  const N = cores.length;
+  const coreR = N <= 3 ? 22 : N === 4 ? 19 : 16;
+  const ringR = R - coreR - 3;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="stripes" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="6" fill="#1f9d4a"/><rect x="3" width="3" height="6" fill="#f5d100"/></pattern></defs><circle cx="${cx}" cy="${cy}" r="${R}" fill="#1a1a1a" stroke="${sheathColor}" stroke-width="2.5"/><circle cx="${cx}" cy="${cy}" r="${R-4}" fill="#262626" stroke="rgba(255,255,255,.08)"/>`;
+  cores.forEach((core, i) => {
+    const a = (i / N) * Math.PI * 2 - Math.PI / 2;
+    const x = cx + Math.cos(a) * ringR;
+    const y = cy + Math.sin(a) * ringR;
+    if (core.striped){
+      svg += `<circle cx="${x}" cy="${y}" r="${coreR}" fill="url(#stripes)" stroke="#0a0a0a" stroke-width="1.2"/>`;
+    } else {
+      svg += `<circle cx="${x}" cy="${y}" r="${coreR}" fill="${core.c}" stroke="#0a0a0a" stroke-width="1.2"/><circle cx="${x-coreR*0.3}" cy="${y-coreR*0.3}" r="${coreR*0.4}" fill="rgba(255,255,255,.12)"/>`;
+    }
+  });
+  if (par > 1){
+    svg += `<g><circle cx="${cx+44}" cy="${cy+44}" r="16" fill="${sheathColor}"/><text x="${cx+44}" y="${cy+49}" text-anchor="middle" fill="#141b27" font-size="14" font-weight="900" font-family="system-ui">×${par}</text></g>`;
+  }
+  return svg + `</svg>`;
+}
+
+function drawBreakerSVG(In, phases, breakerType, curveType){
+  const W=130, H=140;
+  const ampStr = In >= 1000 ? (In / 1000).toFixed(1) + 'k' : In + '';
+  const polesTxt = phases === 3 ? '3P' : '1P+N';
+  let typeLabel = breakerType;
+  if (breakerType === 'MCB' && curveType && curveType !== 'Adj') typeLabel = `MCB-${curveType}`;
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="brkGrad" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f5b042"/><stop offset="1" stop-color="#c88a3a"/></linearGradient></defs><rect x="20" y="30" width="90" height="60" rx="8" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="2"/><rect x="35" y="20" width="60" height="20" rx="4" fill="url(#brkGrad)"/><text x="65" y="35" text-anchor="middle" fill="#141b27" font-size="10" font-weight="900" font-family="system-ui">I</text><rect x="35" y="42" width="60" height="26" rx="4" fill="url(#brkGrad)"/><text x="65" y="59" text-anchor="middle" fill="#141b27" font-size="12" font-weight="900" font-family="system-ui">${ampStr}</text><rect x="35" y="70" width="60" height="20" rx="4" fill="url(#brkGrad)"/><text x="65" y="85" text-anchor="middle" fill="#141b27" font-size="10" font-weight="900" font-family="system-ui">O</text><circle cx="65" cy="102" r="5" fill="#2fd27a" stroke="#0a0a0a" stroke-width="1"/><text x="65" y="120" text-anchor="middle" fill="currentColor" font-size="14" font-weight="900" font-family="system-ui" direction="ltr">${In} A</text><text x="65" y="133" text-anchor="middle" fill="#8a97ab" font-size="8" font-family="system-ui" direction="ltr">${polesTxt} · ${typeLabel}</text></svg>`;
+}
+
+function drawStartChart(flc, ist, mult){
+  const methods = [{l:'DOL',m:7,color:'#ff5a5f'},{l:'نجمة-دلتا',m:2.2,color:'#f5b042'},{l:'سوفت',m:3,color:'#4ea8ff'},{l:'VFD',m:1.25,color:'#2fd27a'}];
+  const maxVal = Math.max(ist, ...methods.map(x => flc * x.m), 1) * 1.06;
+  let html = `<div class="bar"><div class="nm">FLC</div><div class="tr"><div class="fl" data-w="${(flc/maxVal*100).toFixed(1)}" style="background:linear-gradient(90deg,#2fd27a,#1fa85e)"></div></div><div class="vl">${Math.round(flc)} A</div></div>`;
+  methods.forEach(m => {
+    const v = flc * m.m;
+    const hi = Math.abs(m.m - mult) < 0.15;
+    html += `<div class="bar ${hi?'hi':''}"><div class="nm">${m.l} (${m.m}×)</div><div class="tr"><div class="fl" data-w="${(v/maxVal*100).toFixed(1)}" style="background:linear-gradient(90deg,${m.color},${m.color}cc)"></div>${hi?'<span class="badge">مختار</span>':''}</div><div class="vl">${Math.round(v)} A</div></div>`;
+  });
+  $('chart').innerHTML = html;
+  requestAnimationFrame(()=>{document.querySelectorAll('#chart .fl').forEach(el=>{el.style.width = el.dataset.w + '%';});});
+}
+
+function buildSpec(size, phases, insul, cableType, par, neutralMode){
+  const nCores = phases === 3 ? 3 : 2;
+  const { neutral, earth, note } = getConductorSizes(size, phases, neutralMode);
+  const insulTxt = insul === 'xlpe' ? 'XLPE' : 'PVC';
+  const sheathTxt = cableType === 'unarm' ? 'PVC' : 'SWA/PVC';
+  const parTxt = par > 1 ? `  × ${par} RUNS` : '';
+  const prefix = par > 1 ? `${par} × ` : '';
+  const nDisplay = neutral === size ? `${size}` : `<span class="reduced">${neutral}</span>`;
+  const eDisplay = earth === size ? `${size}` : `<span class="reduced">${earth}</span>`;
+  const mainLine = `<b>${prefix}${nCores}×${size} + ${nDisplay} + ${eDisplay} mm²</b> Cu/${insulTxt}/${sheathTxt} 0.6/1kV${parTxt}`;
+  const infoLine = note ? `<div class="info-line">🔧 ${note}</div>` : '';
+  return mainLine + infoLine;
+}
+
+function economicSelect(ib, In, ist, isMotor, ctx){
+  const { phases, V, L, insul, installMethod, amb, cg, vdStd } = ctx;
+  const list = [];
+  const colIdx = installMethod === 'ground' ? 1 : installMethod === 'duct' ? 2 : 3;
+  const kTemp = tempFactor(insul, amb);
+  const kGroup = groupingFactor(cg);
+  const mvFactor = phases === 3 ? 1 : (2 / Math.sqrt(3));
+  const breakerType = getBreakerType(In);
+  const I2Factor = breakerType === 'MCB' ? 1.45 : 1.30;
+
+  for (let par = 1; par <= 3; par++){
+    const parK = PAR_FACTOR[par];
+    for (const cable of CABLE_DATA){
+      const izBase = cable[colIdx];
+      const izSingle = izBase * kTemp * kGroup;
+      const izTotal = izSingle * par * parK;
+      if (izTotal < In) continue;
+      if (I2Factor * In > 1.45 * izTotal) continue;
+      const mv = cable[4] * mvFactor;
+      const vd = mv * ib * L / 1000 / V * 100 / par;
+      if (vd > vdStd.max) continue;
+      let vStartPct = 100, vdStart = 0;
+      if (isMotor && ist > 0){
+        vdStart = mv * ist * L / 1000 / V * 100 / par;
+        vStartPct = 100 - vdStart;
+        if (vStartPct < vdStd.motorStart) continue;
+      }
+      const copperTotal = par * cable[0] * L;
+      const runsCost = (par - 1) * 250;
+      const largePenalty = par === 1 && cable[0] > 240 ? (cable[0] - 240) * 1.5 : 0;
+      const totalCost = copperTotal + runsCost + largePenalty;
+      list.push({ par, cable, izBase, izSingle, izTotal, vd, vStartPct, vdStart, mv, mvFactor, I2Factor, copperTotal: par * cable[0], totalCost, meetsTarget: vd <= vdStd.normal });
+    }
+  }
+  if (list.length === 0) return null;
+  list.sort((a, b) => a.totalCost - b.totalCost);
+  return { best: list[0], all: list };
+}
+
+function buildSuggestions(ctx){
+  const s = [];
+  const { ib, In, flc, chosen, isMotor, insul, amb, izd, par, loadType, vd, vdStd, vStartPct, L, kTemp, breakerType, curveType, neutral, earth, neutralMode } = ctx;
+  const lt = {
+    static: { ic: '🏠', t: 'حمل ثابت (Static)', d: 'إضاءة ومآخذ — معامل أمان 1.25.', cls: '' },
+    dynamic: { ic: '⚙️', t: 'حمل ديناميكي (Dynamic)', d: 'موتور — معامل أمان 1.25 وتحليل البدء.', cls: 'blue' },
+    hvac: { ic: '❄️', t: 'حمل تكييف (HVAC)', d: 'معامل أمان 1.25 — 100 VA/m².', cls: 'purple' }
+  };
+  s.push(lt[loadType]);
+  if (!chosen){
+    s.push({ ic: '⚠', t: 'لا يوجد حل', d: `جرّب: تقليل الطول (${L} م)، XLPE، أو زيادة عدد الكابلات.`, cls: 'bad' });
+  } else {
+    s.push({ ic: '✅', t: 'الاختيار الاقتصادي الأمثل', d: `${par > 1 ? par + ' × ' : ''}${chosen[0]} مم² Cu/${insul === 'xlpe' ? 'XLPE' : 'PVC'}/SWA — إجمالي نحاس ${chosen[0] * par} مم².`, cls: 'ok' });
+    let breakerDesc;
+    if (breakerType === 'MCB') breakerDesc = `MCB ${In}A منحنى ${curveType} (${MCB_CURVES[curveType]?.desc || ''}) — IEC 60898-1.`;
+    else if (breakerType === 'MCCB') breakerDesc = `MCCB ${In}A بإعدادات قابلة للضبط (Im = 5–10×) — IEC 60947-2.`;
+    else breakerDesc = `ACB ${In}A قاطع هوائي — IEC 60947-2.`;
+    s.push({ ic: '⚡', t: `القاطع: ${breakerType} ${In}A`, d: breakerDesc, cls: 'blue' });
+    if (neutral < chosen[0] || earth < chosen[0]){
+      s.push({ ic: '🔧', t: 'تقليل اقتصادي في N و E', d: `N: ${neutral} مم²، E: ${earth} مم² (بدلاً من ${chosen[0]} مم²). وفّر ${(chosen[0] - neutral) + (chosen[0] - earth)} مم² نحاس لكل كابل وفق IEC.`, cls: 'purple' });
+    }
+    if (vd <= vdStd.normal){
+      s.push({ ic: '⭐', t: 'هبوط الجهد مطابق', d: `${f(vd, 2)}% ≤ ${vdStd.normal}% — ${vdStd.label}.`, cls: 'ok' });
+    } else if (vd <= vdStd.max){
+      s.push({ ic: '⚡', t: 'هبوط جهد مقبول (IEC)', d: `${f(vd, 2)}% بين ${vdStd.normal}% و ${vdStd.max}%.`, cls: '' });
+    }
+    const tm = (izd - In) / In * 100;
+    if (tm < 10) s.push({ ic: '🌡️', t: 'هامش حراري ضيق', d: `Iz = ${f(izd)} A مقابل In = ${In} A.`, cls: 'bad' });
+    else if (tm > 80) s.push({ ic: '📉', t: 'الكابل مبالغ فيه', d: `هامش ${f(tm, 0)}% — يمكن تصغير المقاس.`, cls: 'blue' });
+    else s.push({ ic: '✓', t: 'هامش حراري متوازن', d: `Iz = ${f(izd)} A > In = ${In} A > Ib = ${f(ib)} A.`, cls: 'ok' });
+  }
+  if (isMotor && chosen){
+    if (vStartPct < 80) s.push({ ic: '🚨', t: 'جهد البدء خطير', d: `${f(vStartPct, 1)}% < 80% — الموتور لن يقوم.`, cls: 'bad' });
+    else s.push({ ic: '✓', t: 'جهد البدء مقبول', d: `الموتور يبدأ عند ${f(vStartPct, 1)}%.`, cls: 'ok' });
+  }
+  $('sug').innerHTML = s.map(x => `<div class="sug-item ${x.cls || ''}"><div class="ic">${x.ic}</div><div><h4>${x.t}</h4><p>${x.d}</p></div></div>`).join('');
+}
+
+function renderCostCompare(result){
+  if (!result || result.all.length === 0){
+    $('costCompare').innerHTML = '<div style="padding:20px;text-align:center;color:var(--mt)">—</div>';
+    return;
+  }
+  const top = result.all.slice(0, 4);
+  const minCost = top[0].totalCost;
+  let html = '';
+  top.forEach((opt, i) => {
+    const rel = (opt.totalCost / minCost * 100).toFixed(0);
+    const isBest = i === 0;
+    html += `<div class="cost-item ${isBest ? 'best' : ''}"><div class="ci-head"><div class="ttl">${opt.par} × ${opt.cable[0]} mm² ${isBest ? '<span class="tag-best">الأرخص</span>' : ''}</div><div style="font-weight:800;color:var(--ac);font-size:14px">${rel}%</div></div><div class="ci-grid"><div>Iz كلي: <b>${f(opt.izTotal, 0)} A</b></div><div>VD: <b>${f(opt.vd, 2)}%</b></div><div>نحاس: <b>${opt.copperTotal} mm²</b></div><div>جهد البدء: <b>${opt.vStartPct < 100 ? f(opt.vStartPct, 1) + '%' : '—'}</b></div></div></div>`;
+  });
+  $('costCompare').innerHTML = html;
+}
+
+function calc(){
+  const phases = +$('ph').value;
+  const V = n('v') || 380;
+  const pf = n('pf') || 1;
+  const L = Math.max(n('len'), 1);
+  const ia = n('ia');
+  const insul = $('insul').value;
+  const installMethod = $('installMethod').value;
+  const amb = n('amb');
+  const cg = parseInt($('cgsel').value) || 1;
+  const cableType = $('cableType').value;
+  const vdStd = VD_STD[$('vdStandard').value];
+  const neutralMode = $('neutralMode').value;
+  const isMotor = loadType === 'dynamic';
+  const isHVAC = loadType === 'hvac';
+
+  $('motorCard').classList.toggle('show', isMotor);
+  $('hvacCard').classList.toggle('show', isHVAC);
+  document.querySelectorAll('.m2').forEach(e => e.style.display = isMotor ? 'block' : 'none');
+  if (!isMotor) $('chartCard').style.display = 'none';
+
+  const kwLabel = $('kwLabel');
+  if (isHVAC){
+    const hm = $('hvacMode').value;
+    kwLabel.textContent = hm === 'area' ? 'القدرة (kVA)' : 'القدرة (kW)';
+  } else kwLabel.textContent = 'القدرة (kW)';
+
+  let kw = n('kw');
+  if (isHVAC){
+    const hm = $('hvacMode').value;
+    if (hm === 'area') kw = n('hvacArea') * 0.1;
+    else if (hm === 'ton') kw = n('hvacTon') * 3.5;
+    $('kw').value = kw.toFixed(2);
+  }
+  if (kw < MIN_KW && ia <= 0) kw = MIN_KW;
+
+  let flc = ia > 0 ? ia : (phases === 3 ? kw * 1000 / (Math.sqrt(3) * V * pf) : kw * 1000 / (V * pf));
+  if (flc <= 0) flc = 0.01;
+  const ib = flc * SF;
+  const mult = n('mult') || 7;
+  const ist = isMotor ? flc * mult : 0;
+
+  let In = CB.find(x => x >= ib) || CB[CB.length - 1];
+  if (isMotor && ist > 0){
+    const curCurve = getCurveForLoad('dynamic', In);
+    const curveInfo = MCB_CURVES[curCurve] || { min: 5, max: 10 };
+    const minIn = Math.max(ib, (ist / curveInfo.max) * n('mg'));
+    const InFromCurve = CB.find(x => x >= minIn);
+    if (InFromCurve) In = Math.max(In, InFromCurve);
+  }
+  const breakerType = getBreakerType(In);
+  const curveType = getCurveForLoad(loadType, In);
+
+  const parMode = $('parMode').value;
+  const forcedPar = parMode === 'auto' ? null : parseInt(parMode);
+  const result = economicSelect(ib, In, ist, isMotor, { phases, V, L, insul, installMethod, amb, cg, vdStd });
+
+  let best = null;
+  if (result){
+    if (forcedPar){
+      const filtered = result.all.filter(x => x.par === forcedPar);
+      if (filtered.length > 0) best = filtered[0];
+    } else best = result.best;
+  }
+
+  const par = best ? best.par : (forcedPar || 1);
+  const chosen = best ? best.cable : null;
+  const izd = best ? best.izTotal : 0;
+  const vd = best ? best.vd : 0;
+  const vStartPct = best ? best.vStartPct : 100;
+  const kTemp = tempFactor(insul, amb);
+
+  const colIdx = installMethod === 'ground' ? 1 : installMethod === 'duct' ? 2 : 3;
+  const kGroup = groupingFactor(cg);
+  const mvFactor = phases === 3 ? 1 : (2 / Math.sqrt(3));
+  const parK = PAR_FACTOR[par] || 1;
+  const I2Factor = breakerType === 'MCB' ? 1.45 : 1.30;
+
+  let rows = '';
+  CABLE_DATA.forEach(c => {
+    const izBase = c[colIdx];
+    const izS = izBase * kTemp * kGroup;
+    const izT = izS * par * parK;
+    const cap = In <= izT;
+    const I2check = I2Factor * In <= 1.45 * izT;
+    const mv = c[4] * mvFactor;
+    const vdRow = mv * ib * L / 1000 / V * 100 / par;
+    const vo = vdRow <= vdStd.max;
+    const sel = chosen && c[0] === chosen[0];
+    rows += `<tr class="${sel ? 'sel' : ''}"><td>${c[0]}</td><td>${izBase}</td><td>${f(izS)}</td><td>${f(izT)}</td><td>${cap ? '✓' : '✗'}</td><td>${f(vdRow, 2)}%</td><td>${(cap && I2check && vo) ? '✓' : '✗'}</td></tr>`;
+  });
+  $('tb').innerHTML = rows;
+
+  $('rib').textContent = f(ib, 2);
+  $('rflc').textContent = f(flc, 2);
+
+  const m = $('msg');
+  const parBadge = $('parallelBadge');
+  let neutral = 0, earth = 0;
+  if (chosen){
+    const sizes = getConductorSizes(chosen[0], phases, neutralMode);
+    neutral = sizes.neutral;
+    earth = sizes.earth;
+  }
+
+  if (!chosen){
+    $('rcab').textContent = '—';
+    $('rcabSub').innerHTML = '—';
+    $('rbr').textContent = In;
+    $('rbrSub').innerHTML = `${phases === 3 ? '3P' : '1P+N'} · ${breakerType}`;
+    $('rvd').textContent = '—';
+    $('cableView').innerHTML = drawCableSVG(0, phases, insul, 1);
+    $('breakerView').innerHTML = drawBreakerSVG(In, phases, breakerType, curveType);
+    $('spec').innerHTML = '—';
+    parBadge.innerHTML = '';
+    m.className = 'msg bad';
+    m.textContent = '❌ لا يوجد حل. جرّب: تقليل الطول أو XLPE أو زيادة الكابلات.';
+  } else {
+    const nCores = phases === 3 ? 3 : 2;
+    const parPrefix = par > 1 ? `${par} × ` : '';
+    $('rcab').textContent = chosen[0];
+    $('rcabSub').innerHTML = `${parPrefix}${nCores}×${chosen[0]}+${neutral}+${earth} mm²<br>Cu/${insul === 'xlpe' ? 'XLPE' : 'PVC'}/SWA`;
+    $('rbr').textContent = In;
+    const polesTxt = phases === 3 ? '3P' : '1P+N';
+    let breakerLabel = breakerType === 'MCB' ? `${polesTxt} · MCB Type ${curveType} · ${In}A` : `${polesTxt} · ${breakerType} · ${In}A`;
+    $('rbrSub').innerHTML = breakerLabel;
+    $('rvd').textContent = f(vd, 2);
+    $('cableView').innerHTML = drawCableSVG(chosen[0], phases, insul, par);
+    $('breakerView').innerHTML = drawBreakerSVG(In, phases, breakerType, curveType);
+    $('spec').innerHTML = buildSpec(chosen[0], phases, insul, cableType, par, neutralMode);
+
+    if (par > 1){
+      parBadge.className = 'pbadge';
+      parBadge.innerHTML = `<span class="pd"></span>حل اقتصادي: ${par} كابلات × ${chosen[0]} مم² — كل كابل يحمل ${f(flc / par, 2)} A`;
+    } else {
+      parBadge.className = 'pbadge green';
+      parBadge.innerHTML = `<span class="pd"></span>كابل واحد اقتصادي`;
+    }
+
+    if (vd <= vdStd.normal){
+      m.className = 'msg ok';
+      m.textContent = `✅ ${par > 1 ? par + ' × ' : ''}${chosen[0]} مم² + ${breakerType} ${In}A — Ib ≤ In ≤ Iz، VD ${f(vd, 2)}% ≤ ${vdStd.normal}%.`;
+    } else {
+      m.className = 'msg warn';
+      m.textContent = `⚠️ ${par > 1 ? par + ' × ' : ''}${chosen[0]} مم² — VD ${f(vd, 2)}% ≤ ${vdStd.max}%، لكن أعلى من الهدف المصري ${vdStd.normal}%.`;
+    }
+  }
+
+  renderCostCompare(result);
+
+  if (isMotor && chosen){
+    $('chartCard').style.display = 'block';
+    drawStartChart(flc, ist, mult);
+    const curveInfo = MCB_CURVES[curveType] || { min: 5, max: 10 };
+    const minTrip = curveInfo.min * In, maxTrip = curveInfo.max * In;
+    const mm = $('mmsg');
+    let t = `تيار البدء ≈ ${f(ist, 0)} A (${mult}× FLC). جهد البدء = ${f(vStartPct, 1)}% (${f(vStartPct * V / 100, 0)} V).<br>`;
+    if (breakerType === 'MCB'){
+      t += `نطاق الفصل اللحظي ${minTrip.toFixed(0)}–${maxTrip.toFixed(0)} A. `;
+      if (ist >= minTrip && ist <= maxTrip){ t += `✓ داخل النطاق.`; mm.className = 'msg ok'; }
+      else if (ist > maxTrip){ t += `🚨 تجاوز — استخدم بدء أخف أو MCCB.`; mm.className = 'msg bad'; }
+      else { t += `⚠ أقل من الحد الأدنى.`; mm.className = 'msg warn'; }
+    } else {
+      t += `القاطع MCCB قابل للضبط — اضبط Im فوق تيار البدء.`;
+      mm.className = 'msg ok';
+    }
+    if (vStartPct < vdStd.motorStart){
+      t += `<br>🚨 جهد البدء أقل من ${vdStd.motorStart}%.`;
+      mm.className = 'msg bad';
+    }
+    mm.innerHTML = t;
+  }
+
+  buildSuggestions({ ib, In, flc, chosen, isMotor, ist, insul, amb, izd, par, loadType, vd, vdStd, vStartPct, L, kTemp, breakerType, curveType, neutral, earth, neutralMode });
+}
+
+document.querySelectorAll('#loadType button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#loadType button').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    loadType = b.dataset.v;
+    const hints = { static: '🏠 إضاءة ومآخذ — معامل أمان 1.25.', dynamic: '⚙️ موتورات — تحليل تيار البدء.', hvac: '❄️ تكييف — 100 VA/m².' };
+    $('loadHint').textContent = hints[loadType];
+    if (loadType === 'hvac') $('hvacMode').dispatchEvent(new Event('change'));
+    calc();
+  });
+});
+
+$('hvacMode').addEventListener('change', function(){
+  const v = this.value;
+  $('hvacAreaBox').style.display = v === 'area' ? 'block' : 'none';
+  $('hvacTonBox').style.display = v === 'ton' ? 'block' : 'none';
+  calc();
+});
+$('meth').onchange = () => { $('mult').value = $('meth').value; calc(); };
+$('ph').onchange = () => { $('v').value = $('ph').value === '3' ? '380' : '220'; calc(); };
+
+let debounceTimer;
+function autoCalc(){
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(calc, 60);
+}
+document.querySelectorAll('input, select').forEach(el => {
+  el.addEventListener('input', autoCalc);
+  el.addEventListener('change', autoCalc);
+});
+
+calc();
+</script></body></html>
