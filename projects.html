@@ -148,7 +148,8 @@
         const el = document.getElementById("projGrid");
         if (!el) return;
 
-        const list = (typeof Store !== "undefined") ? Store.getCustom("projects") : [];
+        let list = (typeof Store !== "undefined") ? Store.getCustom("projects") : [];
+        if (!list || list.length === 0) list = (typeof PROJECTS !== "undefined") ? PROJECTS : [];
 
         const statsEl = document.getElementById("projStats");
         if (statsEl) statsEl.textContent = list.length + " مشروع";
