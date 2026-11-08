@@ -129,7 +129,7 @@ const SEO = {
                 "@type": "Person",
                 "@id": `${this.baseUrl}/#person`,
                 "name": "هلال شليل",
-                "alternateName": ["Eng. Helal Shalil", "المهندس هلال شليل"],
+                "alternateName": ["Eng. Helal Shalil", "المهندس هلال شليل", "رئيس مجلس إدارة شركة النقيب جروب", "Chairman of AL NAQEEB GROUP"],
                 "jobTitle": "Electrical & MEP Engineer",
                 "url": `${this.baseUrl}/about.html`,
                 "image": `${this.baseUrl}/images/alamein.jpg`,
