@@ -11,5 +11,4 @@ Thumbs.db
 *.log
 
 # Build
-# trigger
 /dist/
