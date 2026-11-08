@@ -3,111 +3,126 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
     <url>
-        <loc>https://your-domain.com/</loc>
+        <loc>https://hiilal.vercel.app/</loc>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
 
     <url>
-        <loc>https://your-domain.com/tools.html</loc>
+        <loc>https://hiilal.vercel.app/tools.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
 
     <url>
-        <loc>https://your-domain.com/calculators.html</loc>
+        <loc>https://hiilal.vercel.app/calculators.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
 
     <url>
-        <loc>https://your-domain.com/encyclopedia.html</loc>
+        <loc>https://hiilal.vercel.app/encyclopedia.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
 
     <url>
-        <loc>https://your-domain.com/content.html</loc>
+        <loc>https://hiilal.vercel.app/content.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
 
     <url>
-        <loc>https://your-domain.com/codes.html</loc>
+        <loc>https://hiilal.vercel.app/codes.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
 
     <url>
-        <loc>https://your-domain.com/specs.html</loc>
+        <loc>https://hiilal.vercel.app/specs.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
 
     <url>
-        <loc>https://your-domain.com/products.html</loc>
+        <loc>https://hiilal.vercel.app/products.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
 
     <url>
-        <loc>https://your-domain.com/projects.html</loc>
+        <loc>https://hiilal.vercel.app/projects.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
 
     <url>
-        <loc>https://your-domain.com/favorites.html</loc>
+        <loc>https://hiilal.vercel.app/favorites.html</loc>
         <changefreq>never</changefreq>
         <priority>0.5</priority>
     </url>
 
     <url>
-        <loc>https://your-domain.com/about.html</loc>
+        <loc>https://hiilal.vercel.app/about.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
 
     <url>
-        <loc>https://your-domain.com/tools/software-guide.html</loc>
+        <loc>https://hiilal.vercel.app/tools/software-guide.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
 
     <url>
-        <loc>https://your-domain.com/tools/unit-converter.html</loc>
+        <loc>https://hiilal.vercel.app/tools/unit-converter.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
 
     <url>
-        <loc>https://your-domain.com/tools/ip-rating.html</loc>
+        <loc>https://hiilal.vercel.app/tools/ip-rating.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
 
     <url>
-        <loc>https://your-domain.com/tools/checklists.html</loc>
+        <loc>https://hiilal.vercel.app/tools/checklists.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
 
     <url>
-        <loc>https://your-domain.com/tools/schedules.html</loc>
+        <loc>https://hiilal.vercel.app/tools/schedules.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
 
     <url>
-        <loc>https://your-domain.com/tools/documents.html</loc>
+        <loc>https://hiilal.vercel.app/tools/documents.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
 
     <url>
-        <loc>https://your-domain.com/calculators/cable-breaker.html</loc>
+        <loc>https://hiilal.vercel.app/calculators/cable-breaker.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
 
+    <url>
+        <loc>https://hiilal.vercel.app/mep-hub/index.html</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://hiilal.vercel.app/boq/index.htm</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://hiilal.vercel.app/calc-v2/index.html</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
 </urlset>
