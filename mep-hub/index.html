@@ -45552,5 +45552,30 @@ window.__MEP_CMS = {
   document.head.appendChild(s);
 })();
 </script>
+
+<script>
+// Force sidebar hidden on mobile on page load
+(function(){
+  if(window.innerWidth < 960){
+    var sb = document.getElementById('sidebar');
+    var bd = document.getElementById('backdrop');
+    if(sb) sb.classList.remove('open');
+    if(bd) bd.classList.remove('show');
+    // Also hide the desktop sidebar toggle
+    var toggle = document.querySelector('.sidebar-toggle');
+    if(toggle) toggle.style.display = 'none';
+  }
+  // Re-check on resize
+  window.addEventListener('resize', function(){
+    if(window.innerWidth < 960){
+      var sb = document.getElementById('sidebar');
+      var bd = document.getElementById('backdrop');
+      if(sb && !sb.classList.contains('open')){
+        // Keep hidden
+      }
+    }
+  });
+})();
+</script>
 </body>
 </html>
