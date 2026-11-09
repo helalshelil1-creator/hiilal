@@ -19232,14 +19232,7 @@ try{
   ensureNavWired();
   setupRevealObserver();
 
-  // Show fix indicator
-  setTimeout(()=>{
-    const ind = document.createElement('div');
-    ind.className = 'fix-indicator show';
-    ind.innerHTML = `${icon('check','mep-icon-sm')} جميع الأزرار تعمل بشكل صحيح`;
-    document.body.appendChild(ind);
-    setTimeout(()=>ind.classList.remove('show'), 4000);
-  }, 500);
+  // Fix indicator disabled per user request
 } catch(err){
   console.error('Final boot error:', err);
   showErrorBanner('خطأ عند بدء التشغيل: ' + err.message);
@@ -26211,20 +26204,7 @@ console.log('%c💡 Tip: اضغط "Demo Mode" badge أعلى الشاشة لتش
 
 <script>
 // Show success toast
-setTimeout(()=>{
-  const t = document.createElement('div');
-  t.className = 'fix-toast';
-  t.innerHTML = `
-    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-    جميع الأزرار والبطاقات تعمل الآن
-  `;
-  document.body.appendChild(t);
-  requestAnimationFrame(()=>t.classList.add('show'));
-  setTimeout(()=>{
-    t.classList.remove('show');
-    setTimeout(()=>t.remove(), 500);
-  }, 3500);
-}, 800);
+
 </script>
 <!-- ============================================================
      MEP HUB — EXTENSION PACK 19
@@ -26797,20 +26777,7 @@ document.addEventListener('keydown', (e)=>{
 /* ============================================================
    8. Show confirmation toast
 ============================================================ */
-setTimeout(()=>{
-  const t = document.createElement('div');
-  t.className = 'fix-toast';
-  t.innerHTML = `
-    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-    البطاقات والـTags أصبحت قابلة للنقر
-  `;
-  document.body.appendChild(t);
-  requestAnimationFrame(()=>t.classList.add('show'));
-  setTimeout(()=>{
-    t.classList.remove('show');
-    setTimeout(()=>t.remove(), 500);
-  }, 4000);
-}, 700);
+
 
 console.log('%c╔════════════════════════════════════════════════════════╗','color:#22c55e;font-weight:700');
 console.log('%c║  MEP HUB — EXTENSION PACK 19 (CLICKABLE TAGS)         ║','color:#22c55e;font-weight:700;background:#08141a;padding:2px 8px');
@@ -31289,15 +31256,7 @@ setTimeout(() => {
   createNotifFab();
   updateNotifBadge();
 
-  // Welcome notification on first visit today
-  const lastVisit = localStorage.getItem('mep_last_visit');
-  const today = new Date().toDateString();
-  if(lastVisit !== today){
-    localStorage.setItem('mep_last_visit', today);
-    setTimeout(() => {
-      addNotification('content', 'مرحباً بعودتك!', 'تفقد آخر التحديثات والمواضيع الجديدة');
-    }, 3000);
-  }
+  // Welcome notification disabled per user request
 }, 600);
 
 console.log('%c╔════════════════════════════════════════════════════════╗','color:#8b5cf6;font-weight:700');
