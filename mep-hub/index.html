@@ -1032,6 +1032,9 @@ body{ overflow-x:hidden!important; }
 /* Ensure mobile nav is the primary bottom navigation */
 .mep-mobile-nav{ display:flex!important; position:fixed!important; bottom:0!important; left:0!important; right:0!important; z-index:200!important; }
 .content{ padding-bottom:70px!important; }
+/* Sidebar hidden by default on all screen sizes - show on toggle */
+.sidebar{ transform:translateX(100%)!important; }
+.sidebar.open{ transform:translateX(0)!important; }
 /* Shrink searchbar */
 .searchbar{ max-width:360px!important; height:32px!important; padding:0 10px!important; gap:6px!important; border-radius:8px!important; }
 .searchbar input{ font-size:12px!important; }
