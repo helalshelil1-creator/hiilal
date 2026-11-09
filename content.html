@@ -122,7 +122,8 @@
         article:  { name: "مقال", icon: "file-text", color: "linear-gradient(135deg,#16a34a,#4ade80)" },
         program:  { name: "برنامج", icon: "settings", color: "linear-gradient(135deg,#f59e0b,#fbbf24)" },
         link:     { name: "رابط", icon: "external-link", color: "linear-gradient(135deg,#3b82f6,#60a5fa)" },
-        image:    { name: "صورة", icon: "image", color: "linear-gradient(135deg,#ec4899,#f472b6)" }
+        image:    { name: "صورة", icon: "image", color: "linear-gradient(135deg,#ec4899,#f472b6)" },
+        course:   { name: "كورس", icon: "play", color: "linear-gradient(135deg,#059669,#34d399)" }
     };
 
     let activeType = "all";
@@ -138,8 +139,9 @@
         if (!el) return;
         const items = [
             { id: "all", name: "الكل", icon: "🌐" },
-            { id: "document", name: "مستندات", icon: "📑" },
+            { id: "course", name: "كورسات", icon: "🎓" },
             { id: "video", name: "فيديوهات", icon: "🎥" },
+            { id: "document", name: "مستندات", icon: "📑" },
             { id: "program", name: "برامج", icon: "💻" },
             { id: "article", name: "مقالات", icon: "📰" },
             { id: "link", name: "روابط", icon: "🔗" }
