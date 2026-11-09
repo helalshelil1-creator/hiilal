@@ -30192,13 +30192,8 @@ setTimeout(()=>{
   createXRefPanel();
   buildCrossReference(state.route);
 
-  // First-time tour
-  if(!localStorage.getItem('mep_tour_done')){
-    setTimeout(()=>{
-      if(confirm('👋 هل ترغب في جولة سريعة في المنصة؟')) startTour();
-      else localStorage.setItem('mep_tour_done', 'true');
-    }, 1500);
-  }
+  // First-time tour disabled per user request
+  localStorage.setItem('mep_tour_done', 'true');
 }, 800);
 
 /* ============================================================
