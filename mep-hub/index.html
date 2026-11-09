@@ -13213,20 +13213,7 @@ window.addEventListener('beforeinstallprompt', e=>{
 /* ============================================================
    14. GLOBAL VOICE BUTTON IN TOPBAR
 ============================================================ */
-setTimeout(()=>{
-  const topbar = document.getElementById('topbar');
-  if(topbar && !topbar.querySelector('.voice-btn')){
-    const vb = document.createElement('button');
-    vb.className = 'iconbtn voice-btn-topbar';
-    vb.title = 'قراءة الصفحة';
-    vb.innerHTML = icon('speaker','mep-icon-sm');
-    vb.style.cssText = 'width:38px;height:38px';
-    vb.onclick = speakCurrentPage;
-    // Insert before theme button
-    const themeBtn = document.getElementById('themeBtn');
-    if(themeBtn) topbar.insertBefore(vb, themeBtn);
-  }
-}, 300);
+
 
 /* ============================================================
    15. RE-RENDER + BOOT
@@ -16780,19 +16767,7 @@ doSearch = function(q){
 /* ============================================================
    13. COMMAND PALETTE EXTENSION
 ============================================================ */
-setTimeout(()=>{
-  // Add voice button to topbar
-  const topbar = document.getElementById('topbar');
-  if(topbar && !topbar.querySelector('.voice-cmd-btn')){
-    const vb = document.createElement('button');
-    vb.className = 'iconbtn voice-cmd-btn';
-    vb.title = 'Voice Commands';
-    vb.innerHTML = icon('voice');
-    vb.onclick = ()=>navigate('voice-center');
-    const themeBtn = document.getElementById('themeBtn');
-    if(themeBtn) topbar.insertBefore(vb, themeBtn);
-  }
-}, 500);
+
 
 /* ============================================================
    14. BOOT
