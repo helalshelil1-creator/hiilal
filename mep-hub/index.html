@@ -26016,18 +26016,7 @@ doSearch = function(q){
 /* ============================================================
    12. DEMO BADGE (fixed element)
 ============================================================ */
-setTimeout(()=>{
-  if(!document.getElementById('demoBadge')){
-    const badge = document.createElement('div');
-    badge.id = 'demoBadge';
-    badge.className = 'demo-badge';
-    badge.innerHTML = `<span class="dot"></span> DEMO MODE · Auto Tour`;
-    badge.onclick = toggleDemoMode;
-    badge.style.cursor = 'pointer';
-    badge.title = 'Click to stop';
-    document.body.appendChild(badge);
-  }
-}, 300);
+
 
 /* ============================================================
    13. BOOT
