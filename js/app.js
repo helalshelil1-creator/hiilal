@@ -448,6 +448,21 @@ function initServiceWorker() {
     });
 }
 
+
+/* ========================================
+   20. HUB ACCORDION (homepage)
+======================================== */
+function initHubAccordion() {
+    document.querySelectorAll('.hub-acc-head').forEach(function (head) {
+        head.addEventListener('click', function () {
+            var body = head.nextElementSibling;
+            var isOpen = head.classList.toggle('open');
+            if (body) body.classList.toggle('open', isOpen);
+            head.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+    });
+}
+
 /* ========================================
    21. INIT EVERYTHING
 ======================================== */
@@ -464,6 +479,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initBackToTop();
     initWhatsAppFloat();
     initBottomNav();
+    initHubAccordion();
 
     // زر البوت — خوذة المهندس
     setTimeout(initChatbotToggle, 600);
@@ -491,3 +507,4 @@ window.renderCalculators = renderCalculators;
 window.renderToolsHome = renderToolsHome;
 window.renderEncyclopediaHome = renderEncyclopediaHome;
 window.initIcons = initIcons;
+window.initHubAccordion = initHubAccordion;

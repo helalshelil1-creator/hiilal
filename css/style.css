@@ -2014,3 +2014,64 @@ footer {
     font-size: 12px;
   }
 }
+
+/* MEP Hub Accordion */
+.hub-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.hub-acc-item {
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  overflow: hidden;
+  transition: border-color .25s ease;
+}
+.hub-acc-item:hover {
+  border-color: var(--cyan);
+}
+.hub-acc-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  background: none;
+  border: none;
+  color: var(--cyan);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  cursor: pointer;
+  text-align: start;
+  font-family: inherit;
+}
+.hub-acc-head .arrow {
+  transition: transform .25s ease;
+  font-size: 12px;
+  color: var(--cyan);
+}
+.hub-acc-head.open .arrow {
+  transform: rotate(90deg);
+}
+.hub-acc-body {
+  display: none;
+  padding: 0 18px 18px;
+}
+.hub-acc-body.open {
+  display: block;
+}
+.hub-acc-body .hub-grid {
+  margin-bottom: 0;
+}
+@media (max-width: 700px) {
+  .hub-acc-head {
+    padding: 14px 14px;
+    font-size: 13px;
+  }
+  .hub-acc-body {
+    padding: 0 14px 14px;
+  }
+}

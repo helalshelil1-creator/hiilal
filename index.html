@@ -209,24 +209,13 @@
     color: inherit;
     cursor: pointer;
     transition: all .4s cubic-bezier(.16,1,.3,1);
-    animation: pulse1 2.5s ease-in-out infinite;
+    animation: none;
     overflow: hidden;
     isolation: isolate;
     will-change: transform, box-shadow;
 }
 
-@keyframes pulse1 {
-    0%, 100% {
-        box-shadow: 0 0 0 0 rgba(10,22,40,.5);
-        transform: scale(1);
-    }
-    50% {
-        box-shadow:
-            0 0 0 6px rgba(10,22,40,.08),
-            0 0 25px rgba(0,217,255,.25);
-        transform: scale(1.02);
-    }
-}
+
 
 .stat-card-custom:hover {
     border-color: #00d9ff;
@@ -312,9 +301,7 @@
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .stat-card-custom { animation: none; }
-}
+
 
 /* Chatbot Window */
 .chatbot-window{position:fixed;bottom:100px;right:20px;width:360px;height:500px;background:rgba(10,22,40,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(0,217,255,.3);border-radius:20px;display:flex;flex-direction:column;z-index:10000;overflow:hidden;transform:translateY(20px);opacity:0;visibility:hidden;transition:all .4s cubic-bezier(.16,1,.3,1);box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 40px rgba(0,217,255,.2);font-family:'Tajawal',sans-serif}
@@ -591,213 +578,245 @@
 <section class="container section" id="mep-hub-cards">
   <div class="section-head">
     <h2>منصة MEP HUB الهندسية</h2>
-    <p>جميع الأدوات والأنظمة الهندسية في مكان واحد</p>
+    <p>جميع الأدوات والأنظمة الهندسية في مكان واحد — اضغط على أي مجموعة لعرضها</p>
   </div>
-  
-  <!-- Core -->
-  <h3 class="hub-group-title">// CORE</h3>
-  <div class="hub-grid">
-    <a href="mep-hub/index.html#dashboard" class="hub-card">
+  <div class="hub-accordion">
+    <div class="hub-acc-item">
+      <button class="hub-acc-head" type="button" aria-expanded="false">
+        <span>CORE</span>
+        <span class="arrow">▸</span>
+      </button>
+      <div class="hub-acc-body">
+        <div class="hub-grid">
+          <a href="mep-hub/index.html#dashboard" class="hub-card">
       <div class="hub-card-icon">◈</div>
       <h4>لوحة التحكم</h4>
     </a>
-    <a href="mep-hub/index.html#electrical" class="hub-card">
+          <a href="mep-hub/index.html#electrical" class="hub-card">
       <div class="hub-card-icon">⚡</div>
       <h4>الهندسة الكهربائية</h4>
     </a>
-    <a href="mep-hub/index.html#mep" class="hub-card">
+          <a href="mep-hub/index.html#mep" class="hub-card">
       <div class="hub-card-icon">◧</div>
       <h4>هندسة MEP</h4>
     </a>
-    <a href="mep-hub/index.html#design-office" class="hub-card">
+          <a href="mep-hub/index.html#design-office" class="hub-card">
       <div class="hub-card-icon">◱</div>
       <h4>مكتب التصميم</h4>
     </a>
-    <a href="mep-hub/index.html#site-execution" class="hub-card">
+          <a href="mep-hub/index.html#site-execution" class="hub-card">
       <div class="hub-card-icon">◰</div>
       <h4>التنفيذ بالموقع</h4>
     </a>
-    <a href="mep-hub/index.html#technical-office" class="hub-card">
+          <a href="mep-hub/index.html#technical-office" class="hub-card">
       <div class="hub-card-icon">▤</div>
       <h4>المكتب الفني</h4>
     </a>
-  </div>
-  
-  <!-- Digital Delivery -->
-  <h3 class="hub-group-title">// DIGITAL DELIVERY</h3>
-  <div class="hub-grid">
-    <a href="mep-hub/index.html#bim" class="hub-card">
+        </div>
+      </div>
+    </div>
+    <div class="hub-acc-item">
+      <button class="hub-acc-head" type="button" aria-expanded="false">
+        <span>DIGITAL DELIVERY</span>
+        <span class="arrow">▸</span>
+      </button>
+      <div class="hub-acc-body">
+        <div class="hub-grid">
+          <a href="mep-hub/index.html#bim" class="hub-card">
       <div class="hub-card-icon">◫</div>
       <h4>نمذجة BIM</h4>
     </a>
-    <a href="mep-hub/index.html#autocad" class="hub-card">
+          <a href="mep-hub/index.html#autocad" class="hub-card">
       <div class="hub-card-icon">✎</div>
       <h4>أوتوكاد</h4>
     </a>
-    <a href="mep-hub/index.html#revit" class="hub-card">
+          <a href="mep-hub/index.html#revit" class="hub-card">
       <div class="hub-card-icon">▦</div>
       <h4>ريفيت</h4>
     </a>
-    <a href="mep-hub/index.html#software-academy" class="hub-card">
+          <a href="mep-hub/index.html#software-academy" class="hub-card">
       <div class="hub-card-icon">◇</div>
       <h4>أكاديمية البرامج</h4>
     </a>
-  </div>
-  
-  <!-- Systems -->
-  <h3 class="hub-group-title">// SYSTEMS</h3>
-  <div class="hub-grid">
-    <a href="mep-hub/index.html#power" class="hub-card">
+        </div>
+      </div>
+    </div>
+    <div class="hub-acc-item">
+      <button class="hub-acc-head" type="button" aria-expanded="false">
+        <span>SYSTEMS</span>
+        <span class="arrow">▸</span>
+      </button>
+      <div class="hub-acc-body">
+        <div class="hub-grid">
+          <a href="mep-hub/index.html#power" class="hub-card">
       <div class="hub-card-icon">⌁</div>
       <h4>أنظمة القوى</h4>
     </a>
-    <a href="mep-hub/index.html#lighting" class="hub-card">
+          <a href="mep-hub/index.html#lighting" class="hub-card">
       <div class="hub-card-icon">◉</div>
       <h4>الإضاءة</h4>
     </a>
-    <a href="mep-hub/index.html#lv" class="hub-card">
+          <a href="mep-hub/index.html#lv" class="hub-card">
       <div class="hub-card-icon">▭</div>
       <h4>الجهد المنخفض</h4>
     </a>
-    <a href="mep-hub/index.html#mv" class="hub-card">
+          <a href="mep-hub/index.html#mv" class="hub-card">
       <div class="hub-card-icon">▬</div>
       <h4>الجهد المتوسط</h4>
     </a>
-    <a href="mep-hub/index.html#earthing" class="hub-card">
+          <a href="mep-hub/index.html#earthing" class="hub-card">
       <div class="hub-card-icon">⊕</div>
       <h4>التأريض والصواعق</h4>
     </a>
-    <a href="mep-hub/index.html#cables" class="hub-card">
+          <a href="mep-hub/index.html#cables" class="hub-card">
       <div class="hub-card-icon">≡</div>
       <h4>إدارة الكابلات</h4>
     </a>
-    <a href="mep-hub/index.html#generator" class="hub-card">
+          <a href="mep-hub/index.html#generator" class="hub-card">
       <div class="hub-card-icon">▣</div>
       <h4>المولدات والـUPS</h4>
     </a>
-    <a href="mep-hub/index.html#solar" class="hub-card">
+          <a href="mep-hub/index.html#solar" class="hub-card">
       <div class="hub-card-icon">☼</div>
       <h4>الطاقة الشمسية</h4>
     </a>
-    <a href="mep-hub/index.html#fire-fighting" class="hub-card">
+          <a href="mep-hub/index.html#fire-fighting" class="hub-card">
       <div class="hub-card-icon">✚</div>
       <h4>مكافحة الحريق</h4>
     </a>
-    <a href="mep-hub/index.html#fire-alarm" class="hub-card">
+          <a href="mep-hub/index.html#fire-alarm" class="hub-card">
       <div class="hub-card-icon">◭</div>
       <h4>إنذار الحريق</h4>
     </a>
-    <a href="mep-hub/index.html#elv" class="hub-card">
+          <a href="mep-hub/index.html#elv" class="hub-card">
       <div class="hub-card-icon">◐</div>
       <h4>أنظمة ELV</h4>
     </a>
-    <a href="mep-hub/index.html#hvac" class="hub-card">
+          <a href="mep-hub/index.html#hvac" class="hub-card">
       <div class="hub-card-icon">❄</div>
       <h4>تنسيق التكييف</h4>
     </a>
-    <a href="mep-hub/index.html#plumbing" class="hub-card">
+          <a href="mep-hub/index.html#plumbing" class="hub-card">
       <div class="hub-card-icon">◍</div>
       <h4>تنسيق الصحي</h4>
     </a>
-    <a href="mep-hub/index.html#bms" class="hub-card">
+          <a href="mep-hub/index.html#bms" class="hub-card">
       <div class="hub-card-icon">◒</div>
       <h4>أتمتة المباني</h4>
     </a>
-  </div>
-  
-  <!-- Toolkit -->
-  <h3 class="hub-group-title">// TOOLKIT</h3>
-  <div class="hub-grid">
-    <a href="mep-hub/index.html#calculators" class="hub-card">
+        </div>
+      </div>
+    </div>
+    <div class="hub-acc-item">
+      <button class="hub-acc-head" type="button" aria-expanded="false">
+        <span>TOOLKIT</span>
+        <span class="arrow">▸</span>
+      </button>
+      <div class="hub-acc-body">
+        <div class="hub-grid">
+          <a href="mep-hub/index.html#calculators" class="hub-card">
       <div class="hub-card-icon">∑</div>
       <h4>الحاسبات الهندسية</h4>
     </a>
-    <a href="mep-hub/index.html#codes" class="hub-card">
+          <a href="mep-hub/index.html#codes" class="hub-card">
       <div class="hub-card-icon">§</div>
       <h4>الأكواد والمعايير</h4>
     </a>
-    <a href="mep-hub/index.html#details" class="hub-card">
+          <a href="mep-hub/index.html#details" class="hub-card">
       <div class="hub-card-icon">▥</div>
       <h4>التفاصيل الهندسية</h4>
     </a>
-    <a href="mep-hub/index.html#checklists" class="hub-card">
+          <a href="mep-hub/index.html#checklists" class="hub-card">
       <div class="hub-card-icon">☑</div>
       <h4>قوائم الفحص</h4>
     </a>
-    <a href="mep-hub/index.html#method-statements" class="hub-card">
+          <a href="mep-hub/index.html#method-statements" class="hub-card">
       <div class="hub-card-icon">▤</div>
       <h4>منهجيات التنفيذ</h4>
     </a>
-    <a href="mep-hub/index.html#submittals" class="hub-card">
+          <a href="mep-hub/index.html#submittals" class="hub-card">
       <div class="hub-card-icon">▧</div>
       <h4>اعتمادات المواد</h4>
     </a>
-    <a href="mep-hub/index.html#shop-drawings" class="hub-card">
+          <a href="mep-hub/index.html#shop-drawings" class="hub-card">
       <div class="hub-card-icon">▨</div>
       <h4>مخططات التنفيذ</h4>
     </a>
-    <a href="mep-hub/index.html#boq" class="hub-card">
+          <a href="mep-hub/index.html#boq" class="hub-card">
       <div class="hub-card-icon">$</div>
       <h4>BOQ والحصر</h4>
     </a>
-    <a href="mep-hub/index.html#qa-qc" class="hub-card">
+          <a href="mep-hub/index.html#qa-qc" class="hub-card">
       <div class="hub-card-icon">◬</div>
       <h4>الجودة QA/QC</h4>
     </a>
-    <a href="mep-hub/index.html#testing" class="hub-card">
+          <a href="mep-hub/index.html#testing" class="hub-card">
       <div class="hub-card-icon">⌾</div>
       <h4>الاختبارات والتشغيل</h4>
     </a>
-    <a href="mep-hub/index.html#rfi" class="hub-card">
+          <a href="mep-hub/index.html#rfi" class="hub-card">
       <div class="hub-card-icon">✉</div>
       <h4>RFI والتقارير</h4>
     </a>
-  </div>
-  
-  <!-- Knowledge -->
-  <h3 class="hub-group-title">// KNOWLEDGE</h3>
-  <div class="hub-grid">
-    <a href="mep-hub/index.html#library" class="hub-card">
+        </div>
+      </div>
+    </div>
+    <div class="hub-acc-item">
+      <button class="hub-acc-head" type="button" aria-expanded="false">
+        <span>KNOWLEDGE</span>
+        <span class="arrow">▸</span>
+      </button>
+      <div class="hub-acc-body">
+        <div class="hub-grid">
+          <a href="mep-hub/index.html#library" class="hub-card">
       <div class="hub-card-icon">▥</div>
       <h4>المكتبة الهندسية</h4>
     </a>
-    <a href="mep-hub/index.html#interview" class="hub-card">
+          <a href="mep-hub/index.html#interview" class="hub-card">
       <div class="hub-card-icon">◔</div>
       <h4>أكاديمية المقابلات</h4>
     </a>
-    <a href="mep-hub/index.html#career" class="hub-card">
+          <a href="mep-hub/index.html#career" class="hub-card">
       <div class="hub-card-icon">↗</div>
       <h4>مركز المسار المهني</h4>
     </a>
-    <a href="mep-hub/index.html#flashcards" class="hub-card">
+          <a href="mep-hub/index.html#flashcards" class="hub-card">
       <div class="hub-card-icon">◫</div>
       <h4>البطاقات</h4>
     </a>
-    <a href="mep-hub/index.html#mistakes" class="hub-card">
+          <a href="mep-hub/index.html#mistakes" class="hub-card">
       <div class="hub-card-icon">⚠</div>
       <h4>الأخطاء الشائعة</h4>
     </a>
-    <a href="mep-hub/index.html#resources" class="hub-card">
+          <a href="mep-hub/index.html#resources" class="hub-card">
       <div class="hub-card-icon">◍</div>
       <h4>دليل المصادر</h4>
     </a>
-  </div>
-  
-  <!-- Workspace -->
-  <h3 class="hub-group-title">// WORKSPACE</h3>
-  <div class="hub-grid">
-    <a href="mep-hub/index.html#projects" class="hub-card">
+        </div>
+      </div>
+    </div>
+    <div class="hub-acc-item">
+      <button class="hub-acc-head" type="button" aria-expanded="false">
+        <span>WORKSPACE</span>
+        <span class="arrow">▸</span>
+      </button>
+      <div class="hub-acc-body">
+        <div class="hub-grid">
+          <a href="mep-hub/index.html#projects" class="hub-card">
       <div class="hub-card-icon">▤</div>
       <h4>مساحة المشاريع</h4>
     </a>
-    <a href="mep-hub/index.html#favorites" class="hub-card">
+          <a href="mep-hub/index.html#favorites" class="hub-card">
       <div class="hub-card-icon">☆</div>
       <h4>المفضلة</h4>
     </a>
-    <a href="mep-hub/index.html#settings" class="hub-card">
+          <a href="mep-hub/index.html#settings" class="hub-card">
       <div class="hub-card-icon">⚙</div>
       <h4>الإعدادات</h4>
     </a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
