@@ -1947,3 +1947,70 @@ footer {
     right: 15px !important;
   }
 }
+
+/* ========================================
+   MEP Hub Cards (homepage)
+======================================== */
+.hub-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  text-align: center;
+  text-decoration: none;
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+  min-height: 96px;
+  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+.hub-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--cyan);
+  box-shadow: 0 12px 30px -12px rgba(0,217,255,.35);
+}
+.hub-card-icon {
+  font-size: 1.6em;
+  line-height: 1;
+  color: var(--cyan);
+}
+.hub-card h4 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--aqua);
+  line-height: 1.4;
+}
+.hub-group-title {
+  color: var(--cyan);
+  margin: 26px 0 14px;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .5px;
+}
+.hub-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+@media (max-width: 700px) {
+  .hub-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .hub-card {
+    padding: 14px 10px;
+    min-height: 84px;
+  }
+  .hub-card-icon {
+    font-size: 1.4em;
+  }
+  .hub-card h4 {
+    font-size: 12px;
+  }
+}
