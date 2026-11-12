@@ -134,7 +134,7 @@ input, select, textarea {
     inset: 0;
     z-index: 99999;
     display: flex;
-    flex-
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 30px;
@@ -245,7 +245,7 @@ input, select, textarea {
 
 .logo-text {
     display: flex;
-    flex-
+    flex-direction: column;
     gap: 2px;
     font-size: 15px;
     font-weight: 800;
@@ -355,7 +355,7 @@ input, select, textarea {
 
 .bottom-nav-item {
     display: flex;
-    flex-
+    flex-direction: column;
     align-items: center;
     gap: 3px;
     padding: 6px 10px;
@@ -601,7 +601,7 @@ input, select, textarea {
 .cat-card,
 .tool-card {
     display: flex;
-    flex-
+    flex-direction: column;
     gap: 12px;
     padding: 20px;
     background: var(--surface);
@@ -864,7 +864,7 @@ input, select, textarea {
     line-height: 1.3;
     margin-bottom: 20px;
     display: flex;
-    flex-
+    flex-direction: column;
     gap: 6px;
     align-items: center;
 }
@@ -1233,7 +1233,7 @@ input, select, textarea {
     border: 1px solid rgba(0,217,255,.3);
     border-radius: 20px;
     display: flex;
-    flex-
+    flex-direction: column;
     z-index: 10000;
     overflow: hidden;
     opacity: 0;
@@ -1299,7 +1299,7 @@ input, select, textarea {
     padding: 15px;
     overflow-y: auto;
     display: flex;
-    flex-
+    flex-direction: column;
     gap: 10px;
 }
 
@@ -1462,7 +1462,7 @@ footer {
 
 .footer-col {
     display: flex;
-    flex-
+    flex-direction: column;
     gap: 16px;
 }
 
@@ -1488,7 +1488,7 @@ footer {
 
 .footer-logo-text {
     display: flex;
-    flex-
+    flex-direction: column;
     gap: 2px;
     font-size: 16px;
     font-weight: 900;
@@ -1578,7 +1578,7 @@ footer {
 .footer-list {
     list-style: none;
     display: flex;
-    flex-
+    flex-direction: column;
     gap: 8px;
 }
 
@@ -1597,7 +1597,7 @@ footer {
 .footer-contact {
     list-style: none;
     display: flex;
-    flex-
+    flex-direction: column;
     gap: 12px;
 }
 
@@ -1638,7 +1638,7 @@ footer {
 
 .footer-contact li > div {
     display: flex;
-    flex-
+    flex-direction: column;
     gap: 2px;
     min-width: 0;
 }
@@ -1755,7 +1755,7 @@ footer {
 }
 
 [dir="ltr"] body {
-    direction: rtl;
+    direction: ltr;
 }
 
 /* ========================================
@@ -1867,7 +1867,7 @@ footer {
         padding: 20px 5%;
     }
     .footer-bottom .footer-container {
-        flex-
+        flex-direction: column;
         text-align: center;
     }
     .credit {
