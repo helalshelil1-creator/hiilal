@@ -350,6 +350,46 @@
 <link rel="alternate" hreflang="ar" href="https://hiilal.vercel.app/" />
 <link rel="alternate" hreflang="en" href="https://hiilal.vercel.app/" />
 <link rel="alternate" hreflang="x-default" href="https://hiilal.vercel.app/" />
+
+/* MEP Hub Cards */
+.tool-card {
+  display: block;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.3s ease;
+}
+.tool-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0,217,255,0.15);
+  border-color: var(--cyan);
+}
+.tool-card-icon {
+  font-size: 2em;
+  margin-bottom: 10px;
+  color: var(--cyan);
+}
+.tool-card h4 {
+  margin: 0;
+  font-size: 0.95em;
+  font-weight: 600;
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+@media (max-width: 700px) {
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
 </head>
 <body data-page="index">
 
@@ -580,6 +620,223 @@
             <p data-i18n="contact.inquiries">للاستفسارات</p>
         </a>
     </div>
+</section>
+
+
+<!-- ========================================
+     MEP Hub Cards (moved from sidebar)
+======================================== -->
+<section class="container section" id="mep-hub-cards">
+  <div class="section-head">
+    <h2>منصة MEP HUB الهندسية</h2>
+    <p>جميع الأدوات والأنظمة الهندسية في مكان واحد</p>
+  </div>
+  
+  <!-- Core -->
+  <h3 style="color: var(--cyan); margin: 30px 0 15px; font-size: 1.2em;">// CORE</h3>
+  <div class="grid-3">
+    <a href="mep-hub/index.html#dashboard" class="tool-card">
+      <div class="tool-card-icon">◈</div>
+      <h4>لوحة التحكم</h4>
+    </a>
+    <a href="mep-hub/index.html#electrical" class="tool-card">
+      <div class="tool-card-icon">⚡</div>
+      <h4>الهندسة الكهربائية</h4>
+    </a>
+    <a href="mep-hub/index.html#mep" class="tool-card">
+      <div class="tool-card-icon">◧</div>
+      <h4>هندسة MEP</h4>
+    </a>
+    <a href="mep-hub/index.html#design-office" class="tool-card">
+      <div class="tool-card-icon">◱</div>
+      <h4>مكتب التصميم</h4>
+    </a>
+    <a href="mep-hub/index.html#site-execution" class="tool-card">
+      <div class="tool-card-icon">◰</div>
+      <h4>التنفيذ بالموقع</h4>
+    </a>
+    <a href="mep-hub/index.html#technical-office" class="tool-card">
+      <div class="tool-card-icon">▤</div>
+      <h4>المكتب الفني</h4>
+    </a>
+  </div>
+  
+  <!-- Digital Delivery -->
+  <h3 style="color: var(--cyan); margin: 30px 0 15px; font-size: 1.2em;">// DIGITAL DELIVERY</h3>
+  <div class="grid-3">
+    <a href="mep-hub/index.html#bim" class="tool-card">
+      <div class="tool-card-icon">◫</div>
+      <h4>نمذجة BIM</h4>
+    </a>
+    <a href="mep-hub/index.html#autocad" class="tool-card">
+      <div class="tool-card-icon">✎</div>
+      <h4>أوتوكاد</h4>
+    </a>
+    <a href="mep-hub/index.html#revit" class="tool-card">
+      <div class="tool-card-icon">▦</div>
+      <h4>ريفيت</h4>
+    </a>
+    <a href="mep-hub/index.html#software-academy" class="tool-card">
+      <div class="tool-card-icon">◇</div>
+      <h4>أكاديمية البرامج</h4>
+    </a>
+  </div>
+  
+  <!-- Systems -->
+  <h3 style="color: var(--cyan); margin: 30px 0 15px; font-size: 1.2em;">// SYSTEMS</h3>
+  <div class="grid-3">
+    <a href="mep-hub/index.html#power" class="tool-card">
+      <div class="tool-card-icon">⌁</div>
+      <h4>أنظمة القوى</h4>
+    </a>
+    <a href="mep-hub/index.html#lighting" class="tool-card">
+      <div class="tool-card-icon">◉</div>
+      <h4>الإضاءة</h4>
+    </a>
+    <a href="mep-hub/index.html#lv" class="tool-card">
+      <div class="tool-card-icon">▭</div>
+      <h4>الجهد المنخفض</h4>
+    </a>
+    <a href="mep-hub/index.html#mv" class="tool-card">
+      <div class="tool-card-icon">▬</div>
+      <h4>الجهد المتوسط</h4>
+    </a>
+    <a href="mep-hub/index.html#earthing" class="tool-card">
+      <div class="tool-card-icon">⊕</div>
+      <h4>التأريض والصواعق</h4>
+    </a>
+    <a href="mep-hub/index.html#cables" class="tool-card">
+      <div class="tool-card-icon">≡</div>
+      <h4>إدارة الكابلات</h4>
+    </a>
+    <a href="mep-hub/index.html#generator" class="tool-card">
+      <div class="tool-card-icon">▣</div>
+      <h4>المولدات والـUPS</h4>
+    </a>
+    <a href="mep-hub/index.html#solar" class="tool-card">
+      <div class="tool-card-icon">☼</div>
+      <h4>الطاقة الشمسية</h4>
+    </a>
+    <a href="mep-hub/index.html#fire-fighting" class="tool-card">
+      <div class="tool-card-icon">✚</div>
+      <h4>مكافحة الحريق</h4>
+    </a>
+    <a href="mep-hub/index.html#fire-alarm" class="tool-card">
+      <div class="tool-card-icon">◭</div>
+      <h4>إنذار الحريق</h4>
+    </a>
+    <a href="mep-hub/index.html#elv" class="tool-card">
+      <div class="tool-card-icon">◐</div>
+      <h4>أنظمة ELV</h4>
+    </a>
+    <a href="mep-hub/index.html#hvac" class="tool-card">
+      <div class="tool-card-icon">❄</div>
+      <h4>تنسيق التكييف</h4>
+    </a>
+    <a href="mep-hub/index.html#plumbing" class="tool-card">
+      <div class="tool-card-icon">◍</div>
+      <h4>تنسيق الصحي</h4>
+    </a>
+    <a href="mep-hub/index.html#bms" class="tool-card">
+      <div class="tool-card-icon">◒</div>
+      <h4>أتمتة المباني</h4>
+    </a>
+  </div>
+  
+  <!-- Toolkit -->
+  <h3 style="color: var(--cyan); margin: 30px 0 15px; font-size: 1.2em;">// TOOLKIT</h3>
+  <div class="grid-3">
+    <a href="mep-hub/index.html#calculators" class="tool-card">
+      <div class="tool-card-icon">∑</div>
+      <h4>الحاسبات الهندسية</h4>
+    </a>
+    <a href="mep-hub/index.html#codes" class="tool-card">
+      <div class="tool-card-icon">§</div>
+      <h4>الأكواد والمعايير</h4>
+    </a>
+    <a href="mep-hub/index.html#details" class="tool-card">
+      <div class="tool-card-icon">▥</div>
+      <h4>التفاصيل الهندسية</h4>
+    </a>
+    <a href="mep-hub/index.html#checklists" class="tool-card">
+      <div class="tool-card-icon">☑</div>
+      <h4>قوائم الفحص</h4>
+    </a>
+    <a href="mep-hub/index.html#method-statements" class="tool-card">
+      <div class="tool-card-icon">▤</div>
+      <h4>منهجيات التنفيذ</h4>
+    </a>
+    <a href="mep-hub/index.html#submittals" class="tool-card">
+      <div class="tool-card-icon">▧</div>
+      <h4>اعتمادات المواد</h4>
+    </a>
+    <a href="mep-hub/index.html#shop-drawings" class="tool-card">
+      <div class="tool-card-icon">▨</div>
+      <h4>مخططات التنفيذ</h4>
+    </a>
+    <a href="mep-hub/index.html#boq" class="tool-card">
+      <div class="tool-card-icon">$</div>
+      <h4>BOQ والحصر</h4>
+    </a>
+    <a href="mep-hub/index.html#qa-qc" class="tool-card">
+      <div class="tool-card-icon">◬</div>
+      <h4>الجودة QA/QC</h4>
+    </a>
+    <a href="mep-hub/index.html#testing" class="tool-card">
+      <div class="tool-card-icon">⌾</div>
+      <h4>الاختبارات والتشغيل</h4>
+    </a>
+    <a href="mep-hub/index.html#rfi" class="tool-card">
+      <div class="tool-card-icon">✉</div>
+      <h4>RFI والتقارير</h4>
+    </a>
+  </div>
+  
+  <!-- Knowledge -->
+  <h3 style="color: var(--cyan); margin: 30px 0 15px; font-size: 1.2em;">// KNOWLEDGE</h3>
+  <div class="grid-3">
+    <a href="mep-hub/index.html#library" class="tool-card">
+      <div class="tool-card-icon">▥</div>
+      <h4>المكتبة الهندسية</h4>
+    </a>
+    <a href="mep-hub/index.html#interview" class="tool-card">
+      <div class="tool-card-icon">◔</div>
+      <h4>أكاديمية المقابلات</h4>
+    </a>
+    <a href="mep-hub/index.html#career" class="tool-card">
+      <div class="tool-card-icon">↗</div>
+      <h4>مركز المسار المهني</h4>
+    </a>
+    <a href="mep-hub/index.html#flashcards" class="tool-card">
+      <div class="tool-card-icon">◫</div>
+      <h4>البطاقات</h4>
+    </a>
+    <a href="mep-hub/index.html#mistakes" class="tool-card">
+      <div class="tool-card-icon">⚠</div>
+      <h4>الأخطاء الشائعة</h4>
+    </a>
+    <a href="mep-hub/index.html#resources" class="tool-card">
+      <div class="tool-card-icon">◍</div>
+      <h4>دليل المصادر</h4>
+    </a>
+  </div>
+  
+  <!-- Workspace -->
+  <h3 style="color: var(--cyan); margin: 30px 0 15px; font-size: 1.2em;">// WORKSPACE</h3>
+  <div class="grid-3">
+    <a href="mep-hub/index.html#projects" class="tool-card">
+      <div class="tool-card-icon">▤</div>
+      <h4>مساحة المشاريع</h4>
+    </a>
+    <a href="mep-hub/index.html#favorites" class="tool-card">
+      <div class="tool-card-icon">☆</div>
+      <h4>المفضلة</h4>
+    </a>
+    <a href="mep-hub/index.html#settings" class="tool-card">
+      <div class="tool-card-icon">⚙</div>
+      <h4>الإعدادات</h4>
+    </a>
+  </div>
 </section>
 
 <!-- ========================================
