@@ -19965,52 +19965,7 @@ function smartPrint(title){
 
 
 
-<script>
-/* ============================================================
-   DRAWER SEARCH FILTER
-   ============================================================ */
-(function(){
-  var drawerSearch = document.getElementById('drawerSearch');
-  if(drawerSearch){
-    drawerSearch.addEventListener('input', function(){
-      var q = this.value.toLowerCase().trim();
-      var groups = document.querySelectorAll('.nav-group');
-      var items = document.querySelectorAll('.nav-items a');
-      
-      if(!q){
-        // Reset
-        groups.forEach(function(g){ g.style.display = ''; });
-        items.forEach(function(a){ a.style.display = ''; });
-        return;
-      }
-      
-      // Filter items
-      items.forEach(function(a){
-        var text = a.textContent.toLowerCase();
-        if(text.includes(q)){
-          a.style.display = '';
-          // Open parent group
-          var group = a.closest('.nav-items');
-          if(group) group.classList.add('open');
-          var header = group ? group.previousElementSibling : null;
-          if(header && header.classList.contains('nav-group')) header.classList.add('open');
-        } else {
-          a.style.display = 'none';
-        }
-      });
-      
-      // Hide empty groups
-      groups.forEach(function(g){
-        var items = g.nextElementSibling;
-        if(items){
-          var visible = items.querySelectorAll('a:not([style*="display: none"])').length;
-          g.style.display = visible > 0 ? '' : 'none';
-        }
-      });
-    });
-  }
-})();
-</script>
+
 
 /* ============================================
    MOBILE DRAWER (max-width: 768px)
@@ -46066,6 +46021,52 @@ window.__MEP_CMS = {
 
   // Re-render nav with accordion
   setTimeout(function(){ renderNav(); }, 100);
+</script>
+<script>
+/* ============================================================
+   DRAWER SEARCH FILTER
+   ============================================================ */
+(function(){
+  var drawerSearch = document.getElementById('drawerSearch');
+  if(drawerSearch){
+    drawerSearch.addEventListener('input', function(){
+      var q = this.value.toLowerCase().trim();
+      var groups = document.querySelectorAll('.nav-group');
+      var items = document.querySelectorAll('.nav-items a');
+      
+      if(!q){
+        // Reset
+        groups.forEach(function(g){ g.style.display = ''; });
+        items.forEach(function(a){ a.style.display = ''; });
+        return;
+      }
+      
+      // Filter items
+      items.forEach(function(a){
+        var text = a.textContent.toLowerCase();
+        if(text.includes(q)){
+          a.style.display = '';
+          // Open parent group
+          var group = a.closest('.nav-items');
+          if(group) group.classList.add('open');
+          var header = group ? group.previousElementSibling : null;
+          if(header && header.classList.contains('nav-group')) header.classList.add('open');
+        } else {
+          a.style.display = 'none';
+        }
+      });
+      
+      // Hide empty groups
+      groups.forEach(function(g){
+        var items = g.nextElementSibling;
+        if(items){
+          var visible = items.querySelectorAll('a:not([style*="display: none"])').length;
+          g.style.display = visible > 0 ? '' : 'none';
+        }
+      });
+    });
+  }
+})();
 </script>
 </body>
 </html>
