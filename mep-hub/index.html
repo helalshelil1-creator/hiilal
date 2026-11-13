@@ -19962,60 +19962,7 @@ function smartPrint(title){
     ${content.innerHTML}
     <script>window.onload = ()=>setTimeout(()=>window.print(), 300);<\/script>
     
-<script>
-/* ============================================================
-   MOBILE NAV ACCORDION + DRAWER
-   ============================================================ */
-(function(){
-  // Toggle nav group
-  window.toggleNavGroup = function(el){
-    var group = el.getAttribute('data-group');
-    var items = el.nextElementSibling;
-    var isOpen = el.classList.toggle('open');
-    if(items) items.classList.toggle('open', isOpen);
-    
-    // Save state
-    var openGroups = [];
-    try { openGroups = JSON.parse(localStorage.getItem('mep_openGroups') || '[]'); } catch(e){}
-    if(isOpen){
-      if(!openGroups.includes(group)) openGroups.push(group);
-    } else {
-      openGroups = openGroups.filter(g => g !== group);
-    }
-    localStorage.setItem('mep_openGroups', JSON.stringify(openGroups));
-  };
-  
-  // Override renderNav to add accordion
-  window.renderNav = function(){
-    var nav = document.getElementById('nav');
-    if(!nav) return;
-    
-    var openGroups = [];
-    try { openGroups = JSON.parse(localStorage.getItem('mep_openGroups') || '[]'); } catch(e){}
-    
-    nav.innerHTML = NAV.map(function(g){
-      var isOpen = openGroups.includes(g.group) || g.items.some(function(it){ return it.id === state.route; });
-      return '<div class="nav-group' + (isOpen ? ' open' : '') + '" data-group="' + g.group + '" onclick="toggleNavGroup(this)">' +
-        '<span>' + g.group + '</span>' +
-        '<span class="arrow">▸</span>' +
-      '</div>' +
-      '<div class="nav-items' + (isOpen ? ' open' : '') + '">' +
-        g.items.map(function(it){
-          var iconName = NAV_ICON_MAP[it.id] || 'dashboard';
-          return '<a data-id="' + it.id + '" data-tooltip="' + it.label + '" onclick="navigate(\'' + it.id + '\')" class="mep-icon-anim">' +
-            '<span class="ico">' + icon(iconName) + '</span>' +
-            '<span>' + it.label + '</span>' +
-            (it.badge ? '<span class="badge">' + it.badge + '</span>' : '') +
-          '</a>';
-        }).join('') +
-      '</div>';
-    }).join('');
-  };
-})();
 
-  // Re-render nav with accordion
-  setTimeout(function(){ renderNav(); }, 100);
-</script>
 
 
 <script>
@@ -20166,8 +20113,11 @@ function smartPrint(title){
     font-size: 14px !important;
   }
 }
+
 </body></html>
   `);
+
+
   win.document.close();
 }
 
@@ -46062,6 +46012,60 @@ window.__MEP_CMS = {
     }
   });
 })();
+</script>
+<script>
+/* ============================================================
+   MOBILE NAV ACCORDION + DRAWER
+   ============================================================ */
+(function(){
+  // Toggle nav group
+  window.toggleNavGroup = function(el){
+    var group = el.getAttribute('data-group');
+    var items = el.nextElementSibling;
+    var isOpen = el.classList.toggle('open');
+    if(items) items.classList.toggle('open', isOpen);
+    
+    // Save state
+    var openGroups = [];
+    try { openGroups = JSON.parse(localStorage.getItem('mep_openGroups') || '[]'); } catch(e){}
+    if(isOpen){
+      if(!openGroups.includes(group)) openGroups.push(group);
+    } else {
+      openGroups = openGroups.filter(g => g !== group);
+    }
+    localStorage.setItem('mep_openGroups', JSON.stringify(openGroups));
+  };
+  
+  // Override renderNav to add accordion
+  window.renderNav = function(){
+    var nav = document.getElementById('nav');
+    if(!nav) return;
+    
+    var openGroups = [];
+    try { openGroups = JSON.parse(localStorage.getItem('mep_openGroups') || '[]'); } catch(e){}
+    
+    nav.innerHTML = NAV.map(function(g){
+      var isOpen = openGroups.includes(g.group) || g.items.some(function(it){ return it.id === state.route; });
+      return '<div class="nav-group' + (isOpen ? ' open' : '') + '" data-group="' + g.group + '" onclick="toggleNavGroup(this)">' +
+        '<span>' + g.group + '</span>' +
+        '<span class="arrow">▸</span>' +
+      '</div>' +
+      '<div class="nav-items' + (isOpen ? ' open' : '') + '">' +
+        g.items.map(function(it){
+          var iconName = NAV_ICON_MAP[it.id] || 'dashboard';
+          return '<a data-id="' + it.id + '" data-tooltip="' + it.label + '" onclick="navigate(\'' + it.id + '\')" class="mep-icon-anim">' +
+            '<span class="ico">' + icon(iconName) + '</span>' +
+            '<span>' + it.label + '</span>' +
+            (it.badge ? '<span class="badge">' + it.badge + '</span>' : '') +
+          '</a>';
+        }).join('') +
+      '</div>';
+    }).join('');
+  };
+})();
+
+  // Re-render nav with accordion
+  setTimeout(function(){ renderNav(); }, 100);
 </script>
 </body>
 </html>
