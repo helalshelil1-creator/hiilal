@@ -7637,6 +7637,12 @@ function viewSolarPV(){
         <div class="input-group"><label>Voc للوحة (V)</label><input type="number" id="pv_voc" value="50"></div>
         <div class="input-group"><label>Vmp للوحة (V)</label><input type="number" id="pv_vmp" value="42"></div>
         <div class="input-group"><label>Isc للوحة (A)</label><input type="number" id="pv_isc" value="14"></div>
+        <div class="input-group"><label>معامل حرارة Voc (%/°C) من داتاشيت اللوح</label><input type="number" id="pv_bvoc" value="-0.27" step="0.01"></div>
+        <div class="input-group"><label>معامل حرارة Vmp (%/°C) من الداتاشيت (أو معامل Pmax إن لم يتوفر)</label><input type="number" id="pv_bvmp" value="-0.35" step="0.01"></div>
+        <div class="input-group"><label>أدنى درجة حرارة للموقع (°C)</label><input type="number" id="pv_tmin" value="0" step="1"></div>
+        <div class="input-group"><label>أقصى حرارة خلية متوقعة (°C)</label><input type="number" id="pv_tmax" value="70" step="1"></div>
+        <div class="input-group"><label>أقصى جهد نظام للوح (V) من الداتاشيت</label><input type="number" id="pv_mod_vmax" value="1500"></div>
+        <div class="input-group"><label>عدد الـ Strings المتوازية على كل MPPT</label><input type="number" id="pv_par" value="1" min="1" step="1"></div>
         <div class="input-group"><label>Vmax للعاكس DC (V)</label><input type="number" id="pv_inv_vmax" value="1000"></div>
         <div class="input-group"><label>Vmp النطاق الأدنى للعاكس (V)</label><input type="number" id="pv_inv_vmin" value="200"></div>
         <div class="input-group"><label>أقصى تيار DC للعاكس (A)</label><input type="number" id="pv_inv_imax" value="30"></div>
@@ -7644,7 +7650,7 @@ function viewSolarPV(){
       </div>
       <div class="card">
         <div class="h3">▸ Design Rules</div>
-        <div class="note">الحاسبة تفترض Voc ×1.15 عند البرودة (−10°C) وVmp ×0.82 عند 70°C، وهي قيم تقديرية عامة وليست من داتاشيت اللوح. استخدم معامل الحرارة الفعلي لللوح وأدنى/أقصى حرارة للموقع.</div>
+        <div class="note">Voc البارد = Voc × (1 + β<sub>Voc</sub> × (Tmin − 25)) وVmp الساخن = Vmp × (1 + β<sub>Vmp</sub> × (Tcell − 25)) لكل لوح، ثم × عدد اللوحات في الـ String. القيم الافتراضية للمعاملات ودرجات الحرارة <b>توضيحية فقط</b>: ضع قيم داتاشيت اللوح ودرجات حرارة موقعك. المصدر للمعادلة (ثانوي، لم يُقرأ نص IEC 62548 نفسه): eu-enterprise.com/guides/solar-dc-breaker-and-fuse-sizing وmayfield.energy/technical-articles/pv-string-size/ (يذكر NEC 690.7).</div>
         <div class="note">Vmp عند الحرارة العالية يجب أن يبقى ≥ الحد الأدنى لنطاق MPPT للعاكس.</div>
         <div class="note">فحص تيار مبسط: Isc ×1.25 لـ String واحد مقابل أقصى تيار للعاكس. عدد الـ Strings المتوازية على كل MPPT يضاعف التيار ولا يُفحص هنا.</div>
         <div class="note warn">تقدير أولي لعدد اللوحات في الـ String، وليس تصميمًا نهائيًا. راجع داتاشيت اللوح والعاكس والكود المحلي (مثل IEC 62548) قبل التنفيذ.</div>
@@ -7662,24 +7668,36 @@ function calcSolar(){
   const vmax = parseFloat(document.getElementById('pv_inv_vmax').value);
   const vmin = parseFloat(document.getElementById('pv_inv_vmin').value);
   const imax = parseFloat(document.getElementById('pv_inv_imax').value);
+  const bvoc = parseFloat(document.getElementById('pv_bvoc').value);
+  const bvmp = parseFloat(document.getElementById('pv_bvmp').value);
+  const tmin = parseFloat(document.getElementById('pv_tmin').value);
+  const tmax = parseFloat(document.getElementById('pv_tmax').value);
+  const modVmax = parseFloat(document.getElementById('pv_mod_vmax').value);
+  const par = Math.max(1, Math.floor(parseFloat(document.getElementById('pv_par').value) || 1));
+  const outE = document.getElementById('pv_out');
+  const nums = [power,panel,voc,vmp,isc,vmax,vmin,imax,bvoc,bvmp,tmin,tmax,modVmax];
+  if (nums.some(x=>!isFinite(x)) || power<=0 || panel<=0 || voc<=0 || vmp<=0 || isc<=0 || vmax<=0 || vmin<=0 || imax<=0 || modVmax<=0 || bvoc>0 || bvmp>0 || tmin>=25 || tmax<=25 || vmp>voc) {
+    outE.innerHTML = '<div class="err-box">راجع المدخلات: كل القيم موجبة، Vmp ≤ Voc، معاملا الحرارة سالبان (%/°C)، أدنى حرارة أقل من 25°C وأقصى حرارة خلية أعلى من 25°C.</div>';
+    return;
+  }
 
   const nTotal = Math.ceil(power * 1000 / panel);
   // Min string size
-  const voc_cold = voc * 1.15; // -10°C factor
-  const vmp_hot = vmp * 0.82;  // 70°C factor
-  const maxPerString = Math.floor(vmax / voc_cold);
+  const voc_cold = voc * (1 + bvoc/100 * (tmin - 25));
+  const vmp_hot = vmp * (1 + bvmp/100 * (tmax - 25));
+  const maxPerString = Math.floor(Math.min(vmax, modVmax) / voc_cold);
   const minPerString = Math.ceil(vmin / vmp_hot);
   const stringsPossible = [];
 
   for(let s=minPerString; s<=maxPerString; s++){
     const nStrings = Math.ceil(nTotal / s);
-    const iscCheck = isc * 1.25 * 1; // single string current
+    const iscCheck = isc * 1.25 * par; // Isc x 1.25 x parallel strings per MPPT
     if(iscCheck <= imax) stringsPossible.push({s, nStrings});
   }
 
   const out = document.getElementById('pv_out');
   if(stringsPossible.length===0){
-    out.innerHTML = '<div class="err-box">لا يوجد تصميم String صالح. راجع نطاق V للعاكس.</div>';
+    out.innerHTML = '<div class="err-box">لا يوجد عدد لوحات في الـ String يحقق: Voc البارد ≤ حد العاكس والّلوح، وVmp الساخن ≥ أدنى MPPT، وتيار MPPT ≤ حد العاكس. راجع المدخلات.</div>';
     return;
   }
   const best = stringsPossible.reduce((a,b)=>{
@@ -7696,17 +7714,17 @@ function calcSolar(){
           <div>Total Panels: <strong style="color:var(--primary)">${nTotal}</strong></div>
           <div>Panels per String: <strong style="color:var(--primary)">${best.s}</strong></div>
           <div>Strings Required: <strong style="color:var(--primary)">${best.nStrings}</strong></div>
-          <div>String Voltage (Voc cold): <strong style="color:var(--spec)">${(voc_cold * best.s).toFixed(0)} V</strong></div>
-          <div>String Voltage (Vmp hot): <strong style="color:var(--spec)">${(vmp_hot * best.s).toFixed(0)} V</strong></div>
-          <div>String Current (Isc × 1.25): <strong style="color:var(--spec)">${(isc * 1.25).toFixed(1)} A</strong></div>
+          <div>String Voltage (Voc at ${tmin}°C): <strong style="color:var(--spec)">${(voc_cold * best.s).toFixed(0)} V</strong></div>
+          <div>String Voltage (Vmp at ${tmax}°C cell): <strong style="color:var(--spec)">${(vmp_hot * best.s).toFixed(0)} V</strong></div>
+          <div>MPPT Current (Isc × 1.25 × ${par}): <strong style="color:var(--spec)">${(isc * 1.25 * par).toFixed(1)} A</strong></div>
           <div>Total DC Power: <strong>${(nTotal * panel / 1000).toFixed(2)} kWp</strong></div>
         </div>
       </div>
       <div class="card">
         <div class="h3">▸ Validation</div>
-        <div class="note">Voc بارد (×1.15 مفترض) للـ String = ${(voc_cold * best.s).toFixed(0)} V مقابل حد العاكس ${vmax} V</div>
-        <div class="note">Vmp ساخن (×0.82 مفترض) للـ String = ${(vmp_hot * best.s).toFixed(0)} V مقابل حد MPPT الأدنى ${vmin} V</div>
-        <div class="note">Isc ×1.25 لـ String واحد = ${(isc*1.25).toFixed(1)} A مقابل ${imax} A (Strings متوازية غير محسوبة)</div>
+        <div class="note">Voc عند ${tmin}°C للـ String = ${(voc_cold * best.s).toFixed(0)} V مقابل حد العاكس ${vmax} V وحد اللوح ${modVmax} V</div>
+        <div class="note">Vmp عند ${tmax}°C للـ String = ${(vmp_hot * best.s).toFixed(0)} V مقابل حد MPPT الأدنى ${vmin} V</div>
+        <div class="note">Isc × 1.25 × ${par} String = ${(isc*1.25*par).toFixed(1)} A مقابل ${imax} A (العامل 1.25 اختيار تصميمي شائع، راجع الكود المعتمد)</div>
         <div class="h3" style="margin-top:16px">▸ Inverter Sizing</div>
         <div class="note">لو اخترت نسبة DC/AC = 1.2 (اختيار تصميمي وليس قاعدة): حجم العاكس ≈ ${(nTotal*panel/1000/1.2).toFixed(1)} kW</div>
       </div>
@@ -10520,8 +10538,8 @@ function viewPointByPoint(){
         <div class="h3">▸ Inputs</div>
         <div class="input-group"><label>Fixture Height (m)</label><input type="number" id="pbp_h" value="3.5" step="0.1" onchange="calcPBP()"></div>
         <div class="input-group"><label>Work Plane Height (m)</label><input type="number" id="pbp_w" value="0.75" step="0.1" onchange="calcPBP()"></div>
-        <div class="input-group"><label>Luminous Intensity I (cd) at each angle, same for all</label><input type="number" id="pbp_lm" value="1000" onchange="calcPBP()"></div>
-        <div class="input-group"><label>Fixture Beam Angles (°)</label><input id="pbp_angles" value="0,-30,-60,60,30" onchange="calcPBP()"></div>
+        <div class="input-group"><label>Luminous Intensity I (cd): قيمة واحدة لكل الزوايا، أو قائمة بعدد الزوايا من جدول فوتومتري الكشاف</label><input id="pbp_lm" value="1000" onchange="calcPBP()"></div>
+        <div class="input-group"><label>زوايا الكشافات عن الـ nadir (°) عند النقطة المدروسة (كل زاوية = كشاف)</label><input id="pbp_angles" value="0,-30,-60,60,30" onchange="calcPBP()"></div>
       </div>
       <div class="card">
         <div class="h3">▸ Results</div>
@@ -10531,35 +10549,43 @@ function viewPointByPoint(){
   `;
 }
 function calcPBP(){
-  const h = parseFloat(document.getElementById('pbp_h')?.value) || 3.5;
-  const w = parseFloat(document.getElementById('pbp_w')?.value) || 0.75;
-  const lm = parseFloat(document.getElementById('pbp_lm')?.value) || 1000; // luminous intensity in cd (E = I cos(theta) / d^2)
-  const anglesStr = document.getElementById('pbp_angles')?.value || '0,-30,-60,60,30';
-  const angles = anglesStr.split(',').map(x=>parseFloat(x.trim())).filter(x=>!isNaN(x));
+  const out = document.getElementById('pbp_out');
+  if(!out) return;
+  const h = parseFloat(document.getElementById('pbp_h')?.value);
+  const w = parseFloat(document.getElementById('pbp_w')?.value);
+  const lmTxt = (document.getElementById('pbp_lm')?.value || '').trim();
+  const angles = (document.getElementById('pbp_angles')?.value || '').split(',').map(x=>x.trim()).filter(x=>x!=='').map(Number);
+  const lms = lmTxt.split(',').map(x=>x.trim()).filter(x=>x!=='').map(Number);
+  const bad = (m)=>{ out.innerHTML = '<div class="err-box">'+m+'</div>'; };
+  if(!isFinite(h) || !isFinite(w) || !(h > w) || w < 0) return bad('ارتفاع الكشاف يجب أن يكون أكبر من ارتفاع مستوى العمل (قيم غير سالبة).');
+  if(!angles.length || angles.some(a=>!isFinite(a) || Math.abs(a) >= 90)) return bad('أدخل زوايا رقمية مفصولة بفواصل، كل زاوية بين -89 و89 درجة.');
+  if(!lms.length || lms.some(x=>!isFinite(x) || x < 0) || (lms.length !== 1 && lms.length !== angles.length)) return bad('شدة الإضاءة: قيمة واحدة (cd) أو عدد قيم يساوي عدد الزوايا، كلها غير سالبة.');
+  const constI = lms.length === 1;
 
   const H = h - w;
   let totalE = 0;
-  const detail = angles.map(a=>{
-    const d = H / Math.cos(a*Math.PI/180);
-    const E = lm * Math.cos(a*Math.PI/180) / (d*d);
+  const detail = angles.map((a,i)=>{
+    const c = Math.cos(a*Math.PI/180);
+    const d = H / c;
+    const I = constI ? lms[0] : lms[i];
+    const E = I * c / (d*d);   // horizontal illuminance: E = I * cos(theta) / d^2 = I * cos^3(theta) / H^2
     totalE += E;
-    return {a, d, E};
+    return {a, d, I, E};
   });
 
-  const out = document.getElementById('pbp_out');
-  if(!out) return;
   out.innerHTML = `
     <div class="result">
       <div class="big">E_total = ${totalE.toFixed(1)} lux</div>
-      <div class="steps">Working Height = ${H} m
-Luminous Intensity I = ${lm} cd (E = I·cosθ / d², horizontal plane)
+      <div class="steps">Working Height H = ${H.toFixed(2)} m
+E = I(θ)·cosθ / d² (horizontal plane, direct light only), d = H/cosθ
 
-${detail.map(d=>`${d.a}° → d=${d.d.toFixed(2)}m → E=${d.E.toFixed(1)} lux`).join('\n')}
+${detail.map(d=>`${d.a}° → d=${d.d.toFixed(2)} m, I=${d.I} cd → E=${d.E.toFixed(1)} lux`).join('\n')}
 
-E_total = Σ E_i = ${totalE.toFixed(1)} lux</div>
+E_total = Σ E_i over ${detail.length} luminaire(s) = ${totalE.toFixed(1)} lux</div>
     </div>
+    ${constI ? '<div class="note warn" style="margin-top:14px"><strong>تنبيه:</strong> استخدمت شدة إضاءة ثابتة لكل الزوايا، وهذا غير واقعي لأي كشاف حقيقي (I تتغير مع الزاوية). النتيجة توضيحية؛ أدخل I(θ) لكل زاوية من الجدول الفوتومتري (IES/LDT).</div>' : ''}
     <div class="note tip" style="margin-top:14px">
-      <strong>Note:</strong> هذه الطريقة تحسب الإضاءة المباشرة فقط، والمدخل هو شدة الإضاءة بالشمعة (cd) لكل كشاف من منحنى التوزيع الضوئي للمصنّع (وليست التدفق الضوئي lm). كل زاوية تمثل كشافًا. للأدق، استخدم DIALux مع ملفات IES.
+      <strong>Note:</strong> كل زاوية تمثّل كشافًا مستقلًا يضيء نفس النقطة، والمجموع هو مجموع مساهماتها. الطريقة تحسب الإضاءة المباشرة فقط (بدون انعكاسات الجدران/السقف) ولا تحسب معامل الصيانة. للتصميم استخدم ملف فوتومتري للكشاف وبرنامج مثل DIALux.
     </div>
   `;
 }
@@ -12615,8 +12641,8 @@ const FORMULAS_LIB = [
   {cat:'Solar PV',
    items:[
      {name:'Panels Required', formula:'N = P_system / P_panel', desc:'عدد اللوحات'},
-     {name:'String Voltage (cold)', formula:'Voc_cold = Voc × 1.15 × N', desc:'جهد السلسلة عند البرودة'},
-     {name:'String Voltage (hot)', formula:'Vmp_hot = Vmp × 0.82 × N', desc:'جهد السلسلة عند السخونة'},
+     {name:'String Voltage (cold)', formula:'Voc_cold = Voc × (1 + β × (Tmin − 25)) × N', desc:'جهد السلسلة عند أدنى حرارة للموقع'},
+     {name:'String Voltage (hot)', formula:'Vmp_hot = Vmp × (1 + β × (Tcell − 25)) × N', desc:'جهد السلسلة عند أقصى حرارة خلية'},
    ]},
 ];
 
