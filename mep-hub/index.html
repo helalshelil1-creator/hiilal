@@ -10577,7 +10577,7 @@ function viewCablePulling(){
         <div class="input-group"><label>Friction Coefficient</label><input type="number" id="cp_f" value="0.3" step="0.05" onchange="calcPull()"></div>
         <div class="input-group"><label>Bends (90°)</label><input type="number" id="cp_b" value="3" onchange="calcPull()"></div>
         <div class="input-group"><label>Total conductor area (mm²)</label><input type="number" id="cp_a" value="35" onchange="calcPull()"></div>
-        <div class="input-group"><label>Allowed stress (N/mm²) — من داتاشيت الكابل</label><input type="number" id="cp_s" value="50" onchange="calcPull()"></div>
+        <div class="input-group"><label>Conductor material (pulling-eye limit)</label><select id="cp_s" onchange="calcPull()"><option value="70.2">Copper — 0.008 lb/cmil (≈70 N/mm²)</option><option value="52.7">Aluminium — 0.006 lb/cmil (≈53 N/mm²)</option></select></div>
         <div class="input-group"><label>Pull Direction</label>
           <select id="cp_dir" onchange="calcPull()">
             <option value="horizontal">Horizontal</option>
@@ -10600,7 +10600,7 @@ function calcPull(){
   const b = parseFloat(document.getElementById('cp_b')?.value) || 0;
   const dir = document.getElementById('cp_dir')?.value || 'horizontal';
   const area = parseFloat(document.getElementById('cp_a')?.value) || 0;
-  const sig = parseFloat(document.getElementById('cp_s')?.value) || 0;
+  const sig = parseFloat(document.getElementById('cp_s')?.value) || 0;  // N/mm2 from k x circular mils (pulling eye on conductors)
   const out = document.getElementById('cp_out');
   if(!out) return;
   if(dir === 'down'){
@@ -10622,11 +10622,11 @@ Length = ${L} m, friction = ${f}, bends = ${b} x 90 deg
 Straight run: T0 = ${dir === 'vertical' ? 'W x L' : 'f x W x L'} = ${(dir === 'vertical' ? W*L : f*W*L).toFixed(0)} N
 Per bend factor e^(f x pi/2) = ${mult.toFixed(3)}; total = ${Math.pow(mult,b).toFixed(3)}
 T_pull = ${T.toFixed(0)} N${Tmax > 0 ? `
-Entered limit = ${area} mm2 x ${sig} N/mm2 = ${Tmax.toFixed(0)} N
+Pulling-eye limit = ${area} mm2 x ${sig} N/mm2 = ${Tmax.toFixed(0)} N
 T_pull / limit = ${(T/Tmax*100).toFixed(0)}%` : ''}</div>
     </div>
     <div class="note" style="margin-top:14px">
-      تقدير مبسط: كل الانحناءات تُطبَّق بعد المسافة المستقيمة كلها، وهذا يعطي شدًا أعلى من الحقيقي لو الانحناءات في أول المسار وأقل لو في آخره. لا يشمل وزن الحبل ولا الانحناءات الرأسية أو الجانبية. حد الشد المسموح يجب أن يؤخذ من داتاشيت الكابل ونوع رأس السحب. القيمة الافتراضية ${sig || 50} N/mm² مجرد رقم افتراضي غير مُسند هنا.
+      تقدير مبسط: كل الانحناءات تُطبَّق بعد المسافة المستقيمة كلها، وهذا يعطي شدًا أعلى من الحقيقي لو الانحناءات في أول المسار وأقل لو في آخره. لا يشمل وزن الحبل ولا الانحناءات الرأسية أو الجانبية. حد الشد المعروض هو لطريقة رأس السحب المثبت مباشرة على الموصلات: Tmax = k × n × CA (k = 0.008 lb/circular mil للنحاس و0.006 للألومنيوم)، وبالمصدر نفسه سقف 6,000 lb لكابل موصل واحد، وهناك سقف أخرى للكابلات متعددة الموصلات لم أتحقق منها. المصدر ثانوي: <span dir="ltr">https://www.servicewire.com/ServiceWire/ReferenceDocs/Products/MaxPullingTensions.pdf</span>. الجريب أو الشبكة (basket grip) وحد الضغط الجانبي في الانحناءات لهما حدود أقل أو مختلفة من داتاشيت الكابل. لم تُحسب هنا، فلا تعتبر النتيجة موافقة.
     </div>
   `;
 }
