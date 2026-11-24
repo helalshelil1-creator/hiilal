@@ -3548,7 +3548,7 @@ sinφ = 0.527
     definition:'مضخة مخصصة لتغذية أنظمة مكافحة الحريق (Sprinklers · Hydrants · Hose Reels) عند الضغط والتصرف المطلوبين.',
     purpose:'ضمان توفر التصرف والضغط المطلوب في كل نقطة حريق طوال مدة الحريق التصميمية.',
     components:['المضخة الرئيسية (Main)','مضخة الجوكي (Jockey)','المضخة الاحتياطية (Standby)','لوحة التحكم','ATS','Relief Valve','Suction & Discharge Headers'],
-    designCriteria:['تُحسب حسب NFPA 20 / EN 12845','الضغط × 1.5 × التصرف المقنن','Jockey 10 psi أعلى من Main'],
+    designCriteria:['تُحسب حسب الكود المعتمد (مثل NFPA 20 / EN 12845) ومنحنى المصنّع','تصرف وضغط المضخة من الحسابات الهيدروليكية للنظام وليس بقاعدة مبسطة','ضغط تشغيل/إيقاف مضخة الجوكي يُحدد في التصميم حسب الكود والمصنّع'],
     inputs:['التصرف المطلوب Q (GPM أو L/s)','الضغط المطلوب H (psi أو bar)','حجم النظام','عدد الرشاشات المفتوحة المتزامنة'],
     formula:'P (kW) = (Q · H · ρ · g) / (3600 · η)\nQ_design = K · √P (لكل مرشة)',
     calculation:`1. حساب تصرف النظام (الرشاشات المفتوحة × تصرف كل مرشة)
@@ -7884,9 +7884,9 @@ function calcArcFlash(){
   const K1 = -0.555, K2 = -0.113;
   const logEn = K1 + K2 + 1.081 * Math.log10(Ia) + 0.0011 * G;
   const En = Math.pow(10, logEn); // J/cm2 at 610 mm, 0.2 s
-  const E_J = Cf * En * (t / 0.2) * Math.pow(610, X) / Math.pow(dist, X); // J/cm2
+  const E_J = 4.184 * Cf * En * (t / 0.2) * Math.pow(610, X) / Math.pow(dist, X); // J/cm2
   const E = E_J / 4.184; // cal/cm2
-  const boundary = Math.pow(Cf * En * (t / 0.2) * Math.pow(610, X) / 5.0, 1/X); // mm where E = 5 J/cm2 (1.2 cal/cm2)
+  const boundary = Math.pow(4.184 * Cf * En * (t / 0.2) * Math.pow(610, X) / 5.0, 1/X); // mm where E = 5 J/cm2 (1.2 cal/cm2)
 
   const out = document.getElementById('af_out');
   const statusColor = 'var(--fg)';
@@ -7902,7 +7902,7 @@ Clearing Time = ${t} s
 Assumed: 480 V, grounded, enclosed (box), gap ${G} mm, Cf = ${Cf}, x = ${X}
 En = 10^(${K1} + ${K2} + 1.081×log10(Ia) + 0.0011×${G}) = ${En.toFixed(4)} J/cm²
 
-E = Cf × En × (t/0.2) × (610^x / D^x) = ${E_J.toFixed(2)} J/cm² = ${E.toFixed(2)} cal/cm²</div>
+E = 4.184 × Cf × En × (t/0.2) × (610^x / D^x) = ${E_J.toFixed(2)} J/cm² = ${E.toFixed(2)} cal/cm²</div>
         </div>
       </div>
       <div class="card">
@@ -27757,7 +27757,7 @@ Object.assign(TOPIC_CONTENT, {
     sections:[
       {title:'Components', en:'System', body:'• Main Pump (Duty)<br>• Jockey Pump (10 psi أعلى)<br>• Standby Pump (احتياطي)<br>• Controller + ATS<br>• Relief Valve'},
       {title:'Formula', en:'Power', body:'P(kW) = (Q · H · ρ · g) / (3600 · η)', formula:'P = (<span class="var">Q</span>·H·ρ·g) / (3600·η)'},
-      {title:'Testing', en:'NFPA 20/25', body:'<strong>Churn Test:</strong> 10 min بدون تصرف — أسبوعي<br><strong>Flow Test:</strong> 100% و 150% — سنوي<br><strong>Startup Test:</strong> تلقائي عند هبوط الضغط'},
+      {title:'Testing (مثال تعليمي غير محقق)', en:'NFPA 20/25', body:'<b>⚠ ليست جدول اختبار معتمد.</b> المدد والتكرار تختلف بنوع المضخة (ديزل/كهرباء) وإصدار NFPA 25 والجهة المعتمدة؛ ارجع للكود المعتمد.<br>اختبار بدون تصرف (Churn)، اختبار تدفق عند نسب من التصرف المقنن (مثل <bdi dir="ltr" style="unicode-bidi:isolate">100%</bdi> و<bdi dir="ltr" style="unicode-bidi:isolate">150%</bdi>) مع منحنى المصنّع، واختبار بدء التشغيل التلقائي عند هبوط الضغط.'},
     ],
     related:['fire-fighting','pipe-sizing','water-tank'],
     calc:'firePumpCalc',
