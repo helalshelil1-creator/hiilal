@@ -841,8 +841,9 @@ const ENCYCLOPEDIA = [
                 titleEn: "Lumen Method",
                 summary: "طريقة اللومن لحساب عدد المصابيح.",
                 sections: [
-                    { type: "formula", title: "📐 القانون", formula: "N = (E × A) / (Φ × UF × MF)", variants: ["E: مستوى الإضاءة (lux)", "A: المساحة (m²)", "Φ: تدفق الوحدة (lm)", "UF: 0.5-0.8", "MF: 0.7-0.85"] },
-                    { type: "table", title: "📊 مستويات الإضاءة (EN 12464)", headers: ["المكان", "E (lux)"], rows: [["ممرات", "100"], ["سلالم", "150"], ["مكاتب", "300-500"], ["قاعات", "500"], ["رسم هندسي", "750-1000"], ["مخازن", "100-200"]] }
+                    { type: "formula", title: "📐 القانون", formula: "N = (E × A) / (Φ × UF × MF)", variants: ["E: مستوى الإضاءة (lux)", "A: المساحة (m²)", "Φ: تدفق الوحدة (lm)", "UF: عامل الاستفادة، 0.5-0.8 تقريبي من جداول المصنّع للكشاف والغرفة", "MF: عامل الصيانة، 0.7-0.85 تقريبي حسب نوع الكشاف والبيئة"] },
+                    { type: "table", title: "📊 مستويات الإضاءة (EN 12464)", headers: ["المكان", "E (lux)"], rows: [["ممرات", "100"], ["سلالم", "150"], ["مكاتب", "300-500"], ["قاعات", "500"], ["رسم هندسي", "750-1000"], ["مخازن", "100-200"]] },
+                    { type: "warning", title: "⚠️ تنبيه", content: "قيم تقريبية للتعريف بالمستويات. المستويات الملزمة لكل نشاط في EN 12464-1 (النسخة الحالية) أو الكود المحلي، ولم تُقرأ من نص المعيار هنا." }
                 ],
                 references: [],
                 related: ["photometric-units"]
@@ -874,7 +875,8 @@ const ENCYCLOPEDIA = [
                 titleEn: "Motor Starting Methods",
                 summary: "DOL, Star-Delta, Soft, VFD.",
                 sections: [
-                    { type: "table", title: "📊 مقارنة", headers: ["الطريقة", "تيار البدء"], rows: [["DOL", "6-8 × FLC"], ["Star-Delta", "2-2.5 × FLC"], ["Soft Starter", "2-4 × FLC"], ["VFD", "1-1.5 × FLC"]] }
+                    { type: "table", title: "📊 مقارنة", headers: ["الطريقة", "تيار البدء"], rows: [["DOL", "6-8 × FLC"], ["Star-Delta", "2-2.5 × FLC"], ["Soft Starter", "2-4 × FLC"], ["VFD", "1-1.5 × FLC"]] },
+                    { type: "warning", title: "⚠️ تنبيه", content: "نطاقات نموذجية تقريبية. تيار البدء الفعلي في داتاشيت المحرك والمشغّل." }
                 ],
                 references: [],
                 related: ["motor-types", "vfd"]
@@ -885,8 +887,8 @@ const ENCYCLOPEDIA = [
                 titleEn: "Variable Frequency Drive",
                 summary: "التحكم في سرعة الموتور.",
                 sections: [
-                    { type: "formula", title: "📐 العلاقات", formula: "N = (120 × f) / P", variants: ["N: السرعة (rpm)", "f: التردد (Hz)", "P: عدد الأقطاب"] },
-                    { type: "list", title: "💡 المزايا", items: ["توفير طاقة 30-50%", "تحكم دقيق", "بدء ناعم", "حماية شاملة"] }
+                    { type: "formula", title: "📐 العلاقات", formula: "Ns = (120 × f) / P", variants: ["Ns: السرعة التزامنية (rpm)، والسرعة الفعلية للمحرك الحثي أقل منها بالانزلاق", "f: التردد (Hz)", "P: عدد الأقطاب"] },
+                    { type: "list", title: "💡 المزايا", items: ["توفير طاقة في أحمال المراوح والمضخات متغيرة الحمل (النسبة تتوقف على نمط التشغيل)", "تحكم دقيق", "بدء ناعم", "حماية شاملة"] }
                 ],
                 references: [],
                 related: ["motor-starting"]
@@ -919,7 +921,8 @@ const ENCYCLOPEDIA = [
                 summary: "أنواع الكاشفات واختيارها.",
                 sections: [
                     { type: "list", title: "🔧 الكاشفات", items: ["Smoke Optical", "Smoke Ionization", "Heat Fixed", "Heat ROR", "Multi-Criteria", "Beam", "Flame"] },
-                    { type: "table", title: "📊 التغطية", headers: ["النوع", "المساحة", "الارتفاع"], rows: [["Smoke", "≤ 100 m²", "≤ 12 m"], ["Heat", "≤ 50 m²", "≤ 7.5 m"], ["Beam", "≤ 1600 m²", "≤ 25 m"]] }
+                    { type: "table", title: "📊 التغطية", headers: ["النوع", "المساحة", "الارتفاع"], rows: [["كاشف دخان نقطي", "حتى 100 م² (نصف قطر 7.5 م)", "حتى 10.5 م"], ["كاشف حرارة نقطي", "حتى 50 م² (نصف قطر 5.3 م)", "حتى 9 م (A1) / 7.5 م (فئات أخرى)"], ["Beam", "حسب داتاشيت الكاشف", "حسب داتاشيت الكاشف"]] },
+                    { type: "warning", title: "⚠️ تنبيه", content: "القيم تمثل ممارسة BS 5839-1 / EN 54 كما تلخصها https://www.sss-fire.com/blog/fire-detector-spacing-coverage-uae و Eaton Installer's Mate (ارتفاع الدخان حتى 12.5 م لـ10% من مساحة السقف). NFPA 72 يستخدم تباعدًا مختلفًا (حوالي 9.1 م) فاعتمد الكود المطبق في المشروع وداتاشيت الكاشف، وهذه القيم لا تكفي للتصميم." }
                 ],
                 references: [],
                 related: ["fa-intro"]
