@@ -28013,8 +28013,8 @@ Object.assign(TOPIC_CONTENT, {
     desc:'أنظمة إطفاء مائي: Sprinklers · Hydrants · Hose Reels · Pumps.',
     sections:[
       {title:'Systems', en:'Types', body:'<strong>Wet Pipe:</strong> الأشهر<br><strong>Dry Pipe:</strong> للمناطق الباردة<br><strong>Pre-action:</strong> لحماية المعدات الحساسة<br><strong>Deluge:</strong> للمخاطر العالية'},
-      {title:'Sprinkler Coverage', en:'NFPA 13', body:'Light Hazard: ≤ 21 m²/رأس<br>Ordinary: ≤ 12 m²<br>Extra Hazard: ≤ 9 m²<br><small>رشاش قياسي (standard spray)، حسابات هيدروليكية، سقف أملس بلا عوائق (NFPA 13 جدول 10.2.4.2.1). العوائق والأسقف المائلة والرشاشات الخاصة وكثافة Extra Hazard تغيّر القيم.</small>'},
-      {title:'Standpipe Flow', en:'NFPA 14', body:'Class I: 500 gpm عند 100 psi residual من أبعد وصلتين 2½ in، + 250 gpm لكل Standpipe إضافي (حد أقصى 1000 gpm بمبنى مرشّش بالكامل و1250 غير ذلك)<br>Class II: 100 gpm عند 65 psi من أبعد وصلة 1½ in<br><small>مصدر ثانوي: مدونة NFPA، 19-11-2021 (nfpa.org/news-blogs-and-articles/blogs/2021/11/19/standpipe-system-design-and-calculations). يختلف حسب الإصدار وتصنيف المبنى. هيدرانت الشارع يخضع لمعيار آخر.</small>'},
+      {title:'Sprinkler Coverage (مثال تعليمي غير محقق)', en:'Educational example', body:'<b>⚠ ليست قيم تصميم.</b> أرقام تقريبية من مصادر ثانوية لم تُقارن بنص NFPA 13 المعتمد.<br>Light Hazard: ≤ 21 m²/رأس<br>Ordinary: ≤ 12 m²<br>Extra Hazard: ≤ 9 m²<br><small>رشاش قياسي (standard spray)، حسابات هيدروليكية، سقف أملس بلا عوائق (NFPA 13 جدول 10.2.4.2.1). العوائق والأسقف المائلة والرشاشات الخاصة وكثافة Extra Hazard تغيّر القيم.</small>'},
+      {title:'Standpipe Flow (مثال تعليمي غير محقق)', en:'Educational example', body:'<b>⚠ ليست قيم تصميم.</b> أرقام تقريبية مأخوذة من مقال ثانوي ولم يُتحقق منها من نص NFPA 14 المعتمد؛ تختلف بالإصدار وتصنيف المبنى وجهة الاعتماد (AHJ). استخدم الكود المعتمد محليًا ومراجعة مهندس مرخّص.<br>الفئة الأولى (Class I): تدفق 500 gpm عند 100 psi residual من أبعد وصلتين 2½ in، + 250 gpm لكل Standpipe إضافي (حد أقصى 1000 gpm بمبنى مرشّش بالكامل و1250 غير ذلك)<br>الفئة الثانية (Class II): تدفق 100 gpm عند 65 psi من أبعد وصلة 1½ in<br><small>مصدر ثانوي: مدونة NFPA، 19-11-2021 (nfpa.org/news-blogs-and-articles/blogs/2021/11/19/standpipe-system-design-and-calculations). يختلف حسب الإصدار وتصنيف المبنى. هيدرانت الشارع يخضع لمعيار آخر.</small>'},
     ],
     related:['fire-pump','pipe-sizing','water-tank'],
     calc:'firePumpCalc',
@@ -28122,7 +28122,7 @@ Object.assign(TOPIC_CONTENT, {
     title:'مناطق إنذار الحريق', en:'Fire Alarm Zones', cat:'Fire Alarm',
     desc:'تقسيم المبنى إلى مناطق إنذار مستقلة لتحديد موقع الحريق بدقة.',
     sections:[
-      {title:'Rules', en:'BS 5839-1', body:'Zone ≤ 2000 m² (توصية BS 5839-1، مش حد من NFPA 72)<br>Zone = Floor level عادة<br>عدد الأجهزة/Loop حسب كتالوج اللوحة المصنّعة<br><small>مصادر ثانوية: g4s.com/…/fire_detection_guide_v4.pdf و firesecure.uk (BS 5839-1 لا يحدد حدًا للأجهزة/Loop). تحقق من الكود المعتمد محليًا.</small>'},
+      {title:'Rules (مثال تعليمي غير محقق)', en:'BS 5839-1', body:'<b>⚠ ليست قيم تصميم؛ راجع الكود المعتمد.</b><br>Zone ≤ 2000 m² (توصية BS 5839-1، مش حد من NFPA 72)<br>Zone = Floor level عادة<br>عدد الأجهزة/Loop حسب كتالوج اللوحة المصنّعة<br><small>مصادر ثانوية: g4s.com/…/fire_detection_guide_v4.pdf و firesecure.uk (BS 5839-1 لا يحدد حدًا للأجهزة/Loop). تحقق من الكود المعتمد محليًا.</small>'},
       {title:'Zoning Strategy', en:'Approach', body:'قسّم حسب:<br>• الطوابق<br>• Fire Compartments<br>• HVAC Zones'},
       {title:'Loop', en:'Design', body:'Class A: مع Return Loop<br>Class B: بدون Return<br>عدد الأجهزة بين Isolators حسب المصنّع'},
     ],
