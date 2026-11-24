@@ -22104,12 +22104,12 @@ P_input = P_shaft / η_motor
         main: `الحد الأدنى للعزل ≥ ${row.m} MΩ عند اختبار ${row.t} V DC (${row.c})`,
         steps:
 `جدول الحد الأدنى للعزل (BS 7671 Table 64 / Reg 643.3.2، ويقابله IEC 60364-6):
-• SELV / PELV: اختبار 250 V DC · ≥ 0.5 MΩ
-• دوائر حتى 500 V: اختبار 500 V DC · ≥ 1.0 MΩ
-• دوائر أعلى من 500 V: اختبار 1000 V DC · ≥ 1.0 MΩ
+• SELV / PELV: test 250 V DC, min 0.5 MΩ
+• Circuits up to 500 V: test 500 V DC, min 1.0 MΩ
+• Circuits above 500 V: test 1000 V DC, min 1.0 MΩ
 
-جهد الاختبار المدخل: ${v.V} V DC
-الصف المقابل في الجدول: ${row.c}`,
+Entered test voltage: ${v.V} V DC
+Matching row: ${row.t} V DC, min ${row.m} MΩ`,
         status: 'ok',
         note: 'الحد الأدنى في الجدول لا يتغير بطول الكابل ولا بنوعه، وهو لتركيبات الجهد المنخفض. اختبار كابلات الجهد المتوسط وكابلات مقاومة الحريق له متطلبات مصنّع ومواصفة مختلفة. اقرأ النتيجة الفعلية وسجّلها في تقرير الاختبار. المصدر: ثانوي (IET FAQ و 18theditionprep.co.uk)، لم يُقرأ نص المعيار.'
       };
