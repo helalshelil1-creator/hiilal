@@ -8109,6 +8109,7 @@ function viewRateBuildUp(){
     <div class="eyebrow" style="margin-bottom:10px">// RATE · BUILD-UP</div>
     <h1 class="h1">$ Rate Build-up Tool</h1>
     <p class="sub">تحليل سعر الوحدة لكل بند — Material · Labor · Equipment · OH · Profit.</p>
+    <div class="note warn" style="margin-bottom:16px"><strong>⚠ أرقام توضيحية فقط:</strong> القيم أدناه أمثلة لتوضيح طريقة تحليل السعر، وليست أسعار سوق ولا عروض أسعار. بلا عملة محددة ولا مصدر ولا تاريخ. لا تُستخدم في مناقصة أو تسعير فعلي. استبدلها بأسعار موثقة بمصدر وتاريخ.</div>
 
     ${Object.entries(RATE_BUILDUP).map(([item, r])=>{
       const subtotal = r.material + r.labor + r.equip;
@@ -8123,7 +8124,7 @@ function viewRateBuildUp(){
           </div>
           <div style="overflow-x:auto">
             <table>
-              <thead><tr><th>Component</th><th>%</th><th>Value</th></tr></thead>
+              <thead><tr><th>Component</th><th>%</th><th>Value (مثال توضيحي)</th></tr></thead>
               <tbody>
                 <tr><td>Material</td><td class="tnum">—</td><td class="tnum" style="color:var(--fg)">${r.material.toFixed(2)}</td></tr>
                 <tr><td>Labor</td><td class="tnum">—</td><td class="tnum" style="color:var(--fg)">${r.labor.toFixed(2)}</td></tr>
