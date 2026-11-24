@@ -85,7 +85,7 @@ const PDFExport = {
     <div class="pdf-header">
         <img src="${window.location.origin}${window.location.pathname.replace(/\/[^\/]*$/, '/')}images/logo.png" alt="Logo" class="logo" onerror="this.style.display='none'">
         <h1>هلال شليل</h1>
-        <p>Eng. Helal Shalil — Electrical & MEP Engineering</p>
+        <p>Eng. Helal Shelil — Electrical & MEP Engineering</p>
     </div>
     ${content}
     <div class="pdf-footer">

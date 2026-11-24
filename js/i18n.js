@@ -177,7 +177,7 @@ const I18N = {
 
             // Hero
             "welcome.top": "Welcome to",
-            "welcome.brand": "Eng. Helal Shalil",
+            "welcome.brand": "Eng. Helal Shelil",
             "welcome.desc": "Complete engineering platform for Electrical & MEP engineers — Design, Execution, Technical Office, Quantity Takeoff, Codes & Specifications… all in one place.",
             "welcome.search": "Search for a tool, calculator, topic, code, product, or spec...",
 

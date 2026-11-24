@@ -1,6 +1,6 @@
 /* ========================================
    SEO — Auto-inject meta tags + Schema
-   Eng. Helal Shalil
+   Eng. Helal Shelil
    الإصدار: 1.0
 ======================================== */
 
@@ -83,7 +83,7 @@ const SEO = {
         // Basic
         this.setMeta("description", data.description);
         this.setMeta("keywords", data.keywords);
-        this.setMeta("author", "Eng. Helal Shalil");
+        this.setMeta("author", "Eng. Helal Shelil");
         this.setMeta("robots", data.robots || "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
         this.setMeta("language", "Arabic");
 
@@ -107,7 +107,6 @@ const SEO = {
         this.setMeta("twitter:title", data.title);
         this.setMeta("twitter:description", data.description);
         this.setMeta("twitter:image", this.defaultImage);
-        this.setMeta("twitter:creator", "@helalshalil");
     },
 
     /* ========================================
@@ -129,7 +128,7 @@ const SEO = {
                 "@type": "Person",
                 "@id": `${this.baseUrl}/#person`,
                 "name": "هلال شليل",
-                "alternateName": ["Eng. Helal Shalil", "المهندس هلال شليل"],
+                "alternateName": ["Eng. Helal Shelil", "المهندس هلال شليل"],
                 "jobTitle": "Electrical & MEP Engineer",
                 "url": `${this.baseUrl}/about.html`,
                 "image": `${this.baseUrl}/images/alamein.jpg`,

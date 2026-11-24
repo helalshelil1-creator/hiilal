@@ -1,5 +1,5 @@
 /* ========================================
-   FIREBASE CONFIG — Eng. Helal Shalil
+   FIREBASE CONFIG — Eng. Helal Shelil
    ⚠️ لا تعدل هذا الملف يدوياً
 ======================================== */
 

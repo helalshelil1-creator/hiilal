@@ -1381,7 +1381,7 @@ html[dir="ltr"] .uc-summary{ border-right:none!important; border-left:3px solid 
     nb.innerHTML =
       '<span class="mep-word" title="MEP">MEP</span>' +
       '<span class="hub-word" title="HUB">HUB</span>' +
-      '<span class="designer-credit" title="تصميم المهندس هلال شليل">Designed by Eng. Hilal Shalil</span>';
+      '<span class="designer-credit" title="تصميم المهندس هلال شليل">Designed by Eng. Helal Shelil</span>';
     brand.appendChild(nb);
 
     nb.querySelector('.mep-word').addEventListener('click', function(){
@@ -1410,7 +1410,7 @@ html[dir="ltr"] .uc-summary{ border-right:none!important; border-left:3px solid 
       '<div class="uc-head">' +
         '<span class="uc-cat">ABOUT THE DESIGNER</span>' +
         '<h2>المهندس هلال شليل</h2>' +
-        '<div style="font-family:\'IBM Plex Mono\',monospace;font-size:11px;color:var(--primary);letter-spacing:0.12em;margin-top:6px">ENG. HILAL SHALIL</div>' +
+        '<div style="font-family:\'IBM Plex Mono\',monospace;font-size:11px;color:var(--primary);letter-spacing:0.12em;margin-top:6px">ENG. HELAL SHELIL</div>' +
       '</div>' +
       '<div class="uc-body">' +
         '<div class="uc-summary">مصمم ومطور منصة MEP Engineering Hub — مساحة العمل الهندسية المتكاملة لمهندسي الكهرباء والـMEP.</div>' +
@@ -1481,7 +1481,7 @@ html[dir="ltr"] .uc-summary{ border-right:none!important; border-left:3px solid 
       'Site Engineer','مهندس موقع','Design Engineer','مهندس تصميم','BIM Engineer','مهندس BIM',
       'Interview','مقابلات','Career','مسار مهني','Portfolio','CV',
       'Electrical Design','MEP Design','تنسيق MEP','Cable Tray','Cable Management','إدارة الكابلات',
-      'Eng. Hilal Shalil','المهندس هلال شليل','MEP HUB','Engineering Hub','Engineering Platform'
+      'Eng. Helal Shelil','المهندس هلال شليل','MEP HUB','Engineering Hub','Engineering Platform'
     ];
     var meta = document.querySelector('meta[name="keywords"]');
     if(!meta){
@@ -1505,7 +1505,7 @@ html[dir="ltr"] .uc-summary{ border-right:none!important; border-left:3px solid 
       author.setAttribute('name','author');
       document.head.appendChild(author);
     }
-    author.setAttribute('content','Eng. Hilal Shalil — المهندس هلال شليل');
+    author.setAttribute('content','Eng. Helal Shelil — المهندس هلال شليل');
 
     var ld = document.createElement('script');
     ld.type = 'application/ld+json';
@@ -1515,7 +1515,7 @@ html[dir="ltr"] .uc-summary{ border-right:none!important; border-left:3px solid 
       "name":"MEP Engineering Hub",
       "alternateName":"MEP HUB",
       "description":"منصة هندسية متكاملة لمهندسي الكهرباء والـMEP",
-      "author":{"@type":"Person","name":"Eng. Hilal Shalil","alternateName":"المهندس هلال شليل"},
+      "author":{"@type":"Person","name":"Eng. Helal Shelil","alternateName":"المهندس هلال شليل"},
       "applicationCategory":"EngineeringApplication",
       "operatingSystem":"Web",
       "inLanguage":["ar","en"]
@@ -43599,7 +43599,7 @@ window.MEPExport = (function () {
     doc.appendChild(src.cloneNode(true));
     var foot = document.createElement('div');
     foot.className = 'mep-print-foot';
-    foot.textContent = 'Eng. Helal Shalil — MEP Hub';
+    foot.textContent = 'Eng. Helal Shelil — MEP Hub';
     doc.appendChild(foot);
     document.body.appendChild(doc);
 
@@ -43647,7 +43647,7 @@ window.MEPExport = (function () {
       '<style>body{font-family:Arial,sans-serif;direction:rtl}h1,h2,h3{color:#0f2942}' +
       'table{border-collapse:collapse;width:100%}th,td{border:1px solid #999;padding:5px 8px;font-size:11pt;direction:rtl}</style></head>' +
       '<body dir="rtl"><h1>' + esc('MEP Hub — ' + s.label) + '</h1>' +
-      '<p style="color:#666">' + esc(new Date().toLocaleString('ar-EG')) + ' · Eng. Helal Shalil</p>' +
+      '<p style="color:#666">' + esc(new Date().toLocaleString('ar-EG')) + ' · Eng. Helal Shelil</p>' +
       body.innerHTML + '</body></html>';
     var blob = new Blob(['\uFEFF' + doc], { type: 'application/msword;charset=utf-8' });
     download(blob, 'mep-hub_' + ascii(s.id) + '_' + stamp() + '.doc');

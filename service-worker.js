@@ -1,6 +1,6 @@
 /* ========================================
    SERVICE WORKER — Production Ready
-   Eng. Helal Shalil
+   Eng. Helal Shelil
    الإصدار: 3.1
 ========================================
    
@@ -12,7 +12,7 @@
    
 ======================================== */
 
-const CACHE_VERSION = "v3.3.1";
+const CACHE_VERSION = "v3.3.2";
 const STATIC_CACHE = `eng-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `eng-runtime-${CACHE_VERSION}`;
 
@@ -396,7 +396,7 @@ self.addEventListener("push", (event) => {
     try {
         const data = event.data.json();
         event.waitUntil(
-            self.registration.showNotification(data.title || "Eng. Helal Shalil", {
+            self.registration.showNotification(data.title || "Eng. Helal Shelil", {
                 body: data.body || "",
                 icon: "./images/logo.png",
                 badge: "./images/logo.png",
