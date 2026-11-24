@@ -7629,7 +7629,7 @@ function viewSolarPV(){
       </div>
       <div class="card">
         <div class="h3">▸ Design Rules</div>
-        <div class="note tip">الحاسبة تفترض Voc ×1.15 عند البرودة (−10°C) وVmp ×0.82 عند 70°C، وهي قيم تقديرية عامة وليست من داتاشيت اللوح. استخدم معامل الحرارة الفعلي لللوح وأدنى/أقصى حرارة للموقع.</div>
+        <div class="note">الحاسبة تفترض Voc ×1.15 عند البرودة (−10°C) وVmp ×0.82 عند 70°C، وهي قيم تقديرية عامة وليست من داتاشيت اللوح. استخدم معامل الحرارة الفعلي لللوح وأدنى/أقصى حرارة للموقع.</div>
         <div class="note">Vmp عند الحرارة العالية يجب أن يبقى ≥ الحد الأدنى لنطاق MPPT للعاكس.</div>
         <div class="note">فحص تيار مبسط: Isc ×1.25 لـ String واحد مقابل أقصى تيار للعاكس. عدد الـ Strings المتوازية على كل MPPT يضاعف التيار ولا يُفحص هنا.</div>
         <div class="note warn">تقدير أولي لعدد اللوحات في الـ String، وليس تصميمًا نهائيًا. راجع داتاشيت اللوح والعاكس والكود المحلي (مثل IEC 62548) قبل التنفيذ.</div>
@@ -7904,7 +7904,7 @@ function viewHarmonicFilter(){
         <div class="note" dir="ltr">p = 7% → fr ≈ 189 Hz @ 50 Hz (5th is the lowest large harmonic)</div>
         <div class="note" dir="ltr">p = 5.67% → fr ≈ 210 Hz (per maker/utility advice)</div>
         <div class="note" dir="ltr">p = 14% → fr ≈ 134 Hz (3rd harmonic also present)</div>
-        <div class="note tip" style="margin-top:12px">Detuned Reactor يحمي المكثفات من التوافقيات ويمنع resonance.</div>
+        <div class="note" style="margin-top:12px">الريأكتور المتسلسل يضبط تردد الرنين الذاتي للبنك تحت أدنى توافقية متوقعة، فيقلل خطر تضخيم التوافقيات. هذا لا يضمن الحماية. يتوقف على التوافقيات الفعلية وممانعة الشبكة، ويحتاج قياسًا أو دراسة.</div>
       </div>
     </div>
     <div id="hf_out" style="margin-top:20px"></div>
@@ -10332,13 +10332,8 @@ function viewPressurization(){
         <div class="input-group"><label>Staircase Volume (m³)</label><input type="number" id="pr_vol" value="300" onchange="calcPress()"></div>
         <div class="input-group"><label>Number of Doors</label><input type="number" id="pr_doors" value="4" onchange="calcPress()"></div>
         <div class="input-group"><label>Door Area (m²)</label><input type="number" id="pr_doorarea" value="2" step="0.1" onchange="calcPress()"></div>
-        <div class="input-group"><label>Leakage Class</label>
-          <select id="pr_leak" onchange="calcPress()">
-            <option value="Tight">Tight</option>
-            <option value="Average">Average</option>
-            <option value="Loose">Loose</option>
-          </select>
-        </div>
+        <div class="input-group"><label>Leakage area per closed door (m²) — placeholder، ادخل قيمة التصميم</label><input type="number" id="pr_leak" value="0.01" step="0.005" onchange="calcPress()"></div>
+        <div class="input-group"><label>Air velocity through open door (m/s)</label><input type="number" id="pr_vel" value="0.75" step="0.05" onchange="calcPress()"></div>
         <div class="input-group"><label>Target Pressure (Pa)</label><input type="number" id="pr_target" value="50" onchange="calcPress()"></div>
       </div>
       <div class="card">
@@ -10349,48 +10344,40 @@ function viewPressurization(){
   `;
 }
 function calcPress(){
-  const vol = parseFloat(document.getElementById('pr_vol')?.value) || 300;
-  const doors = parseInt(document.getElementById('pr_doors')?.value) || 4;
-  const doorArea = parseFloat(document.getElementById('pr_doorarea')?.value) || 2;
-  const leak = document.getElementById('pr_leak')?.value || 'Average';
-  const P = parseFloat(document.getElementById('pr_target')?.value) || 50;
-
-  // Leakage area
-  const leakCoef = leak==='Tight' ? 0.01 : leak==='Average' ? 0.02 : 0.035;
-  const A_leak = vol * leakCoef / 100;
-
-  // Leakage flow through cracks
-  const Q_leak = 0.827 * A_leak * Math.sqrt(2 * P / 1.2) * 3600; // m³/h
-
-  // Open door flow: assume 1 door open
-  const v_door = 1.0; // m/s
-  const Q_door = v_door * doorArea * 3600;
-
-  const total = Q_leak + Q_door;
-  const targetFlow = total * 1.15;
-
+  const doors = parseInt(document.getElementById('pr_doors')?.value) || 0;
+  const doorArea = parseFloat(document.getElementById('pr_doorarea')?.value) || 0;
+  const aLeak = parseFloat(document.getElementById('pr_leak')?.value) || 0;
+  const v = parseFloat(document.getElementById('pr_vel')?.value) || 0;
+  const P = parseFloat(document.getElementById('pr_target')?.value) || 0;
   const out = document.getElementById('pr_out');
   if(!out) return;
+  if(doors < 1 || !(P > 0) || !(v > 0) || !(doorArea > 0) || !(aLeak >= 0)){
+    out.innerHTML = '<div class="note warn">أدخل عدد أبواب ≥ 1 وقيمًا موجبة للضغط والسرعة ومساحة الباب.</div>';
+    return;
+  }
+  // Closed-door leakage: Q = 0.827 x A x sqrt(dP)  (m3/s, A in m2, dP in Pa)
+  const qClosedEach = 0.827 * aLeak * Math.sqrt(P);           // m3/s per door
+  const qClosedAll = qClosedEach * doors;                     // all doors closed
+  const qOpen = v * doorArea + qClosedEach * (doors - 1);     // one door open + others leaking
+  const design = Math.max(qClosedAll, qOpen) * 3600;          // m3/h
+  const withMargin = design * 1.15;
   out.innerHTML = `
     <div class="result">
-      <div class="big">Air Supply: ${targetFlow.toFixed(0)} m³/h</div>
-      <div class="steps">Staircase Volume = ${vol} m³
-Doors = ${doors} × Area ${doorArea} m²
-Leakage Class = ${leak}
-Target Pressure = ${P} Pa
+      <div class="big">Air Supply ≈ ${withMargin.toFixed(0)} m³/h</div>
+      <div class="steps" dir="ltr" style="text-align:left">Doors = ${doors}, open door area = ${doorArea} m2
+Leakage per closed door = ${aLeak} m2 (user value)
+Target pressure = ${P} Pa, open-door velocity = ${v} m/s
 
-Leakage coefficient = ${leakCoef}
-Leakage Area = ${vol} × ${leakCoef}/100 = ${A_leak.toFixed(4)} m²
-
-Q_leak = 0.827 × A_leak × √(2P/ρ) × 3600
-       = ${Q_leak.toFixed(0)} m³/h
-
-Q_door (open) = v × A × 3600 = ${Q_door.toFixed(0)} m³/h
-Total = ${total.toFixed(0)} m³/h
-With 15% margin = ${targetFlow.toFixed(0)} m³/h</div>
+Q_closed(each) = 0.827 x A x sqrt(dP) = ${(qClosedEach*3600).toFixed(0)} m3/h
+All doors closed = ${(qClosedAll*3600).toFixed(0)} m3/h
+One door open = v x A + (doors-1) x Q_closed
+              = ${(qOpen*3600).toFixed(0)} m3/h
+Governing = ${design.toFixed(0)} m3/h
+With 15% allowance = ${withMargin.toFixed(0)} m3/h</div>
     </div>
-    <div class="note tip" style="margin-top:14px">
-      <strong>Design Notes:</strong> يجب أن يبقى الفرق في الضغط 50 Pa عندما تكون الأبواب مغلقة، وعند فتح الباب يجب أن يبقى التدفق ≥ 1 m/s للحد من انتشار الدخان.
+    <div class="note" style="margin-top:14px">
+      تقدير أولي بصيغة تسرب EN 12101-6 (Q = 0.827·A·√ΔP) وسرعة هواء عند الباب المفتوح (EN 12101-6 يحدد نطاقًا من 0.75 إلى 2.0 م/ث حسب الدليل المذكور). مساحة التسرب لكل باب قيمة تصميم لازم تدخلها: القيمة الافتراضية 0.01 م² مجرد رقم مثال. لا يشمل المصاعد ولا تأثير الرياح والمدخنة ولا قوة فتح الباب ولا اختيار المروحة. الدراسة النهائية بالكود المعتمد (EN 12101-6/-13 أو NFPA 92) ومقاول متخصص.
+      المصدر الثانوي: <span dir="ltr">https://www.smay.pl/wp-content/uploads/2017/03/Smay_Pressure_Differential_Systems_Guidebook__v514-EN_.pdf</span>
     </div>
   `;
 }
@@ -10451,7 +10438,7 @@ Recommended split:
 - Fire tank: ${(fireReserve/1000).toFixed(1)} m³</div>
     </div>
     <div class="note tip" style="margin-top:14px">
-      <strong>Design Notes:</strong> قسّم التخزين إلى 60% سفلي + 40% علوي للتوزيع. Fire tank يجب أن يكون منفصلاً حسب NFPA 22.
+      <strong>ملاحظة:</strong> هذا حساب حجم فقط. معدل الاستهلاك اليومي ومدة الحريق ومعدل التدفق قيم تدخلها من متطلبات المشروع والكود، والقيم الافتراضية أمثلة. تقسيم الخزانات وتصميم خزان الحريق يتبعان الكود المعتمد (مثل NFPA 22 و NFPA 13/14 حسب النظام).
     </div>
   `;
 }
@@ -10577,7 +10564,7 @@ function viewCablePulling(){
     ${crumb([{id:'dashboard',label:'لوحة التحكم'},{id:'site-execution',label:'Site'},{label:'Cable Pulling'}])}
     <div class="eyebrow" style="margin-bottom:10px">// CABLE · PULLING · TENSION</div>
     <h1 class="h1">≡ حاسبة Cable Pulling Tension</h1>
-    <p class="sub">تقدير شد السحب ومقارنته بحد شائع للموصل النحاسي (50 N/mm² كقيمة افتراضية). الحد الفعلي في داتاشيت الكابل ومواصفة المصنّع.</p>
+    <p class="sub">تقدير مبسط لشد السحب ومقارنته بحد تدخله من داتاشيت الكابل. الحد الفعلي في داتاشيت الكابل ومواصفة المصنّع.</p>
 
     <div class="grid c2">
       <div class="card">
@@ -10586,11 +10573,13 @@ function viewCablePulling(){
         <div class="input-group"><label>Route Length (m)</label><input type="number" id="cp_l" value="80" onchange="calcPull()"></div>
         <div class="input-group"><label>Friction Coefficient</label><input type="number" id="cp_f" value="0.3" step="0.05" onchange="calcPull()"></div>
         <div class="input-group"><label>Bends (90°)</label><input type="number" id="cp_b" value="3" onchange="calcPull()"></div>
+        <div class="input-group"><label>Total conductor area (mm²)</label><input type="number" id="cp_a" value="35" onchange="calcPull()"></div>
+        <div class="input-group"><label>Allowed stress (N/mm²) — من داتاشيت الكابل</label><input type="number" id="cp_s" value="50" onchange="calcPull()"></div>
         <div class="input-group"><label>Pull Direction</label>
           <select id="cp_dir" onchange="calcPull()">
             <option value="horizontal">Horizontal</option>
             <option value="vertical">Vertical (Up)</option>
-            <option value="down">Vertical (Down)</option>
+            <option value="down">Vertical (Down) — غير مُنمذج</option>
           </select>
         </div>
       </div>
@@ -10605,39 +10594,36 @@ function calcPull(){
   const w = parseFloat(document.getElementById('cp_w')?.value) || 3.5;
   const L = parseFloat(document.getElementById('cp_l')?.value) || 80;
   const f = parseFloat(document.getElementById('cp_f')?.value) || 0.3;
-  const b = parseFloat(document.getElementById('cp_b')?.value) || 3;
+  const b = parseFloat(document.getElementById('cp_b')?.value) || 0;
   const dir = document.getElementById('cp_dir')?.value || 'horizontal';
-
-  const angle = Math.PI/2;
-  const multiplierBends = Math.exp(f * b * angle);
-  let base = f * w * L;
-  if(dir === 'vertical') base += w * L;
-  if(dir === 'down') base -= w * L * 0.5;
-
-  const T_pull = base * multiplierBends;
-  const T_max_cu = 50 * 35; // 50 N/mm² × 35mm² Cu
-  const margin = ((T_max_cu - T_pull) / T_max_cu * 100);
-
+  const area = parseFloat(document.getElementById('cp_a')?.value) || 0;
+  const sig = parseFloat(document.getElementById('cp_s')?.value) || 0;
   const out = document.getElementById('cp_out');
   if(!out) return;
+  if(dir === 'down'){
+    out.innerHTML = '<div class="note warn">السحب لأسفل (بمساعدة الجاذبية) غير مُنمذج هنا. التحكم في الشد يحتاج حسابًا خاصًا بالمسار ومكبح للوينش.</div>';
+    return;
+  }
+  const g = 9.81, angle = Math.PI/2;
+  const W = w * g;                              // N/m
+  const mult = Math.exp(f * angle);             // capstan factor per 90° bend
+  // Straight sections are modelled as one run before all bends (simplification).
+  let T = dir === 'vertical' ? W * L : f * W * L;
+  T = T * Math.pow(mult, b);
+  const Tmax = area * sig;
   out.innerHTML = `
     <div class="result">
-      <div class="big">T_pull = ${T_pull.toFixed(0)} N</div>
-      <div class="steps">Weight = ${w} kg/m → W = ${(w*9.81).toFixed(1)} N/m
-Length = ${L} m
-Friction = ${f}
-Bends = ${b} × 90°
-
-Multiplier = e^(f × Σθ) = e^(${f} × ${(b*angle).toFixed(2)}) = ${multiplierBends.toFixed(3)}
-
-Base tension = ${base.toFixed(1)} N
-Total T_pull = ${T_pull.toFixed(0)} N
-
-Max allowed (50 N/mm² × 35 mm²) = ${T_max_cu} N
-Margin = ${margin.toFixed(0)}%</div>
+      <div class="big">T_pull ≈ ${T.toFixed(0)} N</div>
+      <div class="steps" dir="ltr" style="text-align:left">W = ${w} kg/m x 9.81 = ${W.toFixed(1)} N/m
+Length = ${L} m, friction = ${f}, bends = ${b} x 90 deg
+Straight run: T0 = ${dir === 'vertical' ? 'W x L' : 'f x W x L'} = ${(dir === 'vertical' ? W*L : f*W*L).toFixed(0)} N
+Per bend factor e^(f x pi/2) = ${mult.toFixed(3)}; total = ${Math.pow(mult,b).toFixed(3)}
+T_pull = ${T.toFixed(0)} N${Tmax > 0 ? `
+Entered limit = ${area} mm2 x ${sig} N/mm2 = ${Tmax.toFixed(0)} N
+T_pull / limit = ${(T/Tmax*100).toFixed(0)}%` : ''}</div>
     </div>
-    <div class="note ${margin < 30 ? 'warn' : 'tip'}" style="margin-top:14px">
-      ${margin < 30 ? '⚠ هامش منخفض — استخدم Winch مع Rollers لتقليل الشد.' : '✓ الشد في الحدود الآمنة.'}
+    <div class="note" style="margin-top:14px">
+      تقدير مبسط: كل الانحناءات تُطبَّق بعد المسافة المستقيمة كلها، وهذا يعطي شدًا أعلى من الحقيقي لو الانحناءات في أول المسار وأقل لو في آخره. لا يشمل وزن الحبل ولا الانحناءات الرأسية أو الجانبية. حد الشد المسموح يجب أن يؤخذ من داتاشيت الكابل ونوع رأس السحب. القيمة الافتراضية ${sig || 50} N/mm² مجرد رقم افتراضي غير مُسند هنا.
     </div>
   `;
 }
@@ -10669,36 +10655,33 @@ function viewTxLoss(){
   `;
 }
 function calcTx(){
-  const kVA = parseFloat(document.getElementById('tx_kva')?.value) || 1000;
-  const nl = parseFloat(document.getElementById('tx_nl')?.value) || 2.1;
-  const fl = parseFloat(document.getElementById('tx_fl')?.value) || 10.5;
-  const load = parseFloat(document.getElementById('tx_load')?.value) || 75;
-  const hours = parseFloat(document.getElementById('tx_hours')?.value) || 8760;
-  const rate = parseFloat(document.getElementById('tx_rate')?.value) || 0.15;
-
+  const kVA = parseFloat(document.getElementById('tx_kva')?.value) || 0;
+  const nl = parseFloat(document.getElementById('tx_nl')?.value) || 0;
+  const fl = parseFloat(document.getElementById('tx_fl')?.value) || 0;
+  const load = parseFloat(document.getElementById('tx_load')?.value) || 0;
+  const hours = parseFloat(document.getElementById('tx_hours')?.value) || 0;
+  const rate = parseFloat(document.getElementById('tx_rate')?.value) || 0;
+  const out = document.getElementById('tx_out');
+  if(!out) return;
+  if(!(nl >= 0) || !(fl > 0) || !(load >= 0)){ out.innerHTML = '<div class="note warn">أدخل فقدًا موجبًا وحملًا ≥ 0.</div>'; return; }
   const k = load / 100;
   const loadLoss = fl * k * k;
   const totalLoss = nl + loadLoss;
   const annualEnergy = totalLoss * hours;
   const annualCost = annualEnergy * rate;
-
-  const out = document.getElementById('tx_out');
-  if(!out) return;
+  const kOpt = Math.sqrt(nl / fl);
   out.innerHTML = `
     <div class="result">
-      <div class="big">Annual Loss Cost: $${annualCost.toFixed(0)}</div>
-      <div class="steps">Rated: ${kVA} kVA
-Loading: ${load}% (k=${k.toFixed(2)})
-
+      <div class="big">Annual Loss: ${annualEnergy.toFixed(0)} kWh · cost ${annualCost.toFixed(0)}</div>
+      <div class="steps" dir="ltr" style="text-align:left">Rated: ${kVA} kVA, loading ${load}% (k = ${k.toFixed(2)})
 No-load loss = ${nl} kW
-Load loss = ${fl} × ${k.toFixed(2)}² = ${loadLoss.toFixed(2)} kW
-Total loss = ${nl + loadLoss} kW
-
-Annual energy = ${(nl+loadLoss).toFixed(2)} × ${hours} = ${annualEnergy.toFixed(0)} kWh
-Annual cost = ${annualEnergy.toFixed(0)} × $${rate} = $${annualCost.toFixed(0)}</div>
+Load loss = ${fl} x ${k.toFixed(2)}^2 = ${loadLoss.toFixed(2)} kW
+Total loss = ${totalLoss.toFixed(2)} kW
+Annual energy = ${totalLoss.toFixed(2)} x ${hours} h = ${annualEnergy.toFixed(0)} kWh
+Annual cost = ${annualEnergy.toFixed(0)} x ${rate} = ${annualCost.toFixed(0)} (currency of the rate you entered)</div>
     </div>
-    <div class="note tip" style="margin-top:14px">
-      <strong>Optimization:</strong> أفضل تحميل اقتصادي لمحولات التوزيع 60–80%.
+    <div class="note" style="margin-top:14px">
+      الفقد الحديدي ثابت والنحاسي يتناسب مع مربع الحمل. تحميل أقل فقد نسبي (أعلى كفاءة) = √(P0/Pk) = ${(kOpt*100).toFixed(0)}% لهذه البيانات. المعادلة رياضية وتفترض فقدًا ثابتًا بدون تأثير الحرارة والتوافقيات والحمل المتغير على مدار السنة. أدخل فقد المحول من داتاشيت المصنّع.
     </div>
   `;
 }
@@ -10720,7 +10703,7 @@ function viewGenFuel(){
         <div class="input-group"><label>Hours / Day</label><input type="number" id="gf_hours" value="8" onchange="calcGenFuel()"></div>
         <div class="input-group"><label>Days / Month</label><input type="number" id="gf_days" value="22" onchange="calcGenFuel()"></div>
         <div class="input-group"><label>Fuel Density (kg/L)</label><input type="number" id="gf_den" value="0.85" step="0.01" onchange="calcGenFuel()"></div>
-        <div class="input-group"><label>Fuel Price ($/L)</label><input type="number" id="gf_rate" value="0.85" step="0.01" onchange="calcGenFuel()"></div>
+        <div class="input-group"><label>Fuel Price (per L)</label><input type="number" id="gf_rate" value="0.85" step="0.01" onchange="calcGenFuel()"></div>
       </div>
       <div class="card">
         <div class="h3">▸ Results</div>
@@ -10730,41 +10713,34 @@ function viewGenFuel(){
   `;
 }
 function calcGenFuel(){
-  const kVA = parseFloat(document.getElementById('gf_kva')?.value) || 500;
-  const load = parseFloat(document.getElementById('gf_load')?.value) || 80;
-  const hours = parseFloat(document.getElementById('gf_hours')?.value) || 8;
-  const days = parseFloat(document.getElementById('gf_days')?.value) || 22;
-  const den = parseFloat(document.getElementById('gf_den')?.value) || 0.85;
-  const rate = parseFloat(document.getElementById('gf_rate')?.value) || 0.85;
-
-  const kW = kVA * 0.8;
+  const kVA = parseFloat(document.getElementById('gf_kva')?.value) || 0;
+  const load = parseFloat(document.getElementById('gf_load')?.value) || 0;
+  const hours = parseFloat(document.getElementById('gf_hours')?.value) || 0;
+  const days = parseFloat(document.getElementById('gf_days')?.value) || 0;
+  const rate = parseFloat(document.getElementById('gf_rate')?.value) || 0;
+  const out = document.getElementById('gf_out');
+  if(!out) return;
+  if(!(kVA > 0) || !(load > 0 && load <= 100)){ out.innerHTML = '<div class="note warn">أدخل kVA موجبًا وحملًا بين 0 و100%.</div>'; return; }
+  const kW = kVA * 0.8;                 // assumed rated power factor 0.8
   const loadKW = kW * load / 100;
-  // Rule of thumb: 0.21 L/kWh at 100% load for diesel
-  const specific = 0.21 + (1 - load/100) * 0.12;
-  const hourly = loadKW * specific;
+  // Planning curve: L/h = 0.04 x rated kW + 0.22 x load kW (about 0.26 L/kWh near full load)
+  const hourly = 0.04 * kW + 0.22 * loadKW;
   const daily = hourly * hours;
   const monthly = daily * days;
   const monthlyCost = monthly * rate;
-
-  const out = document.getElementById('gf_out');
-  if(!out) return;
   out.innerHTML = `
     <div class="result">
-      <div class="big">Consumption: ${hourly.toFixed(1)} L/h · ${daily.toFixed(0)} L/day · ${monthly.toFixed(0)} L/month</div>
-      <div class="steps">Generator: ${kVA} kVA @ PF 0.8 = ${kW} kW
-Loading: ${load}% → ${loadKW.toFixed(0)} kW
+      <div class="big">≈ ${hourly.toFixed(1)} L/h · ${daily.toFixed(0)} L/day · ${monthly.toFixed(0)} L/month</div>
+      <div class="steps" dir="ltr" style="text-align:left">Generator: ${kVA} kVA x PF 0.8 (assumed) = ${kW.toFixed(0)} kW rated
+Load: ${load}% = ${loadKW.toFixed(0)} kW
 
-Specific fuel consumption ≈ ${specific.toFixed(3)} L/kWh
-(at ${load}% load)
-
-Hourly = ${loadKW.toFixed(0)} × ${specific.toFixed(3)} = ${hourly.toFixed(1)} L/h
-Daily = ${hourly.toFixed(1)} × ${hours} h = ${daily.toFixed(0)} L/day
-Monthly = ${daily.toFixed(0)} × ${days} days = ${monthly.toFixed(0)} L/month
-
-Monthly cost = ${monthly.toFixed(0)} L × $${rate}/L = $${monthlyCost.toFixed(0)}</div>
+L/h = 0.04 x ${kW.toFixed(0)} + 0.22 x ${loadKW.toFixed(0)} = ${hourly.toFixed(1)}
+Daily = ${hourly.toFixed(1)} x ${hours} h = ${daily.toFixed(0)} L
+Monthly = ${daily.toFixed(0)} x ${days} days = ${monthly.toFixed(0)} L
+Monthly cost = ${monthly.toFixed(0)} x ${rate} = ${monthlyCost.toFixed(0)} (currency of the price you entered)</div>
     </div>
-    <div class="note tip" style="margin-top:14px">
-      <strong>Recommended Tank:</strong> ${(daily*2).toFixed(0)} L (2 days buffer) + Fire reserve per NFPA 110.
+    <div class="note" style="margin-top:14px">
+      تقدير تخطيطي بمنحنى عام (مصدر ثانوي: <span dir="ltr">https://reddygenerators.com/engineering-tools/diesel-generator-fuel-consumption-estimator/</span>، دقته المعلنة نحو 10-15% عن داتاشيت المحرك). الاستهلاك الفعلي يأتي من منحنى المصنّع لمحركك. حجم خزان الوقود ومدة التشغيل المطلوبة تحددهما المتطلبات والكود (مثل NFPA 110 لأنظمة الطوارئ) ولا تُحسب هنا.
     </div>
   `;
 }
@@ -20313,27 +20289,34 @@ function viewPsychrometric(){
 }
 
 function calcPsychro(){
-  const dbt = parseFloat(document.getElementById('psy_dbt')?.value) || 25;
-  const rh = parseFloat(document.getElementById('psy_rh')?.value) || 50;
+  const dbt = parseFloat(document.getElementById('psy_dbt')?.value);
+  const rh = parseFloat(document.getElementById('psy_rh')?.value);
   const alt = parseFloat(document.getElementById('psy_alt')?.value) || 0;
+  const boxE = document.getElementById('psychroResults');
+  if(!(dbt >= -20 && dbt <= 60) || !(rh > 0 && rh <= 100) || !(alt >= -400 && alt <= 5000)){
+    if(boxE) boxE.innerHTML = '<div class="note warn" style="margin-top:16px">المدخلات خارج النطاق المدعوم: درجة الحرارة من -20 إلى 60°C، الرطوبة النسبية أكبر من 0 وحتى 100%، الارتفاع من -400 إلى 5000 م.</div>';
+    return;
+  }
   const pAtm = 101.325 * Math.pow(1 - 2.25577e-5 * alt, 5.2559);
 
-  // Saturation pressure (kPa)
-  const Psat = 0.6108 * Math.exp((17.27 * dbt) / (dbt + 237.3));
+  // Saturation pressure (kPa), Tetens/Magnus form
+  const psatF = (t)=> 0.6108 * Math.exp((17.27 * t) / (t + 237.3));
+  const Psat = psatF(dbt);
   // Actual vapor pressure
   const Pv = Psat * (rh / 100);
   // Humidity ratio (kg/kg dry air)
   const W = 0.622 * Pv / (pAtm - Pv);
   const W_g = W * 1000;
 
-  // Enthalpy (kJ/kg dry air) — approximation
+  // Enthalpy (kJ/kg dry air)
   const h = 1.006 * dbt + W * (2501 + 1.86 * dbt);
 
-  // Wet bulb temp (Stull formula, approximate)
-  const Twb = dbt * Math.atan(0.151977 * Math.pow(rh + 8.313659, 0.5))
-            + Math.atan(dbt + rh) - Math.atan(rh - 1.676331)
-            + 0.00391838 * Math.pow(rh, 1.5) * Math.atan(0.023101 * rh)
-            - 4.686035;
+  // Wet bulb: solve the ASHRAE adiabatic-saturation relation at the actual pressure (bisection)
+  const wsF = (t)=>{ const ps = psatF(t); return 0.622 * ps / (pAtm - ps); };
+  const resid = (tw)=> ((2501 - 2.326*tw) * wsF(tw) - 1.006*(dbt - tw)) / (2501 + 1.86*dbt - 4.186*tw) - W;
+  let lo = -30, hi = dbt;
+  for(let i=0;i<60;i++){ const mid=(lo+hi)/2; if(resid(mid) > 0) hi = mid; else lo = mid; }
+  const Twb = (lo+hi)/2;
 
   // Dew point (Magnus formula approximation)
   const alpha = Math.log(rh / 100) + (17.27 * dbt) / (dbt + 237.3);
