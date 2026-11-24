@@ -1800,6 +1800,7 @@ html[dir="ltr"] .uc-summary{ border-right:none!important; border-left:3px solid 
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 12px;
   }
+  .content .grid.c2 { grid-template-columns: 1fr !important; }
   .content .stat-card,
   .content .stat-card-custom {
     padding: 14px;
@@ -21526,8 +21527,8 @@ calcRun = function(){
     notice.innerHTML = `
       <div class="validation-icon">${icon('check','mep-icon')}</div>
       <div class="validation-body">
-        <div class="title">✓ المدخلات صحيحة</div>
-        <div class="msg">تم التحقق من جميع القيم مقابل النطاقات الهندسية المسموحة.</div>
+        <div class="title">✓ تنسيق المدخلات مقبول</div>
+        <div class="msg">فحص تنسيقي فقط: الأرقام موجبة وضمن نطاقات عددية. هذا ليس تحققًا هندسيًا أو مطابقة لكود أو حكمًا على سلامة التصميم.</div>
       </div>
     `;
     const result = box.querySelector('.result, .warn-box, .err-box');
@@ -22060,19 +22061,17 @@ PE = ${Spe} mm²
         Rtot = R1 * factor / v.n;
       }
       return {
-        main: `R_total ≈ ${Rtot.toFixed(2)} Ω`,
+        main: v.n>1 ? `قضيب واحد ≈ ${R1.toFixed(2)} Ω (معادلة Dwight) · ${v.n} قضبان ≈ ${Rtot.toFixed(2)} Ω (تقدير غير موثّق)` : `قضيب واحد ≈ ${R1.toFixed(2)} Ω (معادلة Dwight)`,
         steps:
 `R_single = (ρ / 2πL) × [ln(4L/a) − 1]   (a = نصف قطر القضيب، تربة متجانسة، قضيب رأسي، Dwight 1936)
          = (${v.rho} / (2π × ${v.L})) × [ln(4×${v.L}/${a.toFixed(4)}) − 1]
          = ${R1.toFixed(2)} Ω
 
-${v.n > 1 ? `R_n rods = R_single × factor / n
+${v.n > 1 ? `[تقدير غير موثّق] R_n rods = R_single × factor / n
 factor ≈ ${factor.toFixed(2)} (تقدير تقريبي ثابت للتداخل، لا يستخدم المسافة بين القضبان ولا مصدر له؛ للتصميم استخدم جداول BS 7430 أو IEEE 80 أو قياسًا ميدانيًا)
-R_total = ${R1.toFixed(2)} × ${factor.toFixed(2)} / ${v.n} = ${Rtot.toFixed(2)} Ω` : 'Single rod — no mutual effect'}
-
-الحد المستهدف الشائع في الممارسة: ≤ 5 Ω للـLV · ≤ 1 Ω للمحطات (ليس حدًا منصوصًا من IEC؛ راجع الكود المحلي وشرط الحماية)`,
-        status: Rtot <= 5 ? 'ok' : Rtot <= 10 ? 'warn' : 'bad',
-        note: 'إذا لم تصل للهدف: أضف أقطاب أو استخدم Bentonite/Chemical earthing.'
+R_total = ${R1.toFixed(2)} × ${factor.toFixed(2)} / ${v.n} = ${Rtot.toFixed(2)} Ω` : 'Single rod — no mutual effect'}`,
+        status: 'ok',
+        note: 'تقدير نظري لقضيب رأسي في تربة متجانسة فقط، ولا يحكم بأن التأريض كافٍ أو غير كافٍ. الحد المطلوب يأتي من الكود المحلي وشرط الحماية (مثلًا Ra × IΔn ≤ 50 V في TT) ومن القياس الميداني. نتيجة عدة القضبان تقدير بلا مصدر.'
       };
     }
   },
