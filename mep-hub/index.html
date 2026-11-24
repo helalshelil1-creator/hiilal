@@ -102,6 +102,9 @@ html.mobile-view .sidebar.open { transform: translateX(0) !important; }
 .mobile-nav-item {
   display: none !important;
 }
+.grid > *{min-width:0}
+.steps{white-space:pre-wrap;overflow-wrap:anywhere}
+.note,.input-group label{overflow-wrap:anywhere;white-space:normal}
 </style>
 <script>/* FIX #25 — duplicate declarations */console.log('[FIX #25] ' + "converted to var: NOTIFICATIONS(2), VOICE_STATE(2), VIDEO_LESSONS(2)" + '');</script><script>
 (function(){
@@ -1800,7 +1803,7 @@ html[dir="ltr"] .uc-summary{ border-right:none!important; border-left:3px solid 
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 12px;
   }
-  .content .grid.c2 { grid-template-columns: 1fr !important; }
+  .content .grid.c2 { grid-template-columns: minmax(0,1fr) !important; }
   .content .stat-card,
   .content .stat-card-custom {
     padding: 14px;
