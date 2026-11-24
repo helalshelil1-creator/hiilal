@@ -54,7 +54,7 @@ const CALCULATORS = [
         inputs: [
             { id: "current", label: "التيار", unit: "A", type: "number", required: true, min: 0.01 },
             { id: "length", label: "الطول", unit: "m", type: "number", required: true, min: 0.1 },
-            { id: "mvAm", label: "mV/A/m", unit: "mV/A/m", type: "number", required: true, min: 0.001 },
+            { id: "mvAm", label: "mV/A/m (قيمة جدول الدائرة الكاملة)", unit: "mV/A/m", type: "number", required: true, min: 0.001 },
             { id: "voltage", label: "الجهد", unit: "V", type: "number", required: true, min: 1, default: 380 },
             { id: "phase", label: "النظام", type: "select", options: [{ value: "3", label: "3 فاز" }, { value: "1", label: "1 فاز" }] },
             { id: "maxDrop", label: "أقصى هبوط مسموح", unit: "%", type: "number", default: 5, min: 0.5, max: 20 }
@@ -67,9 +67,7 @@ const CALCULATORS = [
             const is3Ph = v.phase === "3";
             const maxDrop = Number(v.maxDrop) || 5;
             if (I <= 0 || L <= 0 || mvAm <= 0 || V <= 0) return { error: "تحقق من القيم" };
-            const Vd = is3Ph
-                ? (Math.sqrt(3) * mvAm * I * L) / 1000
-                : (2 * mvAm * I * L) / 1000;
+            const Vd = (mvAm * I * L) / 1000;
             const percent = (Vd / V) * 100;
             const pass = percent <= maxDrop;
             return {
@@ -78,9 +76,9 @@ const CALCULATORS = [
                     { label: "النسبة", value: percent.toFixed(2), unit: "%" },
                     { label: "الحالة", value: pass ? "مقبول ✓" : "مرفوض ✗", unit: "" }
                 ],
-                formula: is3Ph ? "ΔV = (√3 × mV/A/m × I × L) / 1000" : "ΔV = (2 × mV/A/m × I × L) / 1000",
+                formula: "ΔV = (mV/A/m × I × L) / 1000",
                 steps: [`ΔV = ${Vd.toFixed(2)} V`, `${percent.toFixed(2)}% من ${V}V`],
-                notes: [pass ? "الهبوط داخل الحد المسموح." : "الهبوط يتجاوز الحد — قلل الطول أو زوّد المقطع."],
+                notes: ["استخدم قيمة mV/A/m الخاصة بالنظام من جدول الكابل (BS 7671 Appendix 4): عمود أحادي الطور للدائرة ذات موصلين، وعمود ثلاثي الأطوار للدائرة الثلاثية. القيمة المجدولة تشمل بالفعل عامل √3 أو 2، فلا يُضرب فيهما مرة ثانية.", pass ? "الهبوط داخل الحد المسموح." : "الهبوط يتجاوز الحد — قلل الطول أو زوّد المقطع."],
                 references: ["IEC 60364-5-52", "BS 7671"]
             };
         }

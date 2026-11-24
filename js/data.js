@@ -96,7 +96,7 @@ const CALCULATORS = [
         inputs: [
             { id: "current", label: "التيار", unit: "A", type: "number", required: true, min: 0.01 },
             { id: "length", label: "الطول", unit: "m", type: "number", required: true, min: 0.1 },
-            { id: "mvAm", label: "mV/A/m", unit: "mV/A/m", type: "number", required: true, min: 0.001 },
+            { id: "mvAm", label: "mV/A/m (قيمة جدول الدائرة الكاملة)", unit: "mV/A/m", type: "number", required: true, min: 0.001 },
             { id: "voltage", label: "الجهد", unit: "V", type: "number", required: true, min: 1, default: 380 },
             { id: "phase", label: "النظام", type: "select", options: [{ value: "3", label: "3 فاز" }, { value: "1", label: "1 فاز" }] },
             { id: "maxDrop", label: "أقصى هبوط مسموح", unit: "%", type: "number", default: 5, min: 0.5, max: 20 }
@@ -109,15 +109,8 @@ const CALCULATORS = [
             const is3Ph = v.phase === "3";
             const maxDrop = Number(v.maxDrop) || 5;
             if (I <= 0 || L <= 0 || mvAm <= 0 || V <= 0) return { error: "تحقق من القيم" };
-            const sqrt3 = Math.sqrt(3);
-            let Vd, formula;
-            if (is3Ph) {
-                Vd = (sqrt3 * mvAm * I * L) / 1000;
-                formula = "ΔV = (√3 × mV/A/m × I × L) / 1000";
-            } else {
-                Vd = (2 * mvAm * I * L) / 1000;
-                formula = "ΔV = (2 × mV/A/m × I × L) / 1000";
-            }
+            const Vd = (mvAm * I * L) / 1000;
+            const formula = "ΔV = (mV/A/m × I × L) / 1000";
             const percent = (Vd / V) * 100;
             const pass = percent <= maxDrop;
             return {
@@ -128,7 +121,7 @@ const CALCULATORS = [
                 ],
                 formula: formula,
                 steps: [`ΔV = ${Vd.toFixed(2)} V`, `${percent.toFixed(2)}% من ${V}V`],
-                notes: [pass ? "الهبوط داخل الحد المسموح." : "الهبوط يتجاوز الحد — قلل الطول أو زوّد المقطع."],
+                notes: ["استخدم قيمة mV/A/m الخاصة بالنظام من جدول الكابل (BS 7671 Appendix 4): عمود أحادي الطور للدائرة ذات موصلين، وعمود ثلاثي الأطوار للدائرة الثلاثية. القيمة المجدولة تشمل بالفعل عامل √3 أو 2، فلا يُضرب فيهما مرة ثانية.", pass ? "الهبوط داخل الحد المسموح." : "الهبوط يتجاوز الحد — قلل الطول أو زوّد المقطع."],
                 references: ["IEC 60364-5-52", "BS 7671"]
             };
         }
@@ -667,7 +660,7 @@ const ENCYCLOPEDIA = [
                 titleEn: "Voltage Drop",
                 summary: "حساب الهبوط والحدود المسموحة.",
                 sections: [
-                    { type: "formula", title: "📐 3-Phase", formula: "ΔV = (√3 × mV/A/m × I × L) / 1000", variants: ["1-Phase: ΔV = (2 × mV/A/m × I × L) / 1000"] },
+                    { type: "formula", title: "📐 المعادلة (جداول BS 7671)", formula: "ΔV = (mV/A/m × I × L) / 1000", variants: ["mV/A/m: قيمة جدول الكابل للدائرة كاملة (عمود أحادي أو ثلاثي حسب النظام)، وهي تشمل √3 أو 2 مسبقًا", "من المقاومة والمفاعلة: 1-Phase: ΔV = 2 × I × L × (R cosφ + X sinφ) | 3-Phase: ΔV = √3 × I × L × (R cosφ + X sinφ)، حيث R وX للموصل الواحد بـ Ω/m", "مثال: 3-Phase، 16 mm² نحاس PVC بقيمة تقريبية 2.4 mV/A/m، I = 60 A، L = 50 m ⇒ ΔV = 2.4 × 60 × 50 / 1000 = 7.2 V ⇒ 1.8% من 400 V"] },
                     { type: "table", title: "📊 الحدود المسموحة", headers: ["النظام", "حد الهبوط"], rows: [["تغذية مباشرة من شبكة التوزيع العامة (جهد منخفض) — إضاءة", "3%"], ["نفس التغذية — قوى وتسخين", "5%"], ["تغذية من محول خاص — إضاءة", "6%"], ["تغذية من محول خاص — قوى وتسخين", "8%"]] },
                     { type: "warning", title: "⚠️ تنبيه", content: "الحدود من الشبكة إلى أبعد نقطة حمل حسب IEC 60364-5-52 جدول G.52.1 (كما ينقلها دليل Schneider للتركيبات الكهربائية). الحد الملزم هو ما يحدده الكود المعتمد في مشروعك (الكود المصري أو غيره). 8% قد يسبب مشاكل للمحركات عند البدء." }
                 ],
