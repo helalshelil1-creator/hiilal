@@ -4029,8 +4029,8 @@ const QUIZ = [
   {q:'ΔV% المسموح في الدائرة النهائية؟', opts:['1%','3%','5%','10%'], a:1, ex:'حسب IEC 60364-5-52, ΔV% ≤ 3% للدوائر النهائية.'},
   {q:'Icu للقاطع يجب أن يكون:', opts:['أقل من Isc','يساوي Isc','أكبر من Isc','لا علاقة'], a:2, ex:'Icu ≥ Isc عند نقطة التركيب.'},
   {q:'معامل القدرة المستهدف عادة:', opts:['0.5','0.75','0.95','1.0'], a:2, ex:'شركات الكهرباء تُلزم PF ≥ 0.9 عادة، الأمثل 0.95.'},
-  {q:'ضغط مضخة الجوكي أعلى من الرئيسية بـ:', opts:['5 psi','10 psi','20 psi','نصف الضغط'], a:1, ex:'حسب NFPA 20, الجوكي 10 psi أعلى من الرئيسية.'},
-  {q:'معدل ACH للمكاتب:', opts:['2-4','6-10','15-20','25+'], a:1, ex:'ASHRAE 62.1: مكاتب 6-10 ACH.'},
+  {q:'وظيفة مضخة الجوكي (Jockey Pump):', opts:['إطفاء الحريق الكبير','تعويض التسرب الصغير والحفاظ على ضغط الشبكة','رفع المياه للخزان العلوي','تشغيل الإنذار'], a:1, ex:'مضخة صيانة ضغط صغيرة تمنع تشغيل المضخة الرئيسية بسبب تسرب بسيط. إعدادات ضغط التشغيل والإيقاف حسب تصميم المشروع وNFPA 20 والمصنّع.'},
+  {q:'على ماذا يعتمد الهواء الخارجي الأدنى في ASHRAE 62.1 (Ventilation Rate Procedure)؟', opts:['ACH ثابت لكل المباني','معدل للشخص + معدل للمساحة (Vbz = Rp×Pz + Ra×Az)','حمل التبريد فقط','حجم الغرفة فقط'], a:1, ex:'الطريقة تجمع معدل لكل شخص ومعدل لكل م²؛ المعدلات تختلف حسب نوع الاستخدام وليست رقم ACH ثابتًا (مصدر: hvacengineering.ca و mepexpert.net، قراءة ثانوية).'},
   {q:'LOD 400 يعني:', opts:['تصميم مبدئي','تصميم تفصيلي','نمذجة للتنفيذ','As-Built'], a:2, ex:'LOD 400 = تفاصيل قابلة للتنفيذ والتركيب.'},
   {q:'مانع SPD نوع 1 يُركّب:', opts:['عند الأحمال','في اللوحات الفرعية','عند المدخل الرئيسي','لا يُركّب'], a:2, ex:'SPD Type 1 عند المدخل الرئيسي ضد الصواعق.'},
   {q:'Testing insulation للأحمال LV بجهد:', opts:['100V','250V','500V','1000V'], a:2, ex:'IEC 60364-6: 500V DC لدوائر LV.'},
@@ -4876,7 +4876,7 @@ const DETAILS_LIB = {
     title:'تصميم حلقة إنذار الحريق', en:'Fire Alarm Loop Design',
     cat:'Fire Alarm', icon:'◭',
     purpose:'تصميم Class A أو B Loop بطول وأحمال صحيحة',
-    typicalArrangement:['Loop كامل مع Return','أقصى 250 جهاز/حلقة','مسافة ≤ 2 km للسلك','Isolator كل 20-30 جهاز'],
+    typicalArrangement:['Loop كامل مع Return','عدد الأجهزة/حلقة حسب كتالوج المصنّع','أقصى طول الحلقة حسب المصنّع','عدد الأجهزة بين Isolators حسب المصنّع'],
     designNotes:['Class A للـHigh-Rise','Class B للمباني الصغيرة','Address لكل جهاز','Loop Card قابل للإضافة'],
     installNotes:['كابل Fire Resistant FR مزدوج','تركيب Loop Isolators','اختبار Loop Resistance','تسجيل العناوين في Software','اختبار End-to-End'],
     standards:['NFPA 72','BS 5839-1','EN 54'],
@@ -28014,7 +28014,7 @@ Object.assign(TOPIC_CONTENT, {
     sections:[
       {title:'Systems', en:'Types', body:'<strong>Wet Pipe:</strong> الأشهر<br><strong>Dry Pipe:</strong> للمناطق الباردة<br><strong>Pre-action:</strong> لحماية المعدات الحساسة<br><strong>Deluge:</strong> للمخاطر العالية'},
       {title:'Sprinkler Coverage', en:'NFPA 13', body:'Light Hazard: ≤ 21 m²/رأس<br>Ordinary: ≤ 12 m²<br>Extra Hazard: ≤ 9 m²<br><small>رشاش قياسي (standard spray)، حسابات هيدروليكية، سقف أملس بلا عوائق (NFPA 13 جدول 10.2.4.2.1). العوائق والأسقف المائلة والرشاشات الخاصة وكثافة Extra Hazard تغيّر القيم.</small>'},
-      {title:'Hydrant Flow', en:'NFPA 14', body:'250 GPM @ 65 psi residual (Typical)<br>لكل هيدرانت + هيدرانت مجاور'},
+      {title:'Standpipe Flow', en:'NFPA 14', body:'Class I: 500 gpm عند 100 psi residual من أبعد وصلتين 2½ in، + 250 gpm لكل Standpipe إضافي (حد أقصى 1000 gpm بمبنى مرشّش بالكامل و1250 غير ذلك)<br>Class II: 100 gpm عند 65 psi من أبعد وصلة 1½ in<br><small>مصدر ثانوي: مدونة NFPA، 19-11-2021 (nfpa.org/news-blogs-and-articles/blogs/2021/11/19/standpipe-system-design-and-calculations). يختلف حسب الإصدار وتصنيف المبنى. هيدرانت الشارع يخضع لمعيار آخر.</small>'},
     ],
     related:['fire-pump','pipe-sizing','water-tank'],
     calc:'firePumpCalc',
@@ -28122,9 +28122,9 @@ Object.assign(TOPIC_CONTENT, {
     title:'مناطق إنذار الحريق', en:'Fire Alarm Zones', cat:'Fire Alarm',
     desc:'تقسيم المبنى إلى مناطق إنذار مستقلة لتحديد موقع الحريق بدقة.',
     sections:[
-      {title:'Rules', en:'NFPA 72', body:'Zone ≤ 2000 m²<br>Zone = Floor level عادة<br>أقصى 250 جهاز/Loop (Addressable)'},
+      {title:'Rules', en:'BS 5839-1', body:'Zone ≤ 2000 m² (توصية BS 5839-1، مش حد من NFPA 72)<br>Zone = Floor level عادة<br>عدد الأجهزة/Loop حسب كتالوج اللوحة المصنّعة<br><small>مصادر ثانوية: g4s.com/…/fire_detection_guide_v4.pdf و firesecure.uk (BS 5839-1 لا يحدد حدًا للأجهزة/Loop). تحقق من الكود المعتمد محليًا.</small>'},
       {title:'Zoning Strategy', en:'Approach', body:'قسّم حسب:<br>• الطوابق<br>• Fire Compartments<br>• HVAC Zones'},
-      {title:'Loop', en:'Design', body:'Class A: مع Return Loop<br>Class B: بدون Return<br>Isolators كل 20-30 جهاز'},
+      {title:'Loop', en:'Design', body:'Class A: مع Return Loop<br>Class B: بدون Return<br>عدد الأجهزة بين Isolators حسب المصنّع'},
     ],
     related:['fire-alarm','cause-effect'],
     calc:null,
@@ -35228,7 +35228,7 @@ Q = 50.4 m³/h`,
         <p>المكونات الأساسية:</p>
         <div class="uc-grid">
           <div class="uc-mini-card"><div class="h">FACP</div><div class="d">لوحة التحكم الرئيسية — 1-8 Loops</div></div>
-          <div class="uc-mini-card"><div class="h">Loop Card</div><div class="d">كل Loop يحمل حتى 250 جهاز</div></div>
+          <div class="uc-mini-card"><div class="h">Loop Card</div><div class="d">سعة الـ Loop (عدد الأجهزة) حسب موديل اللوحة</div></div>
           <div class="uc-mini-card"><div class="h">Detectors</div><div class="d">Smoke · Heat · Beam · Duct</div></div>
           <div class="uc-mini-card"><div class="h">MCP</div><div class="d">Manual Call Point — يدوي</div></div>
           <div class="uc-mini-card"><div class="h">Sounder/Strobe</div><div class="d">إنذار صوتي/ضوئي</div></div>
@@ -35238,9 +35238,9 @@ Q = 50.4 m³/h`,
         <ul>
           <li><strong>Class A:</strong> Loop مع Return — للأبراج والمستشفيات</li>
           <li><strong>Class B:</strong> بدون Return — للمباني الصغيرة</li>
-          <li><strong>الحد الأقصى:</strong> 250 جهاز / Loop</li>
-          <li><strong>أقصى طول:</strong> 2 km مع FR Cable</li>
-          <li><strong>Isolators:</strong> كل 20-30 جهاز</li>
+          <li><strong>الحد الأقصى:</strong> حسب كتالوج اللوحة (لا يوجد رقم موحّد في الكود)</li>
+          <li><strong>أقصى طول:</strong> حسب المصنّع ونوع الكابل</li>
+          <li><strong>Isolators:</strong> عدد الأجهزة بين Isolators حسب المصنّع</li>
         </ul>`},
       causeEffect:{title:'Cause & Effect', en:'Programming', body:`
         <p>مصفوفة تحدد سلوك النظام عند كل حدث:</p>
