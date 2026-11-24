@@ -486,6 +486,132 @@ const CALCULATORS = [
         }
     },
     {
+        id: "concrete-quantities",
+        name: "كميات الخرسانة والحديد والتكلفة",
+        nameEn: "Concrete, Rebar & Cost Quantities",
+        category: "construction",
+        icon: "building",
+        desc: "حصر كميات وميزانية فقط، من أبعاد وبيانات تصميم يعطيها المهندس الإنشائي. لا تحسب سمك البلاطة ولا عدد الأعمدة أو القواعد ولا التسليح، ولا تقترحها من مساحة الأرض. اترك أي عنصر غير موجود فارغاً.",
+        inputs: [
+            { id: "sArea", label: "بلاطة: المساحة", unit: "m²", type: "number", min: 0, help: "من المخطط الإنشائي. اترك الخانات الثلاث فارغة لو لا توجد بلاطة." },
+            { id: "sT", label: "بلاطة: السمك (من التصميم)", unit: "cm", type: "number", min: 0 },
+            { id: "sRebar", label: "بلاطة: وزن الحديد لكل م³ خرسانة (من جدول الحديد)", unit: "kg/m³", type: "number", min: 0 },
+            { id: "cN", label: "أعمدة: العدد", type: "number", min: 0, step: 1, help: "العدد من المخطط الإنشائي، وليس تقديراً من المساحة." },
+            { id: "cW", label: "أعمدة: العرض", unit: "cm", type: "number", min: 0 },
+            { id: "cD", label: "أعمدة: العمق", unit: "cm", type: "number", min: 0 },
+            { id: "cH", label: "أعمدة: الارتفاع", unit: "m", type: "number", min: 0 },
+            { id: "cRebar", label: "أعمدة: وزن الحديد لكل م³ خرسانة", unit: "kg/m³", type: "number", min: 0 },
+            { id: "fN", label: "قواعد: العدد", type: "number", min: 0, step: 1 },
+            { id: "fL", label: "قواعد: الطول", unit: "m", type: "number", min: 0 },
+            { id: "fW", label: "قواعد: العرض", unit: "m", type: "number", min: 0 },
+            { id: "fT", label: "قواعد: السمك", unit: "cm", type: "number", min: 0 },
+            { id: "fRebar", label: "قواعد: وزن الحديد لكل م³ خرسانة", unit: "kg/m³", type: "number", min: 0 },
+            { id: "mixType", label: "مصدر الخرسانة", type: "select", options: [
+                { value: "site", label: "خلط بالموقع بنسبة حجمية (أسمنت : رمل : زلط)" },
+                { value: "ready", label: "خرسانة جاهزة (سعر المتر المكعب)" }
+            ]},
+            { id: "mC", label: "نسبة الأسمنت (للخلط بالموقع، من المهندس)", type: "number", min: 0, help: "مثال للكتابة فقط: 1. لا توجد قيمة افتراضية لأن النسبة تأتي من تصميم الخلطة." },
+            { id: "mS", label: "نسبة الرمل", type: "number", min: 0 },
+            { id: "mA", label: "نسبة الزلط", type: "number", min: 0 },
+            { id: "dry", label: "معامل الحجم الجاف", type: "number", default: 1.54, min: 1, help: "1.54 قيمة شائعة في المصادر. غيّرها لو المهندس أو المورد حدد غيرها." },
+            { id: "cDen", label: "كثافة الأسمنت", unit: "kg/m³", type: "number", default: 1440, min: 1000 },
+            { id: "bag", label: "وزن شكارة الأسمنت", unit: "kg", type: "number", default: 50, min: 1 },
+            { id: "wC", label: "هالك الخرسانة", unit: "%", type: "number", default: 5, min: 0 },
+            { id: "wR", label: "هالك الحديد (فوق وزن جدول الحديد)", unit: "%", type: "number", default: 0, min: 0, help: "جدول حديد المهندس يشمل الوصلات غالباً. أضف نسبة فقط لو قال ذلك." },
+            { id: "pCem", label: "سعر شكارة الأسمنت (من عندك)", unit: "عملتك", type: "number", min: 0 },
+            { id: "pSand", label: "سعر م³ الرمل", unit: "عملتك", type: "number", min: 0 },
+            { id: "pAgg", label: "سعر م³ الزلط", unit: "عملتك", type: "number", min: 0 },
+            { id: "pReady", label: "سعر م³ الخرسانة الجاهزة", unit: "عملتك", type: "number", min: 0 },
+            { id: "pRebar", label: "سعر طن الحديد", unit: "عملتك", type: "number", min: 0 },
+            { id: "pOther", label: "تكلفة أخرى لكل م³ خرسانة (عمالة، شدة، صب...)", unit: "عملتك", type: "number", min: 0 }
+        ],
+        calculate(v) {
+            const num = x => { const y = parseFloat(x); return isFinite(y) ? y : null; };
+            const pos = x => { const y = num(x); return y !== null && y > 0 ? y : null; };
+            const els = [];
+            const miss = [];
+            // slab
+            const sIn = [v.sArea, v.sT].map(pos);
+            if (sIn.some(x => x) ) {
+                if (!sIn.every(x => x)) return { error: "البلاطة: اكتب المساحة والسمك معاً أو اترك الاثنين فارغين." };
+                els.push({ name: "البلاطة", vol: sIn[0] * sIn[1] / 100, reb: num(v.sRebar), key: "sRebar" });
+            }
+            const cIn = [v.cN, v.cW, v.cD, v.cH].map(pos);
+            if (cIn.some(x => x)) {
+                if (!cIn.every(x => x)) return { error: "الأعمدة: اكتب العدد والعرض والعمق والارتفاع كلها أو اتركها فارغة." };
+                els.push({ name: "الأعمدة", vol: cIn[0] * (cIn[1] / 100) * (cIn[2] / 100) * cIn[3], reb: num(v.cRebar), key: "cRebar" });
+            }
+            const fIn = [v.fN, v.fL, v.fW, v.fT].map(pos);
+            if (fIn.some(x => x)) {
+                if (!fIn.every(x => x)) return { error: "القواعد: اكتب العدد والطول والعرض والسمك كلها أو اتركها فارغة." };
+                els.push({ name: "القواعد", vol: fIn[0] * fIn[1] * fIn[2] * fIn[3] / 100, reb: num(v.fRebar), key: "fRebar" });
+            }
+            if (!els.length) return { error: "اكتب بيانات عنصر واحد على الأقل من التصميم الإنشائي (بلاطة أو أعمدة أو قواعد)." };
+            for (const e of els) if (e.reb === null || e.reb < 0) return { error: `${e.name}: اكتب وزن الحديد لكل م³ من جدول الحديد (اكتب 0 لو بدون حديد).` };
+            const ready = v.mixType === "ready";
+            let parts = null;
+            if (!ready) {
+                const c = pos(v.mC), s = num(v.mS), a = num(v.mA);
+                if (!c || s === null || a === null || s < 0 || a < 0) return { error: "اكتب نسبة الخلط (أسمنت ورمل وزلط) من تصميم الخلطة، أو اختر خرسانة جاهزة." };
+                parts = { c, s, a, sum: c + s + a };
+            }
+            const f = num(v.dry) || 1.54, den = num(v.cDen) || 1440, bag = num(v.bag) || 50;
+            const wc = 1 + (num(v.wC) || 0) / 100, wr = 1 + (num(v.wR) || 0) / 100;
+            const up = x => Math.ceil(x * 100 - 1e-9) / 100;
+            const fmt = x => Math.ceil(x - 1e-9).toLocaleString("en-US");
+            const price = { cem: pos(v.pCem), sand: pos(v.pSand), agg: pos(v.pAgg), ready: pos(v.pReady), reb: pos(v.pRebar), other: num(v.pOther) || 0 };
+            const totNet = els.reduce((a, e) => a + e.vol, 0);
+            const totOrder = totNet * wc;
+            const totReb = els.reduce((a, e) => a + e.vol * e.reb, 0) * wr;
+            const rows = [];
+            els.forEach(e => { rows.push({ label: `${e.name}: حجم الخرسانة (صافي)`, value: e.vol.toFixed(2), unit: "m³" }); rows.push({ label: `${e.name}: الحديد`, value: (e.vol * e.reb * wr).toFixed(0), unit: "كجم" }); });
+            rows.push({ label: "إجمالي الخرسانة بدون هالك", value: totNet.toFixed(2), unit: "m³" });
+            rows.push({ label: "الخرسانة المطلوبة مع الهالك", value: up(totOrder).toFixed(2), unit: "m³" });
+            rows.push({ label: "الحديد", value: (totReb / 1000).toFixed(3), unit: "طن" });
+            let matCost = 0, partial = false;
+            let cemKg = 0, sandV = 0, aggV = 0;
+            if (!ready) {
+                const dry = totOrder * f;
+                cemKg = dry * parts.c / parts.sum * den;
+                sandV = dry * parts.s / parts.sum;
+                aggV = dry * parts.a / parts.sum;
+                rows.push({ label: "الأسمنت", value: fmt(cemKg / bag), unit: "شكارة (" + bag + " كجم)" });
+                rows.push({ label: "الرمل", value: up(sandV).toFixed(2), unit: "m³" });
+                rows.push({ label: "الزلط", value: up(aggV).toFixed(2), unit: "m³" });
+            }
+            const costOf = (e) => {
+                const share = e.vol / totNet;
+                let t = 0, p = false;
+                if (ready) { if (price.ready) t += totOrder * share * price.ready; else p = true; }
+                else {
+                    if (price.cem) t += Math.ceil(cemKg / bag) * share * price.cem; else p = true;
+                    if (price.sand) t += sandV * share * price.sand; else p = true;
+                    if (price.agg) t += aggV * share * price.agg; else p = true;
+                }
+                if (e.reb > 0) { if (price.reb) t += e.vol * e.reb * wr / 1000 * price.reb; else p = true; }
+                t += totOrder * share * price.other;
+                return { t, p };
+            };
+            let grand = 0;
+            els.forEach(e => { const c = costOf(e); grand += c.t; if (c.p) partial = true; rows.push({ label: `تكلفة ${e.name}${c.p ? " (جزئية، سعر ناقص)" : ""}`, value: fmt(c.t), unit: "عملتك" }); });
+            rows.push({ label: partial ? "⚠ إجمالي التكلفة (جزئي: أسعار ناقصة)" : "إجمالي التكلفة", value: fmt(grand), unit: "عملتك" });
+            const notes = [
+                "كل أبعاد العناصر وعدد الأعمدة والقواعد ووزن الحديد لكل م³ ونسبة الخلط تأتي من التصميم الإنشائي للمهندس. الحاسبة لا تحدد سمك البلاطة ولا عدد الأعمدة ولا التسليح من مساحة الأرض.",
+                "كل الأسعار من إدخالك. لم تُستخدم أسعار سوق.",
+                "الحجوم من الأبعاد الصافية ولا تخصم تداخل البلاطة مع الأعمدة أو الكمرات، ولا تشمل الكمرات والسلالم والأسقف الأخرى. اضفها كعناصر منفصلة من المهندس.",
+                "الخلط بالموقع: الأسمنت = (الحجم المطلوب × معامل الحجم الجاف ÷ مجموع النسب) × نسبة الأسمنت × كثافة الأسمنت. الرمل والزلط بنفس الطريقة بدون الكثافة. المعامل 1.54 والكثافة 1440 قيم شائعة من مصادر ثانوية (civilmath.com وconcretecivil.com وbuildnumerics.com) وتختلف مع المواد الفعلية. الخرسانة الإنشائية تُحدد بتصميم الخلطة وليس بنسبة عامة."
+            ];
+            if (!ready && partial) notes.unshift("بعض الأسعار غير مكتوبة، فالإجمالي جزئي وليس ميزانية كاملة.");
+            return {
+                results: rows,
+                formula: "الحجم = الأبعاد الصافية | المطلوب = الحجم × (1 + الهالك) | الحديد = الحجم × كجم/م³ | الأسمنت = (المطلوب × معامل الجاف ÷ مجموع النسب) × نسبة الأسمنت × الكثافة",
+                steps: els.map(e => `${e.name}: ${e.vol.toFixed(3)} م³ × ${e.reb} كجم/م³ = ${(e.vol * e.reb).toFixed(0)} كجم`).concat([`إجمالي الخرسانة ${totNet.toFixed(3)} × ${wc.toFixed(2)} = ${totOrder.toFixed(3)} م³`]),
+                notes,
+                references: ["معامل 1.54: civilmath.com/articles/cement-bags-per-cubic-meter-m15-m20-m25", "طريقة الحساب: concretecivil.com/calculation-of-materials-for-different-mix-ratio-of-concrete", "كثافة الأسمنت 1440 وشكارة 50 كجم: buildnumerics.com/calculators/cement-calculator"]
+            };
+        }
+    },
+    {
         id: "cable-tray",
         name: "حساب طول التراي",
         nameEn: "Cable Tray Length",

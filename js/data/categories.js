@@ -7,6 +7,7 @@ const CATEGORIES = [
     { id: "site",          name: "التنفيذ",            icon: "hard-hat",       desc: "أدوات مهندس الموقع والتنفيذ" },
     { id: "technical",     name: "المكتب الفني",       icon: "clipboard-list", desc: "المستندات والشوب دروينج" },
     { id: "takeoff",       name: "الحصر",              icon: "bar-chart",      desc: "حصر الكميات وإعداد BOQ" },
+    { id: "construction",   name: "الإنشاءات",          icon: "building",       desc: "كميات الخرسانة والحديد والتكلفة من تصميم المهندس" },
     { id: "mep",           name: "MEP",                icon: "wrench",         desc: "الميكانيكا والكهرباء والسباكة" },
     { id: "fire-alarm",    name: "إنذار الحريق",       icon: "alert-triangle", desc: "أنظمة إنذار الحريق" },
     { id: "fire-fighting", name: "مكافحة الحريق",      icon: "flame",          desc: "أنظمة مكافحة الحريق" },

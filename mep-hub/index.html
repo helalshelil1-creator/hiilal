@@ -7125,7 +7125,7 @@ const GENERATOR_DB = [
 ];
 
 /* ============================================================
-   5. CONDUIT FILL DATA (IEC 61386)
+   5. CONDUIT FILL DATA (generic nominal values, not maker data)
 ============================================================ */
 const CONDUIT_DB = [
   {size:'16 mm', id:13.4, area:141},
@@ -7397,6 +7397,9 @@ function viewConduitFill(){
             <option value="0.4" selected>40% — NEC Ch.9 Table 1، ثلاثة موصلات أو أكثر</option>
           </select>
         </div>
+        <div class="input-group"><label>القطر الخارجي الفعلي للكابل (mm) — اختياري</label>
+          <input type="number" id="cf_od" placeholder="من الداتاشيت" min="1" step="0.1">
+        </div>
         <button class="btn primary" onclick="calcConduit()">▶ احسب</button>
         <div id="cf_out"></div>
       </div>
@@ -7414,7 +7417,7 @@ function viewConduitFill(){
             </tbody>
           </table>
         </div>
-        <div class="note tip" style="margin-top:12px"><strong>IEC 61386:</strong> معامل التعبئة الأقصى 40% للكابلات المتعددة.</div>
+        <div class="note warn" style="margin-top:12px"><strong>تنبيه:</strong> الأقطار الداخلية هنا قيم اسمية عامة وتختلف حسب نوع الكوندويت (PVC أو معدني، خفيف أو ثقيل) والمصنّع. نسبة التعبئة المسموحة تأتي من كود التمديدات المطبّق، ولا يحددها IEC 61386 (معيار منتج). راجع داتاشيت الكوندويت والكابل.</div>
       </div>
     </div>
   `;
@@ -7423,7 +7426,11 @@ function calcConduit(){
   const n = parseInt(document.getElementById('cf_count').value);
   const size = parseFloat(document.getElementById('cf_size').value);
   const ratio = parseFloat(document.getElementById('cf_ratio').value);
-  const od = CABLE_OD[size] || 5;
+  const odIn = parseFloat(document.getElementById('cf_od')?.value);
+  const odUser = isFinite(odIn) && odIn > 0;
+  const od = odUser ? odIn : (CABLE_OD[size] || 5);
+  if(!(n >= 1 && n <= 200)){ document.getElementById('cf_out').innerHTML = '<div class="err-box">عدد الكابلات من 1 إلى 200.</div>'; return; }
+  if(od > 80){ document.getElementById('cf_out').innerHTML = '<div class="err-box">القطر الخارجي خارج المدى (حتى 80 mm).</div>'; return; }
   const cableArea = Math.PI * (od/2)**2;
   const totalArea = cableArea * n;
   const minConduitArea = totalArea / ratio;
@@ -7436,7 +7443,7 @@ function calcConduit(){
   out.innerHTML = `
     <div class="result">
       <div class="big">الكوندويت المطلوب: ${chosen.size}</div>
-      <div class="steps">${n} كابل × Ø ${od}mm
+      <div class="steps">${n} كابل × Ø ${od}mm ${odUser ? '(مُدخل من المستخدم)' : '(قيمة عامة تقريبية لمقطع ' + size + ' mm²، تختلف حسب العزل والنوع والمصنّع)'}
 مساحة الكابل الواحد = ${cableArea.toFixed(1)} mm²
 المساحة الكلية = ${totalArea.toFixed(1)} mm²
 المطلوب (${(ratio*100).toFixed(0)}% fill) = ${minConduitArea.toFixed(1)} mm²
