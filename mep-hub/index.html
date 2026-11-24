@@ -6351,15 +6351,10 @@ const ADVANCED_KNOWLEDGE = {
   'arc-flash':{
     title:'Arc Flash — القوس الكهربائي',
     def:'انفجار طاقة ناتج عن خطأ في العزل يسبب قوس كهربائي بين موصلين أو موصل وأرضي.',
-    units:['Incident Energy (cal/cm²)','Arc Flash Boundary','PPE Category','Working Distance'],
-    formula:'E = 793 × D^(-1.9593) × t × (0.0016 × F² − 0.0076 × F + 0.893)  [IEEE 1584]',
+    units:['Incident Energy (cal/cm²)','Arc Flash Boundary','Working Distance'],
+    formula:'lg En = K1 + K2 + 1.081·lg Ia + 0.0011·G ; E = Cf · En · (t/0.2) · (610^x / D^x)  [IEEE 1584-2002, J/cm²]',
     ppe:[
-      {cat:'0', energy:'< 1.2', clothing:'Clothing untreat'},
-      {cat:'1', energy:'1.2 – 4', clothing:'Arc-rated 4 cal'},
-      {cat:'2', energy:'4 – 8', clothing:'Arc-rated 8 cal'},
-      {cat:'3', energy:'8 – 25', clothing:'Arc-rated 25 cal'},
-      {cat:'4', energy:'25 – 40', clothing:'Arc-rated 40 cal'},
-      {cat:'Danger', energy:'> 40', clothing:'De-energize — No live work'},
+      {cat:'—', energy:'لا يوجد تحويل من الطاقة إلى فئة', clothing:'في NFPA 70E (نسخة 2015 وما بعدها): تُختار الوقاية إما بطريقة تحليل الطاقة (تصنيف القوس لـ PPE لا يقل عن الطاقة المحسوبة عند مسافة العمل) أو بطريقة جداول الفئات حسب المهمة وحالة المعدات، ولا تُدمج الطريقتان. لا توجد فئة 0. راجع أحدث نسخة معتمدة ودراسة Arc Flash رسمية.'},
     ],
     ref:['IEEE 1584','NFPA 70E','IEC 61482'],
   },
@@ -27370,7 +27365,7 @@ const TOPIC_CONTENT = {
     desc:'تحليل الطاقة المنبعثة عند خطأ قوسي — يحدد PPE المطلوب وحدود العمل الآمنة.',
     sections:[
       {title:'Standards', en:'References', body:'IEEE 1584-2018 · NFPA 70E · IEC 61482'},
-      {title:'PPE Categories', en:'NFPA 70E', body:'Cat 0: <1.2 cal/cm²<br>Cat 1: 1.2-4<br>Cat 2: 4-8<br>Cat 3: 8-25<br>Cat 4: 25-40<br>Danger: >40 (افصل فقط)'},
+      {title:'اختيار PPE', en:'NFPA 70E', body:'تُختار الوقاية بإحدى طريقتين لا تُدمجان: (1) تحليل الطاقة: تصنيف القوس للـPPE لا يقل عن الطاقة المحسوبة عند مسافة العمل. (2) جداول الفئات حسب المهمة وحالة المعدات. لا يوجد تحويل مباشر من الطاقة المحسوبة إلى فئة، ولا توجد فئة 0 في الإصدارات الحديثة. راجع النسخة المعتمدة من NFPA 70E.'},
       {title:'Formula', en:'IEEE 1584', body:'E = 4.184 × Cf × En × (t/0.2) × (610^X / D^X)', formula:'E = <span class="var">f</span>(Isc, Gap, Distance, Time)'},
     ],
     related:['short-circuit','protection-coordination'],
@@ -36460,22 +36455,20 @@ Load: Ib ≤ 100A`,
     title:'دراسة القوس الكهربائي', en:'Arc Flash Study', cat:'Safety', icon:'shield',
     desc:'حساب Incident Energy لكل لوحة تحديد PPE وحدود العمل الآمنة.',
     tabs:{
-      categories:{title:'PPE Categories', en:'PPE Categories', body:`
-        <div class="uc-grid">
-          <div class="uc-mini-card"><div class="h">Cat 0</div><div class="d">< 1.2 cal/cm² · Untreated Cotton</div></div>
-          <div class="uc-mini-card"><div class="h">Cat 1</div><div class="d">1.2 - 4 cal/cm² · Arc-rated 4 cal</div></div>
-          <div class="uc-mini-card"><div class="h">Cat 2</div><div class="d">4 - 8 cal/cm² · Arc-rated 8 cal</div></div>
-          <div class="uc-mini-card"><div class="h">Cat 3</div><div class="d">8 - 25 cal/cm² · Arc-rated 25 cal</div></div>
-          <div class="uc-mini-card"><div class="h">Cat 4</div><div class="d">25 - 40 cal/cm² · Arc-rated 40 cal</div></div>
-          <div class="uc-mini-card"><div class="h">Danger</div><div class="d">> 40 cal/cm² · De-energize فقط</div></div>
-        </div>`},
+      categories:{title:'اختيار PPE', en:'PPE Selection', body:`
+        <ul>
+          <li>NFPA 70E (2015 وما بعدها) يسمح بطريقتين لاختيار الوقاية ولا يُدمجان: <strong>تحليل الطاقة</strong> (تصنيف القوس للـPPE لا يقل عن الطاقة المحسوبة عند مسافة العمل) أو <strong>جداول الفئات</strong> حسب المهمة وحالة المعدات.</li>
+          <li>لا يجوز تحويل الطاقة المحسوبة إلى فئة من الجدول، ولا توجد فئة 0 في الإصدارات الحديثة.</li>
+          <li>حد 40 cal/cm² القديم لـ"لا تعمل بوجود جهد" أُزيل من الملاحظة في إصدار 2018؛ يظل فصل التيار هو الأصل دائمًا.</li>
+          <li>المرجع: أحدث نسخة معتمدة من NFPA 70E ودراسة Arc Flash رسمية. هذا المحتوى تعريفي وليس أساسًا لقرار سلامة.</li>
+        </ul>`},
       steps:{title:'خطوات الدراسة', en:'Study Steps', body:`
         <ol>
           <li>Collect System Data (Isc · Working Distance · Clearing Time)</li>
           <li>Run Short Circuit Study</li>
           <li>Calculate Incident Energy (IEEE 1584)</li>
           <li>Determine Arc Flash Boundary</li>
-          <li>Assign PPE Category</li>
+          <li>Select PPE by the code method (energy analysis or task table, not both)</li>
           <li>Create Labels لكل لوحة</li>
         </ol>`},
       formula:{title:'IEEE 1584', en:'Formula', formula:'E = 4.184 × Cf × En × (t/0.2) × (610^X / D^X)',
@@ -37685,7 +37678,7 @@ Object.assign(UC_TOPICS, {
         </div>`},
       ppe:{title:'معدات الوقاية الشخصية', en:'PPE', body:`
         <ul>
-          <li><strong>Arc Flash Suit:</strong> حسب PPE Category</li>
+          <li><strong>Arc Flash Suit:</strong> حسب تصنيف القوس المطلوب وفق طريقة NFPA 70E المعتمدة</li>
           <li><strong>Insulating Gloves:</strong> مصنّفة للجهد (Class 0-4)</li>
           <li><strong>Safety Helmet:</strong> مع Face Shield</li>
           <li><strong>Safety Shoes:</strong> عازلة للكهرباء</li>
