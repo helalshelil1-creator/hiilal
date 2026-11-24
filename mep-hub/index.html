@@ -7820,7 +7820,7 @@ function viewArcFlash(){
     ${crumb([{id:'dashboard',label:'لوحة التحكم'},{id:'calculators',label:'الحاسبات'},{label:'حاسبة Arc Flash'}])}
     <div class="eyebrow" style="margin-bottom:10px">// ARC · FLASH · IEEE 1584 SIMPLIFIED</div>
     <h1 class="h1">⚡ حاسبة Arc Flash</h1>
-    <p class="sub">تقدير Incident Energy و Category للـPPE (نسخة مبسطة للتقدير المبدئي).</p>
+    <p class="sub">تقدير تعليمي مبسّط لطاقة القوس الكهربائي (Incident Energy) وحدّها التقريبي. لا يحدد فئة PPE.</p>
 
     <div class="grid c2">
       <div class="card">
@@ -7834,21 +7834,8 @@ function viewArcFlash(){
         <button class="btn primary" onclick="calcArcFlash()">▶ احسب</button>
       </div>
       <div class="card">
-        <div class="h3">▸ PPE Categories</div>
-        <div style="overflow-x:auto">
-          <table>
-            <thead><tr><th>Cat</th><th>Energy (cal/cm²)</th><th>PPE</th></tr></thead>
-            <tbody>
-              <tr><td>0</td><td>&lt; 1.2</td><td style="font-size:12px">Untreated Cotton</td></tr>
-              <tr><td>1</td><td>1.2 – 4</td><td style="font-size:12px">Arc-rated 4 cal</td></tr>
-              <tr><td>2</td><td>4 – 8</td><td style="font-size:12px">Arc-rated 8 cal</td></tr>
-              <tr><td>3</td><td>8 – 25</td><td style="font-size:12px">Arc-rated 25 cal</td></tr>
-              <tr><td>4</td><td>25 – 40</td><td style="font-size:12px">Arc-rated 40 cal</td></tr>
-              <tr><td style="color:#f87171">Danger</td><td>&gt; 40</td><td style="font-size:12px">De-energize only</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="note warn" style="margin-top:12px"><strong>⚠ تحذير:</strong> هذه نسخة تقديرية فقط. لأي دراسة رسمية، استخدم برنامج ETAP / SKM مع IEEE 1584-2018.</div>
+        <div class="h3">▸ حدود هذه الحاسبة</div>
+        <div class="note warn"><strong>⚠ لا تُستخدم لاختيار معدات الوقاية (PPE):</strong> هذه الحاسبة تعطي تقدير طاقة وحدًا تقريبيًا فقط، بمعادلات IEEE 1584-2002 وبافتراضات ثابتة (480 V، مؤرَّض، صندوق مغلق، فجوة 32 مم). لا تحدد فئة PPE ولا تسمح بالعمل على معدات مشحونة. المعيار الأحدث IEEE 1584-2018 يعطي نتائج مختلفة. القرار يتبع دراسة Arc Flash معتمدة وNFPA 70E والإجراءات المعتمدة في الموقع.</div>
       </div>
     </div>
     <div id="af_out" style="margin-top:20px"></div>
@@ -7872,16 +7859,8 @@ function calcArcFlash(){
   const E = E_J / 4.184; // cal/cm2
   const boundary = Math.pow(Cf * En * (t / 0.2) * Math.pow(610, X) / 5.0, 1/X); // mm where E = 5 J/cm2 (1.2 cal/cm2)
 
-  let cat = 'Danger';
-  let clothing = 'De-energize only';
-  if(E < 1.2){ cat = '0'; clothing = 'Untreated Cotton'; }
-  else if(E < 4){ cat = '1'; clothing = 'Arc-rated 4 cal/cm²'; }
-  else if(E < 8){ cat = '2'; clothing = 'Arc-rated 8 cal/cm²'; }
-  else if(E < 25){ cat = '3'; clothing = 'Arc-rated 25 cal/cm²'; }
-  else if(E < 40){ cat = '4'; clothing = 'Arc-rated 40 cal/cm²'; }
-
   const out = document.getElementById('af_out');
-  const statusColor = E < 8 ? 'var(--accent3)' : E < 25 ? 'var(--spec)' : '#f87171';
+  const statusColor = 'var(--fg)';
   out.innerHTML = `
     <div class="grid c2">
       <div class="card">
@@ -7898,17 +7877,9 @@ E = Cf × En × (t/0.2) × (610^x / D^x) = ${E_J.toFixed(2)} J/cm² = ${E.toFixe
         </div>
       </div>
       <div class="card">
-        <div class="h3">▸ PPE Category</div>
-        <div style="display:flex;align-items:center;gap:20px;margin-bottom:20px">
-          <div style="font-family:'Barlow';font-weight:700;font-size:64px;line-height:1;color:${statusColor}">${cat}</div>
-          <div>
-            <div style="font-size:11px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase">PPE Required</div>
-            <div style="font-size:14px;color:var(--fg);margin-top:4px">${clothing}</div>
-          </div>
-        </div>
-        <div class="note"><strong>Arc Flash Boundary:</strong> ${boundary.toFixed(0)} mm (where E = 1.2 cal/cm²)</div>
-        <div class="note warn"><strong>تنبيه سلامة:</strong> تقدير تعليمي مبسّط بمعادلات IEEE 1584-2002 بافتراضات ثابتة معروضة أعلاه (480 V، مؤرَّض، صندوق مغلق، فجوة 32 مم). لا يُستخدم لاختيار معدات الوقاية PPE ولا للعمل على معدات مشحونة. المعيار الأحدث IEEE 1584-2018 يعطي نتائج مختلفة. المطلوب دراسة Arc Flash معتمدة.</div>
-        <div class="note warn"><strong>الإجراء:</strong> ${E >= 40 ? 'لا تعمل live — افصل أولاً.' : 'اتبع PPE المطلوب وسجل Procedural Analysis.'}</div>
+        <div class="h3">▸ الحد التقريبي</div>
+        <div class="note"><strong>Arc Flash Boundary (تقريبي):</strong> ${boundary.toFixed(0)} mm (حيث الطاقة = 1.2 cal/cm²)</div>
+        <div class="note warn"><strong>⚠ غير صالح لقرارات السلامة:</strong> هذا تقدير تعليمي بمعادلات IEEE 1584-2002 وافتراضات ثابتة (480 V، مؤرَّض، صندوق مغلق، فجوة 32 مم). لا يحدد فئة PPE ولا يجيز العمل على معدات مشحونة. IEEE 1584-2018 يعطي نتائج مختلفة. استخدم دراسة Arc Flash معتمدة وإجراءات NFPA 70E.</div>
       </div>
     </div>
   `;
