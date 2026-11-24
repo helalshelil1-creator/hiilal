@@ -24510,7 +24510,7 @@ function calcParallelXfmr(){
     name: 'Impedance %Z',
     a: a.z + '%', b: b.z + '%',
     status: zWithin10 ? 'pass' : 'warn',
-    note: `الفرق: ${zDiff.toFixed(1)}% (المسموح 10%)`
+    note: `الفرق: ${zDiff.toFixed(1)}% (الحد المرجعي 10 بالمئة)`
   });
   // kVA Ratio
   const kvaRatio = Math.max(a.kva, b.kva) / Math.min(a.kva, b.kva);
@@ -24519,7 +24519,7 @@ function calcParallelXfmr(){
     name: 'kVA Ratio',
     a: a.kva + ' kVA', b: b.kva + ' kVA',
     status: kvaWithin3 ? 'pass' : 'warn',
-    note: `النسبة: ${kvaRatio.toFixed(2)}:1 (المسموح ≤ 3:1)`
+    note: `النسبة: ${kvaRatio.toFixed(2)}:1 (الحد المرجعي: 3:1 كحد أقصى)`
   });
 
   // Calculate load sharing
@@ -24542,7 +24542,7 @@ function calcParallelXfmr(){
           <div class="check-row">
             <span class="k">${c.name}</span>
             <div style="display:flex;gap:10px;align-items:center">
-              <span class="v">${c.a} / ${c.b}</span>
+              <span class="v" dir="ltr">${c.a} / ${c.b}</span>
               <span class="check-status ${c.status}">${c.status === 'pass' ? '✓ OK' : c.status === 'warn' ? '⚠ CHECK' : '✗ FAIL'}</span>
             </div>
           </div>
@@ -24561,7 +24561,7 @@ function calcParallelXfmr(){
         </div>
         <div class="check-row">
           <span class="k">Total Capacity</span>
-          <span class="v">${(a.kva + b.kva).toLocaleString()} kVA</span>
+          <span class="v" dir="ltr">${(a.kva + b.kva).toLocaleString()} kVA</span>
         </div>
       </div>
     </div>
@@ -24633,9 +24633,9 @@ function calcGenSync(){
   const dvPct = v2 > 0 ? dv / v2 * 100 : 100;
 
   const checks = [
-    {name:'Frequency', a:f1.toFixed(2)+' Hz', b:f2.toFixed(2)+' Hz', status: df <= 0.1 ? 'pass' : 'fail', note:`Δf = ${df.toFixed(3)} Hz (مرجع المصنّع ≤ 0.1 Hz)`},
-    {name:'Voltage', a:v1.toFixed(1)+' V', b:v2.toFixed(1)+' V', status: dvPct <= 0.5 ? 'pass' : 'fail', note:`ΔV = ${dv.toFixed(1)} V = ${dvPct.toFixed(2)}% (مرجع المصنّع ≤ 0.5%)`},
-    {name:'Phase Angle', a:p1.toFixed(1)+'°', b:p2.toFixed(1)+'°', status: dp <= 5 ? 'pass' : dp <= 10 ? 'warn' : 'fail', note:`Δφ = ${dp.toFixed(1)}° (مرجع المصنّع: أقل من 5° للتزامن المتكرر، وأقل من 10° للتزامن النادر)`},
+    {name:'Frequency', a:f1.toFixed(2)+' Hz', b:f2.toFixed(2)+' Hz', status: df <= 0.1 ? 'pass' : 'fail', note:`Δf = ${df.toFixed(3)} Hz (الحد الأقصى المرجعي: 0.1 Hz)`},
+    {name:'Voltage', a:v1.toFixed(1)+' V', b:v2.toFixed(1)+' V', status: dvPct <= 0.5 ? 'pass' : 'fail', note:`ΔV = ${dv.toFixed(1)} V (${dvPct.toFixed(2)} بالمئة) (الحد الأقصى المرجعي: 0.5 بالمئة)`},
+    {name:'Phase Angle', a:p1.toFixed(1)+'°', b:p2.toFixed(1)+'°', status: dp <= 5 ? 'pass' : dp <= 10 ? 'warn' : 'fail', note:`Δφ = ${dp.toFixed(1)}° (المرجع: أقل من 5 درجات للتزامن المتكرر وأقل من 10 درجات للنادر)`},
     {name:'Phase Sequence', a:s1, b:s2, status: s1 === s2 ? 'pass' : 'fail', note: s1 === s2 ? 'متطابق' : '⚠ ترتيب مختلف — خطر'},
   ];
 
@@ -24651,8 +24651,8 @@ function calcGenSync(){
         <div class="check-row">
           <span class="k">${c.name}</span>
           <div style="display:flex;gap:10px;align-items:center">
-            <span style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace">${c.note}</span>
-            <span class="v">${c.a} / ${c.b}</span>
+            <span dir="auto" style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;text-align:start">${c.note}</span>
+            <span class="v" dir="ltr">${c.a} / ${c.b}</span>
             <span class="check-status ${c.status}">${c.status === 'pass' ? '✓ OK' : c.status === 'warn' ? '⚠ CHECK' : '✗ FAIL'}</span>
           </div>
         </div>
