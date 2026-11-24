@@ -12,7 +12,7 @@
    
 ======================================== */
 
-const CACHE_VERSION = "v3.3.44";
+const CACHE_VERSION = "v3.3.45";
 const STATIC_CACHE = `eng-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `eng-runtime-${CACHE_VERSION}`;
 
@@ -61,6 +61,7 @@ const CORE_ASSETS = [
     "./js/favorites.js",
     "./js/content-manager.js",
     "./js/analytics.js",
+    "./js/install-banner.js",
     "./js/data.js",
 
     // JS SEO
@@ -93,7 +94,12 @@ const CORE_ASSETS = [
     // Images
     "./images/logo.png",
     "./images/alamein.jpg",
-    "./images/hero-bg.jpg"
+    "./images/hero-bg.jpg",
+    "./images/icon-192.png",
+    "./images/icon-512.png",
+    "./images/prog-autocad.svg",
+    "./images/prog-revit.svg",
+    "./images/prog-automation-studio.png"
 ];
 
 /* ========================================

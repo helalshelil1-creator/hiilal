@@ -398,7 +398,17 @@ window.addEventListener("load", () => {
 /* ========================================
    20. ⭐ SERVICE WORKER — Auto Update
 ======================================== */
+function initInstallBanner() {
+    const appScript = document.querySelector('script[src*="js/app.js"]');
+    if (!appScript || document.querySelector('script[src*="install-banner.js"]')) return;
+    const el = document.createElement("script");
+    el.src = new URL("install-banner.js", appScript.src).href;
+    el.defer = true;
+    document.head.appendChild(el);
+}
+
 function initServiceWorker() {
+    initInstallBanner();
     if (!("serviceWorker" in navigator)) return;
 
     window.addEventListener("load", () => {

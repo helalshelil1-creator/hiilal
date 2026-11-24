@@ -137,6 +137,7 @@
         return [...cloudItems, ...preloadedItems];
     }
 
+    const EN_F = {all:"All",course:"Courses",video:"Videos",document:"Documents",program:"Programs",article:"Articles",link:"Links"};
     function renderFilterBar() {
         const el = document.getElementById("contentFilterBar");
         if (!el) return;
@@ -150,7 +151,7 @@
             { id: "link", name: "روابط", icon: "🔗" }
         ];
         el.innerHTML = items.map(x => 
-            `<button class="filter-btn ${x.id === 'all' ? 'active' : ''}" data-type="${x.id}">${x.icon} ${x.name}</button>`
+            `<button class="filter-btn ${x.id === activeType ? 'active' : ''}" data-type="${x.id}">${x.icon} ${(window.I18N && I18N.current === "en" && EN_F[x.id]) || x.name}</button>`
         ).join("");
         el.querySelectorAll(".filter-btn").forEach(btn => {
             btn.addEventListener("click", () => {
@@ -173,7 +174,7 @@
         if (statsEl) {
             const cloudCount = cloudItems.length;
             const total = list.length;
-            statsEl.innerHTML = `${total} عنصر <span style="color:#22c55e;">☁️ ${cloudCount}</span>`;
+            statsEl.innerHTML = `${total} ${(window.I18N && I18N.current === 'en') ? 'items' : 'عنصر'} <span style="color:#22c55e;">☁️ ${cloudCount}</span>`;
         }
 
         if (list.length === 0) {
@@ -181,24 +182,37 @@
             return;
         }
 
+        const en = false;
+        const esc = x => String(x == null ? "" : x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
         grid.innerHTML = list.map(item => {
             const type = TYPES[item.type] || TYPES.link;
             const iconHTML = (window.Icons && Icons.build) ? Icons.build(type.icon, "", 32) : "";
+            const title = en && item.title_en ? item.title_en : item.title;
+            const desc = en && item.description_en ? item.description_en : item.description;
+            const author = en ? (item.author_en || item.author) : item.author;
+            const tname = en ? ({document:"Document",file:"File",video:"Video",article:"Article",program:"Program",link:"Link",image:"Image",course:"Course"}[item.type] || "Link") : type.name;
+            const lessons = item.lessons ? (en ? item.lessons + " lessons" : item.lessons + " درس/فيديو") : "";
+            const thumb = item.image
+                ? `<div style="height:110px;background:#fff;border:1px solid var(--border,#e2e8f0);border-radius:14px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;padding:14px;"><img src="${esc(item.image)}" alt="${esc(item.imageNote || (item.image.indexOf("revit")>-1 ? "Revit" : item.image.indexOf("autocad")>-1 ? "AutoCAD" : title))}" loading="lazy" style="max-width:100%;max-height:100%;object-fit:contain;"></div>`
+                : `<div style="height:110px;background:${type.color};border-radius:14px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;color:white;">${iconHTML}</div>`;
             return `
-                <a href="${item.url}" target="_blank" rel="noopener" class="tool-card">
-                    <div style="height:110px;background:${type.color};border-radius:14px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;color:white;">
-                        ${iconHTML}
-                    </div>
-                    <h3 style="font-size:15px;font-weight:800;color:var(--navy);margin:6px 0;">${item.title}</h3>
-                    <p style="font-size:12px;color:var(--muted);line-height:1.6;min-height:40px;">${item.description || "—"}</p>
+                <a href="${esc(item.url)}" target="_blank" rel="noopener" class="tool-card">
+                    ${thumb}
+                    <h3 style="font-size:15px;font-weight:800;color:var(--navy);margin:6px 0 2px;">${esc(item.title)}</h3>
+                    ${item.title_en && item.title_en !== item.title ? `<div dir="ltr" style="font-size:12.5px;font-weight:700;color:var(--muted);margin:0 0 6px;text-align:left;">${esc(item.title_en)}</div>` : ""}
+                    ${item.author ? `<p style="font-size:12px;font-weight:700;color:var(--cyan);margin:2px 0;">${esc(item.author)}${item.author_en && item.author_en !== item.author ? " · <bdi dir=\"ltr\">" + esc(item.author_en) + "</bdi>" : ""}${item.lessons ? " · <bdi>" + item.lessons + " ▶</bdi>" : ""}</p>` : ""}
+                    <p style="font-size:12px;color:var(--muted);line-height:1.6;min-height:40px;">${esc(item.description) || "—"}</p>
+                    ${item.description_en && item.description_en !== item.description ? `<p dir="ltr" style="font-size:11.5px;color:var(--muted);line-height:1.5;text-align:left;margin:4px 0 0;">${esc(item.description_en)}</p>` : ""}
                     <div class="tool-card-footer">
-                        <span class="tool-tag">${type.name}</span>
-                        <span style="color: var(--cyan); font-weight: 800; font-size: 13px;">فتح ←</span>
+                        <span class="tool-tag">${tname}</span>
+                        <span style="color: var(--cyan); font-weight: 800; font-size: 13px;">${en ? "Open →" : "فتح ←"}</span>
                     </div>
                 </a>
             `;
         }).join("");
     }
+
+    window.renderAllContent = function () { renderFilterBar(); renderContent(); };
 
     document.addEventListener("DOMContentLoaded", async () => {
         setTimeout(() => {
