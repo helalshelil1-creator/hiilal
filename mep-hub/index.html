@@ -565,9 +565,10 @@ tbody tr:hover{background:var(--elevated)}
 .result .steps{
   font-size:12px;color:var(--muted);margin-top:12px;
   white-space:pre-wrap;font-family:'IBM Plex Mono',monospace;
-  line-height:1.75;direction:ltr;text-align:left;
+  line-height:1.75;direction:ltr;unicode-bidi:plaintext;text-align:start;
   border-top:1px dashed var(--border);padding-top:12px;
 }
+.result{scroll-margin-top:110px}
 .warn-box{
   background:rgba(245,200,66,.06);border:1px solid var(--spec);
   border-radius:4px;padding:14px;font-size:12.5px;color:var(--spec);margin-top:12px;
