@@ -7392,10 +7392,9 @@ function viewConduitFill(){
         </div>
         <div class="input-group"><label>معامل التعبئة المسموح</label>
           <select id="cf_ratio">
-            <option value="0.4">40% (كابل واحد)</option>
-            <option value="0.4" selected>40% (افتراضي)</option>
-            <option value="0.35">35% (متعدد)</option>
-            <option value="0.4">40% (شائع)</option>
+            <option value="0.53">53% — NEC Ch.9 Table 1، موصل واحد</option>
+            <option value="0.31">31% — NEC Ch.9 Table 1، موصلان</option>
+            <option value="0.4" selected>40% — NEC Ch.9 Table 1، ثلاثة موصلات أو أكثر</option>
           </select>
         </div>
         <button class="btn primary" onclick="calcConduit()">▶ احسب</button>
@@ -7444,6 +7443,7 @@ function calcConduit(){
 الكوندويت المختار: ${chosen.size} (ID = ${chosen.id}mm, Area = ${chosen.area}mm²)
 Fill Ratio الفعلي = ${(totalArea/chosen.area*100).toFixed(1)}%</div>
     </div>
+    <div class="note" style="margin-top:14px">نسب التعبئة المعروضة من NEC Chapter 9 Table 1 (53/31/40%) وفق <span dir="ltr">https://www.pirros.com/building-codes/conduit-fill</span> (مصدر ثانوي). كودك قد يختلف (مثل IEC/BS 7671 أو الكود المحلي). أقطار الكابلات والكوندويت في الجدول قيم عامة تقريبية: استخدم القطر الخارجي الفعلي للكابل من الداتاشيت والقطر الداخلي الفعلي للكوندويت من المصنّع.</div>
   `;
 }
 
@@ -7454,7 +7454,7 @@ function viewTraySizing(){
     ${crumb([{id:'dashboard',label:'لوحة التحكم'},{id:'calculators',label:'الحاسبات'},{label:'حاسبة Cable Tray'}])}
     <div class="eyebrow" style="margin-bottom:10px">// CABLE · TRAY · SIZING</div>
     <h1 class="h1">◈ حاسبة Cable Tray</h1>
-    <p class="sub">اختيار عرض التراي حسب عدد وأحجام الكابلات بمعامل تعبئة 40%.</p>
+    <p class="sub">تقدير أولي لعرض التراي حسب مساحة مقاطع الكابلات، بطريقة NEC 392.22(A) أو بنسبة تعبئة وعمق تدخلهما.</p>
 
     <div class="grid c2">
       <div class="card">
@@ -7465,8 +7465,9 @@ function viewTraySizing(){
         <div class="input-group"><label>عدد الكابلات</label><input type="number" id="ct_n2" value="10" min="0"></div>
         <div class="input-group"><label>قطر الكابل (mm)</label><input type="number" id="ct_d2" value="12"></div>
         <div class="input-group"><label>Fill Ratio المستهدف</label>
-          <select id="ct_ratio"><option value="0.4">40%</option><option value="0.35">35%</option><option value="0.5">50% (Max)</option></select>
+          <select id="ct_ratio"><option value="nec">NEC 392.22(A): ladder/ventilated trough، كابلات متعددة الموصلات أصغر من 4/0 AWG</option><option value="0.4">Custom: 40% × عمق التعبئة</option><option value="0.35">Custom: 35% × عمق التعبئة</option></select>
         </div>
+        <div class="input-group"><label>عمق التعبئة للوضع Custom (mm)</label><input type="number" id="ct_depth" value="50"></div>
         <button class="btn primary" onclick="calcTray()">▶ احسب</button>
         <div id="ct_out"></div>
       </div>
@@ -7475,7 +7476,7 @@ function viewTraySizing(){
         <div style="display:flex;flex-direction:column;gap:6px">
           ${[100,150,200,300,400,500,600,750,900,1000].map(w=>`<div style="padding:10px;border:1px solid var(--border);border-radius:2px;font-family:'IBM Plex Mono',monospace;color:var(--primary)">${w} mm</div>`).join('')}
         </div>
-        <div class="note tip" style="margin-top:12px"><strong>Note:</strong> للكابلات المتعددة، احسب مجموع المساحات وأضف 40% fill ratio للأمان.</div>
+        <div class="note tip" style="margin-top:12px"><strong>ملاحظة:</strong> القاعدة المطبقة تخص كابلات متعددة الموصلات أصغر من 4/0 AWG في تراي سلمي. الكابلات الأكبر تُركَّب بطبقة واحدة ومجموع أقطارها ≤ عرض التراي، ولا تُحسب هنا. الوضع Custom تقدير هندسي بنسبة وعمق تدخلهما، وليس من كود.</div>
       </div>
     </div>
   `;
@@ -7485,31 +7486,35 @@ function calcTray(){
   const d1 = parseFloat(document.getElementById('ct_d1').value);
   const n2 = parseInt(document.getElementById('ct_n2').value) || 0;
   const d2 = parseFloat(document.getElementById('ct_d2').value) || 0;
-  const ratio = parseFloat(document.getElementById('ct_ratio').value);
+  const mode = document.getElementById('ct_ratio').value;
+  const depth = parseFloat(document.getElementById('ct_depth')?.value) || 0;
   const a1 = Math.PI * (d1/2)**2 * n1;
   const a2 = n2>0 ? Math.PI * (d2/2)**2 * n2 : 0;
   const total = a1 + a2;
-  const minWidth = total / ratio / 50; // approximate: tray fill height = 50mm
+  const out = document.getElementById('ct_out');
+  const big = Math.max(d1, n2>0 ? d2 : 0);
+  if(!(n1 > 0) || !(d1 > 0) || (mode !== 'nec' && !(depth > 0))){ out.innerHTML = '<div class="note warn">أدخل عدد وقطر الكابلات وعمق التعبئة.</div>'; return; }
+  // NEC 392.22(A)(1)(b)/(c): ladder or ventilated trough, multiconductor cables < 4/0 AWG:
+  // 7.0 in2 per 6 in width = 1.1667 in2/in = 29.6 mm2 per mm of width.
+  const perMm = mode === 'nec' ? 29.6 : parseFloat(mode) * depth;
+  const minWidth = total / perMm;
   const std = [100,150,200,300,400,500,600,750,900,1000];
   const chosen = std.find(w => w >= minWidth);
-  const out = document.getElementById('ct_out');
   if(!chosen){
-    out.innerHTML = '<div class="err-box">يتطلب أكثر من تراي. استخدم Tray Ladder أو قسّم المسار.</div>';
+    out.innerHTML = '<div class="err-box">يتطلب أكثر من تراي أو عرضًا أكبر. قسّم المسار.</div>';
     return;
   }
   out.innerHTML = `
     <div class="result">
       <div class="big">عرض التراي المقترح: ${chosen} mm</div>
-      <div class="steps">Group 1: ${n1} × Ø${d1}mm → ${a1.toFixed(0)} mm²
-Group 2: ${n2} × Ø${d2}mm → ${a2.toFixed(0)} mm²
-Total Area = ${total.toFixed(0)} mm²
-المطلوب (${(ratio*100).toFixed(0)}% fill):
-${total.toFixed(0)} / ${ratio} = ${(total/ratio).toFixed(0)} mm²
-
-بفرض ارتفاع التعبئة 50mm:
-Width = ${(total/ratio/50).toFixed(0)} mm
-أقرب قياسي: ${chosen} mm</div>
+      <div class="steps" dir="ltr" style="text-align:left">Group 1: ${n1} x D${d1}mm = ${a1.toFixed(0)} mm2
+Group 2: ${n2} x D${d2}mm = ${a2.toFixed(0)} mm2
+Total area = ${total.toFixed(0)} mm2
+Allowed area per mm of width = ${perMm.toFixed(1)} mm2/mm ${mode === 'nec' ? '(NEC 392.22(A), ladder / ventilated trough)' : '(custom: ' + (parseFloat(mode)*100).toFixed(0) + '% x ' + depth + ' mm depth)'}
+Min width = ${total.toFixed(0)} / ${perMm.toFixed(1)} = ${minWidth.toFixed(0)} mm
+Nearest standard width: ${chosen} mm</div>
     </div>
+    <div class="note" style="margin-top:14px">${mode === 'nec' ? 'الجدول مأخوذ من NEC Table 392.22(A) (7.0 in² لعرض 6 in) كما في <span dir="ltr">https://www.ajpowerapps.com/calculators/cable-tray-fill</span> (مصدر ثانوي)، ويشترط كابلات متعددة الموصلات أصغر من 4/0 AWG فقط. ' : 'الوضع Custom ليس من كود. '}${big >= 25 ? 'قطر أكبر كابل عندك ' + big + ' mm، تأكد أن كابلات 4/0 AWG وأكبر (أو ما يعادلها) لها قاعدة الطبقة الواحدة. ' : ''}التراي الفعلي يتأثر كذلك بالحمل الميكانيكي والتخفيض الحراري للكابلات.</div>
   `;
 }
 
@@ -10577,7 +10582,7 @@ function viewCablePulling(){
         <div class="input-group"><label>Friction Coefficient</label><input type="number" id="cp_f" value="0.3" step="0.05" onchange="calcPull()"></div>
         <div class="input-group"><label>Bends (90°)</label><input type="number" id="cp_b" value="3" onchange="calcPull()"></div>
         <div class="input-group"><label>Total conductor area (mm²)</label><input type="number" id="cp_a" value="35" onchange="calcPull()"></div>
-        <div class="input-group"><label>Conductor material (pulling-eye limit)</label><select id="cp_s" onchange="calcPull()"><option value="70.2">Copper — 0.008 lb/cmil (≈70 N/mm²)</option><option value="52.7">Aluminium — 0.006 lb/cmil (≈53 N/mm²)</option></select></div>
+        <div class="input-group"><label>Conductor material (pulling-eye limit)</label><select id="cp_s" onchange="calcPull()"><option value="70.2">Copper (soft) or hard-temper Al power cable — 0.008 lb/cmil (≈70 N/mm²)</option><option value="52.7">Aluminium 3/4-hard or AA-8000 power cable — 0.006 lb/cmil (≈53 N/mm²)</option></select></div>
         <div class="input-group"><label>Pull Direction</label>
           <select id="cp_dir" onchange="calcPull()">
             <option value="horizontal">Horizontal</option>
@@ -10613,7 +10618,10 @@ function calcPull(){
   // Straight sections are modelled as one run before all bends (simplification).
   let T = dir === 'vertical' ? W * L : f * W * L;
   T = T * Math.pow(mult, b);
-  const Tmax = area * sig;
+  const TcableMax = area * sig;
+  const TdeviceMax = 44482;                       // 10,000 lb: pulling-eye cap per the maker guide (or the eye's own rating if lower)
+  const Tmax = Math.min(TcableMax, TdeviceMax);
+  const TgripRef = 4448;                          // 1,000 lb: traditional basket-grip limit
   out.innerHTML = `
     <div class="result">
       <div class="big">T_pull ≈ ${T.toFixed(0)} N</div>
@@ -10622,11 +10630,13 @@ Length = ${L} m, friction = ${f}, bends = ${b} x 90 deg
 Straight run: T0 = ${dir === 'vertical' ? 'W x L' : 'f x W x L'} = ${(dir === 'vertical' ? W*L : f*W*L).toFixed(0)} N
 Per bend factor e^(f x pi/2) = ${mult.toFixed(3)}; total = ${Math.pow(mult,b).toFixed(3)}
 T_pull = ${T.toFixed(0)} N${Tmax > 0 ? `
-Pulling-eye limit = ${area} mm2 x ${sig} N/mm2 = ${Tmax.toFixed(0)} N
+Conductor limit = ${area} mm2 x ${sig} N/mm2 = ${TcableMax.toFixed(0)} N
+Pulling-eye cap = 10,000 lb = ${TdeviceMax} N (or the eye's own rating if lower)
+Governing limit = ${Tmax.toFixed(0)} N (basket grip, if used: about ${TgripRef} N)
 T_pull / limit = ${(T/Tmax*100).toFixed(0)}%` : ''}</div>
     </div>
     <div class="note" style="margin-top:14px">
-      تقدير مبسط: كل الانحناءات تُطبَّق بعد المسافة المستقيمة كلها، وهذا يعطي شدًا أعلى من الحقيقي لو الانحناءات في أول المسار وأقل لو في آخره. لا يشمل وزن الحبل ولا الانحناءات الرأسية أو الجانبية. حد الشد المعروض هو لطريقة رأس السحب المثبت مباشرة على الموصلات: Tmax = k × n × CA (k = 0.008 lb/circular mil للنحاس و0.006 للألومنيوم)، وبالمصدر نفسه سقف 6,000 lb لكابل موصل واحد، وهناك سقف أخرى للكابلات متعددة الموصلات لم أتحقق منها. المصدر ثانوي: <span dir="ltr">https://www.servicewire.com/ServiceWire/ReferenceDocs/Products/MaxPullingTensions.pdf</span>. الجريب أو الشبكة (basket grip) وحد الضغط الجانبي في الانحناءات لهما حدود أقل أو مختلفة من داتاشيت الكابل. لم تُحسب هنا، فلا تعتبر النتيجة موافقة.
+      تقدير مبسط: كل الانحناءات تُطبَّق بعد المسافة المستقيمة كلها، وهذا يعطي شدًا أعلى من الحقيقي لو الانحناءات في أول المسار وأقل لو في آخره. لا يشمل وزن الحبل ولا الانحناءات الرأسية أو الجانبية. حد الموصل: الإجهاد المسموح × مساحة الموصل (0.008 lb/cmil للنحاس وللألومنيوم hard، و0.006 للألومنيوم 3/4 hard وAA-8000)، وحد وسيلة السحب أقل من حد المصنّع لرأس السحب أو 10,000 lb، وجريب السلة تقليديًا 1,000 lb. الشد المسموح هو الأقل. لكابلات URD الألومنيوم الحد أقل (0.003) ولا يغطيه هذا الاختيار. لا يُحسب ضغط الجانب عند الانحناءات (الدليل يوصي بحدود حوالي 300-500 lb/ft حسب الكابل)، ولا شد الكابلات متعددة الموصلات بتفصيل. المصدر (دليل مصنّع، قرأته): <span dir="ltr">Southwire Power Cable Installation Guide, Table 4 and the allowable tension sections: https://www.southwire.com/medias/sys_master/installation-manuals/installation-manuals/h29/hb6/8887676141598/PowerCableInstallGuidepdf.pdf</span> ويتوافق مع <span dir="ltr">https://www.iewc.com/resources/technical-guide/pulling-tensions</span>. النتيجة ليست موافقة تركيب.
     </div>
   `;
 }
