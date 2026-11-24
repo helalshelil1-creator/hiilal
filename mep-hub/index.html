@@ -3820,8 +3820,8 @@ h_f = f × (L/D) × (V²/2g)
 R = ρ·L/S = 0.0175 × ${v.L} / ${v.S} = ${R.toFixed(4)} Ω
 ΔV = √3 · I · R = 1.732 × ${I.toFixed(2)} × ${R.toFixed(4)} = ${dV.toFixed(2)} V
 ΔV% = ${dV.toFixed(2)} / ${v.V} × 100 = ${pct.toFixed(2)} %`,
-        status: pct<=2?'ok':pct<=3?'warn':'bad',
-        note:'ارتفاع الجهد من PV يجب ألا يتجاوز 2-3% حسب IEC. وإلا كبّر الكابل أو قلّل المسافة.'
+        status: 'ok',
+        note:'حد ارتفاع الجهد تحدده شروط الربط لدى شركة الكهرباء وكود الشبكة المحلي (قيم 2-3% متداولة لكنها ليست حدًا من IEC). الحساب نظري ولا يحكم بالقبول.'
       };
     }
   },
@@ -15549,7 +15549,7 @@ const CODE_COMPARISONS = [
   },
   {
     topic:'RCD Requirements',
-    iec:'IEC 60364-4-41: حماية إضافية 30 mA لدوائر المقابس ≤ 20A ولمعدات متنقلة ≤ 32A في الخارج (كما يلخصه ABB RCD Technical Guide). 300 mA للحماية من الحريق ممارسة شائعة وغير مقروءة من نص المعيار هنا',
+    iec:'IEC 60364-4-41 (طبعة 2005 مع التعديل AMD1:2017، البند 411.3.3): حماية إضافية 30 mA للمقابس ≤ 32A المعدة للاستخدام العام بواسطة أشخاص عاديين وللمعدات المتنقلة الخارجية (نص الطبعة 2005 الأصلي كان ≤ 20A). نص التعديل مقروء من معاينة iTeh، ولم تُراجع القوانين الوطنية. 300 mA للحماية من الحريق ممارسة شائعة وغير مقروءة من نص المعيار',
     nfpa:'NEC 210.8: GFCI 5 mA للحمامات والمطابخ',
     bs:'BS 7671 411.3.3: حماية إضافية 30 mA للمقابس ≤ 32A في المواقع التي يستخدمها أشخاص عاديون أو أطفال وغيرها، ولا تُستثنى إلا بتقييم مخاطر موثق',
   },
@@ -20825,8 +20825,8 @@ Object.assign(CALCS, {
 Loss = ${v.Pin} - ${v.Pout} = ${loss.toFixed(2)} kW
 Annual Loss Energy = ${loss.toFixed(2)} × ${v.hours} = ${(loss*v.hours).toFixed(0)} kWh
 Annual Cost = ${(loss*v.hours).toFixed(0)} × $${v.rate} = $${annualLoss.toFixed(0)}`,
-        status: eff >= 90 ? 'ok' : eff >= 85 ? 'warn' : 'bad',
-        note: 'المحركات الفعالة (IE3/IE4) تصل إلى 95%.'
+        status: 'ok',
+        note: 'الكفاءة الفعلية من لوحة المحرك أو الداتاشيت وتختلف حسب القدرة وفئة IE (IEC 60034-30-1). لا حكم هنا بالقبول.'
       };
     }
   },
@@ -20889,8 +20889,8 @@ Unbalance % = (Max Dev / Avg) × 100
 
 Motor Derating Factor = 1 − 2 × (Unbalance)²
                       = ${(derating/100).toFixed(3)} → ${derating.toFixed(1)}%`,
-        status: unbalance <= 1 ? 'ok' : unbalance <= 2 ? 'warn' : 'bad',
-        note: 'NEMA MG-1 يسمح بـ 1% unbalance كحد أقصى.'
+        status: 'ok',
+        note: 'حسب ما يلخصه مصدر ثانوي (alltestpro.com) لـ NEMA MG-1: تعمل المحركات متعددة الأوجه بالحمل المقنن عند عدم توازن ≤ 1%، ولا يُنصح بالتشغيل فوق 5%. بين الحدّين يلزم تخفيض قدرة المحرك حسب منحنى المصنّع. لم يُقرأ نص المعيار.'
       };
     }
   },
@@ -20979,8 +20979,8 @@ Motor I_start = ${v.motorKW}×1000×${v.startMult} / (√3×400×${v.pf}) = ${Is
     = ${dV.toFixed(1)}%
 
 V_remaining = 100 − ${dV.toFixed(1)} = ${finalV.toFixed(1)}%`,
-        status: dV <= 15 ? 'ok' : dV <= 20 ? 'warn' : 'bad',
-        note:'NFPA 110: حد 15% dip للأنظمة الحرجة. الوسائل: Soft Starter أو VFD.'
+        status: 'ok',
+        note:'حد هبوط الجهد المسموح يحدده مصنّع المولّد وحساسية الأحمال (قيم مثل 15% و35% تتداول، ولم نتحقق منها كحد في نص NFPA 110). للتصميم اطلب حساب بدء المحرك من مصنّع المولّد. الوسائل: Soft Starter أو VFD.'
       };
     }
   },
@@ -21031,8 +21031,8 @@ With ${v.margin}% margin: ${withMargin.toFixed(1)} m³`,
 
 Load = ${v.load} A
 Utilization = ${v.load} / ${IzDerated.toFixed(1)} × 100 = ${util.toFixed(1)}%`,
-        status: util <= 80 ? 'ok' : util <= 100 ? 'warn' : 'bad',
-        note:'استهدف ≤ 80% utilization للتشغيل الآمن.'
+        status: 'ok',
+        note:'نسبة 80% افتراض تصميمي شائع وليست حدًا مأخوذًا من معيار هنا. الحمل المسموح يحدده جدول الكود وطريقة التركيب.'
       };
     }
   },
@@ -22046,32 +22046,20 @@ PE = ${Spe} mm²
       {k:'rho', label:'Soil Resistivity ρ', unit:'Ω·m', def:100},
       {k:'L', label:'Rod Length', unit:'m', def:3},
       {k:'d', label:'Rod Diameter', unit:'mm', def:16},
-      {k:'n', label:'Number of Rods', unit:'', def:1},
-      {k:'spacing', label:'Spacing (غير مستخدم في هذا التقدير)', unit:'m', def:0},
     ],
     run(v){
       const a = v.d / 1000 / 2; // radius in m
       const R1 = (v.rho / (2 * Math.PI * v.L)) * (Math.log(4 * v.L / a) - 1);
-      let Rtot = R1;
-      let factor = 1;
-      if(v.n > 1){
-        const s = v.spacing || (2 * v.L);
-        // Approximate mutual resistance factor
-        factor = 1 + (v.n - 1) * 0.6 / v.n;
-        Rtot = R1 * factor / v.n;
-      }
       return {
-        main: v.n>1 ? `قضيب واحد ≈ ${R1.toFixed(2)} Ω (معادلة Dwight) · ${v.n} قضبان ≈ ${Rtot.toFixed(2)} Ω (تقدير غير موثّق)` : `قضيب واحد ≈ ${R1.toFixed(2)} Ω (معادلة Dwight)`,
+        main: `قضيب رأسي واحد ≈ ${R1.toFixed(2)} Ω (معادلة Dwight)`,
         steps:
 `R_single = (ρ / 2πL) × [ln(4L/a) − 1]   (a = نصف قطر القضيب، تربة متجانسة، قضيب رأسي، Dwight 1936)
          = (${v.rho} / (2π × ${v.L})) × [ln(4×${v.L}/${a.toFixed(4)}) − 1]
          = ${R1.toFixed(2)} Ω
 
-${v.n > 1 ? `[تقدير غير موثّق] R_n rods = R_single × factor / n
-factor ≈ ${factor.toFixed(2)} (تقدير تقريبي ثابت للتداخل، لا يستخدم المسافة بين القضبان ولا مصدر له؛ للتصميم استخدم جداول BS 7430 أو IEEE 80 أو قياسًا ميدانيًا)
-R_total = ${R1.toFixed(2)} × ${factor.toFixed(2)} / ${v.n} = ${Rtot.toFixed(2)} Ω` : 'Single rod — no mutual effect'}`,
+عدة قضبان: لا يوجد نموذج موثّق هنا. المقاومة المتوازية تتأثر بالمسافة بين القضبان وبطول القضيب وبنوع التربة. استخدم جداول BS 7430 أو IEEE 80 أو قياسًا ميدانيًا.`,
         status: 'ok',
-        note: 'تقدير نظري لقضيب رأسي في تربة متجانسة فقط، ولا يحكم بأن التأريض كافٍ أو غير كافٍ. الحد المطلوب يأتي من الكود المحلي وشرط الحماية (مثلًا Ra × IΔn ≤ 50 V في TT) ومن القياس الميداني. نتيجة عدة القضبان تقدير بلا مصدر.'
+        note: 'تقدير نظري لقضيب رأسي واحد في تربة متجانسة فقط، ولا يحكم بأن التأريض كافٍ أو غير كافٍ. الحد المطلوب يأتي من الكود المحلي وشرط الحماية (مثلًا Ra × IΔn ≤ 50 V في TT) ومن القياس الميداني.'
       };
     }
   },
@@ -24733,8 +24721,8 @@ Equivalent Lengths (using 90° elbow ≈ 30D):
 • Straight Pipe = ${v.L} m
 
 Total Equivalent Length = ${totalEquiv.toFixed(2)} m`,
-        status: Vact <= 2.5 ? 'ok' : Vact <= 3.5 ? 'warn' : 'bad',
-        note: 'Reference: ASHRAE · IPC · Hydraulic Institute'
+        status: 'ok',
+        note: 'السرعات المناسبة تتبع دليل التصميم والضوضاء وتآكل الأنابيب (مراجع: ASHRAE، IPC، Hydraulic Institute، لم تُقرأ هنا)، ولا حكم بالقبول في هذه النتيجة.'
       };
     }
   },
@@ -24775,8 +24763,8 @@ Chosen: DN ${chosen} mm
 
 Actual V = ${Vact.toFixed(2)} m/s
 Reynolds = ${Re.toFixed(0)} → ${Re > 4000 ? 'Turbulent' : 'Laminar'}`,
-        status: Vact <= 2 ? 'ok' : Vact <= 2.5 ? 'warn' : 'bad',
-        note: 'CWV Velocity: 1.0-2.0 m/s optimal · Ref: ASHRAE · Carrier Handbook'
+        status: 'ok',
+        note: 'السرعة الشائعة لمياه التبريد حوالي 1-2 م/ث حسب دليل التصميم (مراجع: ASHRAE، Carrier، لم تُقرأ هنا)، ولا حكم بالقبول في هذه النتيجة.'
       };
     }
   },
@@ -25656,8 +25644,8 @@ Total Head = ${hf.toFixed(2)} + ${elevHead} = ${totalHead.toFixed(2)} m
 Pressure = ${totalHead.toFixed(2)} × 0.0981 = ${pressure_bar.toFixed(2)} bar
 
 Velocity = Q / A = ${Q_m3s.toFixed(5)} / ${A.toFixed(5)} = ${velocity.toFixed(2)} m/s`,
-        status: velocity <= 6 ? 'ok' : velocity <= 8 ? 'warn' : 'bad',
-        note: 'NFPA 13: Velocity ≤ 6 m/s للأنظمة. Reference: NFPA 13 · NFPA 14 · Hazen-Williams'
+        status: 'ok',
+        note: 'NFPA 13 لا يضع حدًا لسرعة الماء في حسابات الرشاشات (https://www.meyerfire.com/daily/maximum-velocity-for-water-in-hydraulic-calcs)؛ سرعة نحو 6 م/ث (20 قدم/ث) حد تصميم شائع أو شرط جهة التأمين، وصيغة Hazen-Williams تفقد دقتها فوق نحو 25-32 قدم/ث. NFPA 20 يضع حدودًا لمواسير المضخة.'
       };
     }
   },
