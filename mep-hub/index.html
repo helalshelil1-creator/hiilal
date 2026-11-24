@@ -7125,21 +7125,22 @@ const GENERATOR_DB = [
 ];
 
 /* ============================================================
-   5. CONDUIT FILL DATA (generic nominal values, not maker data)
+   5. CONDUIT FILL DATA: rigid PVC, medium duty, size = outside diameter. ID = OD - 2 x wall, smallest ID of 3 maker catalogues:
+      skywisepipe.com (walls 16-63), bahra-electric.com BCConduitCatalog.pdf (20/25/32/50), hilalgroup.com (20-63). Makers differ; verify with the actual product.
 ============================================================ */
 const CONDUIT_DB = [
-  {size:'16 mm', id:13.4, area:141},
-  {size:'20 mm', id:16.9, area:224},
-  {size:'25 mm', id:21.4, area:360},
-  {size:'32 mm', id:27.9, area:611},
-  {size:'40 mm', id:36.6, area:1052},
-  {size:'50 mm', id:45.6, area:1633},
+  {size:'16 mm', id:12.8, area:129},
+  {size:'20 mm', id:16.4, area:211},
+  {size:'25 mm', id:21.2, area:353},
+  {size:'32 mm', id:27.6, area:598},
+  {size:'40 mm', id:35.0, area:962},
+  {size:'50 mm', id:45.0, area:1590},
   {size:'63 mm', id:57.0, area:2552},
 ];
 
+/* H07V-K single-core flexible PVC 450/750 V: largest of 3 maker datasheets (baldassaricavi.it, untel.com.tr, pevicables.es), nominal overall diameter. Not for XLPE, armoured or multicore. */
 const CABLE_OD = {
-  '1.5':3.5, '2.5':4.2, '4':4.8, '6':5.4, '10':6.8, '16':8.0,
-  '25':10.0, '35':11.5, '50':13.5, '70':15.5, '95':18.0, '120':20.0,
+  '1.5':3.0, '2.5':3.7, '4':4.2, '6':4.7, '10':6.2, '16':7.3, '25':9.2, '35':10.1, '50':12.2, '70':13.9, '95':15.9, '120':17.6, '150':19.4, '185':21.9, '240':25.0,
 };
 
 /* ============================================================
@@ -7375,7 +7376,7 @@ function viewConduitFill(){
   setTimeout(calcConduit, 0);
   return `
     ${crumb([{id:'dashboard',label:'لوحة التحكم'},{id:'calculators',label:'الحاسبات'},{label:'حاسبة Conduit Fill'}])}
-    <div class="eyebrow" style="margin-bottom:10px">// CONDUIT · FILL · IEC 61386</div>
+    <div class="eyebrow" style="margin-bottom:10px">// CONDUIT · FILL</div>
     <h1 class="h1">◈ حاسبة Conduit Fill</h1>
     <p class="sub">حدد القطر المناسب للكوندويت حسب عدد وأحجام الكابلات.</p>
 
@@ -7417,7 +7418,7 @@ function viewConduitFill(){
             </tbody>
           </table>
         </div>
-        <div class="note warn" style="margin-top:12px"><strong>تنبيه:</strong> الأقطار الداخلية هنا قيم اسمية عامة وتختلف حسب نوع الكوندويت (PVC أو معدني، خفيف أو ثقيل) والمصنّع. نسبة التعبئة المسموحة تأتي من كود التمديدات المطبّق، ولا يحددها IEC 61386 (معيار منتج). راجع داتاشيت الكوندويت والكابل.</div>
+        <div class="note warn" style="margin-top:12px"><strong>تنبيه:</strong> الأقطار الداخلية هنا لكوندويت PVC صلب متوسط التحمل (الحجم = القطر الخارجي)، وهي أصغر قيمة بين كتالوجات ثلاثة مصنّعين (skywisepipe.com وbahra-electric.com وhilalgroup.com) وتختلف من مصنّع لآخر ولا تنطبق على الكوندويت المعدني أو الخفيف أو الثقيل. نسبة التعبئة المسموحة تأتي من كود التمديدات المطبّق، ولا يحددها IEC 61386 (معيار منتج). راجع داتاشيت الكوندويت والكابل.</div>
       </div>
     </div>
   `;
@@ -7443,7 +7444,7 @@ function calcConduit(){
   out.innerHTML = `
     <div class="result">
       <div class="big">الكوندويت المطلوب: ${chosen.size}</div>
-      <div class="steps">${n} كابل × Ø ${od}mm ${odUser ? '(مُدخل من المستخدم)' : '(قيمة عامة تقريبية لمقطع ' + size + ' mm²، تختلف حسب العزل والنوع والمصنّع)'}
+      <div class="steps">${n} كابل × Ø ${od}mm ${odUser ? '(مُدخل من المستخدم)' : '(قطر اسمي لكابل H07V-K أحادي مرن PVC لمقطع ' + size + ' mm²، أكبر قيمة بين ثلاثة داتاشيتات، ولا ينطبق على XLPE أو المدرّع أو متعدد الموصلات؛ أدخل القطر الفعلي للدقة)'}
 مساحة الكابل الواحد = ${cableArea.toFixed(1)} mm²
 المساحة الكلية = ${totalArea.toFixed(1)} mm²
 المطلوب (${(ratio*100).toFixed(0)}% fill) = ${minConduitArea.toFixed(1)} mm²
