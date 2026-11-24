@@ -35339,13 +35339,13 @@ Q = 50.4 m³/h`,
     desc:'تصميم أنظمة MEP للمستشفيات — Critical Power · Medical Gas · HVAC خاص.',
     tabs:{
       power:{title:'القوى الحرجة', en:'Critical Power', body:`
-        <p>NFPA 99 يقسم الأحمال إلى ثلاث فئات:</p>
+        <p>نظام الطوارئ الكهربائي في المنشآت الصحية (NFPA 99 / NEC 517) يقسّم الأحمال إلى ثلاثة فروع:</p>
         <ul>
-          <li><strong>Life Safety Branch:</strong> 30 دقيقة (إضاءة مخارج · إنذار · مصاعد)</li>
-          <li><strong>Critical Branch:</strong> ساعتان (غرف عمليات · ICU · تصوير)</li>
-          <li><strong>Equipment Branch:</strong> غير مطلوب من Emergency</li>
+          <li><strong>Life Safety Branch:</strong> إضاءة المخارج والإنذار وبعض المصاعد</li>
+          <li><strong>Critical Branch:</strong> أحمال رعاية المرضى الحرجة (غرف العمليات، العناية المركزة)</li>
+          <li><strong>Equipment Branch:</strong> معدات ثقيلة (تكييف، ضواغط) تُوصَّل بتأخير أو تسلسل</li>
         </ul>
-        <div class="uc-note warn"><strong>مهم:</strong> Transfer Time ≤ 10 ثوان للأحمال الحيوية.</div>`},
+        <div class="uc-note warn"><strong>مهم:</strong> فروع Life Safety و Critical تُغذّى تلقائيًا خلال 10 ثوان (NFPA 99 / NFPA 110 Type 10). مدة التشغيل المطلوبة والتفاصيل تُحدَّد بفئة NFPA 110 وجهة الاعتماد (AHJ)، ولم يُقرأ نص المعيار هنا.</div>`},
       hvac:{title:'HVAC للمستشفيات', en:'Healthcare HVAC', body:`
         <p>حسب ASHRAE 170:</p>
         <ul>
@@ -41609,7 +41609,7 @@ Object.assign(UC_TOPICS, {
 
   'sw-caneco':{
     title:'Caneco BT / Caneco HT', en:'Caneco · ALPI', cat:'Software · Electrical', icon:'power',
-    desc:'برنامج فرنسي متخصص في التصميم الكهربائي وفق IEC و NFPA C15-100.',
+    desc:'برنامج فرنسي متخصص في التصميم الكهربائي وفق IEC و NF C 15-100.',
     tabs:{
       overview:{title:'نظرة عامة', en:'Overview', body:`
         <p><strong>Caneco</strong> من ALPI — الفرنسي الرائد في التصميم الكهربائي. يعتمد على الكود الفرنسي NF C 15-100 والكود الأوروبي IEC 60364. يُستخدم بقوة في أوروبا وأفريقيا الفرانكوفونية والشرق الأوسط.</p>`},
