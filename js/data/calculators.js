@@ -344,42 +344,118 @@ const CALCULATORS = [
     },
     {
         id: "brick-quantity",
-        name: "حساب عدد الطوب",
-        nameEn: "Brick Quantity",
+        name: "حساب عدد الطوب للشقة",
+        nameEn: "Brick Quantity (Flat)",
         category: "takeoff",
         icon: "building",
-        desc: "حساب عدد الطوب لبناء حائط.",
+        desc: "كمية الطوب من مساحة الغرف وأطوال الحيطان وارتفاعها وسمكها وفتحات الأبواب والشبابيك. مساحة الأرضية وحدها لا تكفي لحساب الكمية.",
         inputs: [
-            { id: "area", label: "مساحة الحائط", unit: "m²", type: "number", required: true, min: 0.1 },
-            { id: "thickness", label: "سماكة الحائط", type: "select", options: [
-                { value: "12", label: "12 سم (نصف طوبة)" },
-                { value: "25", label: "25 سم (طوبة كاملة)" }
+            { id: "flatArea", label: "مساحة الشقة كاملة (للمراجعة)", unit: "m²", type: "number", min: 0, help: "اختياري. تُقارن بمجموع مساحات الغرف للتنبيه لو في غرفة ناقصة." },
+            { id: "r1", label: "مساحة الغرفة 1", unit: "m²", type: "number", min: 0 },
+            { id: "r2", label: "مساحة الغرفة 2", unit: "m²", type: "number", min: 0 },
+            { id: "r3", label: "مساحة الغرفة 3", unit: "m²", type: "number", min: 0 },
+            { id: "r4", label: "مساحة الغرفة 4", unit: "m²", type: "number", min: 0 },
+            { id: "r5", label: "مساحة الغرفة 5", unit: "m²", type: "number", min: 0 },
+            { id: "r6", label: "مساحة الغرفة 6", unit: "m²", type: "number", min: 0 },
+            { id: "r7", label: "مساحة الغرفة 7", unit: "m²", type: "number", min: 0 },
+            { id: "r8", label: "مساحة الغرفة 8", unit: "m²", type: "number", min: 0, help: "اكتب كل الغرف وكمان الصالة والحمامات والمطبخ والطرقة. اترك الفاضي فارغاً." },
+            { id: "shape", label: "شكل الغرفة التقريبي (لتقدير المحيط)", type: "select", options: [
+                { value: "1", label: "مربعة تقريباً" },
+                { value: "1.5", label: "مستطيلة (طول = 1.5 × العرض)" },
+                { value: "2", label: "مستطيلة طويلة (طول = 2 × العرض)" }
             ]},
-            { id: "brickSize", label: "حجم الطوبة", type: "select", options: [
-                { value: "standard", label: "قياسي (25×12×6)" },
-                { value: "big", label: "كبير (40×20×20)" }
-            ]}
+            { id: "sumPerim", label: "مجموع محيط كل الغرف من المخطط", unit: "m", type: "number", min: 0, help: "اختياري وأدق. لو كتبته يتم استخدامه بدل التقدير من المساحة." },
+            { id: "extPerim", label: "طول الحيطان الخارجية (محيط الشقة)", unit: "m", type: "number", min: 0, help: "اختياري. لو فارغ يُقدّر من مساحة الغرف." },
+            { id: "extLeaves", label: "سمك الحيطان الخارجية", type: "select", options: [
+                { value: "2", label: "طوبة كاملة (ورقتين، نحو 25 سم)" },
+                { value: "1", label: "نصف طوبة (ورقة واحدة، نحو 12 سم)" }
+            ]},
+            { id: "intLeaves", label: "سمك الحيطان الداخلية", type: "select", options: [
+                { value: "1", label: "نصف طوبة (ورقة واحدة، نحو 12 سم)" },
+                { value: "2", label: "طوبة كاملة (ورقتين، نحو 25 سم)" }
+            ]},
+            { id: "height", label: "ارتفاع الحيطان (صافي)", unit: "m", type: "number", default: 3, min: 1, help: "من أرضية الدور لتحت السقف أو الكمرة." },
+            { id: "doors", label: "عدد الأبواب", type: "number", default: 5, min: 0 },
+            { id: "doorArea", label: "مساحة الباب الواحد", unit: "m²", type: "number", default: 1.9, min: 0 },
+            { id: "windows", label: "عدد الشبابيك والبلكونات", type: "number", default: 4, min: 0 },
+            { id: "windowArea", label: "مساحة الشباك الواحد", unit: "m²", type: "number", default: 1.5, min: 0 },
+            { id: "unit", label: "نوع الطوب", type: "select", options: [
+                { value: "red", label: "أحمر طفلي 25×12×6 سم" },
+                { value: "white", label: "أبيض جيري 25×12×6 سم" },
+                { value: "custom", label: "مقاس آخر (بلوك أو غيره): اكتب الأبعاد تحت" }
+            ]},
+            { id: "cl", label: "طول الوحدة (للمقاس الآخر)", unit: "cm", type: "number", default: 40, min: 5 },
+            { id: "cw", label: "عرض الوحدة = سمك الورقة (للمقاس الآخر)", unit: "cm", type: "number", default: 20, min: 5 },
+            { id: "ch", label: "ارتفاع الوحدة (للمقاس الآخر)", unit: "cm", type: "number", default: 20, min: 3 },
+            { id: "joint", label: "سمك المونة", unit: "cm", type: "number", default: 1, min: 0 },
+            { id: "waste", label: "نسبة الهالك", unit: "%", type: "number", default: 5, min: 0, help: "المصادر تذكر 5 إلى 10 بالمئة." }
         ],
         calculate(v) {
-            const A = Number(v.area);
-            const thick = Number(v.thickness);
-            const sizes = {
-                standard: { perM2: 110, perM2Half: 55 },
-                big: { perM2: 12, perM2Half: 12 }
-            };
-            const s = sizes[v.brickSize] || sizes.standard;
-            const perM2 = thick === 12 ? s.perM2Half : s.perM2;
-            const total = A * perM2;
-            const totalWaste = total * 1.05;
+            const n = (x, d) => { const y = parseFloat(x); return isFinite(y) ? y : d; };
+            const rooms = [v.r1, v.r2, v.r3, v.r4, v.r5, v.r6, v.r7, v.r8].map(x => n(x, 0)).filter(x => x > 0);
+            if (!rooms.length) return { error: "اكتب مساحة غرفة واحدة على الأقل." };
+            const sumA = rooms.reduce((a, b) => a + b, 0);
+            const r = n(v.shape, 1);
+            const est = A => 2 * Math.sqrt(A / r) * (1 + r);
+            const roomPerim = n(v.sumPerim, 0) > 0 ? n(v.sumPerim, 0) : rooms.reduce((a, A) => a + est(A), 0);
+            const perimSrc = n(v.sumPerim, 0) > 0 ? "من المخطط" : "مقدّر من المساحة";
+            const ext = n(v.extPerim, 0) > 0 ? n(v.extPerim, 0) : est(sumA);
+            const extSrc = n(v.extPerim, 0) > 0 ? "من المدخلات" : "مقدّر";
+            if (roomPerim < ext) return { error: "مجموع محيط الغرف أصغر من محيط الشقة. راجع الأرقام." };
+            const intLen = (roomPerim - ext) / 2;
+            const H = n(v.height, 3);
+            const sizes = { red: [25, 12, 6], white: [25, 12, 6] };
+            let l, w, h;
+            if (v.unit === "custom") { l = n(v.cl, 40); w = n(v.cw, 20); h = n(v.ch, 20); }
+            else { [l, w, h] = sizes[v.unit] || sizes.red; }
+            const j = n(v.joint, 1);
+            const perLeaf = 10000 / ((l + j) * (h + j));
+            const extL = Math.round(n(v.extLeaves, 2));
+            const intL = Math.round(n(v.intLeaves, 1));
+            const grossExt = ext * H, grossInt = intLen * H;
+            const openings = n(v.doors, 0) * n(v.doorArea, 0) + n(v.windows, 0) * n(v.windowArea, 0);
+            const gross = grossExt + grossInt;
+            if (openings >= gross) return { error: "مساحة الفتحات أكبر من مساحة الحيطان. راجع الأرقام." };
+            const net = gross - openings;
+            // openings are deducted pro rata between external and internal walls (windows are usually in external walls)
+            const winA = n(v.windows, 0) * n(v.windowArea, 0);
+            const doorA = n(v.doors, 0) * n(v.doorArea, 0);
+            const netExt = Math.max(0, grossExt - winA - doorA * 0.2);
+            const netInt = Math.max(0, grossInt - doorA * 0.8);
+            const bricks = netExt * perLeaf * extL + netInt * perLeaf * intL;
+            const withWaste = bricks * (1 + n(v.waste, 5) / 100);
+            const fmt = x => Math.round(x).toLocaleString("en-US");
+            const warn = [];
+            const fa = n(v.flatArea, 0);
+            if (fa > 0 && Math.abs(sumA - fa) / fa > 0.1) warn.push(`مجموع مساحات الغرف (${sumA.toFixed(1)} م²) يختلف عن مساحة الشقة (${fa} م²) بأكتر من 10 بالمئة. غالباً في غرفة أو طرقة ناقصة، والكمية ستكون أقل من الفعلية.`);
             return {
                 results: [
-                    { label: "عدد الطوب", value: Math.ceil(total), unit: "طوبة" },
-                    { label: "مع هامش 5%", value: Math.ceil(totalWaste), unit: "طوبة" }
+                    { label: "عدد الطوب بدون هالك", value: fmt(bricks), unit: "طوبة" },
+                    { label: "عدد الطوب مع الهالك", value: fmt(withWaste), unit: "طوبة" },
+                    { label: "طول الحيطان الخارجية (" + extSrc + ")", value: ext.toFixed(1), unit: "m" },
+                    { label: "طول الحيطان الداخلية (" + perimSrc + ")", value: intLen.toFixed(1), unit: "m" },
+                    { label: "مساحة الحيطان قبل الفتحات", value: gross.toFixed(1), unit: "m²" },
+                    { label: "مساحة الفتحات المخصومة", value: openings.toFixed(1), unit: "m²" },
+                    { label: "صافي مساحة الحيطان", value: net.toFixed(1), unit: "m²" },
+                    { label: "طوبة لكل م² ورقة واحدة", value: perLeaf.toFixed(1), unit: "طوبة/م²" }
                 ],
-                formula: "N = Area × Bricks/m²",
-                steps: [`N = ${A} × ${perM2} = ${Math.ceil(total)}`],
-                notes: ["طوبة 25×12×6 مع مونة بسُمك ~1 سم: نحو 55 طوبة/م² لحائط 12 سم و110 طوبة/م² لحائط 25 سم. البلوك الكبير يُحسب بطبقة واحدة (السمك = عرض البلوك). اخصم الفتحات وراجع المورد."],
-                references: []
+                formula: "الطوب = (صافي مساحة الحائط × عدد الأوراق) ÷ ((طول الوحدة + المونة) × (ارتفاع الوحدة + المونة))",
+                steps: [
+                    `مجموع مساحات الغرف = ${sumA.toFixed(1)} م² (${rooms.length} غرف)`,
+                    `طول الحيطان الداخلية = (مجموع محيط الغرف ${roomPerim.toFixed(1)} - المحيط الخارجي ${ext.toFixed(1)}) / 2 = ${intLen.toFixed(1)} م`,
+                    `مساحة الحيطان = (${ext.toFixed(1)} + ${intLen.toFixed(1)}) × ${H} = ${gross.toFixed(1)} م²`,
+                    `طوبة/م² لورقة = 10000 / ((${l}+${j}) × (${h}+${j})) = ${perLeaf.toFixed(1)}`,
+                    `خارجي: ${netExt.toFixed(1)} م² × ${perLeaf.toFixed(1)} × ${extL} = ${fmt(netExt * perLeaf * extL)}`,
+                    `داخلي: ${netInt.toFixed(1)} م² × ${perLeaf.toFixed(1)} × ${intL} = ${fmt(netInt * perLeaf * intL)}`
+                ].concat(v.unit === "custom" ? [`المقاس الآخر: عرض الوحدة ${w} سم هو سمك الورقة الواحدة`] : []),
+                notes: warn.concat([
+                    "الطول ينقسم هنا: المحيط الخارجي من المدخلات أو تقدير، والداخلي = (مجموع محيط الغرف - الخارجي) ÷ 2 لأن كل حيطة داخلية تفصل غرفتين. الحساب سليم فقط لو كل غرف الشقة مكتوبة.",
+                    "الأبواب تُخصم 80 بالمئة من الحيطان الداخلية و20 بالمئة من الخارجية، والشبابيك كلها من الخارجية. هذا افتراض، عدّله بالأرقام الفعلية لو مختلف.",
+                    "عدد الطوب لورقتين تقريبي ويفترض ورقتين متجاورتين بنفس العدد. الأعمدة والكمرات والزوايا والأسوار الصغيرة وحيطان الحمامات المبلّطة غير محسوبة. اخصم أماكن الأعمدة الخرسانية من الطول لو الحيطان بينها.",
+                    "الطوب الأحمر والأبيض الجيري هنا بنفس المقاس 25×12×6 سم، فالفرق بينهم في السعر والوزن وليس في العدد. البلوك أو السيبوركس: اختر مقاس آخر واكتب أبعاد المورد. السيبوركس يحتاج مونة رقيقة فاجعل المونة 0.3 سم تقريباً حسب المورد.",
+                    "كمية تقديرية للمقارنة. اطلب حصر نهائي من المهندس أو المقاول قبل الشراء."
+                ]),
+                references: ["مقاسات الطوب: alamarmasr.com/brick-standard-sizes-egypt-guide", "55 و110 طوبة/م²: elbashmadni.com/2026/10/bricks-per-square-meter.html", "هالك 5-10%: alamarmasr.com/brick-quantity-calculation-guide"]
             };
         }
     },
