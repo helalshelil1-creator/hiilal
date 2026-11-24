@@ -12506,10 +12506,9 @@ const AI_RESPONSES = [
 المعادلة (قضيب واحد):
 <code>R = (ρ / 2πL) × [ln(4L/a) − 1]</code>
 
-الأهداف:
+الأهداف الشائعة في الممارسة (وليست حدًا من IEC 60364؛ الحد الفعلي حسب الكود المحلي وشرط الحماية):
 • محطات التحويل: ≤ 1 Ω
 • LV Systems: ≤ 5 Ω
-• أنظمة IT: ≤ 1 Ω
 
 طرق التحسين:
 • Bentonite Backfill
@@ -17432,7 +17431,7 @@ const FULL_SYSTEMS = {
       {k:'Standards', v:'IEC 62271 (Switchgear) · IEC 60076 (Transformers) · IEEE C37'},
       {k:'Insulation', v:'Air · SF6 · Vacuum'},
       {k:'Isc Levels', v:'20 kA · 25 kA · 31.5 kA · 40 kA'},
-      {k:'Earthing', v:'≤ 1 Ω (Substation) · ≤ 5 Ω (System)'},
+      {k:'Earthing', v:'Typical target ≤ 1 Ω (Substation) · ≤ 5 Ω (System); per local code'},
     ],
     workflows:['Utility Coordination','Substation Layout','Equipment Specs','Protection Coordination','MV Cable Routing','Testing & Commissioning'],
   },
@@ -17471,7 +17470,7 @@ const FULL_SYSTEMS = {
       ]},
     ],
     specs:[
-      {k:'Target Resistance', v:'Substation ≤ 1 Ω · LV ≤ 5 Ω · IT ≤ 1 Ω'},
+      {k:'Target Resistance', v:'Typical practice: Substation ≤ 1 Ω · LV ≤ 5 Ω (not an IEC 60364 limit)'},
       {k:'Standards', v:'IEC 60364-5-54 · IEEE Std 80 · IEC 62305'},
       {k:'Conductor Material', v:'Cu (Bare / Insulated) · Al'},
       {k:'PE Sizing', v:'IEC 60364-5-54 Table 54.2'},
@@ -22071,7 +22070,7 @@ ${v.n > 1 ? `R_n rods = R_single × factor / n
 factor ≈ ${factor.toFixed(2)} (mutual resistance)
 R_total = ${R1.toFixed(2)} × ${factor.toFixed(2)} / ${v.n} = ${Rtot.toFixed(2)} Ω` : 'Single rod — no mutual effect'}
 
-الحد المستهدف: ≤ 5 Ω للـLV · ≤ 1 Ω للمحطات`,
+الحد المستهدف الشائع في الممارسة: ≤ 5 Ω للـLV · ≤ 1 Ω للمحطات (ليس حدًا منصوصًا من IEC؛ راجع الكود المحلي وشرط الحماية)`,
         status: Rtot <= 5 ? 'ok' : Rtot <= 10 ? 'warn' : 'bad',
         note: 'إذا لم تصل للهدف: أضف أقطاب أو استخدم Bentonite/Chemical earthing.'
       };
@@ -27729,7 +27728,7 @@ Object.assign(TOPIC_CONTENT, {
     desc:'منظومة توفير مسار منخفض المعاوقة لتيار العطل — لحماية الأفراد والمعدات.',
     sections:[
       {title:'Types', en:'Classification', body:'<strong>TN-S:</strong> PE منفصل عن N<br><strong>TN-C-S:</strong> PE و N مدمجان ثم منفصلان<br><strong>TT:</strong> تأريض محلي منفصل<br><strong>IT:</strong> مصدر غير مؤرّض (للمستشفيات)'},
-      {title:'Target Resistance', en:'IEC 60364', body:'Substation: ≤ 1 Ω<br>LV Systems: ≤ 5 Ω<br>IT Systems: ≤ 1 Ω<br>حسب الكود المحلي'},
+      {title:'Target Resistance', en:'Typical practice', body:'قيم مستهدفة شائعة في الممارسة وليست حدًا منصوصًا في IEC 60364: محطات التحويل ≤ 1 Ω، أنظمة LV ≤ 5 Ω.<br>الحد الفعلي يُحدد بالكود المحلي وبشرط الحماية (في TT: Ra × IΔn ≤ 50 V) وبحسابات جهد اللمس والخطوة (IEEE 80) للمحطات.'},
       {title:'Single Rod', en:'Formula', body:'R = (ρ / 2πL) × [ln(4L/a) − 1]', formula:'R = (ρ / 2πL) · [ln(4L/a) − 1]'},
       {title:'Improvement', en:'Techniques', body:'• Bentonite backfill<br>• Chemical earthing<br>• Multiple rods with spacing 2L<br>• Ring earth around building'},
     ],
