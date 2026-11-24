@@ -20907,13 +20907,8 @@ Motor Derating Factor = 1 − 2 × (Unbalance)²
       const Ad_km2 = Ad / 1e6;
       const Nd = v.Ng * Ad_km2 * 1.0; // collection area × density
 
-      let LPL = 'IV';
-      if(Nd >= 0.1) LPL = 'I';
-      else if(Nd >= 0.05) LPL = 'II';
-      else if(Nd >= 0.01) LPL = 'III';
-
       return {
-        main:`Nd = ${Nd.toFixed(4)} flashes/year  ·  Suggested LPL: ${LPL}`,
+        main:`Nd = ${Nd.toFixed(4)} صاعقة/سنة (عدد الأحداث الخطرة على المبنى)`,
         steps:`Ad = L×W + 2×(3H)×(L+W) + π×(3H)²
    = ${v.L}×${v.W} + 2×(3×${v.H})×(${v.L}+${v.W}) + π×(3×${v.H})²
    = ${Ad.toFixed(0)} m² = ${Ad_km2.toFixed(4)} km²
@@ -20922,9 +20917,10 @@ Nd = Ng × Ad × Cd
    = ${v.Ng} × ${Ad_km2.toFixed(4)} × 1.0
    = ${Nd.toFixed(4)} flashes/year
 
-Suggested LPL: ${LPL}`,
+Cd = 1.0 مفترض (مبنى محاط بأجسام بنفس الارتفاع تقريبًا؛ قيمته تتغير بموقع المبنى). Ad بالصيغة القياسية للمبنى المنعزل المستطيل على أرض مستوية.
+لا يُستنتج هنا مستوى حماية (LPL)؛ اختيار LPS يتم بتقييم المخاطر IEC 62305-2 بمقارنة Nd بالقيمة المقبولة Nc وفق عوامل الموقع والمحتويات والخدمات.`,
         status:'ok',
-        note:'Class of LPS يحدد Rolling Sphere Radius و Mesh Size. راجع IEC 62305-3.'
+        note:'حساب مساعد لجزء واحد من تقييم المخاطر فقط ولا يختار فئة LPS. فئة LPS تحدد Rolling Sphere Radius و Mesh Size في IEC 62305-3.'
       };
     }
   },
@@ -21060,7 +21056,7 @@ Isc = V / (√3 × Z_total)
     = ${v.V} / (1.732 × ${(Ztotal/1000).toFixed(4)})
     = ${(Isc*1000).toFixed(0)} A = ${Isc.toFixed(2)} kA`,
         status:'ok',
-        note:'تحقق من أن Icu للقاطع ≥ Isc. Reference: IEC 60909.'
+        note:'تقدير مبسط: يجمع ممانعة المحول وممانعة الكابل/القضبان حسابيًا كأرقام (بلا مركبات R وX) ويهمل ممانعة المصدر والمحركات المساهمة. جمع الممانعات حسابيًا يعطي Z أكبر من الجمع الاتجاهي فيقلل Isc (الاتجاه غير المحافظ)، وإهمال المصدر يرفعه. الحساب الكامل وفق IEC 60909، ثم قارن مع Icu للقاطع.'
       };
     }
   },
@@ -22015,7 +22011,6 @@ Object.assign(CALCS, {
     name:'موصل التأريض (IEC 60364-5-54)',
     fields:[
       {k:'Sphase', label:'Phase Conductor Size', unit:'mm²', def:35},
-      {k:'mat', label:'Material', type:'select', opts:[['cu','Copper'],['al','Aluminium']], def:'cu'},
     ],
     run(v){
       // IEC 60364-5-54 Table 54.2
@@ -22034,9 +22029,9 @@ Object.assign(CALCS, {
 Phase = ${v.Sphase} mm²
 PE = ${Spe} mm²
 
-ملاحظة: تحقق من الحد الأدنى 2.5 mm² إذا كان PE محمياً ميكانيكياً.`,
+الجدول يفترض أن موصل PE من نفس مادة موصل الطور (نحاس أو ألمنيوم). لمادة مختلفة تُحسب مساحة مكافئة في الموصلية. التحقق الأساسي بمعادلة التسخين اللاحراري (adiabatic) مع تيار العطل وزمن الفصل. حدود دنيا إضافية (مثل 2.5 mm² محمي ميكانيكيًا) تُراجع من الكود.`,
         status: 'ok',
-        note: 'Reference: IEC 60364-5-54 Table 54.2'
+        note: 'الجدول المبسط فقط؛ لم يُقرأ نص المعيار هنا. S_PE في TN/TT يُتحقق منه أيضًا بزمن فصل جهاز الحماية.'
       };
     }
   },
@@ -22102,31 +22097,21 @@ P_input = P_shaft / η_motor
     name:'اختبار مقاومة العزل',
     fields:[
       {k:'V', label:'Test Voltage', unit:'V', def:500},
-      {k:'L', label:'Cable Length', unit:'m', def:100},
-      {k:'type', label:'Cable Type', type:'select', opts:[['xlpe','XLPE/PVC LV'],['fr','Fire Rated'],['mv','MV Cable']], def:'xlpe'},
     ],
     run(v){
-      const minR = v.type === 'mv' ? 100 : v.type === 'fr' ? 10 : 1;
-      const expectedR = Math.max(minR, 100 / (v.L / 100));
+      const row = v.V <= 250 ? {t:250, m:0.5, c:'SELV / PELV'} : v.V <= 500 ? {t:500, m:1.0, c:'حتى 500 V'} : {t:1000, m:1.0, c:'أعلى من 500 V'};
       return {
-        main: `Minimum R_insulation = ${expectedR.toFixed(1)} MΩ @ ${v.V}V DC`,
+        main: `الحد الأدنى للعزل ≥ ${row.m} MΩ عند اختبار ${row.t} V DC (${row.c})`,
         steps:
-`IEC 60364-6 Table 6.1:
-• SELV/PELV: 250V DC · ≥ 0.5 MΩ
-• ≤ 500V (LV): 500V DC · ≥ 1.0 MΩ
-• > 500V (MV): 1000V DC · ≥ 1.0 MΩ
-• Fire Rated: 500V DC · ≥ 1.0 MΩ
+`جدول الحد الأدنى للعزل (BS 7671 Table 64 / Reg 643.3.2، ويقابله IEC 60364-6):
+• SELV / PELV: اختبار 250 V DC · ≥ 0.5 MΩ
+• دوائر حتى 500 V: اختبار 500 V DC · ≥ 1.0 MΩ
+• دوائر أعلى من 500 V: اختبار 1000 V DC · ≥ 1.0 MΩ
 
-Cable Type: ${v.type.toUpperCase()}
-Test Voltage: ${v.V}V DC
-Length: ${v.L}m
-Minimum: ${minR} MΩ
-Suggested target (with margin): ${expectedR.toFixed(1)} MΩ
-
-طريقة: MΩ = V / I_leak
-R يجب أن يبقى ثابتاً لمدة 60 ثانية على الأقل.`,
+جهد الاختبار المدخل: ${v.V} V DC
+الصف المقابل في الجدول: ${row.c}`,
         status: 'ok',
-        note: 'قم بالاختبار قبل التوصيل وبعد التوصيل. سجّل القيمة الفعلية في Test Report.'
+        note: 'الحد الأدنى في الجدول لا يتغير بطول الكابل ولا بنوعه، وهو لتركيبات الجهد المنخفض. اختبار كابلات الجهد المتوسط وكابلات مقاومة الحريق له متطلبات مصنّع ومواصفة مختلفة. اقرأ النتيجة الفعلية وسجّلها في تقرير الاختبار. المصدر: ثانوي (IET FAQ و 18theditionprep.co.uk)، لم يُقرأ نص المعيار.'
       };
     }
   },
@@ -22142,7 +22127,7 @@ R يجب أن يبقى ثابتاً لمدة 60 ثانية على الأقل.`,
       return {
         main: `Minimum Bend Radius = ${radius} mm (${mult} × D)`,
         steps:
-`IEC 60502-1 minimum bend radius:
+`مضاعفات شائعة تقريبية (ليست من IEC 60502-1 الذي لا يحدد نصف قطر تركيب؛ HD 603 والداتاشيت يحددان):
 • Unarmoured: 8 × D
 • Armoured (SWA): 12 × D
 • MV Cable: 15 × D
@@ -22152,7 +22137,7 @@ Cable Diameter = ${v.D} mm
 Multiplier = ${mult}×
 Bend Radius = ${v.D} × ${mult} = ${radius} mm`,
         status: 'ok',
-        note: 'لا تحاول ثني الكابل أقل من هذه القيمة — يسبب تلف العزل.'
+        note: 'قاعدة تقريبية فقط. نصف القطر الأدنى الفعلي في داتاشيت الكابل ويتقدم على هذه المضاعفات (مثلًا بعض الكابلات أحادية القلب تتطلب 15-20 × D). الثني أقل من الحد المنشور يضر العزل.'
       };
     }
   },
@@ -22184,7 +22169,7 @@ With ${v.margin}% margin = ${withMargin.toFixed(1)} Ah
 Standard sizes: 7, 12, 18, 24, 38, 55, 75, 100, 120, 200
 Choice: ${chosen} Ah`,
         status: 'ok',
-        note: 'NFPA 72: 24h standby + 5min alarm minimum. للـHealthcare: 24h + 5min.'
+        note: 'NFPA 72 (ملخص من NFPA وفيديو/أدلة تصنيع، لم يُقرأ نص المعيار): الوضع الاعتيادي 24 ساعة standby + 5 دقائق إنذار، وأنظمة الإنذار الصوتي EVACS 15 دقيقة إنذار. هامش 20% كحد أدنى حسب تعليمات مصنعي اللوحات (هنا الافتراضي 25%). اختر المدد وفق الكود المعتمد.'
       };
     }
   },
