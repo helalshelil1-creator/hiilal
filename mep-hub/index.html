@@ -7517,7 +7517,7 @@ function viewHVACLoad(){
     ${crumb([{id:'dashboard',label:'لوحة التحكم'},{id:'calculators',label:'الحاسبات'},{label:'حاسبة HVAC Load'}])}
     <div class="eyebrow" style="margin-bottom:10px">// HVAC · COOLING · LOAD</div>
     <h1 class="h1">◈ حاسبة HVAC Cooling Load</h1>
-    <p class="sub">حساب سريع للأحمال باستخدام طريقة كثافة الأحمال.</p>
+    <p class="sub">تقدير أولي سريع بكثافة أحمال (W/m²) وقيم افتراضية. ليس حساب حمل تبريد بمعايير ASHRAE أو CIBSE، ولا يصلح لاختيار المعدات النهائي.</p>
 
     <div class="grid c2">
       <div class="card">
@@ -7595,7 +7595,7 @@ kW = ${total.toFixed(0)} / 1000 = ${totalKW.toFixed(2)} kW
 
 With 10% safety: ${(totalTR*1.1).toFixed(1)} TR
 
-Suggested Equipment:
+Rough equipment sizing (not a selection):
 Split: 2× ${stdTR.filter(x=>x<=totalTR/2).slice(-1)[0]||'—'} TR
 VRF: 1× ${stdTR.find(x=>x>=totalTR*1.1)||'—'} TR
 Chiller: ${stdTR.find(x=>x>=totalTR*1.1)||'—'} TR</div>
@@ -7629,10 +7629,10 @@ function viewSolarPV(){
       </div>
       <div class="card">
         <div class="h3">▸ Design Rules</div>
-        <div class="note tip">Voc يزيد عند انخفاض الحرارة: +0.3%/°C لكل درجة أقل من 25°C</div>
-        <div class="note">Vmp يجب أن يبقى ≥ Vmin للعاكس عند 70°C.</div>
-        <div class="note">Isc × 1.25 ≤ Imax للعاكس.</div>
-        <div class="note warn">تأكد من Locale-specific regulations (e.g., IEC 62548).</div>
+        <div class="note tip">الحاسبة تفترض Voc ×1.15 عند البرودة (−10°C) وVmp ×0.82 عند 70°C، وهي قيم تقديرية عامة وليست من داتاشيت اللوح. استخدم معامل الحرارة الفعلي لللوح وأدنى/أقصى حرارة للموقع.</div>
+        <div class="note">Vmp عند الحرارة العالية يجب أن يبقى ≥ الحد الأدنى لنطاق MPPT للعاكس.</div>
+        <div class="note">فحص تيار مبسط: Isc ×1.25 لـ String واحد مقابل أقصى تيار للعاكس. عدد الـ Strings المتوازية على كل MPPT يضاعف التيار ولا يُفحص هنا.</div>
+        <div class="note warn">تقدير أولي لعدد اللوحات في الـ String، وليس تصميمًا نهائيًا. راجع داتاشيت اللوح والعاكس والكود المحلي (مثل IEC 62548) قبل التنفيذ.</div>
       </div>
     </div>
     <div id="pv_out" style="margin-top:20px"></div>
@@ -7689,11 +7689,11 @@ function calcSolar(){
       </div>
       <div class="card">
         <div class="h3">▸ Validation</div>
-        <div class="note tip">Voc cold per string = ${(voc_cold * best.s).toFixed(0)} V ≤ ${vmax} V  ✓</div>
-        <div class="note tip">Vmp hot per string = ${(vmp_hot * best.s).toFixed(0)} V ≥ ${vmin} V  ✓</div>
-        <div class="note tip">Isc × 1.25 = ${(isc*1.25).toFixed(1)} A ≤ ${imax} A  ✓</div>
+        <div class="note">Voc بارد (×1.15 مفترض) للـ String = ${(voc_cold * best.s).toFixed(0)} V مقابل حد العاكس ${vmax} V</div>
+        <div class="note">Vmp ساخن (×0.82 مفترض) للـ String = ${(vmp_hot * best.s).toFixed(0)} V مقابل حد MPPT الأدنى ${vmin} V</div>
+        <div class="note">Isc ×1.25 لـ String واحد = ${(isc*1.25).toFixed(1)} A مقابل ${imax} A (Strings متوازية غير محسوبة)</div>
         <div class="h3" style="margin-top:16px">▸ Inverter Sizing</div>
-        <div class="note">مع DC/AC ratio 1.2: حجم العاكس ≈ ${(nTotal*panel/1000/1.2).toFixed(1)} kW</div>
+        <div class="note">لو اخترت نسبة DC/AC = 1.2 (اختيار تصميمي وليس قاعدة): حجم العاكس ≈ ${(nTotal*panel/1000/1.2).toFixed(1)} kW</div>
       </div>
     </div>
   `;
@@ -7892,20 +7892,18 @@ function viewHarmonicFilter(){
       <div class="card">
         <div class="h3">▸ Inputs</div>
         <div class="input-group"><label>حمل التصحيح (kVAr)</label><input type="number" id="hf_load" value="100"></div>
-        <div class="input-group"><label>نسبة التوافقيات THD-I (%)</label><input type="number" id="hf_thd" value="25"></div>
-        <div class="input-group"><label>أكثر توافقية موجودة</label>
-          <select id="hf_order"><option value="5">5th</option><option value="7">7th</option><option value="11">11th</option><option value="13">13th</option></select>
-        </div>
-        <div class="input-group"><label>نوع الحمل</label>
-          <select id="hf_type"><option>Standard (Mixed)</option><option>Heavy (VFD + UPS)</option><option>Light (LED + IT)</option></select>
+        <div class="input-group"><label>جهد النظام بين الفازات (V)</label><input type="number" id="hf_v" value="400"></div>
+        <div class="input-group"><label>التردد (Hz)</label><input type="number" id="hf_f" value="50"></div>
+        <div class="input-group"><label>نسبة الريأكتور p</label>
+          <select id="hf_type"><option value="7">7% — الخامسة أول توافقية كبيرة</option><option value="14">14% — الثالثة موجودة أيضًا</option><option value="5.67">5.67% — بنصيحة المصنّع أو الشبكة</option></select>
         </div>
         <button class="btn primary" onclick="calcHarmonic()">▶ احسب</button>
       </div>
       <div class="card">
         <div class="h3">▸ Detuned Reactor Selection</div>
-        <div class="note">p = 7% (5th harmonic dominant) → Most common</div>
-        <div class="note">p = 5.67% (7th harmonic dominant)</div>
-        <div class="note">p = 14% (3rd + 5th) → Heavy industrial</div>
+        <div class="note" dir="ltr">p = 7% → fr ≈ 189 Hz @ 50 Hz (5th is the lowest large harmonic)</div>
+        <div class="note" dir="ltr">p = 5.67% → fr ≈ 210 Hz (per maker/utility advice)</div>
+        <div class="note" dir="ltr">p = 14% → fr ≈ 134 Hz (3rd harmonic also present)</div>
         <div class="note tip" style="margin-top:12px">Detuned Reactor يحمي المكثفات من التوافقيات ويمنع resonance.</div>
       </div>
     </div>
@@ -7914,40 +7912,38 @@ function viewHarmonicFilter(){
 }
 function calcHarmonic(){
   const load = parseFloat(document.getElementById('hf_load').value);
-  const thd = parseFloat(document.getElementById('hf_thd').value);
-  const order = parseInt(document.getElementById('hf_order').value);
-  const type = document.getElementById('hf_type').value;
-
-  let p = 7;
-  if(order===7) p = 5.67;
-  else if(order===5) p = 7;
-  else if(order===11 || order===13) p = 5.67;
-  if(type.includes('Heavy')) p = 14;
-  else if(type.includes('Light')) p = 5.67;
-
-  const Ucap = 480 / (1 - (p/100)); // capacitor rated voltage = Un/(1-p) for a detuned filter
-  const Q_filter = load / (1 - p/100);
-
-  document.getElementById('hf_out').innerHTML = `
+  const Un = parseFloat(document.getElementById('hf_v').value) || 400;
+  const f = parseFloat(document.getElementById('hf_f').value) || 50;
+  const sel = document.getElementById('hf_type').value;
+  const out = document.getElementById('hf_out');
+  if(!(load > 0)){ out.innerHTML = '<div class="note warn">أدخل حمل تصحيح موجبًا (kVAr).</div>'; return; }
+  const p = sel === '14' ? 14 : sel === '5.67' ? 5.67 : 7;
+  const pf = p/100;
+  const Ucap = Un / (1 - pf);               // capacitor voltage Vc = V/(1-p)
+  const Qnet = load;                        // net kVAr wanted at the fundamental
+  const Qcap_line = Qnet * (1 - pf);        // capacitor kVAr measured at the line voltage
+  const Qnameplate = Qnet / (1 - pf);       // = Qcap_line x (Ucap/Un)^2, nameplate kVAr at Ucap
+  const fr = f / Math.sqrt(pf);
+  out.innerHTML = `
     <div class="grid c2">
       <div class="card">
         <div class="result">
-          <div class="big">Filter Bank: ${Q_filter.toFixed(1)} kVAr · Reactor p = ${p}%</div>
-          <div class="steps">Load kVAr = ${load} kVar
-THD-I = ${thd}%
-Dominant Harmonic = ${order}th
-Type = ${type}
-
+          <div class="big">Capacitor nameplate ≈ ${Qnameplate.toFixed(1)} kVAr @ ${Ucap.toFixed(0)} V · p = ${p}%</div>
+          <div class="steps" dir="ltr" style="text-align:left">Net kVAr wanted = ${Qnet} kVAr
+System = ${Un} V, ${f} Hz
 Reactor p = ${p}%
-Filter Bank kVAr = ${load} / (1 - ${p/100}) = ${Q_filter.toFixed(2)} kVAr
-Capacitor Rated Voltage = 480 / (1 - ${p/100}) = ${Ucap.toFixed(1)} V</div>
+
+Capacitor voltage Vc = V / (1 - p) = ${Un} / ${(1-pf).toFixed(4)} = ${Ucap.toFixed(1)} V
+Capacitor rating at line V = Qnet x (1 - p) = ${Qcap_line.toFixed(2)} kVAr
+Nameplate at Vc = Qnet / (1 - p) = ${Qnameplate.toFixed(2)} kVAr
+Series resonance fr = f / sqrt(p) = ${fr.toFixed(0)} Hz (order ${(fr/f).toFixed(2)})</div>
         </div>
       </div>
       <div class="card">
-        <div class="h3">▸ Validation</div>
-        <div class="note tip">Resonance Frequency = 50 × √(1/${p/100}) = ${(50 * Math.sqrt(1/(p/100))).toFixed(1)} Hz</div>
-        <div class="note tip">حماية المحول: تحقق من K-factor أو oversize.</div>
-        <div class="note warn">⚠️ تأكد من دراسة Harmonic Study كاملة قبل التركيب.</div>
+        <div class="h3">▸ Notes</div>
+        <div class="note">الصيغ: Vc = V/(1−p)، fr = f/√p، والقدرة الصافية Q = V²/(Xc−XL). المصدر: https://elecmetric.com/converters/detuning-reactor-formulas.html (مصدر ثانوي).</div>
+        <div class="note">الاختيار: 7% لو التوافقية الخامسة هي أول توافقية كبيرة، و14% لو الثالثة موجودة، و5.67% بناءً على نصيحة المصنّع أو شركة الكهرباء (مثلًا لتجنب تردد إشارات التحكم).</div>
+        <div class="note warn">هذا تقدير أولي لحجم بنك مكثفات مع ريأكتور، وليس تصميم فلتر. لا يحسب تيارات التوافقيات ولا تحميل الريأكتور ولا مقاومة الشبكة. اعتمد القياس ودراسة التوافقيات وبيانات المصنّع.</div>
       </div>
     </div>
   `;
@@ -20469,21 +20465,21 @@ function calcPhaseBalance(){
         <div class="phase-bar">
           <div style="width:${(l1/maxVal)*100}%;background:linear-gradient(90deg,#60a5fa,#0cbde8)">${l1.toFixed(1)} kW</div>
         </div>
-        <span class="value">${((l1/total)*100).toFixed(1)}%</span>
+        <span class="value">${total>0?((l1/total)*100).toFixed(1):'0.0'}%</span>
       </div>
       <div class="phase-bar-group">
         <span class="label">L2</span>
         <div class="phase-bar">
           <div style="width:${(l2/maxVal)*100}%;background:linear-gradient(90deg,#a78bfa,#8b5cf6)">${l2.toFixed(1)} kW</div>
         </div>
-        <span class="value">${((l2/total)*100).toFixed(1)}%</span>
+        <span class="value">${total>0?((l2/total)*100).toFixed(1):'0.0'}%</span>
       </div>
       <div class="phase-bar-group">
         <span class="label">L3</span>
         <div class="phase-bar">
           <div style="width:${(l3/maxVal)*100}%;background:linear-gradient(90deg,#fbbf24,#f59e0b)">${l3.toFixed(1)} kW</div>
         </div>
-        <span class="value">${((l3/total)*100).toFixed(1)}%</span>
+        <span class="value">${total>0?((l3/total)*100).toFixed(1):'0.0'}%</span>
       </div>
       <div class="phase-bar-group" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
         <span class="label" style="color:var(--fg)">TOTAL</span>
@@ -20495,9 +20491,9 @@ function calcPhaseBalance(){
     `;
   }
 
-  const status = unbalancePct <= 5 ? 'ok' : unbalancePct <= 10 ? 'warn' : 'bad';
-  const statusColor = status === 'ok' ? '#4ade80' : status === 'warn' ? '#f5c842' : '#f87171';
-  const statusText = status === 'ok' ? '✓ توازن ممتاز' : status === 'warn' ? '⚠ توازن مقبول' : '✗ خلل كبير';
+  const statusColor = 'var(--primary)';
+  const hiN = [['L1',l1],['L2',l2],['L3',l3]].sort((x,y)=>y[1]-x[1]);
+  const hiPh = hiN[0][0], loPh = hiN[2][0];
 
   const analysis = document.getElementById('pbAnalysis');
   if(analysis){
@@ -20507,20 +20503,17 @@ function calcPhaseBalance(){
           <div>
             <div class="font-mono" style="font-size:11px;color:${statusColor};letter-spacing:0.14em;text-transform:uppercase">Phase Unbalance</div>
             <div style="font-size:32px;font-weight:700;color:${statusColor};margin-top:6px;font-family:'Barlow';letter-spacing:-0.02em">${unbalancePct.toFixed(1)}%</div>
-            <div style="font-size:13px;color:${statusColor};margin-top:4px">${statusText}</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:4px"><span dir="ltr">(Max − Min) ÷ Max</span> على أحمال kW لكل فاز</div>
           </div>
           <div style="text-align:left">
-            <div style="font-size:12px;color:var(--muted);margin-bottom:6px">NEMA Unbalance: <strong style="color:var(--fg)">${NEMA_unbalance.toFixed(2)}%</strong></div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Max deviation from average: <strong style="color:var(--fg)">${NEMA_unbalance.toFixed(2)}%</strong></div>
             <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Average: <strong style="color:var(--fg)">${avg.toFixed(1)} kW</strong></div>
             <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Max - Min: <strong style="color:var(--fg)">${(max-min).toFixed(1)} kW</strong></div>
-            <div style="font-size:12px;color:var(--muted)">Limit (IEC): <strong style="color:var(--primary)">≤ 15%</strong></div>
           </div>
         </div>
 
-        <div class="note ${status==='ok'?'tip':status==='warn'?'warn':'danger'}" style="margin-top:16px">
-          ${status === 'ok' ? 'الأحمال موزعة بشكل ممتاز. الفرق أقل من 5% — لا إجراء مطلوب.' :
-            status === 'warn' ? 'الفرق بين 5% و 10%. يُنصح بإعادة توزيع بعض الأحمال من L2 إلى L3.' :
-            'الفرق يتجاوز 10% — يجب إعادة توزيع فوري. الفازات غير المتوازنة تسبب تيار في المحايد وسخونة المحول.'}
+        <div class="note tip" style="margin-top:16px">
+          ${max > 0 ? `الفاز الأعلى حملًا: ${hiPh}، والأقل: ${loPh}. لتحسين التوازن انقل بعض الأحمال أحادية الفاز من ${hiPh} إلى ${loPh}. لا يوجد حد قبول ثابت هنا: راجع حد عدم الاتزان المسموح في كود مشروعك أو في بيانات المحول والمحرك. القيمة بالـ kW لا تساوي دائمًا اتزان التيار، فتأكد بقياس التيار الفعلي بعد التشغيل.` : 'أدخل أحمال الفازات.'}
         </div>
       </div>
     `;
