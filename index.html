@@ -448,7 +448,7 @@
         <h2 data-i18n="section.tools">أدوات هندسية متقدمة</h2>
         <a href="tools.html" data-i18n="section.viewAll">عرض الكل ←</a>
     </div>
-    <div class="grid grid-3" id="toolsHomeGrid"></div>
+    <div class="grid grid-4" id="toolsHomeGrid"></div>
 </section>
 
 <!-- ========================================
@@ -913,7 +913,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Render Tools Home
     const toolsEl = document.getElementById("toolsHomeGrid");
     if (toolsEl && typeof TOOLS !== "undefined") {
-        const list = TOOLS.slice(0, 3);
+        const list = TOOLS.slice(0, 4);
         toolsEl.innerHTML = list.map(t => {
             const iconHTML = (window.Icons) ? Icons.build(t.icon, "", 26) : "";
             return '<a href="' + t.url + '" class="tool-card"><div class="tool-card-head"><div class="cat-icon">' + iconHTML + '</div><div><h3>' + t.name + '</h3><span class="tool-name-en">' + t.nameEn + '</span></div></div><p>' + t.desc + '</p><div class="tool-card-footer"><span class="tool-tag">' + catName(t.category) + '</span><span style="color: var(--theme-color); font-weight: 800; font-size: 13px;">فتح ←</span></div></a>';
