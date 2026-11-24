@@ -31,12 +31,12 @@
     return l.indexOf("en") === 0 ? "en" : "ar";
   }
   var T = {
-    ar: { title: "أهلاً بك في منصة هلال شليل", sub: "ثبّت التطبيق على هاتفك لتفتحه بسرعة وتستخدم الأدوات حتى لو النت ضعيف.",
+    ar: { title: "أهلاً بك في منصة هلال شليل", sub: "ثبّت التطبيق على هاتفك لتفتحه بسرعة من الشاشة الرئيسية.",
           btn: "ثبّت التطبيق على هاتفك", close: "إغلاق", done: "تم", howTitle: "طريقة التثبيت",
           ios: ["اضغط زر المشاركة <b>⎙</b> أسفل Safari", "اختر <b>«إضافة إلى الشاشة الرئيسية»</b>", "اضغط <b>«إضافة»</b>"],
           android: ["افتح قائمة المتصفح <b>⋮</b>", "اختر <b>«تثبيت التطبيق»</b> أو <b>«إضافة إلى الشاشة الرئيسية»</b>", "أكّد الإضافة"],
           inapp: ["افتح الموقع في <b>Chrome</b> أو <b>Safari</b> أولاً (من قائمة ⋮ اختر «فتح في المتصفح»)", "ثم اختر «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية»"] },
-    en: { title: "Welcome to Helal Shelil's platform", sub: "Install the app on your phone to open it fast and use the tools even on a weak connection.",
+    en: { title: "Welcome to Helal Shelil's platform", sub: "Install the app on your phone to open it quickly from your home screen.",
           btn: "Install the app on your phone", close: "Close", done: "Got it", howTitle: "How to install",
           ios: ["Tap the Share button <b>⎙</b> at the bottom of Safari", "Choose <b>“Add to Home Screen”</b>", "Tap <b>“Add”</b>"],
           android: ["Open the browser menu <b>⋮</b>", "Choose <b>“Install app”</b> or <b>“Add to Home screen”</b>", "Confirm"],
