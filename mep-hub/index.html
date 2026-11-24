@@ -7870,45 +7870,43 @@ function viewArcFlash(){
     <div id="af_out" style="margin-top:20px"></div>
   `;
 }
+/* IEEE 1584-2002 legacy model, LV 480 V grounded, enclosed. Pure function (tested). Boundary intentionally not computed/shown: unverified. */
+function arcFlashModel(bf, dist, t, G){
+  G = (G === undefined) ? 32 : G;
+  const Vkv = 0.48, Cf = 1.5, X = 1.641, K1 = -0.555, K2 = -0.113;
+  const lgI = -0.097 + 0.662*Math.log10(bf) + 0.0966*Vkv + 0.000526*G + 0.5588*Vkv*Math.log10(bf) - 0.00304*G*Math.log10(bf);
+  const Ia = Math.pow(10, lgI); // arcing current kA (from bolted Ibf)
+  const En = Math.pow(10, K1 + K2 + 1.081*Math.log10(Ia) + 0.0011*G); // intermediate normalized value
+  const E_J = 4.184 * Cf * En * (t / 0.2) * Math.pow(610, X) / Math.pow(dist, X);
+  return {Ia, En, E_J, E_cal: E_J / 4.184, G, Cf, X, K1, K2};
+}
 function calcArcFlash(){
-  const bf = parseFloat(document.getElementById('af_bf').value); // kA
+  const bf = parseFloat(document.getElementById('af_bf').value); // Ibf, kA (bolted, NOT arcing)
   const dist = parseFloat(document.getElementById('af_dist').value); // mm
   const t = parseFloat(document.getElementById('af_time').value); // s
-  const type = parseInt(document.getElementById('af_type').value);
-
-  // IEEE 1584-2002 empirical model, LV (<1 kV), 3-phase. Assumptions (shown in results):
-  // 480 V, grounded system, box (enclosed) configuration, gap 32 mm, Cf = 1.5, x = 1.641.
-  const Vkv = 0.48, G = 32, Cf = 1.5, X = 1.641;
-  const lgI = -0.097 + 0.662*Math.log10(bf) + 0.0966*Vkv + 0.000526*G + 0.5588*Vkv*Math.log10(bf) - 0.00304*G*Math.log10(bf);
-  const Ia = Math.pow(10, lgI); // arcing current kA
-  const K1 = -0.555, K2 = -0.113;
-  const logEn = K1 + K2 + 1.081 * Math.log10(Ia) + 0.0011 * G;
-  const En = Math.pow(10, logEn); // J/cm2 at 610 mm, 0.2 s
-  const E_J = 4.184 * Cf * En * (t / 0.2) * Math.pow(610, X) / Math.pow(dist, X); // J/cm2
-  const E = E_J / 4.184; // cal/cm2
-  const boundary = Math.pow(4.184 * Cf * En * (t / 0.2) * Math.pow(610, X) / 5.0, 1/X); // mm where E = 5 J/cm2 (1.2 cal/cm2)
-
   const out = document.getElementById('af_out');
-  const statusColor = 'var(--fg)';
+  if(!(bf > 0 && dist > 0 && t > 0)){ out.innerHTML = '<div class="note warn">أدخل قيمًا موجبة.</div>'; return; }
+  const m = arcFlashModel(bf, dist, t);
+  const L = v => `<bdi dir="ltr" style="unicode-bidi:isolate">${v}</bdi>`;
   out.innerHTML = `
     <div class="grid c2">
       <div class="card">
-        <div class="h3">▸ Results</div>
+        <div class="h3">▸ Results (نموذج تعليمي غير محقق)</div>
         <div class="result">
-          <div class="big" style="color:${statusColor}">Incident Energy: ${E.toFixed(2)} cal/cm²</div>
-          <div class="steps">Ibf = ${bf} kA  →  Ia (arcing) = ${Ia.toFixed(2)} kA
+          <div class="big" style="color:var(--fg)">Incident Energy: ${L(m.E_cal.toFixed(2)+' cal/cm²')}</div>
+          <div class="steps">Ibf (bolted) = ${bf} kA  →  Ia (arcing) = ${m.Ia.toFixed(2)} kA
 Working Distance = ${dist} mm
 Clearing Time = ${t} s
-Assumed: 480 V, grounded, enclosed (box), gap ${G} mm, Cf = ${Cf}, x = ${X}
-En = 10^(${K1} + ${K2} + 1.081×log10(Ia) + 0.0011×${G}) = ${En.toFixed(4)} J/cm²
+Fixed assumptions: 480 V, grounded, enclosed (box), gap ${m.G} mm, Cf = ${m.Cf}, x = ${m.X}
+Intermediate normalized value (610 mm, 0.2 s) = ${m.En.toFixed(4)}
 
-E = 4.184 × Cf × En × (t/0.2) × (610^x / D^x) = ${E_J.toFixed(2)} J/cm² = ${E.toFixed(2)} cal/cm²</div>
+E = 4.184 × Cf × En × (t/0.2) × (610^x / D^x) = ${m.E_J.toFixed(2)} J/cm² = ${m.E_cal.toFixed(2)} cal/cm²</div>
         </div>
       </div>
       <div class="card">
         <div class="h3">▸ الحد التقريبي</div>
-        <div class="note"><strong>Arc Flash Boundary (تقريبي):</strong> <bdi dir="ltr" style="unicode-bidi:isolate">${boundary.toFixed(0)} mm</bdi> (حيث الطاقة = <bdi dir="ltr" style="unicode-bidi:isolate">1.2 cal/cm²</bdi>)</div>
-        <div class="note warn"><strong>⚠ غير صالح لقرارات السلامة:</strong> هذا تقدير تعليمي بمعادلات IEEE 1584-2002 وافتراضات ثابتة (480 V، مؤرَّض، صندوق مغلق، فجوة 32 مم). لا يحدد فئة PPE ولا يجيز العمل على معدات مشحونة. IEEE 1584-2018 يعطي نتائج مختلفة. استخدم دراسة Arc Flash معتمدة وإجراءات NFPA 70E.</div>
+        <div class="note"><strong>Arc Flash Boundary:</strong> غير متاح حاليًا، لم يتم التحقق من حسابه بشكل مستقل.</div>
+        <div class="note warn"><strong>⚠ غير صالح لقرارات السلامة:</strong> هذا تقدير تعليمي بنموذج IEEE 1584-2002 القديم وافتراضات ثابتة (480 V، مؤرَّض، صندوق مغلق، فجوة 32 مم) ومصادر ثانوية فقط. لا يحدد فئة PPE ولا يجيز العمل على معدات مشحونة. IEEE 1584-2018 يعطي نتائج مختلفة. استخدم دراسة Arc Flash معتمدة وإجراءات NFPA 70E.</div>
       </div>
     </div>
   `;
