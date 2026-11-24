@@ -117,7 +117,7 @@ const EngBot = {
         } catch (err) {
             document.getElementById(typingId)?.remove();
             container.insertAdjacentHTML("beforeend", `
-                <div class="chat-message bot"><div class="chat-bubble">⚠️ عذرًا، حدث خطأ. تواصل مباشرة: <a href="tel:01124169656">01124169656</a></div></div>
+                <div class="chat-message bot"><div class="chat-bubble">⚠️ عذرًا، حدث خطأ. تواصل مباشرة: <a href="mailto:helalshelil1@gmail.com">helalshelil1@gmail.com</a></div></div>
             `);
         }
         this.isProcessing = false;
@@ -148,7 +148,7 @@ const EngBot = {
             const data = await res.json();
             return data.choices?.[0]?.message?.content || "لم أتمكن من الحصول على رد.";
         } catch (err) {
-            return `⚠️ عذرًا يا هندسة، حدث خطأ في الاتصال.<br>تواصل مباشرة: 📞 <a href="tel:01124169656">01124169656</a>`;
+            return `⚠️ عذرًا يا هندسة، حدث خطأ في الاتصال.<br>تواصل مباشرة: ✉️ <a href="mailto:helalshelil1@gmail.com">helalshelil1@gmail.com</a>`;
         }
     },
 

@@ -9,7 +9,7 @@ window.SEO_DATA = {
        INDEX
     ======================================== */
     index: {
-        title: "مكتب المهندس هلال شليل | حاسبات وأدوات هندسية للكهرباء والـ MEP",
+        title: "هلال شليل | حاسبات وأدوات هندسية للكهرباء والـ MEP",
         description: "منصة هندسية متكاملة لمهندس الكهرباء والـ MEP — حاسبات تصميم، Checklists، أكواد IEC و NFPA، موسوعة هندسية، وأدلة AutoCAD و Revit. مجانًا بالعربي.",
         keywords: "مهندس كهرباء, حاسبات هندسية, MEP, تصميم كهربائي, IEC 60364, كود مصري, AutoCAD, Revit, حساب كابل, حاسبة قاطع, هبوط جهد, تأريض",
         canonical: "https://hiilal.vercel.app/",
@@ -21,11 +21,11 @@ window.SEO_DATA = {
        ABOUT
     ======================================== */
     about: {
-        title: "عن المكتب | المهندس هلال شليل — Electrical & MEP Engineer",
-        description: "تعرف على المهندس هلال شليل — مهندس كهرباء و MEP، رئيس مجلس إدارة شركة النقيب جروب (AL NAQEEB GROUP) للمقاولات. متخصص في التصميم والتنفيذ والمكتب الفني. خبرة في Fire Alarm، Fire Fighting، ELV، BMS، و BIM & Revit.",
-        keywords: "هلال شليل, المهندس هلال شليل, Eng. Helal Shalil, رئيس مجلس إدارة شركة النقيب جروب, النقيب جروب, النقيب للمقاولات, AL NAQEEB GROUP, مهندس كهرباء, MEP Engineer, Electrical Engineer Egypt, تصميم كهربائي",
+        title: "عن هلال | المهندس هلال شليل — Electrical & MEP Engineer",
+        description: "تعرف على المهندس هلال شليل — مهندس كهرباء و MEP. متخصص في التصميم والتنفيذ والمكتب الفني. خبرة في Fire Alarm، Fire Fighting، ELV، BMS، و BIM & Revit.",
+        keywords: "هلال شليل, المهندس هلال شليل, Eng. Helal Shalil, مهندس كهرباء, MEP Engineer, Electrical Engineer Egypt, تصميم كهربائي",
         canonical: "https://hiilal.vercel.app/about.html",
-        breadcrumb: [{ name: "الرئيسية", url: "index.html" }, { name: "عن المكتب" }],
+        breadcrumb: [{ name: "الرئيسية", url: "index.html" }, { name: "عن هلال" }],
         schemaType: "AboutPage"
     },
 

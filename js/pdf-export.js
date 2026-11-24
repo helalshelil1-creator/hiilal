@@ -84,13 +84,13 @@ const PDFExport = {
 <body>
     <div class="pdf-header">
         <img src="${window.location.origin}${window.location.pathname.replace(/\/[^\/]*$/, '/')}images/logo.png" alt="Logo" class="logo" onerror="this.style.display='none'">
-        <h1>مكتب المهندس هلال شليل</h1>
+        <h1>هلال شليل</h1>
         <p>Eng. Helal Shalil — Electrical & MEP Engineering</p>
     </div>
     ${content}
     <div class="pdf-footer">
-        <p>© ${new Date().getFullYear()} <strong>مكتب المهندس هلال شليل</strong> — جميع الحقوق محفوظة</p>
-        <p>📞 01124169656 | ✉️ helalshelil1@gmail.com</p>
+        <p>© ${new Date().getFullYear()} <strong>هلال شليل</strong> — جميع الحقوق محفوظة</p>
+        <p>✉️ helalshelil1@gmail.com</p>
     </div>
     <script>
         window.onload = function() {

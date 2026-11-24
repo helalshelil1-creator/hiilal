@@ -7,7 +7,7 @@
 const SEO = {
     baseUrl: "https://hiilal.vercel.app",
     defaultImage: "https://hiilal.vercel.app/images/og-image.jpg",
-    siteName: "مكتب المهندس هلال شليل",
+    siteName: "هلال شليل",
 
     /* ========================================
        DETECT CURRENT PAGE
@@ -129,15 +129,11 @@ const SEO = {
                 "@type": "Person",
                 "@id": `${this.baseUrl}/#person`,
                 "name": "هلال شليل",
-                "alternateName": ["Eng. Helal Shalil", "المهندس هلال شليل", "رئيس مجلس إدارة شركة النقيب جروب", "Chairman of AL NAQEEB GROUP"],
+                "alternateName": ["Eng. Helal Shalil", "المهندس هلال شليل"],
                 "jobTitle": "Electrical & MEP Engineer",
                 "url": `${this.baseUrl}/about.html`,
                 "image": `${this.baseUrl}/images/alamein.jpg`,
-                "telephone": "+201124169656",
                 "email": "helalshelil1@gmail.com",
-                "sameAs": [
-                    "https://www.facebook.com/share/1LZyJP2zat/"
-                ],
                 "knowsAbout": [
                     "Electrical Engineering", "MEP Engineering", "AutoCAD",
                     "Revit MEP", "BIM", "Fire Alarm", "Fire Fighting",
@@ -156,8 +152,7 @@ const SEO = {
                 "founder": { "@id": `${this.baseUrl}/#person` },
                 "contactPoint": {
                     "@type": "ContactPoint",
-                    "telephone": "+201124169656",
-                    "contactType": "customer service",
+                        "contactType": "customer service",
                     "availableLanguage": ["Arabic", "English"],
                     "areaServed": "EG"
                 }

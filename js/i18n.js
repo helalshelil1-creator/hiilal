@@ -15,7 +15,7 @@ const I18N = {
             "nav.encyclopedia": "الموسوعة",
             "nav.content": "المحتوى",
             "nav.projects": "المشاريع",
-            "nav.about": "عن المكتب",
+            "nav.about": "عن هلال",
             "nav.admin": "لوحة التحكم",
 
             // Bottom Nav
@@ -27,7 +27,7 @@ const I18N = {
 
             // Hero
             "welcome.top": "مرحبًا بك في",
-            "welcome.brand": "مكتب المهندس هلال شليل",
+            "welcome.brand": "هلال شليل",
             "welcome.desc": "منصة هندسية متكاملة لمهندس الكهرباء والـ MEP — التصميم، التنفيذ، المكتب الفني، الحصر، الأكواد، والمواصفات… في مكان واحد.",
             "welcome.search": "ابحث عن أداة، حاسبة، موضوع، كود، منتج، أو مواصفة...",
 
@@ -52,8 +52,8 @@ const I18N = {
             "contact.facebook": "فيسبوك",
             "contact.email": "البريد الإلكتروني",
             "contact.send": "راسلني مباشرة",
-            "contact.page": "صفحة المكتب",
-            "contact.inquiries": "للاستفسارات",
+            "contact.page": "صفحة هلال",
+            "contact.inquiries": "للتواصل الشخصي",
 
             // Actions
             "action.open": "فتح ←",
@@ -177,7 +177,7 @@ const I18N = {
 
             // Hero
             "welcome.top": "Welcome to",
-            "welcome.brand": "Eng. Helal Shalil Office",
+            "welcome.brand": "Eng. Helal Shalil",
             "welcome.desc": "Complete engineering platform for Electrical & MEP engineers — Design, Execution, Technical Office, Quantity Takeoff, Codes & Specifications… all in one place.",
             "welcome.search": "Search for a tool, calculator, topic, code, product, or spec...",
 
@@ -203,7 +203,7 @@ const I18N = {
             "contact.email": "Email",
             "contact.send": "Send Message",
             "contact.page": "Office Page",
-            "contact.inquiries": "For Inquiries",
+            "contact.inquiries": "Personal contact",
 
             // Actions
             "action.open": "Open →",
