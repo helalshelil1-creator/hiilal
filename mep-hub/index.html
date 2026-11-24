@@ -2829,7 +2829,7 @@ function calcRun(){
     const el = document.getElementById('f_'+f.k);
     if(!el) return;
     v[f.k] = f.type==='select'? el.value : parseFloat(el.value);
-    if(f.type!=='select' && (isNaN(v[f.k]) || v[f.k]<=0)){
+    if(f.type!=='select' && (isNaN(v[f.k]) || v[f.k]<(f.def===0?0:Number.MIN_VALUE))){
       document.getElementById('calcOut').innerHTML = `<div class="err-box">⚠ مدخل غير صالح للحقل "${f.label}".</div>`;
       return;
     }
@@ -22046,7 +22046,7 @@ PE = ${Spe} mm²
       {k:'L', label:'Rod Length', unit:'m', def:3},
       {k:'d', label:'Rod Diameter', unit:'mm', def:16},
       {k:'n', label:'Number of Rods', unit:'', def:1},
-      {k:'spacing', label:'Spacing (if >1)', unit:'m', def:0},
+      {k:'spacing', label:'Spacing (غير مستخدم في هذا التقدير)', unit:'m', def:0},
     ],
     run(v){
       const a = v.d / 1000 / 2; // radius in m
@@ -22062,12 +22062,12 @@ PE = ${Spe} mm²
       return {
         main: `R_total ≈ ${Rtot.toFixed(2)} Ω`,
         steps:
-`R_single = (ρ / 2πL) × [ln(4L/a) − 1]
+`R_single = (ρ / 2πL) × [ln(4L/a) − 1]   (a = نصف قطر القضيب، تربة متجانسة، قضيب رأسي، Dwight 1936)
          = (${v.rho} / (2π × ${v.L})) × [ln(4×${v.L}/${a.toFixed(4)}) − 1]
          = ${R1.toFixed(2)} Ω
 
 ${v.n > 1 ? `R_n rods = R_single × factor / n
-factor ≈ ${factor.toFixed(2)} (mutual resistance)
+factor ≈ ${factor.toFixed(2)} (تقدير تقريبي ثابت للتداخل، لا يستخدم المسافة بين القضبان ولا مصدر له؛ للتصميم استخدم جداول BS 7430 أو IEEE 80 أو قياسًا ميدانيًا)
 R_total = ${R1.toFixed(2)} × ${factor.toFixed(2)} / ${v.n} = ${Rtot.toFixed(2)} Ω` : 'Single rod — no mutual effect'}
 
 الحد المستهدف الشائع في الممارسة: ≤ 5 Ω للـLV · ≤ 1 Ω للمحطات (ليس حدًا منصوصًا من IEC؛ راجع الكود المحلي وشرط الحماية)`,
@@ -27728,7 +27728,7 @@ Object.assign(TOPIC_CONTENT, {
     desc:'منظومة توفير مسار منخفض المعاوقة لتيار العطل — لحماية الأفراد والمعدات.',
     sections:[
       {title:'Types', en:'Classification', body:'<strong>TN-S:</strong> PE منفصل عن N<br><strong>TN-C-S:</strong> PE و N مدمجان ثم منفصلان<br><strong>TT:</strong> تأريض محلي منفصل<br><strong>IT:</strong> مصدر غير مؤرّض (للمستشفيات)'},
-      {title:'Target Resistance', en:'Typical practice', body:'قيم مستهدفة شائعة في الممارسة وليست حدًا منصوصًا في IEC 60364: محطات التحويل ≤ 1 Ω، أنظمة LV ≤ 5 Ω.<br>الحد الفعلي يُحدد بالكود المحلي وبشرط الحماية (في TT: Ra × IΔn ≤ 50 V) وبحسابات جهد اللمس والخطوة (IEEE 80) للمحطات.'},
+      {title:'Target Resistance', en:'Typical practice', body:'قيم مستهدفة شائعة في الممارسة وليست حدًا منصوصًا في IEC 60364: محطات التحويل ≤ 1 Ω، أنظمة LV ≤ 5 Ω.<br>الحد الفعلي يُحدد بالكود المحلي وبشرط الحماية. في نظام TT بحماية RCD: Ra × IΔn ≤ 50 V (25 V للمواقع المؤقتة والزراعية) حسب IEC 60364-4-41 كما يلخصه ABB RCD Technical Guide 2015، وللمحطات بحسابات جهد اللمس والخطوة (IEEE 80). قانون القضيب (Dwight 1936) يفترض تربة متجانسة وقضيبًا رأسيًا، و a = نصف القطر وليس القطر (استخدام القطر يعطي نتيجة أقل بنحو 11% في مثال منشور).'},
       {title:'Single Rod', en:'Formula', body:'R = (ρ / 2πL) × [ln(4L/a) − 1]', formula:'R = (ρ / 2πL) · [ln(4L/a) − 1]'},
       {title:'Improvement', en:'Techniques', body:'• Bentonite backfill<br>• Chemical earthing<br>• Multiple rods with spacing 2L<br>• Ring earth around building'},
     ],
