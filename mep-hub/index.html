@@ -2552,7 +2552,7 @@ sinφ = ${sinphi.toFixed(3)}
 
 ΔV% = ${dV.toFixed(2)} / ${v.V} × 100 = ${pct.toFixed(2)} %`,
         status: pct<=3?'ok':pct<=5?'warn':'bad',
-        note: pct<=3?'✓ داخل حد 3% الموصى به (IEC 60364).':pct<=5?'⚠ بين 3–5% — تحقق من مواصفات المشروع.':'✗ يتجاوز 5% — كبّر مقطع الكابل أو قلّل الطول.',
+        note: pct<=3?'✓ داخل حد 3% (إضاءة، شبكة عامة، IEC 60364-5-52 G.52.1). R محسوبة عند 20°C فتكون النتيجة أقل قليلًا من الفعلية عند درجة حرارة التشغيل.':pct<=5?'⚠ بين 3 و5%: يناسب القوى (5%) ولا يناسب الإضاءة (3%) حسب IEC 60364-5-52 G.52.1. R عند 20°C.':'✗ يتجاوز 5% — كبّر مقطع الكابل أو قلّل الطول.',
       };
     }
   },
@@ -2566,8 +2566,8 @@ sinφ = ${sinphi.toFixed(3)}
     ],
     run(v){
       const It = v.I/(v.Ca*v.Cg*v.Ci);
-      const sizes=[1.5,2.5,4,6,10,16,25,35,50,70,95,120,150,185,240,300,400,500,630];
-      const amp=[17.5,24,32,41,57,76,101,125,151,192,232,269,300,341,400,458,546,626,720];
+      const sizes=[1.5,2.5,4,6,10,16,25,35,50,70,95,120,150,185,240,300,400];
+      const amp=[17.5,24,32,41,57,76,96,119,144,184,223,259,299,341,403,464,557]; // BS 7671 Table 4D2A col 7: PVC 70°C multicore, Cu, Method C, three-phase
       let chosen=null,chosenA=null;
       for(let i=0;i<sizes.length;i++){if(amp[i]>=It){chosen=sizes[i];chosenA=amp[i];break;}}
       return {
@@ -2580,7 +2580,7 @@ sinφ = ${sinphi.toFixed(3)}
 أقرب مقاس قياسي:
 → ${chosen||'—'} mm²  (Iz = ${chosenA||'—'} A)
 
-Ref: IEC 60364-5-52 Table B.52.x (Method C, XLPE)`,
+Ref: BS 7671 Table 4D2A, col 7 (Cu, 70°C PVC multicore, Method C, 3-phase, 30°C). Not for XLPE, aluminium, other methods or single-core cables.`,
         status: chosen?'ok':'bad',
         note:'تحقق من موصل PE حسب IEC 60364-5-54 Table 54.2.',
       };
@@ -3517,11 +3517,11 @@ sinφ = 0.527
 4. التحقق من التحمل الحراري للقصر`,
     workedExample:{
       inputs:'Ib = 80A · Ca = 1.0 · Cg = 1.0 · Ci = 1.0',
-      result:'Iz المطلوب = 80A → 25 mm² (Iz = 101A)',
+      result:'Iz المطلوب = 80A → 25 mm² (Iz = 96A)',
       steps:`Iz = 80 / (1.0×1.0×1.0) = 80 A
-من جدول IEC 60364-5-52 (Method C, XLPE):
+من جدول BS 7671 4D2A العمود 7 (PVC، Method C، 3 فاز):
 - 16 mm² → 76 A (قريب لكن أقل)
-- 25 mm² → 101 A ✓
+- 25 mm² → 96 A ✓
 الاختيار: 25 mm²`
     },
     designConsiderations:['استخدم معاملات التخفيض المناسبة للتركيب الفعلي.','في المسارات الطويلة، هبوط الجهد يحكم قبل قدرة التحمل.','PE يجب أن يكون محققاً لفصل العطل السريع.'],
@@ -10531,7 +10531,7 @@ function viewPointByPoint(){
         <div class="h3">▸ Inputs</div>
         <div class="input-group"><label>Fixture Height (m)</label><input type="number" id="pbp_h" value="3.5" step="0.1" onchange="calcPBP()"></div>
         <div class="input-group"><label>Work Plane Height (m)</label><input type="number" id="pbp_w" value="0.75" step="0.1" onchange="calcPBP()"></div>
-        <div class="input-group"><label>Luminous Flux (lm)</label><input type="number" id="pbp_lm" value="3200" onchange="calcPBP()"></div>
+        <div class="input-group"><label>Luminous Intensity I (cd) at each angle, same for all</label><input type="number" id="pbp_lm" value="1000" onchange="calcPBP()"></div>
         <div class="input-group"><label>Fixture Beam Angles (°)</label><input id="pbp_angles" value="0,-30,-60,60,30" onchange="calcPBP()"></div>
       </div>
       <div class="card">
@@ -10544,7 +10544,7 @@ function viewPointByPoint(){
 function calcPBP(){
   const h = parseFloat(document.getElementById('pbp_h')?.value) || 3.5;
   const w = parseFloat(document.getElementById('pbp_w')?.value) || 0.75;
-  const lm = parseFloat(document.getElementById('pbp_lm')?.value) || 3200;
+  const lm = parseFloat(document.getElementById('pbp_lm')?.value) || 1000; // luminous intensity in cd (E = I cos(theta) / d^2)
   const anglesStr = document.getElementById('pbp_angles')?.value || '0,-30,-60,60,30';
   const angles = anglesStr.split(',').map(x=>parseFloat(x.trim())).filter(x=>!isNaN(x));
 
@@ -10563,14 +10563,14 @@ function calcPBP(){
     <div class="result">
       <div class="big">E_total = ${totalE.toFixed(1)} lux</div>
       <div class="steps">Working Height = ${H} m
-Luminous Flux = ${lm} lm
+Luminous Intensity I = ${lm} cd (E = I·cosθ / d², horizontal plane)
 
 ${detail.map(d=>`${d.a}° → d=${d.d.toFixed(2)}m → E=${d.E.toFixed(1)} lux`).join('\n')}
 
 E_total = Σ E_i = ${totalE.toFixed(1)} lux</div>
     </div>
     <div class="note tip" style="margin-top:14px">
-      <strong>Note:</strong> هذه الطريقة تحسب الإضاءة المباشرة فقط. للأدق، استخدم DIALux مع IES ملفات.
+      <strong>Note:</strong> هذه الطريقة تحسب الإضاءة المباشرة فقط، والمدخل هو شدة الإضاءة بالشمعة (cd) لكل كشاف من منحنى التوزيع الضوئي للمصنّع (وليست التدفق الضوئي lm). كل زاوية تمثل كشافًا. للأدق، استخدم DIALux مع ملفات IES.
     </div>
   `;
 }
@@ -10582,7 +10582,7 @@ function viewCablePulling(){
     ${crumb([{id:'dashboard',label:'لوحة التحكم'},{id:'site-execution',label:'Site'},{label:'Cable Pulling'}])}
     <div class="eyebrow" style="margin-bottom:10px">// CABLE · PULLING · TENSION</div>
     <h1 class="h1">≡ حاسبة Cable Pulling Tension</h1>
-    <p class="sub">حساب الشد الأقصى المسموح حسب IEC 60502.</p>
+    <p class="sub">تقدير شد السحب ومقارنته بحد شائع للموصل النحاسي (50 N/mm² كقيمة افتراضية). الحد الفعلي في داتاشيت الكابل ومواصفة المصنّع.</p>
 
     <div class="grid c2">
       <div class="card">
@@ -12477,7 +12477,7 @@ const AI_RESPONSES = [
 <li>التحقق من التحمل الحراري للقصر</li>
 </ol>
 
-مثال: Ib=80A → Iz=80A → 25mm² (Iz=101A) ✓
+مثال: Ib=80A → Iz=80A → 25mm² (Iz=96A) ✓
 
 🧮 استخدم <strong>حاسبة Cable Size</strong> للحساب التلقائي.`,
   },
@@ -20634,7 +20634,7 @@ function calcEnergy(){
         <div class="v">${subtotal.toFixed(2)}</div>
       </div>
       <div class="stat">
-        <div class="l">VAT (14%)</div>
+        <div class="l">VAT (14% افتراضي، عدّله حسب بلدك)</div>
         <div class="v">${tax.toFixed(2)}</div>
       </div>
       <div class="stat">
@@ -24656,9 +24656,9 @@ function calcGenSync(){
   const dp = Math.abs(p1 - p2);
 
   const checks = [
-    {name:'Frequency', a:f1.toFixed(2)+' Hz', b:f2.toFixed(2)+' Hz', status: df <= 0.2 ? 'pass' : df <= 0.5 ? 'warn' : 'fail', note:`Δf = ${df.toFixed(3)} Hz (المسموح ≤ 0.2 Hz)`},
-    {name:'Voltage', a:v1.toFixed(1)+' V', b:v2.toFixed(1)+' V', status: dv <= 5 ? 'pass' : dv <= 10 ? 'warn' : 'fail', note:`ΔV = ${dv.toFixed(1)} V (المسموح ≤ 5 V)`},
-    {name:'Phase Angle', a:p1.toFixed(1)+'°', b:p2.toFixed(1)+'°', status: dp <= 10 ? 'pass' : dp <= 20 ? 'warn' : 'fail', note:`Δφ = ${dp.toFixed(1)}° (المسموح ≤ 10°)`},
+    {name:'Frequency', a:f1.toFixed(2)+' Hz', b:f2.toFixed(2)+' Hz', status: df <= 0.2 ? 'pass' : df <= 0.5 ? 'warn' : 'fail', note:`Δf = ${df.toFixed(3)} Hz (قيمة عملية شائعة ≤ 0.2 Hz، راجع مواصفة المولد/السنكرونايزر)`},
+    {name:'Voltage', a:v1.toFixed(1)+' V', b:v2.toFixed(1)+' V', status: dv <= 5 ? 'pass' : dv <= 10 ? 'warn' : 'fail', note:`ΔV = ${dv.toFixed(1)} V (قيمة عملية شائعة ≤ 5 V، راجع مواصفة المولد/السنكرونايزر)`},
+    {name:'Phase Angle', a:p1.toFixed(1)+'°', b:p2.toFixed(1)+'°', status: dp <= 10 ? 'pass' : dp <= 20 ? 'warn' : 'fail', note:`Δφ = ${dp.toFixed(1)}° (قيمة عملية شائعة ≤ 10°، راجع مواصفة المولد/السنكرونايزر)`},
     {name:'Phase Sequence', a:s1, b:s2, status: s1 === s2 ? 'pass' : 'fail', note: s1 === s2 ? 'متطابق' : '⚠ ترتيب مختلف — خطر'},
   ];
 
