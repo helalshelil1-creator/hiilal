@@ -10258,6 +10258,7 @@ function viewSmokeExhaust(){
         <div class="input-group"><label>Design fire Q total (kW) — assumed</label><input type="number" id="se_q" value="1000" onchange="calcSmoke()"></div>
         <div class="input-group"><label>Clear height z (m)</label><input type="number" id="se_plume" value="3" onchange="calcSmoke()"></div>
         <div class="input-group"><label>Ambient Temp °C</label><input type="number" id="se_ta" value="25" onchange="calcSmoke()"></div>
+        <div class="input-group"><label>Site elevation (m)</label><input type="number" id="se_el" value="0" onchange="calcSmoke()"></div>
         <div class="input-group"><label>Room Area (m²) · for ACH only</label><input type="number" id="se_area" value="500" onchange="calcSmoke()"></div>
         <div class="input-group"><label>Room Height (m) · for ACH only</label><input type="number" id="se_height" value="6" onchange="calcSmoke()"></div>
       </div>
@@ -10270,11 +10271,15 @@ function viewSmokeExhaust(){
 }
 function calcSmoke(){
   const g = (id)=>parseFloat(document.getElementById(id)?.value);
-  const Q = g('se_q'), z = g('se_plume'), Ta = g('se_ta'), area = g('se_area'), H = g('se_height');
+  const Q = g('se_q'), z = g('se_plume'), Ta = g('se_ta'), area = g('se_area'), H = g('se_height'), el = g('se_el');
   const out = document.getElementById('se_out');
   if(!out) return;
-  if(!(Q>0) || !(z>0) || !(Ta>=-20 && Ta<=60) || !(area>0) || !(H>0)){
-    out.innerHTML = '<div class="note warn">أدخل قيماً موجبة. الحرارة المحيطة من -20 إلى 60 °C.</div>';
+  if(!(Q>0 && Q<=100000) || !(z>0) || !(Ta>=-20 && Ta<=60) || !(area>0) || !(H>0) || !(el>=0 && el<=3000)){
+    out.innerHTML = '<div class="note warn">المدى المدعوم: Q من 1 إلى 100000 kW، الحرارة المحيطة من -20 إلى 60 °C، الارتفاع عن البحر من 0 إلى 3000 م، وباقي القيم موجبة.</div>';
+    return;
+  }
+  if(z > H){
+    out.innerHTML = '<div class="note warn">الارتفاع z (من قاعدة الحريق إلى حد طبقة الدخان) لا يمكن أن يزيد عن ارتفاع الغرفة. راجع القيمتين.</div>';
     return;
   }
   const Qc = 0.7 * Q;                       // convective part, 0.7 Q (as cited in NFPA 92 summaries)
@@ -10286,7 +10291,8 @@ function calcSmoke(){
   const cp = 1.0;                           // kJ/kg·K
   const dT = Qc / (m * cp);
   const Ts = Ta + dT;
-  const rhoS = 101.325 / (0.287 * (Ts + 273.15));   // ideal gas at sea level
+  const P = 101.325 * Math.pow(1 - 2.25577e-5 * el, 5.25588);   // standard atmosphere, kPa
+  const rhoS = P / (0.287 * (Ts + 273.15));
   const V = m / rhoS;
   const V_m3h = V * 3600;
   const ACH = V_m3h / (area * H);
@@ -10299,13 +10305,14 @@ ${above ? 'z > z_l: m = 0.071·Qc^(1/3)·z^(5/3) + 0.0018·Qc' : 'z ≤ z_l: m =
   = ${m.toFixed(2)} kg/s
 
 ΔT = Qc / (m·cp) = ${dT.toFixed(0)} K  →  Ts = ${Ts.toFixed(0)} °C
-ρ_smoke = P/(R·T) = ${rhoS.toFixed(3)} kg/m³ (sea level)
+P = ${P.toFixed(1)} kPa (standard atmosphere at ${el} m)
+ρ_smoke = P/(R·T) = ${rhoS.toFixed(3)} kg/m³
 V = m / ρ_smoke = ${V.toFixed(2)} m³/s
 Equivalent to ${ACH.toFixed(1)} air changes/h of the room</div>
     </div>
     <div class="note warn" style="margin-top:14px">
       <strong>حدود الأداة:</strong> الناتج هو تدفق العمود عند الارتفاع z فقط. الحريق التصميمي، وارتفاع طبقة الدخان، وتدفق الهواء التعويضي، وعدد المراوح وهامش الأمان، والتحقق من السلوك الفعلي كلها تأتي من مهندس مكافحة الحريق والكود المعتمد واشتراطات الدفاع المدني. لا تستخدم الرقم كحجم مروحة نهائي.
-      <br>المعادلات متطابقة مع نصوص منشورة (ثانوية): <span dir="ltr">https://up.codes/s/axisymmetric-plumes</span> و <span dir="ltr">https://selvi.org/en/blog/nfpa/hotel-atrium-smoke-control-nfpa-92</span> (لم أقرأ نص NFPA 92 نفسه). المعادلات لا تصلح لحرائق بعيدة عن المحور أو أمام جدار أو لعمود نافذة أو بلكونة.
+      <br>المعادلات متطابقة مع نصوص منشورة (ثانوية): <span dir="ltr">https://up.codes/s/axisymmetric-plumes</span> و <span dir="ltr">https://selvi.org/en/blog/nfpa/hotel-atrium-smoke-control-nfpa-92</span> (لم أقرأ نص NFPA 92 نفسه). افتراضات تحتاج مراجعة: cp = 1.0 kJ/kg·K وكثافة الغاز المثالي (متسقة مع مثال عددي في mepcalculators.com لكن ليست من نص المعيار)، والحريق 1000 kW قيمة افتراضية فقط. كثافة الدخان بالضغط القياسي عند الارتفاع المدخل. المعادلات لا تصلح لحرائق بعيدة عن المحور أو أمام جدار أو لعمود نافذة أو بلكونة.
     </div>
   `;
 }
