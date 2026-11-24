@@ -20567,6 +20567,10 @@ function viewEnergyCost(){
           <label>Max Demand Charge (per kW)</label>
           <input type="number" id="en_rate_md" value="40" step="1" onchange="calcEnergy()">
         </div>
+        <div class="input-group">
+          <label>VAT / Tax (%) — من فاتورتك</label>
+          <input type="number" id="en_vat" value="14" step="0.5" min="0" onchange="calcEnergy()">
+        </div>
       </div>
     </div>
 
@@ -20603,7 +20607,8 @@ function calcEnergy(){
   const mdCost = md * rMD;
   const subtotal = peakCost + offCost + mdCost;
   const totalKWh = peak + off;
-  const tax = subtotal * 0.14; // 14% VAT (adjust per country)
+  const vatPct = parseFloat(document.getElementById('en_vat')?.value);
+  const tax = subtotal * ((vatPct >= 0 ? vatPct : 0) / 100);
   const total = subtotal + tax;
   const avgRate = totalKWh > 0 ? (subtotal / totalKWh) : 0;
   const loadFactor = md > 0 ? (totalKWh / (md * 24 * 30)) : 0;
@@ -20621,7 +20626,7 @@ function calcEnergy(){
         <div class="v">${subtotal.toFixed(2)}</div>
       </div>
       <div class="stat">
-        <div class="l">VAT (14% افتراضي، عدّله حسب بلدك)</div>
+        <div class="l">VAT / Tax (${(vatPct >= 0 ? vatPct : 0)}%)</div>
         <div class="v">${tax.toFixed(2)}</div>
       </div>
       <div class="stat">
@@ -20662,7 +20667,7 @@ function calcEnergy(){
         <div style="text-align:right;color:var(--fg)">${subtotal.toFixed(2)}</div>
       </div>
       <div class="tariff-row">
-        <div>VAT (14%)</div>
+        <div>VAT / Tax (${vatPct >= 0 ? vatPct : 0}%)</div>
         <div></div>
         <div></div>
         <div style="text-align:right;color:var(--spec)">${tax.toFixed(2)}</div>
@@ -24564,8 +24569,9 @@ function calcParallelXfmr(){
     <div class="validation-box ${overall === 'pass' ? 'ok' : overall === 'warn' ? '' : 'err'}" style="margin-top:16px">
       <div class="validation-icon">${icon(overall === 'pass' ? 'check' : overall === 'warn' ? 'alert' : 'x','mep-icon')}</div>
       <div class="validation-body">
-        <div class="title">${overall === 'pass' ? '✓ يمكن التوازي' : overall === 'warn' ? '⚠ يمكن التوازي مع تحفظ' : '✗ لا يمكن التوازي'}</div>
-        <div class="msg">${overall === 'pass' ? 'كل الشروط محققة — آمن للتوازي.' : overall === 'warn' ? 'هناك شرط أو أكثر يحتاج مراجعة. راجع النقاط أعلاه.' : 'لا يمكن التوازي — يجب تصحيح الشروط أولاً.'}</div>
+        <div class="title">${overall === 'pass' ? 'الفحوص الأولية متوافقة' : overall === 'warn' ? 'فحص أو أكثر خارج الحدود المرجعية' : 'اختلاف أساسي في فحص أو أكثر'}</div>
+        <div class="msg">هذه فحوص أولية فقط على الأرقام المدخلة (مجموعة التوصيل، نسبة الجهد، فرق %Z حتى 10%، ونسبة القدرة حتى 3:1). الحدود من مصدر ثانوي: <span dir="ltr">https://ziyaopower.com/en/knowledge/transformer-impedance-guide</span> (ينسبها إلى IEC 60076-1 وIEEE C57.12.00)، ولم أقرأ المعيارين. التوازي الفعلي يحتاج أيضًا الاستقطاب وتفاوت نسبة اللفات (حد مرجعي 0.5%) وتغيير المحوّل وبيانات الاختبار ومراجعة المصنّع. تقسيم الحمل هنا يفترض نفس نسبة X/R.</div>
+      </div>
       </div>
     </div>
   `;
@@ -24624,11 +24630,12 @@ function calcGenSync(){
   const df = Math.abs(f1 - f2);
   const dv = Math.abs(v1 - v2);
   const dp = Math.abs(p1 - p2);
+  const dvPct = v2 > 0 ? dv / v2 * 100 : 100;
 
   const checks = [
-    {name:'Frequency', a:f1.toFixed(2)+' Hz', b:f2.toFixed(2)+' Hz', status: df <= 0.2 ? 'pass' : df <= 0.5 ? 'warn' : 'fail', note:`Δf = ${df.toFixed(3)} Hz (قيمة عملية شائعة ≤ 0.2 Hz، راجع مواصفة المولد/السنكرونايزر)`},
-    {name:'Voltage', a:v1.toFixed(1)+' V', b:v2.toFixed(1)+' V', status: dv <= 5 ? 'pass' : dv <= 10 ? 'warn' : 'fail', note:`ΔV = ${dv.toFixed(1)} V (قيمة عملية شائعة ≤ 5 V، راجع مواصفة المولد/السنكرونايزر)`},
-    {name:'Phase Angle', a:p1.toFixed(1)+'°', b:p2.toFixed(1)+'°', status: dp <= 10 ? 'pass' : dp <= 20 ? 'warn' : 'fail', note:`Δφ = ${dp.toFixed(1)}° (قيمة عملية شائعة ≤ 10°، راجع مواصفة المولد/السنكرونايزر)`},
+    {name:'Frequency', a:f1.toFixed(2)+' Hz', b:f2.toFixed(2)+' Hz', status: df <= 0.1 ? 'pass' : 'fail', note:`Δf = ${df.toFixed(3)} Hz (مرجع المصنّع ≤ 0.1 Hz)`},
+    {name:'Voltage', a:v1.toFixed(1)+' V', b:v2.toFixed(1)+' V', status: dvPct <= 0.5 ? 'pass' : 'fail', note:`ΔV = ${dv.toFixed(1)} V = ${dvPct.toFixed(2)}% (مرجع المصنّع ≤ 0.5%)`},
+    {name:'Phase Angle', a:p1.toFixed(1)+'°', b:p2.toFixed(1)+'°', status: dp <= 5 ? 'pass' : dp <= 10 ? 'warn' : 'fail', note:`Δφ = ${dp.toFixed(1)}° (مرجع المصنّع: أقل من 5° للتزامن المتكرر، وأقل من 10° للتزامن النادر)`},
     {name:'Phase Sequence', a:s1, b:s2, status: s1 === s2 ? 'pass' : 'fail', note: s1 === s2 ? 'متطابق' : '⚠ ترتيب مختلف — خطر'},
   ];
 
@@ -24655,8 +24662,8 @@ function calcGenSync(){
     <div class="validation-box ${overall === 'pass' ? 'ok' : overall === 'warn' ? '' : 'err'}" style="margin-top:16px">
       <div class="validation-icon">${icon(overall === 'pass' ? 'check' : overall === 'warn' ? 'alert' : 'x','mep-icon')}</div>
       <div class="validation-body">
-        <div class="title">${overall === 'pass' ? '✓ جاهز للتزامن' : overall === 'warn' ? '⚠ يحتاج ضبط' : '✗ لا تتزامن الآن'}</div>
-        <div class="msg">${overall === 'pass' ? 'كل الشروط محققة — يمكن تشغيل Sync Check Relay.' : overall === 'warn' ? 'هناك انحرافات. اضبط الـGovernor (Hz) و AVR (V).' : 'لا تتزامن — تصحيح إجباري قبل الربط.'}</div>
+        <div class="title">${overall === 'pass' ? 'داخل نافذة المرجع' : overall === 'warn' ? 'على حد النافذة' : 'خارج نافذة المرجع'}</div>
+        <div class="msg">فحص أرقام لحظية فقط ضد نافذة مرجعية من مصنّع المولدات (Stamford AGN 022: التردد ضمن 0.1 Hz، ومعدل تغير التردد ≤ 0.1 Hz/s، والجهد ضمن 0.5%، وزاوية الإغلاق أقل من 5° للتزامن المتكرر وأقل من 10° للنادر): <span dir="ltr">https://www.stamford-avk.com/sites/stamfordavk/files/AGNs/AGN-022_B-Conditions-for-Parallel-Operation.pdf</span> (قرأتها). لا تحسب هنا معدل تغير التردد. إعدادات الـ Sync Check Relay والمزامن تأتي من مصنّع وحدة التحكم والمولد ومن متطلبات الشبكة، وليست قرار إغلاق القاطع.</div>
       </div>
     </div>
   `;
