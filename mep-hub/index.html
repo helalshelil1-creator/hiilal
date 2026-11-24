@@ -10457,7 +10457,7 @@ function viewPumpSelection(){
     ${crumb([{id:'dashboard',label:'لوحة التحكم'},{id:'calculators',label:'Calculators'},{label:'Pump Selection'}])}
     <div class="eyebrow" style="margin-bottom:10px">// PUMP · SELECTION · FROM CURVE</div>
     <h1 class="h1">◍ اختيار المضخة من المنحنى</h1>
-    <p class="sub">حدد Duty Point واختر المضخة المناسبة تلقائياً.</p>
+    <p class="sub">أداة توضيحية: تقارن نقطة التشغيل بثلاثة منحنيات افتراضية (P-100 وP-150 وP-200). هذه ليست مضخات تجارية ولا بيانات مصنّع.</p>
 
     <div class="grid c2">
       <div class="card">
@@ -10470,7 +10470,7 @@ function viewPumpSelection(){
         <div id="ps_out" style="margin-top:16px"></div>
       </div>
       <div class="card">
-        <div class="h3">▸ Pump Curves</div>
+        <div class="h3">▸ Pump Curves (illustrative, not a real catalog)</div>
         ${PUMP_CURVES.map((p,idx)=>`
           <div style="margin-bottom:16px">
             <div class="font-mono" style="font-size:12px;color:var(--primary);letter-spacing:0.1em;margin-bottom:6px">${p.model}</div>
@@ -10500,10 +10500,10 @@ function pickPump(){
   });
   const out = document.getElementById('ps_out');
   if(matched){
-    out.innerHTML = `<div class="result"><div class="big">✓ ${matched.model} مناسب</div><div class="steps">Duty Point: Q=${Q} m³/h · H=${H} m
-المضخة ${matched.model} تقع منحنى المناسب لها حول نقطة التشغيل.</div></div>`;
+    out.innerHTML = `<div class="result"><div class="big">${matched.model}: النقطة قريبة من المنحنى التوضيحي</div><div class="steps">Duty Point: Q=${Q} m³/h · H=${H} m
+الفرق عن المنحنى التوضيحي أقل من 8 m. هذا فحص تقريبي فقط.</div></div><div class="note tip" style="margin-top:14px"><strong>Note:</strong> الاختيار الفعلي يحتاج منحنى المصنّع الحقيقي، ومنحنى النظام، ونقطة أفضل كفاءة (BEP)، وNPSH المتاح مقابل المطلوب، والقدرة على المحرك.</div>`;
   } else {
-    out.innerHTML = `<div class="warn-box">لا توجد مضخة من الكتالوج تناسب Duty Point. اختر منحنى آخر أو راجع التصميم.</div>`;
+    out.innerHTML = `<div class="warn-box">لا يقع Duty Point قرب أي من المنحنيات التوضيحية الثلاثة. استخدم منحنيات مصنّع حقيقي.</div>`;
   }
 }
 
@@ -24635,7 +24635,7 @@ function calcGenSync(){
   const checks = [
     {name:'Frequency', a:f1.toFixed(2)+' Hz', b:f2.toFixed(2)+' Hz', status: df <= 0.1 ? 'pass' : 'fail', note:`Δf = ${df.toFixed(3)} Hz (الحد الأقصى المرجعي: 0.1 Hz)`},
     {name:'Voltage', a:v1.toFixed(1)+' V', b:v2.toFixed(1)+' V', status: dvPct <= 0.5 ? 'pass' : 'fail', note:`ΔV = ${dv.toFixed(1)} V (${dvPct.toFixed(2)} بالمئة) (الحد الأقصى المرجعي: 0.5 بالمئة)`},
-    {name:'Phase Angle', a:p1.toFixed(1)+'°', b:p2.toFixed(1)+'°', status: dp <= 5 ? 'pass' : dp <= 10 ? 'warn' : 'fail', note:`Δφ = ${dp.toFixed(1)}° (المرجع: أقل من 5 درجات للتزامن المتكرر وأقل من 10 درجات للنادر)`},
+    {name:'Δφ now', a:p1.toFixed(1)+'°', b:p2.toFixed(1)+'°', status: dp <= 5 ? 'pass' : dp <= 10 ? 'warn' : 'fail', note:`Δφ = ${dp.toFixed(1)}° (فرق لحظي وليس زاوية الإغلاق الفعلية عند غلق القاطع. المرجع: أقل من 5 درجات للمتكرر و10 للنادر)`},
     {name:'Phase Sequence', a:s1, b:s2, status: s1 === s2 ? 'pass' : 'fail', note: s1 === s2 ? 'متطابق' : '⚠ ترتيب مختلف — خطر'},
   ];
 
@@ -24662,8 +24662,8 @@ function calcGenSync(){
     <div class="validation-box ${overall === 'pass' ? 'ok' : overall === 'warn' ? '' : 'err'}" style="margin-top:16px">
       <div class="validation-icon">${icon(overall === 'pass' ? 'check' : overall === 'warn' ? 'alert' : 'x','mep-icon')}</div>
       <div class="validation-body">
-        <div class="title">${overall === 'pass' ? 'داخل نافذة المرجع' : overall === 'warn' ? 'على حد النافذة' : 'خارج نافذة المرجع'}</div>
-        <div class="msg">فحص أرقام لحظية فقط ضد نافذة مرجعية من مصنّع المولدات (Stamford AGN 022: التردد ضمن 0.1 Hz، ومعدل تغير التردد ≤ 0.1 Hz/s، والجهد ضمن 0.5%، وزاوية الإغلاق أقل من 5° للتزامن المتكرر وأقل من 10° للنادر): <span dir="ltr">https://www.stamford-avk.com/sites/stamfordavk/files/AGNs/AGN-022_B-Conditions-for-Parallel-Operation.pdf</span> (قرأتها). لا تحسب هنا معدل تغير التردد. إعدادات الـ Sync Check Relay والمزامن تأتي من مصنّع وحدة التحكم والمولد ومن متطلبات الشبكة، وليست قرار إغلاق القاطع.</div>
+        <div class="title">${overall === 'pass' ? 'الأرقام المدخلة داخل النافذة (فحص جزئي، لا يعني تحقق كل الشروط)' : overall === 'warn' ? 'على حد النافذة' : 'خارج نافذة المرجع'}</div>
+        <div class="msg">فحص جزئي لأرقام لحظية فقط ضد نافذة مرجعية من مصنّع المولدات (Stamford AGN 022: التردد ضمن 0.1 Hz، ومعدل تغير التردد ≤ 0.1 Hz/s (لم يُحسب هنا فلا يُعتبر مستوفى)، والجهد ضمن 0.5%، وزاوية الإغلاق أقل من 5° للتزامن المتكرر وأقل من 10° للنادر): <span dir="ltr">https://www.stamford-avk.com/sites/stamfordavk/files/AGNs/AGN-022_B-Conditions-for-Parallel-Operation.pdf</span> (قرأتها). لا تحسب هنا معدل تغير التردد. إعدادات الـ Sync Check Relay والمزامن تأتي من مصنّع وحدة التحكم والمولد ومن متطلبات الشبكة، وليست قرار إغلاق القاطع.</div>
       </div>
     </div>
   `;
