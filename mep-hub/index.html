@@ -10248,26 +10248,18 @@ function viewSmokeExhaust(){
   setTimeout(calcSmoke, 0);
   return `
     ${crumb([{id:'dashboard',label:'لوحة التحكم'},{id:'fire-fighting',label:'مكافحة الحريق'},{label:'Smoke Exhaust'}])}
-    <div class="eyebrow" style="margin-bottom:10px">// SMOKE · EXHAUST · NFPA 92</div>
+    <div class="eyebrow" style="margin-bottom:10px">// SMOKE · EXHAUST · PLUME EQUATION</div>
     <h1 class="h1">◭ حاسبة Smoke Exhaust</h1>
-    <p class="sub">حساب معدل سحب الدخان حسب NFPA 92.</p>
+    <p class="sub">تقدير أولي لتدفق الدخان من معادلة العمود (axisymmetric plume) المنشورة في NFPA 92. ليست تصميماً لنظام سحب دخان.</p>
 
     <div class="grid c2">
       <div class="card">
         <div class="h3">▸ Inputs</div>
-        <div class="input-group"><label>Room Type</label>
-          <select id="se_type" onchange="calcSmoke()">
-            <option value="Atrium">Atrium</option>
-            <option value="Corridor">Corridor</option>
-            <option value="Shopping Mall">Shopping Mall</option>
-            <option value="Parking">Parking</option>
-          </select>
-        </div>
-        <div class="input-group"><label>Area (m²)</label><input type="number" id="se_area" value="500" onchange="calcSmoke()"></div>
-        <div class="input-group"><label>Height (m)</label><input type="number" id="se_height" value="6" onchange="calcSmoke()"></div>
-        <div class="input-group"><label>Plume Height (m)</label><input type="number" id="se_plume" value="3" onchange="calcSmoke()"></div>
+        <div class="input-group"><label>Design fire Q total (kW) — assumed</label><input type="number" id="se_q" value="1000" onchange="calcSmoke()"></div>
+        <div class="input-group"><label>Clear height z (m)</label><input type="number" id="se_plume" value="3" onchange="calcSmoke()"></div>
         <div class="input-group"><label>Ambient Temp °C</label><input type="number" id="se_ta" value="25" onchange="calcSmoke()"></div>
-        <div class="input-group"><label>Smoke Temp °C</label><input type="number" id="se_ts" value="70" onchange="calcSmoke()"></div>
+        <div class="input-group"><label>Room Area (m²) · for ACH only</label><input type="number" id="se_area" value="500" onchange="calcSmoke()"></div>
+        <div class="input-group"><label>Room Height (m) · for ACH only</label><input type="number" id="se_height" value="6" onchange="calcSmoke()"></div>
       </div>
       <div class="card">
         <div class="h3">▸ Results</div>
@@ -10277,50 +10269,43 @@ function viewSmokeExhaust(){
   `;
 }
 function calcSmoke(){
-  const area = parseFloat(document.getElementById('se_area')?.value) || 500;
-  const H = parseFloat(document.getElementById('se_height')?.value) || 6;
-  const z = parseFloat(document.getElementById('se_plume')?.value) || 3;
-  const Ta = parseFloat(document.getElementById('se_ta')?.value) || 25;
-  const Ts = parseFloat(document.getElementById('se_ts')?.value) || 70;
-  const type = document.getElementById('se_type')?.value || 'Atrium';
-
-  const dT = Ts - Ta;
-  // Plume mass flow per NFPA 92 (axisymmetric, Heskestad)
-  const Qc = 1000; // assumed convective heat release kW
-  const z0 = 0.166 * Math.pow(Qc, 2/5); // limiting flame height z_l
-  const m = z > z0
-    ? 0.071 * Math.pow(Qc, 1/3) * Math.pow(z, 5/3) + 0.0018 * Qc
-    : 0.032 * Math.pow(Qc, 3/5) * z;
-  const rho = 1.2;
-  const V = (m * (Ta + 273)) / (rho * (Ts + 273));
-  const V_m3h = V * 3600;
-
-  // Air change rate for exhaust
-  const ACH = V_m3h / (area * H);
-
+  const g = (id)=>parseFloat(document.getElementById(id)?.value);
+  const Q = g('se_q'), z = g('se_plume'), Ta = g('se_ta'), area = g('se_area'), H = g('se_height');
   const out = document.getElementById('se_out');
   if(!out) return;
+  if(!(Q>0) || !(z>0) || !(Ta>=-20 && Ta<=60) || !(area>0) || !(H>0)){
+    out.innerHTML = '<div class="note warn">أدخل قيماً موجبة. الحرارة المحيطة من -20 إلى 60 °C.</div>';
+    return;
+  }
+  const Qc = 0.7 * Q;                       // convective part, 0.7 Q (as cited in NFPA 92 summaries)
+  const zl = 0.166 * Math.pow(Qc, 2/5);     // limiting elevation
+  const above = z > zl;
+  const m = above
+    ? 0.071 * Math.pow(Qc, 1/3) * Math.pow(z, 5/3) + 0.0018 * Qc
+    : 0.032 * Math.pow(Qc, 3/5) * z;
+  const cp = 1.0;                           // kJ/kg·K
+  const dT = Qc / (m * cp);
+  const Ts = Ta + dT;
+  const rhoS = 101.325 / (0.287 * (Ts + 273.15));   // ideal gas at sea level
+  const V = m / rhoS;
+  const V_m3h = V * 3600;
+  const ACH = V_m3h / (area * H);
   out.innerHTML = `
     <div class="result">
-      <div class="big">Smoke Exhaust: ${V.toFixed(2)} m³/s  ·  ${V_m3h.toFixed(0)} m³/h</div>
-      <div class="steps">Room: ${type}
-Area = ${area} m²  Height = ${H} m  Volume = ${(area*H).toFixed(0)} m³
-
-Plume mass flow (NFPA 92):
-Qc (assumed design fire, convective) = ${Qc} kW
-z_l = 0.166 × Qc^(2/5) = ${z0.toFixed(2)} m
-${z > z0 ? 'z > z_l: m = 0.071 × Qc^(1/3) × z^(5/3) + 0.0018 × Qc' : 'z ≤ z_l: m = 0.032 × Qc^(3/5) × z'}
+      <div class="big">m ≈ ${m.toFixed(1)} kg/s · V ≈ ${V.toFixed(1)} m³/s (${V_m3h.toFixed(0)} m³/h)</div>
+      <div class="steps" dir="ltr" style="text-align:left">Q = ${Q} kW (assumed)  →  Qc = 0.7·Q = ${Qc.toFixed(0)} kW
+z_l = 0.166·Qc^(2/5) = ${zl.toFixed(2)} m
+${above ? 'z > z_l: m = 0.071·Qc^(1/3)·z^(5/3) + 0.0018·Qc' : 'z ≤ z_l: m = 0.032·Qc^(3/5)·z'}
   = ${m.toFixed(2)} kg/s
 
-V_smoke = m × (Ta+273) / (ρ_smoke × (Ts+273))
-        = ${m.toFixed(2)} × ${(Ta+273).toFixed(0)} / (${rho} × ${(Ts+273).toFixed(0)})
-        = ${V.toFixed(2)} m³/s
-
-Suggested fan: ${(V*1.15).toFixed(2)} m³/s (with 15% margin)
-Air changes = ${ACH.toFixed(1)} ACH</div>
+ΔT = Qc / (m·cp) = ${dT.toFixed(0)} K  →  Ts = ${Ts.toFixed(0)} °C
+ρ_smoke = P/(R·T) = ${rhoS.toFixed(3)} kg/m³ (sea level)
+V = m / ρ_smoke = ${V.toFixed(2)} m³/s
+Equivalent to ${ACH.toFixed(1)} air changes/h of the room</div>
     </div>
-    <div class="note tip" style="margin-top:14px">
-      <strong>Standards:</strong> NFPA 92 · ASHRAE Handbook · SFPE Handbook
+    <div class="note warn" style="margin-top:14px">
+      <strong>حدود الأداة:</strong> الناتج هو تدفق العمود عند الارتفاع z فقط. الحريق التصميمي، وارتفاع طبقة الدخان، وتدفق الهواء التعويضي، وعدد المراوح وهامش الأمان، والتحقق من السلوك الفعلي كلها تأتي من مهندس مكافحة الحريق والكود المعتمد واشتراطات الدفاع المدني. لا تستخدم الرقم كحجم مروحة نهائي.
+      <br>المعادلات متطابقة مع نصوص منشورة (ثانوية): <span dir="ltr">https://up.codes/s/axisymmetric-plumes</span> و <span dir="ltr">https://selvi.org/en/blog/nfpa/hotel-atrium-smoke-control-nfpa-92</span> (لم أقرأ نص NFPA 92 نفسه). المعادلات لا تصلح لحرائق بعيدة عن المحور أو أمام جدار أو لعمود نافذة أو بلكونة.
     </div>
   `;
 }
