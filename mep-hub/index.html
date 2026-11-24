@@ -7829,7 +7829,7 @@ function viewArcFlash(){
         <div class="input-group"><label>Working Distance (mm)</label><input type="number" id="af_dist" value="455"></div>
         <div class="input-group"><label>Clearing Time (s)</label><input type="number" id="af_time" value="0.2" step="0.01"></div>
         <div class="input-group"><label>System Type</label>
-          <select id="af_type"><option value="1">Switchgear (≥ 1000V)</option><option value="2">MCC & Panels (≤ 1000V)</option><option value="3">Cable (in conduit)</option></select>
+          <select id="af_type" disabled><option value="2">LV enclosed equipment, 480 V (assumed, ≤ 1000 V only)</option></select>
         </div>
         <button class="btn primary" onclick="calcArcFlash()">▶ احسب</button>
       </div>
@@ -7860,20 +7860,17 @@ function calcArcFlash(){
   const t = parseFloat(document.getElementById('af_time').value); // s
   const type = parseInt(document.getElementById('af_type').value);
 
-  // Simplified IEEE 1584-2002 formula (for demonstration)
-  // log10(En) = K1 + K2 + 1.081 × log10(Ibf) + 0.0011 × G
-  // K1 = -0.792 (box) or -0.555 (open); K2 = 0 (ungrounded) or -0.113 (grounded)
-  const K1 = -0.555; // open configuration (approximation)
-  const K2 = 0;
-  const G = dist;
-  const logEn = K1 + K2 + 1.081 * Math.log10(bf) + 0.0011 * G;
-  const En = Math.pow(10, logEn); // J/cm² at working distance
-  // E = 4.184 × En × (t / 0.2) × (610^X / D^X)
-  const Cf = 1.0;
-  const X = 1.641; // distance factor
-  const E = 4.184 * Cf * En * (t / 0.2) * Math.pow(610, X) / Math.pow(G, X);
-  // Boundary where E = 1.2 cal/cm²
-  const boundary = 610 * Math.pow((4.184 * Cf * En * (t / 0.2) * Math.pow(610, X)) / (1.2 * Math.pow(610, X)), 1/X);
+  // IEEE 1584-2002 empirical model, LV (<1 kV), 3-phase. Assumptions (shown in results):
+  // 480 V, grounded system, box (enclosed) configuration, gap 32 mm, Cf = 1.5, x = 1.641.
+  const Vkv = 0.48, G = 32, Cf = 1.5, X = 1.641;
+  const lgI = -0.097 + 0.662*Math.log10(bf) + 0.0966*Vkv + 0.000526*G + 0.5588*Vkv*Math.log10(bf) - 0.00304*G*Math.log10(bf);
+  const Ia = Math.pow(10, lgI); // arcing current kA
+  const K1 = -0.555, K2 = -0.113;
+  const logEn = K1 + K2 + 1.081 * Math.log10(Ia) + 0.0011 * G;
+  const En = Math.pow(10, logEn); // J/cm2 at 610 mm, 0.2 s
+  const E_J = Cf * En * (t / 0.2) * Math.pow(610, X) / Math.pow(dist, X); // J/cm2
+  const E = E_J / 4.184; // cal/cm2
+  const boundary = Math.pow(Cf * En * (t / 0.2) * Math.pow(610, X) / 5.0, 1/X); // mm where E = 5 J/cm2 (1.2 cal/cm2)
 
   let cat = 'Danger';
   let clothing = 'De-energize only';
@@ -7891,14 +7888,13 @@ function calcArcFlash(){
         <div class="h3">▸ Results</div>
         <div class="result">
           <div class="big" style="color:${statusColor}">Incident Energy: ${E.toFixed(2)} cal/cm²</div>
-          <div class="steps">Ibf = ${bf} kA
+          <div class="steps">Ibf = ${bf} kA  →  Ia (arcing) = ${Ia.toFixed(2)} kA
 Working Distance = ${dist} mm
 Clearing Time = ${t} s
-En = 10^(${K1} + ${K2} + 1.081×log10(${bf}) + 0.0011×${G})
-   = ${En.toFixed(4)} J/cm²
+Assumed: 480 V, grounded, enclosed (box), gap ${G} mm, Cf = ${Cf}, x = ${X}
+En = 10^(${K1} + ${K2} + 1.081×log10(Ia) + 0.0011×${G}) = ${En.toFixed(4)} J/cm²
 
-E = 4.184 × 1.0 × ${En.toFixed(4)} × (${t}/0.2) × (610^${X}/${dist}^${X})
-  = ${E.toFixed(2)} cal/cm²</div>
+E = Cf × En × (t/0.2) × (610^x / D^x) = ${E_J.toFixed(2)} J/cm² = ${E.toFixed(2)} cal/cm²</div>
         </div>
       </div>
       <div class="card">
@@ -7911,6 +7907,7 @@ E = 4.184 × 1.0 × ${En.toFixed(4)} × (${t}/0.2) × (610^${X}/${dist}^${X})
           </div>
         </div>
         <div class="note"><strong>Arc Flash Boundary:</strong> ${boundary.toFixed(0)} mm (where E = 1.2 cal/cm²)</div>
+        <div class="note warn"><strong>تنبيه سلامة:</strong> تقدير تعليمي مبسّط بمعادلات IEEE 1584-2002 بافتراضات ثابتة معروضة أعلاه (480 V، مؤرَّض، صندوق مغلق، فجوة 32 مم). لا يُستخدم لاختيار معدات الوقاية PPE ولا للعمل على معدات مشحونة. المعيار الأحدث IEEE 1584-2018 يعطي نتائج مختلفة. المطلوب دراسة Arc Flash معتمدة.</div>
         <div class="note warn"><strong>الإجراء:</strong> ${E >= 40 ? 'لا تعمل live — افصل أولاً.' : 'اتبع PPE المطلوب وسجل Procedural Analysis.'}</div>
       </div>
     </div>
@@ -7963,7 +7960,7 @@ function calcHarmonic(){
   if(type.includes('Heavy')) p = 14;
   else if(type.includes('Light')) p = 5.67;
 
-  const Ucap = 480 / Math.sqrt(1 - (p/100)); // capacitor voltage
+  const Ucap = 480 / (1 - (p/100)); // capacitor rated voltage = Un/(1-p) for a detuned filter
   const Q_filter = load / (1 - p/100);
 
   document.getElementById('hf_out').innerHTML = `
@@ -7978,7 +7975,7 @@ Type = ${type}
 
 Reactor p = ${p}%
 Filter Bank kVAr = ${load} / (1 - ${p/100}) = ${Q_filter.toFixed(2)} kVAr
-Capacitor Rated Voltage = 480 / √(1 - ${p/100}) = ${Ucap.toFixed(1)} V</div>
+Capacitor Rated Voltage = 480 / (1 - ${p/100}) = ${Ucap.toFixed(1)} V</div>
         </div>
       </div>
       <div class="card">
@@ -10321,8 +10318,10 @@ function calcSmoke(){
   const dT = Ts - Ta;
   // Plume mass flow per NFPA 92 (axisymmetric, Heskestad)
   const Qc = 1000; // assumed convective heat release kW
-  const z0 = 0.166 * Math.pow(Qc, 2/5);
-  const m = 0.071 * Math.pow(Qc, 1/3) * Math.pow(z + z0, 5/3);
+  const z0 = 0.166 * Math.pow(Qc, 2/5); // limiting flame height z_l
+  const m = z > z0
+    ? 0.071 * Math.pow(Qc, 1/3) * Math.pow(z, 5/3) + 0.0018 * Qc
+    : 0.032 * Math.pow(Qc, 3/5) * z;
   const rho = 1.2;
   const V = (m * (Ta + 273)) / (rho * (Ts + 273));
   const V_m3h = V * 3600;
@@ -10339,9 +10338,9 @@ function calcSmoke(){
 Area = ${area} m²  Height = ${H} m  Volume = ${(area*H).toFixed(0)} m³
 
 Plume mass flow (NFPA 92):
-z0 = 0.166 × Qc^(2/5) = ${z0.toFixed(2)} m
-m = 0.071 × Qc^(1/3) × (z + z0)^(5/3)
-  = 0.071 × ${Math.pow(Qc,1/3).toFixed(2)} × ${Math.pow(z+z0,5/3).toFixed(2)}
+Qc (assumed design fire, convective) = ${Qc} kW
+z_l = 0.166 × Qc^(2/5) = ${z0.toFixed(2)} m
+${z > z0 ? 'z > z_l: m = 0.071 × Qc^(1/3) × z^(5/3) + 0.0018 × Qc' : 'z ≤ z_l: m = 0.032 × Qc^(3/5) × z'}
   = ${m.toFixed(2)} kg/s
 
 V_smoke = m × (Ta+273) / (ρ_smoke × (Ts+273))
