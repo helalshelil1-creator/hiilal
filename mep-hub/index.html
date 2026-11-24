@@ -22117,7 +22117,7 @@ P_input = P_shaft / η_motor
 • Circuits up to 500 V: test 500 V DC, min 1.0 MΩ
 • Circuits above 500 V: test 1000 V DC, min 1.0 MΩ
 
-Selected category: ${row.c}
+Selected category: ${v.cat==='selv'?'SELV / PELV':v.cat==='lv'?'up to 500 V (not SELV/PELV)':'above 500 V'}
 Test voltage: ${row.t} V DC, minimum: ${row.m} MΩ
 If SPDs or sensitive equipment cannot be disconnected: test voltage may be reduced to 250 V DC but the reading must still be at least 1 MΩ (BS 7671 643.3.2 as summarised by IET).`,
         status: 'ok',
