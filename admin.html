@@ -237,10 +237,12 @@ body { background: #050d1a; color: #f1f5f9; padding-bottom: 0; }
     /* ========================================
        AUTH
     ======================================== */
-    window.unlockAdmin = function(e) {
+    window.unlockAdmin = async function(e) {
         e.preventDefault();
         const p = document.getElementById("adminPass").value;
-        if (p === window.ADMIN_PASSWORD) {
+        const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(p));
+        const hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+        if (hex === window.ADMIN_PASSWORD_SHA256) {
             sessionStorage.setItem(ADMIN_UNLOCK_KEY, "1");
             showPanel();
             adminToast("🔓 مرحبًا بك يا هندسة", "success");

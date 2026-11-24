@@ -12,3 +12,7 @@ Thumbs.db
 
 # Build
 /dist/
+
+# hiilal security prep
+scripts/serviceAccountKey.json
+backup/

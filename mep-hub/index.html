@@ -2069,7 +2069,7 @@ function toggleTheme(){
   state.theme = state.theme==='dark'?'light':'dark';
   document.body.setAttribute('data-theme', state.theme);
   localStorage.setItem('theme', state.theme);
-  document.getElementById('themeBtn').textContent = state.theme==='dark'?'◐':'◑';
+  var _tb=document.getElementById('themeBtn'); if(_tb) _tb.textContent = state.theme==='dark'?'◐':'◑';
 }
 function toast(msg){
   const t = document.getElementById('toast');
@@ -3400,7 +3400,7 @@ function openAIAssistant(){
 /* ============ INIT ============ */
 function init(){
   document.body.setAttribute('data-theme', state.theme);
-  document.getElementById('themeBtn').textContent = state.theme==='dark'?'◐':'◑';
+  var _tb=document.getElementById('themeBtn'); if(_tb) _tb.textContent = state.theme==='dark'?'◐':'◑';
   renderNav();
   navigate('dashboard');
 
@@ -19575,6 +19575,7 @@ console.log('%c🎉 المنصة كاملة 100% — كل الأزرار تعم�
 ============================================================ -->
 <link href="vendor/jspdf.umd.min.js" rel="preload" as="script">
 <script src="vendor/xlsx.full.min.js" defer></script>
+<script src="vendor/qrcode.min.js" defer></script>
 <script src="vendor/jspdf.umd.min.js" defer></script>
 
 <style>
@@ -29049,7 +29050,7 @@ function showCopyToast(msg){
 
 /* Handle initial hash + hash changes */
 function loadFromHash(){
-  const hash = location.hash.replace('#/', '');
+  const hash = location.hash.replace(/^#\/?/, '');
   if(hash && hash !== state.route){
     setTimeout(()=>{
       try{ navigate(hash); }catch(e){}
@@ -29058,7 +29059,7 @@ function loadFromHash(){
 }
 
 window.addEventListener('hashchange', ()=>{
-  const hash = location.hash.replace('#/', '');
+  const hash = location.hash.replace(/^#\/?/, '');
   if(hash && hash !== state.route){
     try{ navigate(hash); }catch(e){}
   }
@@ -34326,7 +34327,7 @@ const SITE_LOCATIONS = [
 
 function viewSiteQRCodes(){
   setTimeout(() => {
-    document.querySelectorAll('.qr-code-canvas').forEach((canvas, i) => {
+    document.querySelectorAll('.qr-code-canvas canvas').forEach((canvas, i) => {
       generateQRToCanvas(canvas, SITE_LOCATIONS[i]?.url || '', 140);
     });
   }, 100);
@@ -34336,6 +34337,7 @@ function viewSiteQRCodes(){
     <div class="eyebrow" style="margin-bottom:10px">// SITE · QR · CODES</div>
     <h1 class="h1">▣ رموز QR للموقع</h1>
     <p class="sub">رموز قابلة للطباعة — ألصقها على المعدات لتصل إلى بياناتها بالجوال.</p>
+    <p class="sub" style="color:var(--warning,#f5b042);margin-top:6px">⚠ البيانات والروابط الحالية نماذج توضيحية غير فعّالة لأغراض العرض — استبدلها ببيانات وروابط معداتك الحقيقية قبل الطباعة واللصق.</p>
 
     <div class="kpi" style="margin-top:24px">
       <button class="btn primary" onclick="printAllQRs()">🖨 طباعة الكل</button>
@@ -34360,37 +34362,32 @@ function generateQRToCanvas(canvas, text, size){
   const ctx = canvas.getContext('2d');
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, 0, size, size);
-
-  // Deterministic hash
-  let hash = 0;
-  for(let i = 0; i < text.length; i++){
-    hash = ((hash << 5) - hash) + text.charCodeAt(i);
-    hash |= 0;
-  }
-
-  const cells = 25;
-  const cellSize = size / cells;
-  ctx.fillStyle = '#15181d';
-
-  for(let y = 0; y < cells; y++){
-    for(let x = 0; x < cells; x++){
-      const v = Math.abs(Math.sin(hash + x * 12.9898 + y * 78.233) * 43758.5453) % 1;
-      if(v > 0.5) ctx.fillRect(x*cellSize, y*cellSize, cellSize, cellSize);
+  if(typeof qrcode === 'function'){
+    // Real, scannable QR code (qrcode-generator, vendored)
+    const qr = qrcode(0, 'M');
+    qr.addData(text);
+    qr.make();
+    const cells = qr.getModuleCount();
+    const quiet = 2; // quiet zone in modules
+    const total = cells + quiet*2;
+    const cellSize = size / total;
+    ctx.fillStyle = '#15181d';
+    for(let r = 0; r < cells; r++){
+      for(let c = 0; c < cells; c++){
+        if(qr.isDark(r, c)){
+          ctx.fillRect((c+quiet)*cellSize, (r+quiet)*cellSize, Math.ceil(cellSize), Math.ceil(cellSize));
+        }
+      }
     }
+    return;
   }
-
-  // Finder patterns
-  const drawFinder = (x, y) => {
-    ctx.fillStyle = '#15181d';
-    ctx.fillRect(x, y, cellSize*7, cellSize*7);
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(x+cellSize, y+cellSize, cellSize*5, cellSize*5);
-    ctx.fillStyle = '#15181d';
-    ctx.fillRect(x+cellSize*2, y+cellSize*2, cellSize*3, cellSize*3);
-  };
-  drawFinder(0, 0);
-  drawFinder(size-cellSize*7, 0);
-  drawFinder(0, size-cellSize*7);
+  // QR library failed to load: show a truthful unavailable state, never a fake code.
+  ctx.fillStyle = '#15181d';
+  ctx.font = '11px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('QR غير متاح حاليًا', size/2, size/2 - 6);
+  ctx.fillText('حدّث الصفحة', size/2, size/2 + 10);
+  canvas.dataset.qrError = '1';
 }
 
 function downloadSingleQR(i){
@@ -34470,7 +34467,7 @@ render = function(){
       if(state.route === 'pdf-annotator') initPDFCanvas();
       if(state.route === 'doc-diff') computeDiff();
       if(state.route === 'site-qr'){
-        document.querySelectorAll('.qr-code-canvas').forEach((canvas, i) => {
+        document.querySelectorAll('.qr-code-canvas canvas').forEach((canvas, i) => {
           generateQRToCanvas(canvas, SITE_LOCATIONS[i]?.url || '', 140);
         });
       }
@@ -39673,7 +39670,9 @@ function setupAccessibility(){
   const announce = document.createElement('div');
   announce.setAttribute('role', 'status');
   announce.setAttribute('aria-live', 'polite');
-  announce.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden';
+  // RTL-safe visually-hidden: left:-9999px overflows an RTL root (scrollWidth
+  // explodes, mobile Chrome expands the layout viewport, whole app displaces)
+  announce.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0';
   announce.id = 'routeAnnouncer';
   if(!document.getElementById('routeAnnouncer')){
     document.body.appendChild(announce);
@@ -44912,109 +44911,7 @@ window.MEPActions = (function () {
     var m = document.querySelector('#ucModal .uc-modal');
     if(!m) return;
     var w = window.open('','_blank');
-    w.document.write('<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><title>Lesson</title><style>body{font-family:Arial;max-width:800px;margin:20px auto;padding:20px;color:#111;line-height:1.8}h1{color:#0891b2;border-bottom:2px solid #0891b2;padding-bottom:8px}h2{color:#0cbde8;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-top:20px;border-bottom:1px solid #ddd;padding-bottom:6px}p{color:#333}ul{padding-right:20px;list-style:none}li{padding:6px 0;position:relative}li::before{content:"▸";color:#0cbde8;margin-left:8px}.uc-formula{background:#f0f8fa;padding:14px;border-right:3px solid #0cbde8;font-family:monospace;direction:ltr;text-align:left;margin:10px 0}
-/* ============================================
-   MOBILE DRAWER (max-width: 768px)
-   Sidebar hidden by default, opens via hamburger
-============================================ */
-@media (max-width: 768px) {
-  .sidebar {
-    position: fixed !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    right: 0 !important;
-    left: auto !important;
-    width: min(85vw, 320px) !important;
-    max-width: min(85vw, 320px) !important;
-    transform: translateX(100%) !important;
-    transition: transform .25s ease !important;
-    z-index: 210 !important;
-    background: #0f1216 !important;
-    border-left: 1px solid var(--border) !important;
-    border-right: none !important;
-    display: flex !important;
-    flex-direction: column !important;
-    overflow: hidden !important;
-    box-shadow: -4px 0 24px rgba(0,0,0,.4) !important;
-  }
-  .sidebar.open {
-    transform: translateX(0) !important;
-  }
-  .backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.6);
-    z-index: 200;
-  }
-  .backdrop.show {
-    display: block;
-  }
-  .main {
-    margin-right: 0 !important;
-    margin-left: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    padding-top: 60px !important;
-  }
-  .topbar {
-    right: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 60px !important;
-    padding: 0 12px !important;
-  }
-  .mobile-menu {
-    display: grid !important;
-  }
-  .content {
-    padding: 16px 12px 90px !important;
-    max-width: 100% !important;
-    width: 100% !important;
-  }
-  /* Accordion nav */
-  .nav-group {
-    cursor: pointer;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 18px 8px;
-  }
-  .nav-group .arrow {
-    color: var(--primary);
-    font-size: 10px;
-    transition: transform .2s;
-    font-family: 'IBM Plex Mono', monospace;
-  }
-  .nav-group.open .arrow {
-    transform: rotate(90deg);
-  }
-  .nav-group + .nav-items a {
-    display: none;
-  }
-  .nav-group.open + .nav-items a {
-    display: flex;
-  }
-  .nav a {
-    min-height: 44px !important;
-    padding: 12px 18px !important;
-    font-size: 14px !important;
-  }
-
-  .nav-group + .nav-items a {
-    display: none;
-  }
-  .nav-group.open + .nav-items a {
-    display: flex;
-  }
-  .nav a {
-    min-height: 44px !important;
-    padding: 12px 18px !important;
-    font-size: 14px !important;
-  }
-}
-</style></head><body><h1>' + (document.querySelector('#ucModal h2')?.textContent || '') + '</h1>' + m.querySelector('.uc-body').innerHTML + '</body></html>');
+    w.document.write('<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><title>Lesson</title><style>body{font-family:Arial;max-width:800px;margin:20px auto;padding:20px;color:#111;line-height:1.8}h1{color:#0891b2;border-bottom:2px solid #0891b2;padding-bottom:8px}h2{color:#0cbde8;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-top:20px;border-bottom:1px solid #ddd;padding-bottom:6px}p{color:#333}ul{padding-right:20px;list-style:none}li{padding:6px 0;position:relative}li::before{content:"▸";color:#0cbde8;margin-left:8px}.uc-formula{background:#f0f8fa;padding:14px;border-right:3px solid #0cbde8;font-family:monospace;direction:ltr;text-align:left;margin:10px 0}</style></head><body><h1>' + (document.querySelector('#ucModal h2')?.textContent || '') + '</h1>' + m.querySelector('.uc-body').innerHTML + '</body></html>');
     w.document.close();
     setTimeout(function(){ w.print(); }, 400);
   };

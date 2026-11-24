@@ -1,0 +1,47 @@
+rules_version = '2';
+
+// ================================================================
+// hiilal — DRAFT secure Firestore rules (NOT deployed yet)
+// Project: hilal-web-1dfe4
+// State at preparation time: database was world-readable AND
+// world-writable (anyone on the internet could add/change/delete
+// the site's content). This file closes that.
+// Activation steps: docs/FIREBASE-SECURITY-SETUP.md
+// ================================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Collections the public website renders without login.
+    // Reading them stays public so the live site keeps working.
+    function isPublicContent(col) {
+      return col in [
+        'content', 'codes', 'specs', 'products', 'projects',
+        'youtube_videos',
+        'software_electrical', 'software_mechanical',
+        'software_civil', 'software_general'
+      ];
+    }
+
+    match /{collection}/{doc} {
+      allow read: if isPublicContent(collection);
+
+      // WRITES — pick ONE variant before deploying:
+
+      // Variant A (recommended): only users flagged as admin.
+      // The flag is a custom claim set from the Admin SDK:
+      //   admin.auth().setCustomUserClaims(uid, { admin: true })
+      allow write: if request.auth != null
+                   && request.auth.token.admin == true;
+
+      // Variant B (simpler, weaker): any signed-in user can write.
+      // Use only while exactly one Auth user exists (the admin).
+      // allow write: if request.auth != null;
+    }
+
+    // Anything not listed above: fully closed.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

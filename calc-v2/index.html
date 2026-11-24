@@ -140,7 +140,7 @@ tr.sel td:first-child::after{content:" ✓";font-size:11px}
 
 <div class="hdr">
   <div>
-    <div class="tag">MEP · الكود المصري 2025 · IEC 60364</div>
+    <div class="tag">MEP · IEC 60364-5-52</div>
     <h1>حاسبة الكابل والقاطع الذكية</h1>
     <p class="sub">معامل أمان 1.25 · تقليل اقتصادي تلقائي للنيوترال والأرضي</p>
   </div>
@@ -186,37 +186,39 @@ tr.sel td:first-child::after{content:" ✓";font-size:11px}
 
 <div class="card"><h2><span class="dot"></span> معاملات التصميم</h2><div class="body">
 <div><label>نوع العزل</label><select id="insul">
-  <option value="xlpe">Cu/XLPE (السويدي)</option>
+  <option value="xlpe">Cu/XLPE</option>
   <option value="pvc">Cu/PVC</option></select></div>
 <div><label>طريقة التركيب</label><select id="installMethod">
-  <option value="ground">مدفون في الأرض</option>
-  <option value="duct">في ماسورة</option>
-  <option value="air">في الهواء الطلق</option></select></div>
-<div><label>درجة حرارة الجو °C</label><input id="amb" type="number" value="40"></div>
-<div><label>عدد الدوائر المتجاورة</label><select id="cgsel">
+  <option value="ground">مدفون مباشرة في الأرض (D2)</option>
+  <option value="duct">ماسورة/قناة مدفونة في الأرض (D1)</option>
+  <option value="wall">ماسورة على/داخل حائط (B2)</option>
+  <option value="air">في الهواء الطلق (E)</option></select></div>
+<div><label id="ambLabel">درجة حرارة الجو °C</label><input id="amb" type="number" value="40"></div>
+<div><label>عدد الدوائر المتجاورة (IEC B.52.17 — تجميع متراكم)</label><select id="cgsel">
   <option value="1">دائرة واحدة (K=1.00)</option>
   <option value="2">2 دوائر (K=0.80)</option>
   <option value="3">3 دوائر (K=0.70)</option>
   <option value="4">4 دوائر (K=0.65)</option></select></div>
 <div><label>الطول (م)</label><input id="len" type="number" value="30"></div>
 <div><label>معيار هبوط الجهد</label><select id="vdStandard">
-  <option value="egyptian" selected>🇪🇬 الكود المصري (2.5%)</option>
-  <option value="iec">🌍 IEC (5%)</option></select></div>
+  <option value="limit25" selected>حد تصميم 2.5% (تحكمي)</option>
+  <option value="limit5">حد تصميم 3–5% (تحكمي)</option></select></div>
 <div><label>نوع الكابل</label><select id="cableType">
   <option value="arm" selected>Cu/XLPE/SWA/PVC</option>
   <option value="pvcarm">Cu/PVC/SWA/PVC</option>
   <option value="unarm">Cu/PVC/PVC</option></select></div>
 <div><label>عدد الكابلات</label><select id="parMode">
-  <option value="auto">🧠 تلقائي (الأرخص)</option>
-  <option value="1">1 كابل</option>
-  <option value="2">2 كابلات متوازية</option>
-  <option value="3">3 كابلات متوازية</option></select></div>
+  <option value="1" selected>1 كابل (افتراضي)</option>
+  <option value="2">2 كابلات متوازية — بشروط</option>
+  <option value="3">3 كابلات متوازية — بشروط</option></select>
+<div class="hint">الكابلات المتوازية اختيار صريح منك وليست توصية تلقائية. الشروط: نفس الطول والمقطع والنوع، متراكمة/ملتصقة (معامل التجميع IEC B.52.17 مطبق)، توزيع حمل متكافئ وحماية منسّقة لكل موصل.</div></div>
 <div class="full">
   <label>توصيف النيوترال والأرضي</label>
   <select id="neutralMode">
-    <option value="auto">🧠 اقتصادي تلقائي (تقليل فوق 35mm²)</option>
-    <option value="full">نفس مقطع الوجه</option>
+    <option value="full" selected>كامل — نفس مقطع الوجه (افتراضي آمن)</option>
+    <option value="auto">تقليل مشروط (متقدم) — يتطلب تحقق الشروط</option>
   </select>
+  <div class="hint">الافتراضي نيوترال وأرضي بنفس مقطع الوجه. التقليل اختيار متقدم مشروط: للنيوترال حمل متوازن وتوافقيات ثلاثية ≤15% وحماية من التيار الزائد (IEC 60364-5-52 كل. 524.2)، وللأرضي نفس المادة وتحقق تحمّل القصر (IEC 60364-5-54 جدول 54.2 / 543.1.2). الأداة لا توثّق استيفاء هذه الشروط.</div>
 </div>
 </div></div>
 
@@ -263,15 +265,22 @@ tr.sel td:first-child::after{content:" ✓";font-size:11px}
 <div class="card"><h2><span class="dot"></span> اقتراحات ذكية</h2>
 <div class="sug" id="sug"></div></div>
 
-<div class="card"><h2><span class="dot"></span> جدول المقاسات (السويدي + IEC)</h2><div class="tw"><table>
+<div class="card"><h2><span class="dot"></span> جدول المقاسات (IEC 60364-5-52 — نحاس متعدد الأقطاب)</h2><div class="tw"><table>
 <thead><tr><th>مم²</th><th>Iz قاعدة</th><th>Iz بعد المعاملات</th><th>Iz كلي</th><th>سعة</th><th>VD%</th><th>حماية</th></tr></thead>
 <tbody id="tb"></tbody></table></div></div>
+
+<div class="card" style="border-color:rgba(245,176,66,.45)">
+  <h2><span class="dot" style="background:#f5b042"></span> تنبيه مهم قبل التنفيذ</h2>
+  <div style="padding:12px 14px;font-size:12.5px;line-height:1.9;color:var(--mt)">
+    النتائج إرشادية لأغراض التصميم الأولي. قيم سعة الكابلات الأساسية = جداول IEC 60364-5-52 حرفيًا (B.52.2–B.52.5 للمدفون والماسورة والحائط، وB.52.10/B.52.12 للهواء الطلق — كابل نحاس متعدد الأقطاب)، ومعاملات الحرارة من B.52.14 (هواء) وB.52.15 (تربة)، ومعامل التجميع من B.52.17 (الحالة المتراكمة الأكثر تحفظًا). النيوترال والأرضي افتراضيًا بنفس مقطع الوجه (آمن). تقليلهما اختيار متقدم مشروط وليس موثّقًا من الأداة: النيوترال وفق IEC 60364-5-52 كل. 524.2 (حمل متوازن، توافقيات ثلاثية ≤15%، حماية النيوترال من التيار الزائد، بحد أدنى 16mm² و50% من الوجه) والأرضي وفق IEC 60364-5-54 جدول 54.2 (نفس المادة مع تحقق تحمّل القصر وفق 543.1.2). حدود هبوط الجهد والكابلات المتوازية اختيارات تصميم تحكمية منك — الحدود غير منسوبة لكود معيّن، والمتوازية لا تُقترح تلقائيًا في النتيجة أو المقارنة أو التوصيات. لا تُصدر الأداة توصية عند خروج التكوين عن الجداول (مقاس أكبر من 300 مم² أو درجة حرارة خارج النطاق). قبل التنفيذ: طابق الاختيار النهائي مع الجدول المعتمد في جهة مشروعك (الكود المصري / IEC / كتالوج المصنّع)، وراجع مهندس كهرباء مرخّص.
+  </div>
+</div>
 
 <div class="signature">
   <div class="s-icon">⚡</div>
   <div class="s-title">تم تصميم وتطوير الأداة</div>
   <div class="s-name">المهندس / هلال شليل</div>
-  <div class="s-desc">حاسبة متقدمة لاختيار الكابلات والقواطع<br>وفق الكود المصري 2025 والمعايير الدولية IEC 60364</div>
+  <div class="s-desc">حاسبة لاختيار الكابلات والقواطع وفق جداول IEC 60364-5-52<br>مع مراجعة الكود المصري وجهة المشروع قبل التنفيذ</div>
   <div class="s-badge"><span class="pdot"></span>مهندس كهرباء · MEP Design</div>
 </div>
 
@@ -296,6 +305,7 @@ function showToast(msg){
 }
 
 function downloadSelf(){
+  if (window.__calcUnsupported){ showToast('⚠️ التكوين الحالي غير مدعوم بجداول معيارية — لا يمكن تصدير توصية'); return; }
   try {
     const html = buildCleanHTML();
     const blob = new Blob([html], {type:'text/html;charset=utf-8'});
@@ -314,6 +324,7 @@ function downloadSelf(){
 }
 
 async function shareSelf(){
+  if (window.__calcUnsupported){ showToast('⚠️ التكوين الحالي غير مدعوم بجداول معيارية — لا يمكن تصدير توصية'); return; }
   try {
     const html = buildCleanHTML();
     const file = new File([html], 'حاسبة-الكابل-هلال-شليل.html', {type:'text/html'});
@@ -321,7 +332,7 @@ async function shareSelf(){
     if (navigator.canShare && navigator.canShare({files:[file]})) {
       await navigator.share({
         title: 'حاسبة الكابل والقاطع',
-        text: 'أداة ذكية لاختيار الكابلات والقواطع وفق الكود المصري 2025',
+        text: 'أداة لاختيار الكابلات والقواطع وفق جداول IEC 60364-5-52',
         files: [file]
       });
       showToast('✅ تمت المشاركة');
@@ -485,24 +496,73 @@ function makeBeautifulIcon(size, maskable){
 /* ==================================================================
    Data
 ================================================================== */
-const CABLE_DATA = [
-  [1.5,24,20,27,25],[2.5,32,27,36,15],[4,42,35,46,9.5],[6,53,44,58,6.4],
-  [10,71,59,78,3.8],[16,94,78,103,2.4],[25,122,101,132,1.5],[35,148,123,160,1.1],
-  [50,178,148,192,0.82],[70,218,181,235,0.57],[95,262,218,283,0.42],
-  [120,300,249,325,0.34],[150,340,283,368,0.29],[185,385,320,417,0.24],
-  [240,448,372,484,0.20],[300,507,421,547,0.17],[400,570,473,616,0.14],
-  [500,640,531,692,0.12]
-];
+/* ----------------------------------------------------------------
+   Ampacity base values: verbatim IEC 60364-5-52 Annex B, copper,
+   multi-core cables. Per (insulation, loaded conductors, method):
+   - B.52.2/B.52.4 (PVC, 2/3 loaded) methods B2, D1, D2
+   - B.52.3/B.52.5 (XLPE, 2/3 loaded) methods B2, D1, D2
+   - B.52.10/B.52.12 (PVC/XLPE) method E, multi-core, 2/3 loaded
+   Methods: ground = D2 buried direct, duct = D1 buried conduit,
+            wall = B2 conduit on/in wall, air = E free air.
+   Sizes above 300 mm2 are NOT in the multi-core tables, so they are
+   absent on purpose (never recommended = unsupported).
+---------------------------------------------------------------- */
+const IEC_SIZES = [1.5,2.5,4,6,10,16,25,35,50,70,95,120,150,185,240,300];
+const AMPACITY = {
+  pvc: {
+    1: { ground:[22,28,38,48,64,83,110,132,156,192,230,261,293,331,382,427],
+         duct:  [22,29,37,46,60,78,99,119,140,173,204,231,261,292,336,379],
+         wall:  [16.5,23,30,38,52,69,90,111,133,168,201,232,258,294,344,394],
+         air:   [22,30,40,51,70,94,119,148,180,232,282,328,379,434,514,593] },
+    3: { ground:[19,24,33,41,54,70,92,110,130,162,193,220,246,278,320,359],
+         duct:  [18,24,30,38,50,64,82,98,116,143,169,192,217,243,280,316],
+         wall:  [15,20,27,34,46,62,80,99,118,149,179,206,225,255,297,339],
+         air:   [18.5,25,34,43,60,80,101,126,153,198,238,278,319,364,430,497] }
+  },
+  xlpe: {
+    1: { ground:[27,35,46,58,77,100,129,155,183,225,270,306,343,387,448,502],
+         duct:  [25,33,43,53,71,91,116,139,164,203,239,271,306,343,395,446],
+         wall:  [22,30,40,51,69,91,119,146,175,221,265,305,334,384,459,532],
+         air:   [26,36,49,63,86,115,149,185,225,289,352,410,473,542,641,741] },
+    3: { ground:[23,30,39,49,65,84,107,129,153,188,226,257,287,324,375,419],
+         duct:  [21,28,36,44,58,75,96,115,135,167,197,223,251,281,324,365],
+         wall:  [19.5,26,35,44,60,80,105,128,154,194,233,268,300,340,398,455],
+         air:   [23,32,42,54,75,100,127,158,192,246,298,346,399,456,538,621] }
+  }
+};
+/* Voltage drop mV/A/m per size (3-phase base = sqrt3 x R at 70C plus
+   reactance allowance on large sizes; conductor R per IEC 60228).
+   Retained from the original tool - formula-derived, approximate. */
+const MV_PER_SIZE = [25,15,9.5,6.4,3.8,2.4,1.5,1.1,0.82,0.57,0.42,0.34,0.29,0.24,0.20,0.17];
+/* Legacy cable-row shape kept so the rest of the engine is unchanged:
+   [size, izBase, -, -, mv] */
+function cableList(insul, phases, method){
+  const t = (AMPACITY[insul] || {})[phases];
+  if (!t || !t[method]) return [];
+  return IEC_SIZES.map((sz, i) => [sz, t[method][i], 0, 0, MV_PER_SIZE[i]]);
+}
 const CB = [6,10,16,20,25,32,40,50,63,80,100,125,160,200,250,315,400,500,630,800,1000,1250,1600];
 const STD_SIZES = [1.5,2.5,4,6,10,16,25,35,50,70,95,120,150,185,240,300,400,500];
 const MCB_CURVES = {B:{min:3,max:5,desc:'إضاءة'},C:{min:5,max:10,desc:'مآخذ'},D:{min:10,max:20,desc:'محركات'}};
-const TEMP_PVC  = [[10,1.22],[15,1.17],[20,1.12],[25,1.06],[30,1.00],[35,0.94],[40,0.87],[45,0.79],[50,0.71],[55,0.61],[60,0.50]];
-const TEMP_XLPE = [[10,1.15],[15,1.12],[20,1.08],[25,1.04],[30,1.00],[35,0.96],[40,0.91],[45,0.87],[50,0.82],[55,0.76],[60,0.71]];
+// IEC 60364-5-52 Table B.52.14 (ambient AIR, reference 30 C)
+const TEMP_AIR = {
+  pvc:  [[10,1.22],[15,1.17],[20,1.12],[25,1.06],[30,1.00],[35,0.94],[40,0.87],[45,0.79],[50,0.71],[55,0.61],[60,0.50]],
+  xlpe: [[10,1.15],[15,1.12],[20,1.08],[25,1.04],[30,1.00],[35,0.96],[40,0.91],[45,0.87],[50,0.82],[55,0.76],[60,0.71]]
+};
+// IEC 60364-5-52 Table B.52.15 (GROUND, reference 20 C)
+const TEMP_GROUND = {
+  pvc:  [[10,1.10],[15,1.05],[20,1.00],[25,0.95],[30,0.89],[35,0.84],[40,0.77],[45,0.71],[50,0.63],[55,0.55],[60,0.45]],
+  xlpe: [[10,1.07],[15,1.04],[20,1.00],[25,0.96],[30,0.93],[35,0.89],[40,0.85],[45,0.80],[50,0.76],[55,0.71],[60,0.65],[65,0.60],[70,0.53],[75,0.46],[80,0.38]]
+};
 
-function tempFactor(insul, t){
-  const T = insul === 'xlpe' ? TEMP_XLPE : TEMP_PVC;
+function tempFactor(insul, t, method){
+  // B.52.15 for cables in the ground (reference 20 C),
+  // B.52.14 for cables in air / on walls (reference 30 C).
+  const inGround = (method === 'ground' || method === 'duct');
+  const T = (inGround ? TEMP_GROUND : TEMP_AIR)[insul];
+  if (!T) return null;
   if (t <= T[0][0]) return T[0][1];
-  if (t >= T[T.length - 1][0]) return T[T.length - 1][1];
+  if (t > T[T.length - 1][0]) return null; // out of table range: unsupported, never clamp upward
   for (let i = 0; i < T.length - 1; i++){
     if (t >= T[i][0] && t <= T[i+1][0]){
       const r = (t - T[i][0]) / (T[i+1][0] - T[i][0]);
@@ -511,13 +571,19 @@ function tempFactor(insul, t){
   }
   return 1;
 }
+// IEC 60364-5-52 Table B.52.17, item 1 (bunched/touching) - the most
+// conservative arrangement row, applied to adjacent circuits.
 function groupingFactor(n){
   return {1:1.00, 2:0.80, 3:0.70, 4:0.65, 5:0.60, 6:0.57}[n] || 1.00;
 }
+// Approximation for parallel cables of one circuit, based on the same
+// B.52.17 item-1 row. Not a direct standard provision - see disclaimer.
 const PAR_FACTOR = {1:1.00, 2:0.80, 3:0.70};
+// Voltage-drop limits are USER-SELECTED design limits, not verified code
+// values. No standard/edition is claimed for them.
 const VD_STD = {
-  egyptian: {normal:2.5, max:2.5, motorStart:80, label:'🇪🇬 الكود المصري 2025'},
-  iec: {normal:3.0, max:5.0, motorStart:80, label:'🌍 IEC 60364-5-52'}
+  limit25: {normal:2.5, max:2.5, motorStart:80, label:'حد تصميم 2.5% (تحكمي)'},
+  limit5:  {normal:3.0, max:5.0, motorStart:80, label:'حد تصميم 3–5% (تحكمي)'}
 };
 const SF = 1.25;
 const MIN_KW = 0.01;
@@ -547,14 +613,23 @@ function getConductorSizes(phaseSize, phases, mode){
   else earth = findStd(phaseSize / 2);
   let neutral, note = '';
   if (mode === 'full'){
+    // Safe default: neutral and PE at full phase cross-section. No reduction
+    // is offered unless the user explicitly opts into the conditional mode.
     neutral = phaseSize;
-    note = 'توافقيات عالية — N بنفس المقطع';
+    earth = phaseSize;
+    note = 'N و E بنفس مقطع الوجه — الافتراضي الآمن (يغطي الحمل غير المتوازن والتوافقيات)';
     return { neutral, earth, note };
   }
   if (phases === 1) neutral = phaseSize;
   else neutral = phaseSize <= 16 ? phaseSize : findStd(phaseSize / 2);
   if (neutral < phaseSize || earth < phaseSize){
-    note = `تقليل اقتصادي: N=${neutral}mm²، E=${earth}mm² (وفق IEC)`;
+    // Conditional reduction (user opt-in, NOT certified by the tool).
+    // N: IEC 60364-5-52 cl.524.2 — only >16mm2 Cu, requires balanced load,
+    //    triplen harmonics <=15%, neutral overcurrent protection (431.2 of
+    //    60364-4-43); min 16mm2 and >=50% of phase.
+    // PE: IEC 60364-5-54 Table 54.2 — same material as line conductors;
+    //    fault-withstand verification per 543.1.2 remains on the designer.
+    note = `تقليل مشروط (اختيارك — يتطلب تحقق مهندس مرخّص): N=${neutral}mm² وفق IEC 60364-5-52 كل. 524.2 بشرط حمل متوازن وتوافقيات ثلاثية ≤15% وحماية النيوترال من التيار الزائد؛ E=${earth}mm² وفق IEC 60364-5-54 جدول 54.2 بشرط نفس المادة وتحقق تحمّل القصر (543.1.2).`;
   }
   return { neutral, earth, note };
 }
@@ -628,8 +703,9 @@ function buildSpec(size, phases, insul, cableType, par, neutralMode){
 function economicSelect(ib, In, ist, isMotor, ctx){
   const { phases, V, L, insul, installMethod, amb, cg, vdStd } = ctx;
   const list = [];
-  const colIdx = installMethod === 'ground' ? 1 : installMethod === 'duct' ? 2 : 3;
-  const kTemp = tempFactor(insul, amb);
+  const kTemp = tempFactor(insul, amb, installMethod);
+  const cables = cableList(insul, phases, installMethod);
+  if (kTemp === null || cables.length === 0) return null; // unsupported configuration: no recommendation
   const kGroup = groupingFactor(cg);
   const mvFactor = phases === 3 ? 1 : (2 / Math.sqrt(3));
   const breakerType = getBreakerType(In);
@@ -637,8 +713,8 @@ function economicSelect(ib, In, ist, isMotor, ctx){
 
   for (let par = 1; par <= 3; par++){
     const parK = PAR_FACTOR[par];
-    for (const cable of CABLE_DATA){
-      const izBase = cable[colIdx];
+    for (const cable of cables){
+      const izBase = cable[1];
       const izSingle = izBase * kTemp * kGroup;
       const izTotal = izSingle * par * parK;
       if (izTotal < In) continue;
@@ -676,19 +752,19 @@ function buildSuggestions(ctx){
   if (!chosen){
     s.push({ ic: '⚠', t: 'لا يوجد حل', d: `جرّب: تقليل الطول (${L} م)، XLPE، أو زيادة عدد الكابلات.`, cls: 'bad' });
   } else {
-    s.push({ ic: '✅', t: 'الاختيار الاقتصادي الأمثل', d: `${par > 1 ? par + ' × ' : ''}${chosen[0]} مم² Cu/${insul === 'xlpe' ? 'XLPE' : 'PVC'}/SWA — إجمالي نحاس ${chosen[0] * par} مم².`, cls: 'ok' });
+    s.push({ ic: '✅', t: 'الأقل تكلفة ضمن اختياراتك', d: `${par > 1 ? par + ' × ' : ''}${chosen[0]} مم² Cu/${insul === 'xlpe' ? 'XLPE' : 'PVC'}/SWA — إجمالي نحاس ${chosen[0] * par} مم².`, cls: 'ok' });
     let breakerDesc;
     if (breakerType === 'MCB') breakerDesc = `MCB ${In}A منحنى ${curveType} (${MCB_CURVES[curveType]?.desc || ''}) — IEC 60898-1.`;
     else if (breakerType === 'MCCB') breakerDesc = `MCCB ${In}A بإعدادات قابلة للضبط (Im = 5–10×) — IEC 60947-2.`;
     else breakerDesc = `ACB ${In}A قاطع هوائي — IEC 60947-2.`;
     s.push({ ic: '⚡', t: `القاطع: ${breakerType} ${In}A`, d: breakerDesc, cls: 'blue' });
     if (neutral < chosen[0] || earth < chosen[0]){
-      s.push({ ic: '🔧', t: 'تقليل اقتصادي في N و E', d: `N: ${neutral} مم²، E: ${earth} مم² (بدلاً من ${chosen[0]} مم²). وفّر ${(chosen[0] - neutral) + (chosen[0] - earth)} مم² نحاس لكل كابل وفق IEC.`, cls: 'purple' });
+      s.push({ ic: '🔧', t: 'تقليل مشروط في N و E (اختيارك)', d: `N: ${neutral} مم²، E: ${earth} مم² (بدلاً من ${chosen[0]} مم²). تقليل مشروط يتطلب تحقق الشروط الموضحة في التوصيف — غير موثّق من الأداة.`, cls: 'purple' });
     }
     if (vd <= vdStd.normal){
       s.push({ ic: '⭐', t: 'هبوط الجهد مطابق', d: `${f(vd, 2)}% ≤ ${vdStd.normal}% — ${vdStd.label}.`, cls: 'ok' });
     } else if (vd <= vdStd.max){
-      s.push({ ic: '⚡', t: 'هبوط جهد مقبول (IEC)', d: `${f(vd, 2)}% بين ${vdStd.normal}% و ${vdStd.max}%.`, cls: '' });
+      s.push({ ic: '⚡', t: 'هبوط جهد ضمن الحد الأقصى المختار', d: `${f(vd, 2)}% بين ${vdStd.normal}% و ${vdStd.max}% (حدود تصميم تحكمية منك).`, cls: '' });
     }
     const tm = (izd - In) / In * 100;
     if (tm < 10) s.push({ ic: '🌡️', t: 'هامش حراري ضيق', d: `Iz = ${f(izd)} A مقابل In = ${In} A.`, cls: 'bad' });
@@ -702,12 +778,15 @@ function buildSuggestions(ctx){
   $('sug').innerHTML = s.map(x => `<div class="sug-item ${x.cls || ''}"><div class="ic">${x.ic}</div><div><h4>${x.t}</h4><p>${x.d}</p></div></div>`).join('');
 }
 
-function renderCostCompare(result){
-  if (!result || result.all.length === 0){
+function renderCostCompare(result, parFilter){
+  // Only compare options with the user-selected cable count; parallel
+  // alternatives are never offered automatically.
+  const opts = result ? result.all.filter(x => x.par === (parFilter || 1)) : [];
+  if (opts.length === 0){
     $('costCompare').innerHTML = '<div style="padding:20px;text-align:center;color:var(--mt)">—</div>';
     return;
   }
-  const top = result.all.slice(0, 4);
+  const top = opts.slice(0, 4);
   const minCost = top[0].totalCost;
   let html = '';
   top.forEach((opt, i) => {
@@ -771,16 +850,50 @@ function calc(){
   const breakerType = getBreakerType(In);
   const curveType = getCurveForLoad(loadType, In);
 
-  const parMode = $('parMode').value;
-  const forcedPar = parMode === 'auto' ? null : parseInt(parMode);
+  $('ambLabel').textContent = (installMethod === 'ground' || installMethod === 'duct')
+    ? 'درجة حرارة التربة °C (مرجع الجدول 20)'
+    : 'درجة حرارة الجو °C (مرجع الجدول 30)';
+
+  // Unsupported configuration gate: never issue a definitive
+  // recommendation or allow export when the inputs leave the verified
+  // IEC tables (e.g. temperature beyond the correction table range).
+  if (tempFactor(insul, amb, installMethod) === null){
+    window.__calcUnsupported = 'درجة الحرارة المدخلة خارج نطاق جداول IEC 60364-5-52 (B.52.14/B.52.15)';
+  } else {
+    window.__calcUnsupported = null;
+  }
+  if (window.__calcUnsupported){
+    $('rcab').textContent = '—';
+    $('rcabSub').innerHTML = '—';
+    $('rbr').textContent = '—';
+    $('rbrSub').innerHTML = '—';
+    $('rvd').textContent = '—';
+    $('cableView').innerHTML = drawCableSVG(0, phases, insul, 1);
+    $('breakerView').innerHTML = drawCableSVG(0, phases, insul, 1);
+    $('spec').innerHTML = '—';
+    $('tb').innerHTML = '';
+    $('parallelBadge').innerHTML = '';
+    $('costCompare').innerHTML = '';
+    $('sug').innerHTML = '';
+    $('chartCard').style.display = 'none';
+    $('rib').textContent = f(ib, 2);
+    $('rflc').textContent = f(flc, 2);
+    const mu = $('msg');
+    mu.className = 'msg bad';
+    mu.textContent = '⛔ ' + window.__calcUnsupported + ' — لا يمكن إصدار توصية موثقة لهذا التكوين.';
+    return;
+  }
+
+  // Parallel cables are an explicit user opt-in only (1/2/3). There is no
+  // automatic parallel recommendation anywhere: selection, comparison and
+  // suggestions are all confined to the cable count the user selected.
+  const forcedPar = parseInt($('parMode').value) || 1;
   const result = economicSelect(ib, In, ist, isMotor, { phases, V, L, insul, installMethod, amb, cg, vdStd });
 
   let best = null;
   if (result){
-    if (forcedPar){
-      const filtered = result.all.filter(x => x.par === forcedPar);
-      if (filtered.length > 0) best = filtered[0];
-    } else best = result.best;
+    const filtered = result.all.filter(x => x.par === forcedPar);
+    if (filtered.length > 0) best = filtered[0];
   }
 
   const par = best ? best.par : (forcedPar || 1);
@@ -788,17 +901,16 @@ function calc(){
   const izd = best ? best.izTotal : 0;
   const vd = best ? best.vd : 0;
   const vStartPct = best ? best.vStartPct : 100;
-  const kTemp = tempFactor(insul, amb);
 
-  const colIdx = installMethod === 'ground' ? 1 : installMethod === 'duct' ? 2 : 3;
+  const kTemp = tempFactor(insul, amb, installMethod);
   const kGroup = groupingFactor(cg);
   const mvFactor = phases === 3 ? 1 : (2 / Math.sqrt(3));
   const parK = PAR_FACTOR[par] || 1;
   const I2Factor = breakerType === 'MCB' ? 1.45 : 1.30;
 
   let rows = '';
-  CABLE_DATA.forEach(c => {
-    const izBase = c[colIdx];
+  cableList(insul, phases, installMethod).forEach(c => {
+    const izBase = c[1];
     const izS = izBase * kTemp * kGroup;
     const izT = izS * par * parK;
     const cap = In <= izT;
@@ -809,6 +921,7 @@ function calc(){
     const sel = chosen && c[0] === chosen[0];
     rows += `<tr class="${sel ? 'sel' : ''}"><td>${c[0]}</td><td>${izBase}</td><td>${f(izS)}</td><td>${f(izT)}</td><td>${cap ? '✓' : '✗'}</td><td>${f(vdRow, 2)}%</td><td>${(cap && I2check && vo) ? '✓' : '✗'}</td></tr>`;
   });
+  rows += `<tr><td colspan="7" style="color:var(--mt);font-size:11px;text-align:center;padding:8px">المقاسات أكبر من 300 مم² غير مدعومة هنا — لا تغطيها جداول IEC للكابلات متعددة الأقطاب.</td></tr>`;
   $('tb').innerHTML = rows;
 
   $('rib').textContent = f(ib, 2);
@@ -824,17 +937,19 @@ function calc(){
   }
 
   if (!chosen){
+    // No verified cable => no verified protection coordination (Ib <= In <= Iz),
+    // so the breaker is gated too; only raw load-current math (FLC/Ib) stays.
     $('rcab').textContent = '—';
     $('rcabSub').innerHTML = '—';
-    $('rbr').textContent = In;
-    $('rbrSub').innerHTML = `${phases === 3 ? '3P' : '1P+N'} · ${breakerType}`;
+    $('rbr').textContent = '—';
+    $('rbrSub').innerHTML = '—';
     $('rvd').textContent = '—';
     $('cableView').innerHTML = drawCableSVG(0, phases, insul, 1);
-    $('breakerView').innerHTML = drawBreakerSVG(In, phases, breakerType, curveType);
+    $('breakerView').innerHTML = drawCableSVG(0, phases, insul, 1);
     $('spec').innerHTML = '—';
     parBadge.innerHTML = '';
     m.className = 'msg bad';
-    m.textContent = '❌ لا يوجد حل. جرّب: تقليل الطول أو XLPE أو زيادة الكابلات.';
+    m.textContent = '❌ لا يوجد حل بكابل واحد. جرّب: تقليل الطول أو XLPE، أو فعّل الكابلات المتوازية يدويًا مع استيفاء شروطها.';
   } else {
     const nCores = phases === 3 ? 3 : 2;
     const parPrefix = par > 1 ? `${par} × ` : '';
@@ -851,7 +966,7 @@ function calc(){
 
     if (par > 1){
       parBadge.className = 'pbadge';
-      parBadge.innerHTML = `<span class="pd"></span>حل اقتصادي: ${par} كابلات × ${chosen[0]} مم² — كل كابل يحمل ${f(flc / par, 2)} A`;
+      parBadge.innerHTML = `<span class="pd"></span>${par} كابلات متوازية × ${chosen[0]} مم² (اختيارك — بشروط المطابقة الموضحة) — كل كابل يحمل ${f(flc / par, 2)} A`;
     } else {
       parBadge.className = 'pbadge green';
       parBadge.innerHTML = `<span class="pd"></span>كابل واحد اقتصادي`;
@@ -862,11 +977,11 @@ function calc(){
       m.textContent = `✅ ${par > 1 ? par + ' × ' : ''}${chosen[0]} مم² + ${breakerType} ${In}A — Ib ≤ In ≤ Iz، VD ${f(vd, 2)}% ≤ ${vdStd.normal}%.`;
     } else {
       m.className = 'msg warn';
-      m.textContent = `⚠️ ${par > 1 ? par + ' × ' : ''}${chosen[0]} مم² — VD ${f(vd, 2)}% ≤ ${vdStd.max}%، لكن أعلى من الهدف المصري ${vdStd.normal}%.`;
+      m.textContent = `⚠️ ${par > 1 ? par + ' × ' : ''}${chosen[0]} مم² — VD ${f(vd, 2)}% ≤ ${vdStd.max}%، لكن أعلى من حد التصميم الذي اخترته ${vdStd.normal}%.`;
     }
   }
 
-  renderCostCompare(result);
+  renderCostCompare(result, forcedPar);
 
   if (isMotor && chosen){
     $('chartCard').style.display = 'block';

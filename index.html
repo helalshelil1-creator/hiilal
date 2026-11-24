@@ -949,7 +949,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const toolsCount = (typeof TOOLS !== "undefined") ? TOOLS.length : 0;
     const calcsCount = (typeof CALCULATORS !== "undefined") ? CALCULATORS.length : 0;
     const topicsCount = (typeof ENCYCLOPEDIA !== "undefined") ? ENCYCLOPEDIA.reduce((sum, c) => sum + (c.topics ? c.topics.length : 0), 0) : 0;
-    const projectsCount = (typeof Store !== "undefined") ? Store.getCustom("projects").length : 0;
+    let projectsCount = (typeof Store !== "undefined") ? Store.getCustom("projects").length : 0;
+    if (projectsCount === 0 && typeof PROJECTS !== "undefined") projectsCount = PROJECTS.length;
 
     function animateNumber(el, target) {
         if (!el) return;

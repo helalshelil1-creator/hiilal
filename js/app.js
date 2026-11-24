@@ -407,7 +407,11 @@ function initServiceWorker() {
     if (!("serviceWorker" in navigator)) return;
 
     window.addEventListener("load", () => {
-        navigator.serviceWorker.register("service-worker.js")
+        // Resolve SW path from this script's own URL so it works from any
+        // page depth (root, /tools/, /calculators/) and any deploy subpath.
+        const appScript = document.querySelector('script[src*="js/app.js"]');
+        const swUrl = appScript ? new URL("../service-worker.js", appScript.src).href : "service-worker.js";
+        navigator.serviceWorker.register(swUrl)
             .then(reg => {
                 // فحص تحديثات كل دقيقة
                 setInterval(() => reg.update(), 60 * 1000);

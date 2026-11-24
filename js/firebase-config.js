@@ -13,4 +13,4 @@ window.FIREBASE_CONFIG = {
 };
 
 // كلمة سر لوحة التحكم
-window.ADMIN_PASSWORD = "hilal2026";
+window.ADMIN_PASSWORD_SHA256 = "3579ae398052e918f8338404fd0b877507410696ad71236fc6fdbbd8c3aa1da0";
