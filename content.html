@@ -163,12 +163,29 @@
         });
     }
 
+    let activeDomain = "all";
+    const DOMAINS = [["all","الكل","All"],["firefighting","مكافحة الحريق","Fire fighting"],["firealarm","إنذار الحريق","Fire alarm"],["hvac","التكييف","HVAC"],["plumbing","السباكة","Plumbing"],["electrical","الكهرباء","Electrical"]];
+    function renderDomainBar() {
+        let el = document.getElementById("domainBar");
+        if (!el) {
+            el = document.createElement("div"); el.id = "domainBar"; el.className = "filter-bar-content"; el.style.marginTop = "8px";
+            document.getElementById("contentFilterBar").insertAdjacentElement("afterend", el);
+        }
+        if (activeType !== "course") { el.style.display = "none"; return; }
+        el.style.display = "";
+        const en = window.I18N && I18N.current === "en";
+        el.innerHTML = DOMAINS.map(d => `<button class="filter-btn ${d[0] === activeDomain ? "active" : ""}" data-domain="${d[0]}">${en ? d[2] : d[1]}</button>`).join("");
+        el.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { activeDomain = b.dataset.domain; renderContent(); }));
+    }
+
     function renderContent() {
         const grid = document.getElementById("contentGrid");
         if (!grid) return;
 
         let list = getAllContent();
         if (activeType !== "all") list = list.filter(c => c.type === activeType);
+        renderDomainBar();
+        if (activeType === "course" && activeDomain !== "all") list = list.filter(c => (String(c.image||"").match(/domain-([a-z]+)\.svg/)||[])[1] === activeDomain);
 
         const statsEl = document.getElementById("contentStats");
         if (statsEl) {
