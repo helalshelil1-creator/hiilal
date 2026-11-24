@@ -28009,7 +28009,7 @@ Object.assign(TOPIC_CONTENT, {
     desc:'أنظمة إطفاء مائي: Sprinklers · Hydrants · Hose Reels · Pumps.',
     sections:[
       {title:'Systems', en:'Types', body:'<strong>Wet Pipe:</strong> الأشهر<br><strong>Dry Pipe:</strong> للمناطق الباردة<br><strong>Pre-action:</strong> لحماية المعدات الحساسة<br><strong>Deluge:</strong> للمخاطر العالية'},
-      {title:'Sprinkler Coverage', en:'NFPA 13', body:'Light Hazard: ≤ 21 m²/رأس<br>Ordinary: ≤ 12 m²<br>Extra Hazard: ≤ 9 m²'},
+      {title:'Sprinkler Coverage', en:'NFPA 13', body:'Light Hazard: ≤ 21 m²/رأس<br>Ordinary: ≤ 12 m²<br>Extra Hazard: ≤ 9 m²<br><small>رشاش قياسي (standard spray)، حسابات هيدروليكية، سقف أملس بلا عوائق (NFPA 13 جدول 10.2.4.2.1). العوائق والأسقف المائلة والرشاشات الخاصة وكثافة Extra Hazard تغيّر القيم.</small>'},
       {title:'Hydrant Flow', en:'NFPA 14', body:'250 GPM @ 65 psi residual (Typical)<br>لكل هيدرانت + هيدرانت مجاور'},
     ],
     related:['fire-pump','pipe-sizing','water-tank'],
@@ -35208,7 +35208,8 @@ Q = 50.4 m³/h`,
           <li><strong>Light Hazard:</strong> ≤ 21 m² / رأس (مكاتب · سكني)</li>
           <li><strong>Ordinary Hazard:</strong> ≤ 12 m² / رأس (تجاري · مواقف)</li>
           <li><strong>Extra Hazard:</strong> ≤ 9 m² / رأس (صناعي · بترول)</li>
-        </ul>`},
+        </ul>
+        <p><small>رشاش قياسي، حسابات هيدروليكية، سقف أملس بلا عوائق (NFPA 13 جدول 10.2.4.2.1). القيم تتغير مع العوائق والسقف المائل والرشاشات الخاصة، وللمنطقة Extra Hazard مع الكثافات العالية قد تنخفض المساحة.</small></p>`},
       formula:{title:'التصريف', en:'Discharge', formula:'Q = K × √P',
         body:`<p>Q = التصرف (GPM) · K = K-Factor للمرش · P = الضغط (psi)</p>
         <p>K-Factor الشائع: 5.6 (K80) · 8.0 (K115) · 11.2 (K160)</p>`},
@@ -35345,7 +35346,7 @@ Q = 50.4 m³/h`,
           <li><strong>Critical Branch:</strong> أحمال رعاية المرضى الحرجة (غرف العمليات، العناية المركزة)</li>
           <li><strong>Equipment Branch:</strong> معدات ثقيلة (تكييف، ضواغط) تُوصَّل بتأخير أو تسلسل</li>
         </ul>
-        <div class="uc-note warn"><strong>مهم:</strong> فروع Life Safety و Critical تُغذّى تلقائيًا خلال 10 ثوان (NFPA 99 / NFPA 110 Type 10). مدة التشغيل المطلوبة والتفاصيل تُحدَّد بفئة NFPA 110 وجهة الاعتماد (AHJ)، ولم يُقرأ نص المعيار هنا.</div>`},
+        <div class="uc-note warn"><strong>مهم:</strong> فروع Life Safety و Critical تُغذّى تلقائيًا خلال 10 ثوان (NFPA 99 / NFPA 110 Type 10، كما يلخّصه عرض Garner &amp; Chisholm 2016 لجمعية Commissioning، مصدر ثانوي). مدة التشغيل المطلوبة والتفاصيل تُحدَّد بفئة NFPA 110 وجهة الاعتماد (AHJ)، ولم يُقرأ نص المعيار هنا.</div>`},
       hvac:{title:'HVAC للمستشفيات', en:'Healthcare HVAC', body:`
         <p>حسب ASHRAE 170:</p>
         <ul>
