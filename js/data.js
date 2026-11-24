@@ -425,10 +425,10 @@ const CALCULATORS = [
                 { value: "2", label: "طوبة كاملة (ورقتين، نحو 25 سم)" }
             ]},
             { id: "height", label: "ارتفاع الحيطان (صافي)", unit: "m", type: "number", default: 3, min: 1, help: "من الأرضية لتحت السقف أو الكمرة." },
-            { id: "extDoors", label: "عدد الأبواب في الحيطان الخارجية", type: "number", default: 1, min: 0 },
-            { id: "intDoors", label: "عدد الأبواب في الحيطان الداخلية", type: "number", default: 5, min: 0 },
+            { id: "extDoors", label: "عدد الأبواب في الحيطان الخارجية", type: "number", default: 0, min: 0 },
+            { id: "intDoors", label: "عدد الأبواب في الحيطان الداخلية", type: "number", default: 0, min: 0 },
             { id: "doorArea", label: "مساحة الباب الواحد", unit: "m²", type: "number", default: 1.9, min: 0 },
-            { id: "extWindows", label: "عدد الشبابيك والبلكونات في الحيطان الخارجية", type: "number", default: 4, min: 0 },
+            { id: "extWindows", label: "عدد الشبابيك والبلكونات في الحيطان الخارجية", type: "number", default: 0, min: 0 },
             { id: "intWindows", label: "عدد الشبابيك في الحيطان الداخلية", type: "number", default: 0, min: 0 },
             { id: "windowArea", label: "مساحة الشباك الواحد", unit: "m²", type: "number", default: 1.5, min: 0 },
             { id: "unit", label: "نوع الطوب", type: "select", options: [
@@ -476,7 +476,12 @@ const CALCULATORS = [
             };
             const g0 = geom(n(v.shape, 1));
             const R = run(g0);
-            if (!R) return { error: "مساحة الفتحات أكبر من مساحة الحيطان (خارجية أو داخلية). راجع الأعداد أو الأطوال." };
+            if (!R) {
+                const bad = [];
+                if (g0.ext * H - openExt < 0) bad.push(`الحيطان الخارجية: مساحة ${(g0.ext * H).toFixed(1)} م² (طول ${g0.ext.toFixed(1)} م × ارتفاع ${H} م) وفتحات ${openExt.toFixed(1)} م² (${eD} باب و${eW} شباك)`);
+                if (g0.int * H - openInt < 0) bad.push(`الحيطان الداخلية: مساحة ${(g0.int * H).toFixed(1)} م² (طول ${g0.int.toFixed(1)} م${intHave ? " مدخل" : " تقديري"} × ارتفاع ${H} م) وفتحات ${openInt.toFixed(1)} م² (${iD} باب و${iW} شباك)`);
+                return { error: "فتحات أكبر من مساحة الحيطان المخصوم منها، فلم يُحسب شيء. " + bad.join(" | ") + ". راجع عدد الأبواب والشبابيك في الخانة المذكورة أو طول الحيطان" + (g0.int === 0 ? " (لا توجد حيطان داخلية، وده يحصل مع غرفة واحدة أو لو طول الداخلي صفر)" : "") + "." };
+            }
             const wf = 1 + n(v.waste, 5) / 100;
             const fmt = x => Math.ceil(x - 1e-9).toLocaleString("en-US");
             const tE = extL * w + (extL - 1) * j, tI = intL * w + (intL - 1) * j;
@@ -489,7 +494,9 @@ const CALCULATORS = [
             const fa = n(v.flatArea, 0);
             if (fa > 0 && Math.abs(sumA - fa) / fa > 0.1) warn.push(`مجموع مساحات الغرف (${sumA.toFixed(1)} م²) يختلف عن مساحة الشقة (${fa} م²) بأكتر من 10 بالمئة. غالباً غرفة أو طرقة ناقصة.`);
             if (exact && g0.int < 0.15 * g0.ext) warn.push("طول الحيطان الداخلية صغير جداً مقارنة بالخارجية. راجع الرقم.");
-            const baseRows = exact ? [] : [{ label: "⚠ دقة النتيجة", value: "تقديرية فقط", unit: "غير صالحة للشراء" }];
+            if (openExt + openInt === 0) warn.push("لم تُدخل أي أبواب أو شبابيك، فلم يُخصم شيء. الكمية أعلى من الفعلية بمساحة الفتحات.");
+            const baseRows = exact ? [] : [{ label: "⚠ دقة النتيجة", value: "تقديرية فقط", unit: "غير صالحة للشراء" }]
+            if (openExt + openInt === 0) baseRows.push({ label: "⚠ الفتحات", value: "لم تُخصم", unit: "الكمية أعلى من الفعلية" });
             const tag = exact ? "" : " (تقريبي)";
             return {
                 results: baseRows.concat([
