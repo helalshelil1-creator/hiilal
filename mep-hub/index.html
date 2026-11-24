@@ -9106,29 +9106,23 @@ function viewProfile(){
 
     <div class="card" style="border-color:var(--primary);padding:28px;margin-bottom:20px">
       <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
-        <div style="width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--primary));display:grid;place-items:center;font-family:'Barlow';font-weight:700;font-size:36px;color:#08141a;flex-shrink:0">ME</div>
+        <div style="width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--primary));display:grid;place-items:center;font-family:'Barlow';font-weight:700;font-size:36px;color:#08141a;flex-shrink:0">هـ</div>
         <div style="flex:1;min-width:200px">
-          <h2 style="font-size:22px;font-weight:600;margin-bottom:4px">Eng. Ahmed Al-Masry</h2>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--primary);letter-spacing:0.1em;margin-bottom:10px">ELECTRICAL DESIGN ENGINEER</div>
-          <div style="font-size:13px;color:var(--muted);line-height:1.7">مهندس تصميم كهربائي بـ7 سنوات خبرة في مشاريع تجارية ومستشفيات. متخصص في Load Flow · Short Circuit · Protection Coordination باستخدام ETAP وRevit.</div>
-          <div style="margin-top:14px">
-            ${['ETAP','Revit','AutoCAD','DIALux','Navisworks','IEC 60364','NFPA 72'].map(t=>`<span class="tag">${t}</span>`).join('')}
-          </div>
+          <h2 style="font-size:22px;font-weight:600;margin-bottom:4px">م. هلال شليل</h2>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--primary);letter-spacing:0.1em;margin-bottom:10px">ENGINEER</div>
+          <div style="font-size:13px;color:var(--muted);line-height:1.7">ملفك الشخصي داخل المنصة. أضف خبراتك ومهاراتك وشهاداتك الفعلية بنفسك، ولا توجد هنا بيانات مسجلة بعد.</div>
         </div>
       </div>
     </div>
 
     <div class="grid c3">
-      <div class="stat"><div class="l">Projects</div><div class="v">12</div></div>
-      <div class="stat"><div class="l">Certifications</div><div class="v">4</div></div>
-      <div class="stat"><div class="l">Learning Progress</div><div class="v">68%</div></div>
+      <div class="stat"><div class="l">Projects</div><div class="v">—</div></div>
+      <div class="stat"><div class="l">Certifications</div><div class="v">—</div></div>
+      <div class="stat"><div class="l">Learning Progress</div><div class="v">—</div></div>
     </div>
 
     <div class="h3" style="margin-top:24px">▸ Certifications</div>
-    <div class="grid c2">
-      ${['ISO 9001 Lead Auditor','IEC 60364 Specialist','NFPA 72 Certified','Autodesk Certified Professional'].map(c=>`
-        <div class="card"><span class="pill green">CERTIFIED</span><h4 style="margin-top:10px">${c}</h4></div>`).join('')}
-    </div>
+    <div class="card"><p>لا توجد شهادات مسجلة. أضف شهاداتك الفعلية فقط عند توفر مستنداتها.</p></div>
 
     <div class="h3" style="margin-top:24px">▸ Engineering Interests</div>
     <div>${['Power Systems','BIM Coordination','Protection','Fire Alarm','Energy Efficiency','Renewable'].map(i=>`<span class="tag">${i}</span>`).join('')}</div>
@@ -18091,14 +18085,14 @@ function viewSettings(){
             <div class="lbl">الاسم الكامل</div>
             <div class="desc">يظهر في المجتمع والتعليقات</div>
           </div>
-          <input type="text" value="Eng. Ahmed Al-Masry">
+          <input type="text" value="م. هلال شليل">
         </div>
         <div class="settings-field">
           <div class="label-group">
             <div class="lbl">البريد الإلكتروني</div>
             <div class="desc">للإشعارات والتنبيهات</div>
           </div>
-          <input type="email" value="ahmed@mep-hub.com">
+          <input type="email" value="" placeholder="أدخل بريدك">
         </div>
         <div class="settings-field">
           <div class="label-group">
@@ -23231,7 +23225,7 @@ function generateReport(){
 
   const selected = state._reportFields;
   const project = 'Tower A — Riyadh';
-  const author = 'Eng. Ahmed Al-Masry';
+  const author = 'م. هلال شليل';
   const date = new Date().toLocaleDateString('en-GB');
 
   let html = '';
@@ -23321,7 +23315,7 @@ function exportReportPDF(){
 function exportReportExcel(){
   const data = [
     {Section: 'Report Info', Value: 'Tower A — Riyadh'},
-    {Section: 'Author', Value: 'Eng. Ahmed Al-Masry'},
+    {Section: 'Author', Value: 'م. هلال شليل'},
     {Section: 'Date', Value: new Date().toLocaleDateString('en-GB')},
     {Section: 'Sections Included', Value: state._reportFields.join(', ')},
   ];

@@ -560,8 +560,8 @@ const CalcEngine = {
             const def = inp.default !== undefined ? `value="${inp.default}"` : "";
             const min = inp.min !== undefined ? `min="${inp.min}"` : "";
             const max = inp.max !== undefined ? `max="${inp.max}"` : "";
-            const step = inp.step !== undefined ? `step="${inp.step}"` : "any";
-            field = `<input type="number" id="in_${inp.id}" class="form-input" ${def} ${min} ${max} step="${step}" inputmode="decimal" ${inp.required ? "required" : ""}>`;
+            const step = inp.step !== undefined ? `step="${inp.step}"` : 'step="any"';
+            field = `<input type="number" id="in_${inp.id}" class="form-input" ${def} ${min} ${max} ${step} inputmode="decimal" ${inp.required ? "required" : ""}>`;
         }
         return `
             <div class="form-group">

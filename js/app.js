@@ -361,12 +361,14 @@ function initWhatsAppFloat() {
 function initBottomNav() {
     if (document.querySelector(".bottom-nav")) return;
     const currentPage = document.body.dataset.page || "";
+    // pages inside sub-folders (tools/, calculators/) need ../ to reach root pages
+    const base = /\/(tools|calculators)\//.test(location.pathname) ? "../" : "";
     const items = [
-        { id: "index", icon: "home", label: "الرئيسية", url: "index.html" },
-        { id: "tools", icon: "toolbox", label: "الأدوات", url: "tools.html" },
-        { id: "calculators", icon: "calculator", label: "الحاسبات", url: "calculators.html" },
-        { id: "encyclopedia", icon: "library", label: "الموسوعة", url: "encyclopedia.html" },
-        { id: "content", icon: "folder", label: "المحتوى", url: "content.html" }
+        { id: "index", icon: "home", label: "الرئيسية", url: base + "index.html" },
+        { id: "tools", icon: "toolbox", label: "الأدوات", url: base + "tools.html" },
+        { id: "calculators", icon: "calculator", label: "الحاسبات", url: base + "calculators.html" },
+        { id: "encyclopedia", icon: "library", label: "الموسوعة", url: base + "encyclopedia.html" },
+        { id: "content", icon: "folder", label: "المحتوى", url: base + "content.html" }
     ];
     const nav = document.createElement("nav");
     nav.className = "bottom-nav";

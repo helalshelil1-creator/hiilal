@@ -366,8 +366,8 @@ const CALCULATORS = [
             const A = Number(v.area);
             const thick = Number(v.thickness);
             const sizes = {
-                standard: { perM2: 60, perM2Half: 30 },
-                big: { perM2: 13, perM2Half: 6.5 }
+                standard: { perM2: 110, perM2Half: 55 },
+                big: { perM2: 12, perM2Half: 12 }
             };
             const s = sizes[v.brickSize] || sizes.standard;
             const perM2 = thick === 12 ? s.perM2Half : s.perM2;
@@ -380,7 +380,8 @@ const CALCULATORS = [
                 ],
                 formula: "N = Area × Bricks/m²",
                 steps: [`N = ${A} × ${perM2} = ${Math.ceil(total)}`],
-                references: ["ECP", "Egyptian Standards"]
+                notes: ["طوبة 25×12×6 مع مونة بسُمك ~1 سم: نحو 55 طوبة/م² لحائط 12 سم و110 طوبة/م² لحائط 25 سم. البلوك الكبير يُحسب بطبقة واحدة (السمك = عرض البلوك). اخصم الفتحات وراجع المورد."],
+                references: []
             };
         }
     },
@@ -420,39 +421,40 @@ const CALCULATORS = [
     },
     {
         id: "cooling-load",
-        name: "حمل التكييف",
-        nameEn: "Cooling Load",
+        name: "حمل التكييف (تقدير مبدئي)",
+        nameEn: "Cooling Load (rule of thumb)",
         category: "mep",
         icon: "wind",
-        desc: "حساب الحمل الحراري للمساحة بطريقة Load Factor.",
+        desc: "تقدير مبدئي للحمل التبريدي بالمتر المربع. لا يغني عن حساب الأحمال التفصيلي.",
         inputs: [
-            { id: "area", label: "المساحة", unit: "m²", type: "number", required: true, min: 1 },
+            { id: "area", label: "المساحة المكيّفة", unit: "m²", type: "number", required: true, min: 1 },
             { id: "type", label: "نوع المكان", type: "select", options: [
-                { value: "res", label: "سكني (40 W/m²)" },
-                { value: "office", label: "مكاتب (60 W/m²)" },
-                { value: "restaurant", label: "مطاعم (120 W/m²)" },
-                { value: "mall", label: "مولات (100 W/m²)" },
-                { value: "hospital", label: "مستشفيات (120 W/m²)" }
+                { value: "res", label: "سكني (100–200 W/m²)" },
+                { value: "hotel", label: "غرف فندقية (120 W/m²)" },
+                { value: "office", label: "مكاتب (100–180 W/m²)" },
+                { value: "clinic", label: "عيادات/مكاتب طبية (185–190 W/m²)" },
+                { value: "restaurant", label: "مطاعم/كافتيريا (350 W/m²)" }
             ]}
         ],
         calculate(v) {
             const A = Number(v.area);
-            const loadFactors = { res: 40, office: 60, restaurant: 120, mall: 100, hospital: 120 };
-            const lf = loadFactors[v.type] || 60;
-            if (A <= 0) return { error: "تحقق" };
-            const Q_W = A * lf;
-            const Q_kW = Q_W / 1000;
-            const Q_TR = Q_kW / 3.517;
+            // [أدنى, نموذجي, أعلى] W/m² من جدول Cooling Load Check Figures (IBSE HK): http://ibse.hk/MEBS6006/CoolingLoadCheckFigures.pdf
+            const lf = { res: [100, 150, 200], hotel: [120, 120, 120], office: [100, 150, 180], clinic: [185, 188, 190], restaurant: [350, 350, 350] };
+            const f = lf[v.type] || lf.office;
+            if (!(A > 0)) return { error: "تحقق من المساحة" };
+            const kw = f.map(x => A * x / 1000);
+            const tr = kw.map(x => x / 3.517);
             return {
                 results: [
-                    { label: "الحمل", value: Q_kW.toFixed(2), unit: "kW" },
-                    { label: "الحمل", value: Q_TR.toFixed(2), unit: "TR" },
-                    { label: "الحمل", value: (Q_W * 3.412 / 1000).toFixed(1), unit: "kBTU/hr" }
+                    { label: "الحمل النموذجي", value: kw[1].toFixed(2), unit: "kW" },
+                    { label: "الحمل النموذجي", value: tr[1].toFixed(2), unit: "TR" },
+                    { label: "المدى (أدنى – أعلى)", value: kw[0].toFixed(2) + " – " + kw[2].toFixed(2), unit: "kW" },
+                    { label: "المدى (أدنى – أعلى)", value: tr[0].toFixed(2) + " – " + tr[2].toFixed(2), unit: "TR" }
                 ],
-                formula: "Q = Area × Load Factor",
-                steps: [`Q = ${A} × ${lf} = ${Q_W} W`],
-                notes: ["هذا تقدير مبدئي — للحساب الدقيق استخدم HAP."],
-                references: ["ASHRAE Handbook"]
+                formula: "Q = Area × (W/m²)",
+                steps: [`Q = ${A} × ${f[1]} = ${(A * f[1]).toFixed(0)} W (نموذجي)`, `المدى: ${f[0]}–${f[2]} W/m²`],
+                notes: ["قيم استرشادية للمرحلة المبكرة فقط، والحمل الفعلي يتأثر بالاتجاه والعزل والزجاج والتهوية والأحمال الداخلية. للتصميم النهائي استخدم حساب الأحمال التفصيلي (ASHRAE/HAP)."],
+                references: ["Cooling Load Check Figures — IBSE HK (ibse.hk/MEBS6006)", "ASHRAE Handbook — Fundamentals"]
             };
         }
     },
@@ -511,15 +513,16 @@ const CALCULATORS = [
             if (N <= 0 || L <= 0) return { error: "تحقق" };
             const daily = N * L;
             const peak = daily * pf;
-            const peakFlow = peak / (24 * 3600) * 1000;
+            const peakFlow = peak / (24 * 3600); // L/day ÷ 86400 s = L/s (متوسط تدفق يوم الذروة، وليس ذروة اللحظة)
             return {
                 results: [
                     { label: "الاستهلاك اليومي", value: (daily / 1000).toFixed(2), unit: "m³/day" },
                     { label: "الاستهلاك الأقصى", value: (peak / 1000).toFixed(2), unit: "m³/day" },
-                    { label: "معدل التدفق الذروة", value: peakFlow.toFixed(2), unit: "L/s" }
+                    { label: "متوسط تدفق يوم الذروة", value: peakFlow.toFixed(3), unit: "L/s" }
                 ],
                 formula: "Q = N × Consumption × Peak Factor",
-                steps: [`Q_daily = ${(daily/1000).toFixed(2)} m³/day`],
+                steps: [`Q_daily = ${(daily/1000).toFixed(2)} m³/day`, `Q_peak-day = ${(peak/1000).toFixed(2)} m³/day → ${peakFlow.toFixed(3)} L/s (÷ 86400)`],
+                notes: ["التدفق اللحظي لتصميم المواسير والمضخات يُحسب بطريقة وحدات التركيب (Fixture Units) وفق الكود المعتمد، وهو أعلى من هذا المتوسط."],
                 references: ["IPC", "ASPE"]
             };
         }
