@@ -412,34 +412,6 @@
 </section>
 
 <!-- ========================================
-     Stats — Clickable Cards
-======================================== -->
-<section class="container section">
-    <div class="grid grid-4" id="statsGrid">
-        <a href="tools.html" class="stat-card-custom" aria-label="عرض الأدوات الهندسية">
-            <div class="stat-icon-custom" data-icon="zap" aria-hidden="true"></div>
-            <div class="stat-number-custom" id="statTools">0</div>
-            <div class="stat-label-custom" data-i18n="stat.tools">أداة هندسية</div>
-        </a>
-        <a href="calculators.html" class="stat-card-custom" aria-label="عرض الحاسبات">
-            <div class="stat-icon-custom" data-icon="calculator" aria-hidden="true"></div>
-            <div class="stat-number-custom" id="statCalcs">0</div>
-            <div class="stat-label-custom" data-i18n="stat.calc">حاسبة</div>
-        </a>
-        <a href="encyclopedia.html" class="stat-card-custom" aria-label="عرض الموسوعة">
-            <div class="stat-icon-custom" data-icon="book-open" aria-hidden="true"></div>
-            <div class="stat-number-custom" id="statTopics">0</div>
-            <div class="stat-label-custom" data-i18n="stat.topics">موضوع هندسي</div>
-        </a>
-        <a href="projects.html" class="stat-card-custom" aria-label="عرض المشاريع">
-            <div class="stat-icon-custom" data-icon="building" aria-hidden="true"></div>
-            <div class="stat-number-custom" id="statProjects">0</div>
-            <div class="stat-label-custom" data-i18n="stat.projects">مشروع</div>
-        </a>
-    </div>
-</section>
-
-<!-- ========================================
      Tools
 ======================================== -->
 <section class="container section">
@@ -909,10 +881,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 40);
     }
 
-    animateNumber(document.getElementById("statTools"), toolsCount);
-    animateNumber(document.getElementById("statCalcs"), calcsCount);
-    animateNumber(document.getElementById("statTopics"), topicsCount);
-    animateNumber(document.getElementById("statProjects"), projectsCount);
 
     // Render Tools Home
     const toolsEl = document.getElementById("toolsHomeGrid");
