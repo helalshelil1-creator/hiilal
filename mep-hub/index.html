@@ -20052,16 +20052,30 @@ function buildPageData(){
   // Prefer tables
   if(tables.length > 0){
     let t = tables[0];
-    // Pages carrying #exportNote (e.g. Rate Build-up): export ALL same-shaped tables, with an Item column from each card title
-    if(document.getElementById('exportNote') && tables.length > 1 && tables.every(x => x.headers.join('|') === t.headers.join('|'))){
+    // Several tables on the page: export ALL of them (not only the first), each tagged with its nearest title.
+    if(tables.length > 1){
       const tbls = [...document.getElementById('content').querySelectorAll('table')];
-      const rowsAll = [];
-      tables.forEach(x => {
-        const el = tbls[x.index];
-        const item = (el && el.closest('.card')?.querySelector('h4')?.textContent.trim()) || '';
-        x.rows.forEach(r => rowsAll.push([item, ...r]));
-      });
-      t = {headers: ['Item', ...t.headers], rows: rowsAll, index: 0};
+      const titleOf = el => {
+        if(!el) return '';
+        const card = el.closest('.card');
+        const h = card?.querySelector('h4, h3, .h3, h2') || (()=>{ let p = el.previousElementSibling; while(p){ if(/^H[1-6]$/.test(p.tagName) || p.classList.contains('h3')) return p; p = p.previousElementSibling; } return null; })();
+        return h ? h.textContent.trim().replace(/\s+/g,' ') : '';
+      };
+      const same = tables.every(x => x.headers.join('|') === t.headers.join('|'));
+      if(same){
+        const rowsAll = [];
+        tables.forEach(x => { const ti = titleOf(tbls[x.index]); x.rows.forEach(r => rowsAll.push([ti, ...r])); });
+        t = {headers: ['Item', ...t.headers], rows: rowsAll, index: 0};
+      } else {
+        const width = Math.max(...tables.map(x => Math.max(x.headers.length, ...x.rows.map(r => r.length))));
+        const rowsAll = [];
+        tables.forEach(x => {
+          const ti = titleOf(tbls[x.index]);
+          rowsAll.push([ti, ...Array.from({length: width}, (_, k) => x.headers[k] || '')]);
+          x.rows.forEach(r => rowsAll.push(['', ...Array.from({length: width}, (_, k) => r[k] || '')]));
+        });
+        t = {headers: ['Section', ...Array.from({length: width}, (_, k) => 'Col' + (k+1))], rows: rowsAll, index: 0};
+      }
     }
     const data = t.rows.map(row => {
       const obj = {};
@@ -20105,7 +20119,7 @@ function buildPrintHTML(title){
   const clone = c.cloneNode(true);
   clone.querySelectorAll('button, .btn, .export-bar, .tab-bar, .quick-bar, script, .mep-icon, .h1, .eyebrow').forEach(el => el.remove());
   const esc = t => String(t).replace(/[&<>]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[ch]));
-  return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>' + esc(title) + '</title><style>' +
+  return '<!DOCTYPE html><html lang="' + (/[\u0600-\u06FF]/.test(c.innerText || '') ? 'ar' : 'en') + '" dir="' + (/[\u0600-\u06FF]/.test(c.innerText || '') ? 'rtl' : 'ltr') + '"><head><meta charset="UTF-8"><title>' + esc(title) + '</title><style>' +
     '@page{size:A4;margin:14mm}' +
     '*{box-sizing:border-box;color:#111!important;background:transparent!important;box-shadow:none!important;text-shadow:none!important}' +
     'body{font-family:"Noto Sans Arabic","Segoe UI",Tahoma,Arial,sans-serif;font-size:12px;line-height:1.6;margin:0}' +
@@ -20123,7 +20137,7 @@ function exportCurrentPageToPDF(title){
   const c = document.getElementById('content');
   const t = title || (c && c.querySelector('.h1')?.textContent.trim()) || 'MEP Hub';
   const hasArabic = !!c && /[\u0600-\u06FF]/.test(c.innerText || '');
-  if(hasArabic){
+  if(c){
     const fr = document.createElement('iframe');
     fr.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0';
     fr.srcdoc = buildPrintHTML(t);
