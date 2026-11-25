@@ -8109,7 +8109,7 @@ function viewRateBuildUp(){
     <div class="eyebrow" style="margin-bottom:10px">// RATE · BUILD-UP</div>
     <h1 class="h1">$ Rate Build-up Tool</h1>
     <p class="sub">تحليل سعر الوحدة لكل بند — Material · Labor · Equipment · OH · Profit.</p>
-    <div class="note warn" style="margin-bottom:16px"><strong>⚠ أرقام توضيحية فقط:</strong> القيم أدناه أمثلة لتوضيح طريقة تحليل السعر، وليست أسعار سوق ولا عروض أسعار. بلا عملة محددة ولا مصدر ولا تاريخ. لا تُستخدم في مناقصة أو تسعير فعلي. استبدلها بأسعار موثقة بمصدر وتاريخ.</div>
+    <div id="exportNote" class="note warn" style="margin-bottom:16px"><strong>⚠ أرقام توضيحية فقط (<bdi dir="ltr">ILLUSTRATIVE NUMBERS ONLY, not market prices or quotes</bdi>):</strong> القيم أدناه أمثلة لتوضيح طريقة تحليل السعر، وليست أسعار سوق ولا عروض أسعار. بلا عملة محددة ولا مصدر ولا تاريخ. لا تُستخدم في مناقصة أو تسعير فعلي. استبدلها بأسعار موثقة بمصدر وتاريخ.</div>
 
     ${Object.entries(RATE_BUILDUP).map(([item, r])=>{
       const subtotal = r.material + r.labor + r.equip;
@@ -20057,6 +20057,13 @@ function buildPageData(){
       t.headers.forEach((h, i)=>{ obj[h || ('Col' + (i+1))] = row[i] || ''; });
       return obj;
     });
+    // Any page carrying #exportNote: its warning travels with the numbers (first data row)
+    const en = document.getElementById('exportNote');
+    if(en){
+      const noteRow = {};
+      t.headers.forEach((h, i)=>{ noteRow[h || ('Col' + (i+1))] = i === 0 ? en.textContent.replace(/\s+/g,' ').trim() : ''; });
+      data.unshift(noteRow);
+    }
     return {data, hasTable: true, headers: t.headers};
   }
   // Fall back to cards
@@ -20088,7 +20095,7 @@ function exportCurrentPageToPDF(title){
   exportToPDF({
     title: title || 'MEP Hub Report',
     subtitle: 'Page: ' + (state.route || 'dashboard'),
-    content: (document.getElementById('content')?.querySelector('.sub')?.textContent || '').substring(0, 400),
+    content: ((document.getElementById('exportNote')?.textContent || '') + ' ' + (document.getElementById('content')?.querySelector('.sub')?.textContent || '')).trim().substring(0, 600),
     table: data.length > 1 ? {
       head: headers,
       body: rows
