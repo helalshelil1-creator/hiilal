@@ -78,11 +78,11 @@ const Store = {
        THEME
     ======================================== */
     getTheme() {
-        return localStorage.getItem("engOffice_theme") || "dark";
+        return (function(){try{return sessionStorage.getItem("hilal_visit_theme")}catch(e){return null}})() || "dark";
     },
 
     setTheme(t) {
-        localStorage.setItem("engOffice_theme", t);
+        try{sessionStorage.setItem("hilal_visit_theme", t)}catch(e){}
     },
 
     /* ========================================

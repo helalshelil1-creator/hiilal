@@ -82,6 +82,7 @@
   ─── ARCHITECTURE ─────────────────────────────────────────────────────────
 
   <head>
+<script>(function(){try{var k="hilal_visit_theme",n=performance.getEntriesByType("navigation")[0],ok=false;if(n&&n.type!=="reload"&&document.referrer&&new URL(document.referrer).origin===location.origin)ok=true;if(!ok)sessionStorage.removeItem(k);window.__hilalTheme=sessionStorage.getItem(k)||"dark"}catch(e){window.__hilalTheme="dark"}if(window.__hilalTheme==="dark")document.documentElement.setAttribute("data-theme","dark")})()</script>
 <script>
 // IMMEDIATE: Hide sidebar on mobile before render
 (function(){
@@ -1358,15 +1359,9 @@ html[dir="ltr"] .uc-summary{ border-right:none!important; border-left:3px solid 
 
   /* ═══ 1. تعيين الوضع الداكن كافتراضي ═══ */
   try {
-    var savedTheme = localStorage.getItem('theme');
-    if(!savedTheme){
-      localStorage.setItem('theme', 'dark');
-      document.body.setAttribute('data-theme', 'dark');
-      if(window.state) window.state.theme = 'dark';
-    } else {
-      document.body.setAttribute('data-theme', savedTheme);
-      if(window.state) window.state.theme = savedTheme;
-    }
+    var savedTheme = sessionStorage.getItem('hilal_visit_theme') || 'dark';
+    document.body.setAttribute('data-theme', savedTheme);
+    if(window.state) window.state.theme = savedTheme;
   } catch(e){}
 
   /* ═══ 2. بناء Brand الجديد ═══ */
@@ -2085,7 +2080,7 @@ const CHECKLISTS = {
 /* ---------- Router State ---------- */
 const state = {
   route:'dashboard',
-  theme: localStorage.getItem('theme')||'dark',
+  theme: (function(){try{return sessionStorage.getItem('hilal_visit_theme')}catch(e){return null}})()||'dark',
   favorites: JSON.parse(localStorage.getItem('favs')||'[]'),
   calc:null,
 };
@@ -2107,7 +2102,7 @@ function toggleSidebar(force){
 function toggleTheme(){
   state.theme = state.theme==='dark'?'light':'dark';
   document.body.setAttribute('data-theme', state.theme);
-  localStorage.setItem('theme', state.theme);
+  try{sessionStorage.setItem('hilal_visit_theme', state.theme);}catch(e){}
   var _tb=document.getElementById('themeBtn'); if(_tb) _tb.textContent = state.theme==='dark'?'◐':'◑';
 }
 function toast(msg){
@@ -10956,7 +10951,7 @@ function importJSON(e){
     try{
       const data = JSON.parse(reader.result);
       if(data.favorites) { state.favorites = data.favorites; localStorage.setItem('favs', JSON.stringify(data.favorites)); }
-      if(data.theme) { state.theme = data.theme; localStorage.setItem('theme', data.theme); }
+      if(data.theme) { state.theme = data.theme; try{sessionStorage.setItem('hilal_visit_theme', data.theme);}catch(e){} }
       toast('تم استعادة Backup');
       setTimeout(()=>location.reload(), 800);
     }catch(err){

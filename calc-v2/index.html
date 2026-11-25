@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="dark"><head><meta charset="utf-8">
+<html lang="ar" dir="rtl" data-theme="dark"><head>
+<script>(function(){try{var k="hilal_visit_theme",n=performance.getEntriesByType("navigation")[0],ok=false;if(n&&n.type!=="reload"&&document.referrer&&new URL(document.referrer).origin===location.origin)ok=true;if(!ok)sessionStorage.removeItem(k);window.__hilalTheme=sessionStorage.getItem(k)||"dark"}catch(e){window.__hilalTheme="dark"}if(window.__hilalTheme==="dark")document.documentElement.setAttribute("data-theme","dark")})()</script><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>حاسبة الكابل والقاطع الذكية | م. هلال شليل</title>
 <meta name="theme-color" content="#0b0f17">
@@ -474,7 +475,7 @@ function makeBeautifulIcon(size, maskable){
 (function(){
   const html = document.documentElement;
   const btn = document.getElementById('themeBtn');
-  if (localStorage.getItem('theme') === 'light') {
+  if ((window.__hilalTheme||'dark') === 'light') {
     html.setAttribute('data-theme', 'light');
     btn.textContent = '☀️';
   }
@@ -483,11 +484,11 @@ function makeBeautifulIcon(size, maskable){
     if (isDark) {
       html.setAttribute('data-theme', 'light');
       btn.textContent = '☀️';
-      localStorage.setItem('theme', 'light');
+      try{sessionStorage.setItem('hilal_visit_theme','light')}catch(e){}
     } else {
       html.setAttribute('data-theme', 'dark');
       btn.textContent = '🌙';
-      localStorage.setItem('theme', 'dark');
+      try{sessionStorage.setItem('hilal_visit_theme','dark')}catch(e){}
     }
     calc();
   });

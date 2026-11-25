@@ -7,9 +7,9 @@
    1. THEME MANAGER
 ======================================== */
 const ThemeManager = {
-    get() { return localStorage.getItem("engOffice_theme") || "dark"; },
+    get() { return (function(){try{return sessionStorage.getItem("hilal_visit_theme")}catch(e){return null}})() || "dark"; },
     set(theme) {
-        localStorage.setItem("engOffice_theme", theme);
+        try{sessionStorage.setItem("hilal_visit_theme", theme)}catch(e){}
         this.apply(theme);
     },
     toggle() {
