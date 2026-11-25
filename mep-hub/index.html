@@ -20051,7 +20051,18 @@ function buildPageData(){
 
   // Prefer tables
   if(tables.length > 0){
-    const t = tables[0];
+    let t = tables[0];
+    // Pages carrying #exportNote (e.g. Rate Build-up): export ALL same-shaped tables, with an Item column from each card title
+    if(document.getElementById('exportNote') && tables.length > 1 && tables.every(x => x.headers.join('|') === t.headers.join('|'))){
+      const tbls = [...document.getElementById('content').querySelectorAll('table')];
+      const rowsAll = [];
+      tables.forEach(x => {
+        const el = tbls[x.index];
+        const item = (el && el.closest('.card')?.querySelector('h4')?.textContent.trim()) || '';
+        x.rows.forEach(r => rowsAll.push([item, ...r]));
+      });
+      t = {headers: ['Item', ...t.headers], rows: rowsAll, index: 0};
+    }
     const data = t.rows.map(row => {
       const obj = {};
       t.headers.forEach((h, i)=>{ obj[h || ('Col' + (i+1))] = row[i] || ''; });
@@ -20088,18 +20099,49 @@ function exportCurrentPageToCSV(){
   exportToCSV(data, title);
 }
 
+/* Clean printable HTML of the whole current page (light theme, RTL, no buttons). Used for PDF via the browser's print dialog. */
+function buildPrintHTML(title){
+  const c = document.getElementById('content');
+  const clone = c.cloneNode(true);
+  clone.querySelectorAll('button, .btn, .export-bar, .tab-bar, .quick-bar, script, .mep-icon, .h1, .eyebrow').forEach(el => el.remove());
+  const esc = t => String(t).replace(/[&<>]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[ch]));
+  return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>' + esc(title) + '</title><style>' +
+    '@page{size:A4;margin:14mm}' +
+    '*{box-sizing:border-box;color:#111!important;background:transparent!important;box-shadow:none!important;text-shadow:none!important}' +
+    'body{font-family:"Noto Sans Arabic","Segoe UI",Tahoma,Arial,sans-serif;font-size:12px;line-height:1.6;margin:0}' +
+    'h1{font-size:20px;border-bottom:2px solid #0f2942;padding-bottom:6px}h2,h3,h4{margin:12px 0 6px}' +
+    'table{width:100%;border-collapse:collapse;margin:8px 0;font-size:11px}th,td{border:1px solid #888;padding:4px 6px;text-align:start}th{background:#eee!important}' +
+    '.card,.stat,.note,.result{border:1px solid #999;border-radius:4px;padding:8px;margin:8px 0;break-inside:avoid}' +
+    '.grid{display:block}svg{max-width:100%;height:auto}a{text-decoration:underline}' +
+    '.meta{color:#555!important;font-size:11px}</style></head><body>' +
+    '<h1>' + esc(title) + '</h1><div class="meta">MEP Engineering Hub · ' + esc(new Date().toLocaleDateString('en-GB')) + '</div>' +
+    clone.innerHTML + '</body></html>';
+}
 function exportCurrentPageToPDF(title){
+  // jsPDF's text path cannot render Arabic (garbled glyphs) and exports one table only.
+  // For pages with Arabic, print the whole page cleanly through the browser: choose "Save as PDF".
+  const c = document.getElementById('content');
+  const t = title || (c && c.querySelector('.h1')?.textContent.trim()) || 'MEP Hub';
+  const hasArabic = !!c && /[\u0600-\u06FF]/.test(c.innerText || '');
+  if(hasArabic){
+    const fr = document.createElement('iframe');
+    fr.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0';
+    fr.srcdoc = buildPrintHTML(t);
+    fr.onload = () => {
+      if(window.toast) toast('اختر "حفظ كـ PDF" من نافذة الطباعة');
+      try{ fr.contentWindow.focus(); fr.contentWindow.print(); }catch(e){ console.error(e); }
+      setTimeout(() => fr.remove(), 60000);
+    };
+    document.body.appendChild(fr);
+    return;
+  }
   const {data, headers} = buildPageData();
   const rows = data.slice(0, 100).map(obj => headers.map(h => obj[h] || ''));
-
   exportToPDF({
-    title: title || 'MEP Hub Report',
+    title: t,
     subtitle: 'Page: ' + (state.route || 'dashboard'),
     content: ((document.getElementById('exportNote')?.textContent || '') + ' ' + (document.getElementById('content')?.querySelector('.sub')?.textContent || '')).trim().substring(0, 600),
-    table: data.length > 1 ? {
-      head: headers,
-      body: rows
-    } : null,
+    table: data.length > 1 ? {head: headers, body: rows} : null,
     filename: 'mep-' + (state.route || 'report')
   });
 }
