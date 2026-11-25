@@ -78,7 +78,7 @@ const Store = {
        THEME
     ======================================== */
     getTheme() {
-        return localStorage.getItem("engOffice_theme") || "auto";
+        return localStorage.getItem("engOffice_theme") || "dark";
     },
 
     setTheme(t) {

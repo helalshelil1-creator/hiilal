@@ -7,7 +7,7 @@
    1. THEME MANAGER
 ======================================== */
 const ThemeManager = {
-    get() { return localStorage.getItem("engOffice_theme") || "auto"; },
+    get() { return localStorage.getItem("engOffice_theme") || "dark"; },
     set(theme) {
         localStorage.setItem("engOffice_theme", theme);
         this.apply(theme);
