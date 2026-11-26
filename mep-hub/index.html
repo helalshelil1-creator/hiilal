@@ -380,6 +380,7 @@ button{font-family:inherit;cursor:pointer}
 .crumb{
   font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);
   margin-bottom:16px;letter-spacing:0.05em;
+  white-space:normal;overflow-wrap:anywhere;line-height:1.9;
 }
 .crumb a{color:var(--muted)}
 .crumb a:hover{color:var(--primary)}
@@ -563,6 +564,7 @@ tbody tr:hover{background:var(--elevated)}
   direction:ltr;text-align:right;letter-spacing:-0.01em;
   font-variant-numeric:tabular-nums;line-height:1.3;
 }
+.result .big .big-row{display:block;unicode-bidi:isolate;line-height:1.45}
 .result .steps{
   font-size:12px;color:var(--muted);margin-top:12px;
   white-space:pre-wrap;font-family:'IBM Plex Mono',monospace;
@@ -2527,10 +2529,10 @@ const CALCS = {
     fields:[
       {k:'I', label:'التيار I', unit:'A', def:100},
       {k:'L', label:'طول الكابل L', unit:'m', def:50},
-      {k:'S', label:'مقطع الموصل S', unit:'mm²', def:35},
+      {k:'S', label:'مقطع الموصل S', unit:'mm²', def:35, min:0},
       {k:'cond', label:'مادة الموصل', type:'select', opts:[['cu','نحاس · Cu'],['al','ألمنيوم · Al']], def:'cu'},
-      {k:'pf', label:'معامل القدرة PF', unit:'', def:0.85},
-      {k:'V', label:'جهد النظام V', unit:'V', def:400},
+      {k:'pf', label:'معامل القدرة PF', unit:'', def:0.85, min:0, max:1},
+      {k:'V', label:'جهد النظام V', unit:'V', def:400, min:0},
     ],
     run(v){
       const rho = v.cond==='cu'?0.0175:0.028;
@@ -2560,9 +2562,9 @@ sinφ = ${sinphi.toFixed(3)}
     name:'اختيار مقطع الكابل',
     fields:[
       {k:'I', label:'تيار التصميم Ib', unit:'A', def:80},
-      {k:'Ca', label:'معامل الحرارة Ca', unit:'', def:1.0},
-      {k:'Cg', label:'معامل التجميع Cg', unit:'', def:1.0},
-      {k:'Ci', label:'معامل العزل Ci', unit:'', def:1.0},
+      {k:'Ca', label:'معامل الحرارة Ca', unit:'', def:1.0, min:0},
+      {k:'Cg', label:'معامل التجميع Cg', unit:'', def:1.0, min:0},
+      {k:'Ci', label:'معامل العزل Ci', unit:'', def:1.0, min:0},
     ],
     run(v){
       const It = v.I/(v.Ca*v.Cg*v.Ci);
@@ -2590,9 +2592,9 @@ Ref: BS 7671 Table 4D2A, col 7 (Cu, 70°C PVC multicore, Method C, 3-phase, 30°
     name:'التيار · 3 Phase',
     fields:[
       {k:'P', label:'القدرة P', unit:'kW', def:50},
-      {k:'V', label:'جهد الخط V', unit:'V', def:400},
-      {k:'pf', label:'معامل القدرة', unit:'', def:0.85},
-      {k:'eff', label:'الكفاءة η', unit:'', def:0.95},
+      {k:'V', label:'جهد الخط V', unit:'V', def:400, min:0},
+      {k:'pf', label:'معامل القدرة', unit:'', def:0.85, min:0, max:1},
+      {k:'eff', label:'الكفاءة η', unit:'', def:0.95, min:0, max:1},
     ],
     run(v){
       const I=(v.P*1000)/(Math.sqrt(3)*v.V*v.pf*v.eff);
@@ -2610,8 +2612,8 @@ Ref: BS 7671 Table 4D2A, col 7 (Cu, 70°C PVC multicore, Method C, 3-phase, 30°
     name:'التيار · 1 Phase',
     fields:[
       {k:'P', label:'القدرة P', unit:'W', def:3000},
-      {k:'V', label:'الجهد V', unit:'V', def:230},
-      {k:'pf', label:'معامل القدرة', unit:'', def:1.0},
+      {k:'V', label:'الجهد V', unit:'V', def:230, min:0},
+      {k:'pf', label:'معامل القدرة', unit:'', def:1.0, min:0, max:1},
     ],
     run(v){
       const I=v.P/(v.V*v.pf);
@@ -2621,9 +2623,9 @@ Ref: BS 7671 Table 4D2A, col 7 (Cu, 70°C PVC multicore, Method C, 3-phase, 30°
   power3ph:{
     name:'القدرة · 3 Phase',
     fields:[
-      {k:'V', label:'الجهد V', unit:'V', def:400},
+      {k:'V', label:'الجهد V', unit:'V', def:400, min:0},
       {k:'I', label:'التيار I', unit:'A', def:100},
-      {k:'pf', label:'معامل القدرة', unit:'', def:0.85},
+      {k:'pf', label:'معامل القدرة', unit:'', def:0.85, min:0, max:1},
     ],
     run(v){
       const S=Math.sqrt(3)*v.V*v.I/1000;
@@ -2643,7 +2645,7 @@ Q = S · sinφ = ${S.toFixed(2)} × ${Math.sqrt(1-v.pf*v.pf).toFixed(3)} = ${Q.t
     name:'اختيار المحول',
     fields:[
       {k:'kW', label:'حمل الطلب', unit:'kW', def:500},
-      {k:'pf', label:'معامل القدرة', unit:'', def:0.85},
+      {k:'pf', label:'معامل القدرة', unit:'', def:0.85, min:0, max:1},
       {k:'margin', label:'هامش التوسع', unit:'%', def:25},
     ],
     run(v){
@@ -2666,7 +2668,7 @@ Loading 60–80% للأمثل.`,
     name:'اختيار المولد',
     fields:[
       {k:'kWr', label:'حمل التشغيل', unit:'kW', def:300},
-      {k:'pf', label:'معامل القدرة', unit:'', def:0.8},
+      {k:'pf', label:'معامل القدرة', unit:'', def:0.8, min:0, max:1},
       {k:'kWm', label:'أكبر محرك', unit:'kW', def:75},
       {k:'start', label:'طريقة البدء', type:'select', opts:[['dol','Direct On Line (×3)'],['yd','Star-Delta (×2)'],['soft','Soft Starter (×1.5)'],['vfd','VFD (×1.2)']], def:'yd'},
       {k:'margin', label:'هامش أمان', unit:'%', def:20},
@@ -2694,10 +2696,10 @@ kVA = ${base.toFixed(1)} / ${v.pf} × ${(1+v.margin/100).toFixed(2)} = ${kVA.toF
     name:'اختيار الـUPS',
     fields:[
       {k:'W', label:'الحمل الحرج', unit:'W', def:20000},
-      {k:'pf', label:'معامل القدرة', unit:'', def:0.9},
+      {k:'pf', label:'معامل القدرة', unit:'', def:0.9, min:0, max:1},
       {k:'t', label:'زمن الاستقلالية', unit:'min', def:15},
-      {k:'Vdc', label:'جهد البطاريات', unit:'V', def:240},
-      {k:'eff', label:'كفاءة العاكس', unit:'', def:0.92},
+      {k:'Vdc', label:'جهد البطاريات', unit:'V', def:240, min:0},
+      {k:'eff', label:'كفاءة العاكس', unit:'', def:0.92, min:0, max:1},
     ],
     run(v){
       const VA=v.W/v.pf;
@@ -2718,9 +2720,9 @@ Ah = (W × h) / (Vdc × η × DoD)
     fields:[
       {k:'E', label:'شدة الإضاءة', unit:'lux', def:300},
       {k:'A', label:'مساحة الغرفة', unit:'m²', def:50},
-      {k:'Φ', label:'التدفق الضوئي', unit:'lm', def:3200},
-      {k:'UF', label:'معامل الاستفادة', unit:'', def:0.8},
-      {k:'MF', label:'معامل الصيانة', unit:'', def:0.8},
+      {k:'Φ', label:'التدفق الضوئي', unit:'lm', def:3200, min:0},
+      {k:'UF', label:'معامل الاستفادة', unit:'', def:0.8, min:0, max:1},
+      {k:'MF', label:'معامل الصيانة', unit:'', def:0.8, min:0, max:1},
     ],
     run(v){
       const N=(v.E*v.A)/(v.Φ*v.UF*v.MF);
@@ -2738,7 +2740,7 @@ Ah = (W × h) / (Vdc × η × DoD)
     name:'قطر الماسورة',
     fields:[
       {k:'Q', label:'التصرف', unit:'L/s', def:5},
-      {k:'V', label:'السرعة', unit:'m/s', def:2.0},
+      {k:'V', label:'السرعة', unit:'m/s', def:2.0, min:0},
     ],
     run(v){
       const A=(v.Q/1000)/v.V;
@@ -2759,7 +2761,7 @@ D = √(4A/π) = ${D.toFixed(2)} mm
     name:'مقاس الدكت',
     fields:[
       {k:'Q', label:'تصرف الهواء', unit:'m³/h', def:2000},
-      {k:'V', label:'السرعة', unit:'m/s', def:6},
+      {k:'V', label:'السرعة', unit:'m/s', def:6, min:0},
     ],
     run(v){
       const Qs=v.Q/3600;
@@ -2778,6 +2780,71 @@ D = √(4A/π) = ${D.toFixed(0)} mm
   },
 };
 
+const PUMP_GUIDE = {
+  types:[
+    ['End-Suction', 'طرد مركزي طرفي السحب', 'الأكثر شيوعًا: مياه الشرب، الري، التكييف، نقل المياه الصافية'],
+    ['Vertical Inline', 'إنلاين رأسية', 'توفير المساحة في غرف المضخات ودوائر التكييف'],
+    ['Split-Case', 'مقسومة مزدوجة السحب', 'التصرفات الكبيرة: مياه الشرب البلدية والمحطات'],
+    ['Submersible', 'غاطسة', 'الصرف الصحي، مياه الآبار، أبار الري'],
+    ['Vertical Turbine', 'توربينية رأسية', 'الآبار العميقة ومضخات الحريق عند مصدر مائي أسفل الأرض'],
+    ['Self-Priming', 'ذاتية التهوية', 'الصرف والتجفيف عند الحاجة لسحب من مستوى أدنى'],
+  ],
+  sizes:[
+    {s:'Grundfos NB/NBE', c:'طرفية EN 733',
+     range:['Q: <bdi class="tok" dir="ltr">3-500 m³/h</bdi>','H: <bdi class="tok" dir="ltr">3-110 m</bdi>','P: <bdi class="tok" dir="ltr">0.25-45 kW</bdi>'],
+     ports:'طرد <bdi class="tok" dir="ltr">DN32-DN150</bdi> <bdi class="tok" dir="ltr">(EN 1092-2 PN10/16)</bdi><br>مثال: <bdi class="tok" dir="ltr">NB 32-125.1</bdi>، سحب <bdi class="tok" dir="ltr">DN50</bdi> / طرد <bdi class="tok" dir="ltr">DN32</bdi>'},
+    {s:'Grundfos TP', c:'إنلاين',
+     range:['حسب الموديل','P: <bdi class="tok" dir="ltr">0.12 kW</bdi> فأعلى'],
+     ports:'الفتحتان بنفس المقاس<br>أمثلة مرصودة: <bdi class="tok" dir="ltr">TP 25 / 32 / 40</bdi>، بفتحات <bdi class="tok" dir="ltr">DN25 / DN32 / DN40</bdi>'},
+    {s:'A-C Fire Pump (Xylem)', c:'حريق NFPA 20',
+     range:['<bdi class="tok" dir="ltr">250-5000 GPM</bdi>','<bdi class="tok" dir="ltr">50-350 psi</bdi>'],
+     ports:'تصنيفات قياسية UL/FM؛ الاختيار النهائي من منحنى المصنع'},
+  ],
+  sources:[
+    ['Grundfos NB/NBE Data Booklet', 'https://pumppower.com.au/wp-content/uploads/2017/06/NB_NBE-Data-Booklet.pdf'],
+    ['Intro to Pumps - Pump Designs', 'https://www.introtopumps.com/pump-designs/'],
+    ['Xylem A-C Fire Pump - Vertical Turbine', 'https://www.xylem.com/siteassets/brand/a-c-fire-pump/resources/brochure/ac-vertj03.pdf'],
+    ['Grundfos TP inline pump models (ter-en.com)', 'https://www.ter-en.com/en/nil/7'],
+  ],
+};
+function renderPumpGuide(){
+  const g = PUMP_GUIDE;
+  return `
+    <style>
+      .pump-guide .tok{white-space:nowrap;unicode-bidi:isolate}
+      .pump-sizes-cards{display:none}
+      @media (max-width:720px){
+        .pump-sizes-table{display:none}
+        .pump-sizes-cards{display:block}
+        .pumpsz-card{border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:13px}
+        .pumpsz-card .pumpsz-head{font-weight:700;color:var(--primary);margin-bottom:6px}
+        .pumpsz-card .pumpsz-row{margin:5px 0;line-height:1.9}
+        .pumpsz-card .pumpsz-lbl{color:var(--muted);font-size:12px}
+      }
+    </style>
+    <div class="pump-guide">
+    <div class="note tip"><strong>الحاسبة:</strong> توضّح التصرف والرفع والقدرة المقترحة لنقطة التشغيل.</div>
+    <div class="h3" style="margin-top:14px">◂ أنواع المضخات واستخداماتها</div>
+    <div style="overflow-x:auto"><table style="font-size:12.5px"><thead><tr><th>النوع</th><th>الاستخدام النموذجي</th></tr></thead><tbody>
+      ${g.types.map(t=>`<tr><td><span dir="ltr">${t[0]}</span><br>${t[1]}</td><td>${t[2]}</td></tr>`).join('')}
+    </tbody></table></div>
+    <div class="h3" style="margin-top:14px">◂ النطاقات ومقاسات الفتحات (من كتالوجات موثّقة)</div>
+    <div class="pump-sizes-table" style="overflow-x:auto"><table style="font-size:12.5px"><thead><tr><th>السلسلة</th><th>الفئة</th><th>النطاق</th><th>مقاسات الفتحات</th></tr></thead><tbody>
+      ${g.sizes.map(r=>`<tr><td dir="ltr">${r.s}</td><td>${r.c}</td><td>${r.range.join('<br>')}</td><td>${r.ports}</td></tr>`).join('')}
+    </tbody></table></div>
+    <div class="pump-sizes-cards">
+      ${g.sizes.map(r=>`<div class="pumpsz-card">
+        <div class="pumpsz-head"><bdi dir="ltr">${r.s}</bdi> · ${r.c}</div>
+        <div class="pumpsz-row"><span class="pumpsz-lbl">النطاق:</span> ${r.range.join(' · ')}</div>
+        <div class="pumpsz-row"><span class="pumpsz-lbl">مقاسات الفتحات:</span><br>${r.ports}</div>
+      </div>`).join('')}
+    </div>
+    <div class="note warn" style="margin-top:10px"><strong>تنبيه:</strong> مقاس فتحة الدخول/الخروج يُحدَّد من منحنى الكتالوج عند نقطة التشغيل الفعلية، وليس من القدرة وحدها. القيم أعلاه نطاقات وأمثلة موثّقة من المصادر المذكورة، واختيار المضخة النهائي من كتالوج المصنّع.</div>
+    <div class="h3" style="margin-top:14px">◂ المصادر</div>
+    <div>${g.sources.map(x=>`<div class="note" style="font-size:12px"><strong>${x[0]}:</strong> <a href="${x[1]}" target="_blank" rel="noopener" dir="ltr" style="color:var(--primary);word-break:break-all">${x[1]}</a></div>`).join('')}</div>
+    </div>
+  `;
+}
 function viewCalculators(){
   const keys = Object.keys(CALCS);
   if(!state.calc) state.calc = keys[0];
@@ -2813,14 +2880,24 @@ function viewCalculators(){
       </div>
       <div class="card">
         <div class="h3">◂ Reference</div>
+        ${calc.guide==='pumps' ? renderPumpGuide() : `
         <div class="note tip"><strong>الطريقة:</strong> ${calc.name}</div>
-        <div class="note"><strong>المعايير:</strong> IEC / NFPA / ASHRAE حسب الحالة — تحقق مع مواصفات المشروع.</div>
+        <div class="note"><strong>المعايير:</strong> IEC / NFPA / ASHRAE حسب الحالة — تحقق مع مواصفات المشروع.</div>`}
         <div class="note warn"><strong>تنبيه:</strong> الحاسبات تقدم إرشاداً هندسياً فقط. يجب مراجعة التصميم النهائي بواسطة مهندس مؤهل.</div>
         <div class="h3" style="margin-top:20px">◂ Related</div>
         <div>${['اختيار الكابل','هبوط الجهد','اختيار القاطع','جدول الأحمال'].map(t=>`<span class="tag">${t}</span>`).join('')}</div>
       </div>
     </div>
   `;
+}
+function calcFieldError(f, val){
+  if(isNaN(val)) return `⚠ مدخل غير صالح للحقل "${f.label}".`;
+  if(val < 0 && !f.allowNeg) return `⚠ الحقل "${f.label}" لا يقبل قيمة سالبة.`;
+  if(f.min !== undefined && !(val > f.min)) return `⚠ الحقل "${f.label}" يجب أن يكون أكبر من ${f.min} — الصفر غير مقبول هنا لأنه في مقام المعادلة.`;
+  if(f.max !== undefined && val > f.max) return f.max === 1
+    ? `⚠ الحقل "${f.label}" يجب أن يكون أكبر من 0 ولا يتجاوز 1.`
+    : `⚠ الحقل "${f.label}" يجب ألا يتجاوز ${f.max}.`;
+  return null;
 }
 function calcRun(){
   const calc = CALCS[state.calc];
@@ -2829,8 +2906,9 @@ function calcRun(){
     const el = document.getElementById('f_'+f.k);
     if(!el) return;
     v[f.k] = f.type==='select'? el.value : parseFloat(el.value);
-    if(f.type!=='select' && (isNaN(v[f.k]) || v[f.k]<(f.def===0?0:Number.MIN_VALUE))){
-      document.getElementById('calcOut').innerHTML = `<div class="err-box">⚠ مدخل غير صالح للحقل "${f.label}".</div>`;
+    const ferr = f.type==='select' ? null : calcFieldError(f, v[f.k]);
+    if(ferr){
+      document.getElementById('calcOut').innerHTML = `<div class="err-box field-error">${ferr}</div>`;
       return;
     }
   }
@@ -2838,7 +2916,7 @@ function calcRun(){
   const cls = r.status==='ok'?'result': r.status==='warn'?'warn-box':'err-box';
   document.getElementById('calcOut').innerHTML = `
     <div class="${cls}">
-      <div class="big">${r.main}</div>
+      <div class="big">${r.mainRows ? r.mainRows.map(x=>`<div class="big-row" dir="auto">${x}</div>`).join('') : r.main}</div>
       <div class="steps">${r.steps}</div>
       ${r.note?`<div style="margin-top:12px;font-size:12.5px;line-height:1.7">${r.note}</div>`:''}
     </div>
@@ -3585,11 +3663,11 @@ const CALCS_EXT = {
   shortCircuit:{
     name:'تيار القصر · Short Circuit',
     fields:[
-      {k:'V', label:'جهد الخط V', unit:'V', def:400},
-      {k:'Ztx', label:'معاوقة المحول %Z', unit:'%', def:5},
-      {k:'kVA', label:'قدرة المحول', unit:'kVA', def:1000},
+      {k:'V', label:'جهد الخط V', unit:'V', def:400, min:0},
+      {k:'Ztx', label:'معاوقة المحول %Z', unit:'%', def:5, min:0},
+      {k:'kVA', label:'قدرة المحول', unit:'kVA', def:1000, min:0},
       {k:'L', label:'طول الكابل', unit:'m', def:30},
-      {k:'S', label:'مقطع الكابل', unit:'mm²', def:70},
+      {k:'S', label:'مقطع الكابل', unit:'mm²', def:70, min:0},
     ],
     run(v){
       const IscTx = (v.kVA*1000)/(Math.sqrt(3)*v.V*(v.Ztx/100));
@@ -3621,7 +3699,7 @@ Isc at cable end = V / (√3 × Z) = ${(IscTotal/1000).toFixed(2)} kA`,
     fields:[
       {k:'I', label:'التيار المطلوب', unit:'A', def:1600},
       {k:'mat', label:'المادة', type:'select', opts:[['cu','نحاس'],['al','ألمنيوم']], def:'cu'},
-      {k:'k', label:'معامل التبريد', unit:'', def:1.0},
+      {k:'k', label:'معامل التبريد', unit:'', def:1.0, min:0},
     ],
     run(v){
       const density = v.mat==='cu'?1.6:0.9;
@@ -3643,10 +3721,19 @@ Isc at cable end = V / (√3 × Z) = ${(IscTotal/1000).toFixed(2)} kA`,
     name:'بنك المكثفات · PF Correction',
     fields:[
       {k:'P', label:'القدرة الفعالة', unit:'kW', def:500},
-      {k:'pf1', label:'PF الحالي', unit:'', def:0.75},
-      {k:'pf2', label:'PF المستهدف', unit:'', def:0.95},
+      {k:'pf1', label:'PF الحالي', unit:'', def:0.75, min:0, max:1},
+      {k:'pf2', label:'PF المستهدف', unit:'', def:0.95, min:0, max:1},
     ],
     run(v){
+      if(v.pf1 >= v.pf2){
+        return {
+          main:'لا حاجة لتصحيح · Qc = 0 kVAr',
+          steps:`معامل القدرة الحالي (${v.pf1}) ${v.pf1===v.pf2?'يساوي':'أفضل بالفعل من'} المستهدف (${v.pf2}).
+بنك المكثفات يصحّح فقط عندما يكون PF الحالي أقل من المستهدف — لا يلزم تركيب مكثفات في هذه الحالة.`,
+          status:'ok',
+          note:'إن كان القصد خفض PF (حمل سعوي) فهذا خارج وظيفة هذه الحاسبة.'
+        };
+      }
       const tan1 = Math.tan(Math.acos(v.pf1));
       const tan2 = Math.tan(Math.acos(v.pf2));
       const Qc = v.P * (tan1 - tan2);
@@ -3668,9 +3755,9 @@ Qc = P × (tanφ1 − tanφ2)
     name:'تيار المحرك · Motor Current',
     fields:[
       {k:'P', label:'قدرة المحرك', unit:'kW', def:75},
-      {k:'V', label:'الجهد', unit:'V', def:400},
-      {k:'pf', label:'معامل القدرة', unit:'', def:0.87},
-      {k:'eff', label:'الكفاءة', unit:'', def:0.93},
+      {k:'V', label:'الجهد', unit:'V', def:400, min:0},
+      {k:'pf', label:'معامل القدرة', unit:'', def:0.87, min:0, max:1},
+      {k:'eff', label:'الكفاءة', unit:'', def:0.93, min:0, max:1},
       {k:'start', label:'طريقة البدء', type:'select', opts:[['dol','DOL ×6'],['yd','Star-Delta ×2.5'],['soft','Soft ×3'],['vfd','VFD ×1.1']], def:'dol'},
     ],
     run(v){
@@ -3693,7 +3780,7 @@ I_start = I_FL × ${mult} = ${Istart.toFixed(0)} A`,
   ach:{
     name:'معدل تغيير الهواء · ACH',
     fields:[
-      {k:'V', label:'حجم الغرفة', unit:'m³', def:120},
+      {k:'V', label:'حجم الغرفة', unit:'m³', def:120, min:0},
       {k:'Q', label:'تصرف الهواء', unit:'m³/h', def:1200},
     ],
     run(v){
@@ -3711,22 +3798,29 @@ I_start = I_FL × ${mult} = ${Istart.toFixed(0)} A`,
   },
   firePumpCalc:{
     name:'حساب مضخة الحريق',
+    guide:'pumps',
     fields:[
       {k:'Q', label:'التصرف التصميمي Q', unit:'GPM', def:1000},
       {k:'Hstatic', label:'الارتفاع الساكن', unit:'psi', def:40},
       {k:'Hfric', label:'الفقد بالاحتكاك', unit:'psi', def:60},
-      {k:'eff', label:'كفاءة المضخة', unit:'', def:0.75},
+      {k:'eff', label:'كفاءة المضخة', unit:'', def:0.75, min:0, max:1},
     ],
     run(v){
       const H = v.Hstatic + v.Hfric;
       const Q_lps = v.Q * 0.0631;
       const H_m = H * 0.703;
-      const P_kW = (Q_lps/1000) * H_m * 1000 * 9.81 / v.eff;
+      const P_kW = (Q_lps/1000) * H_m * 1000 * 9.81 / v.eff / 1000;
       const Pmargin = P_kW * 1.25;
       const std = [50,75,100,125,150,200,250,300,350,400];
       const chosen = std.find(x=>x>=Pmargin)||'Custom';
       return {
-        main:`TDH = ${H.toFixed(0)} psi  ·  P ≈ ${Pmargin.toFixed(0)} kW  ·  Standard: ${chosen} kW`,
+        main:`TDH = ${H.toFixed(0)} psi  ·  P_shaft ≈ ${P_kW.toFixed(1)} kW  ·  مع هامش 25%: ${Pmargin.toFixed(1)} kW → Standard: ${chosen} kW`,
+        mainRows:[
+          `TDH = ${H.toFixed(0)} psi`,
+          `P_shaft ≈ ${P_kW.toFixed(1)} kW`,
+          `مع هامش 25%: ${Pmargin.toFixed(1)} kW`,
+          `أقرب قياسي: ${chosen} kW`
+        ],
         steps:
 `TDH = H_static + H_friction
     = ${v.Hstatic} + ${v.Hfric} = ${H} psi
@@ -3735,13 +3829,13 @@ Q = ${v.Q} GPM = ${Q_lps.toFixed(1)} L/s
 H = ${H} psi = ${H_m.toFixed(1)} m
 
 P = Q × H × ρ × g / η
-  = (${(Q_lps/1000).toFixed(4)}) × ${H_m.toFixed(1)} × 1000 × 9.81 / ${v.eff}
+  = (${(Q_lps/1000).toFixed(4)} m³/s) × ${H_m.toFixed(1)} × 1000 × 9.81 / ${v.eff} / 1000
   = ${P_kW.toFixed(1)} kW
 
 مع هامش 25%: ${Pmargin.toFixed(1)} kW
 أقرب قياسي: ${chosen} kW`,
         status:'ok',
-        note:'تحقق من منحنى المصنّع عند 100% و 150% من Q. Reference: NFPA 20.'
+        note:'هامش 25% افتراض تصميمي شائع وليس متطلبًا ثابتًا من NFPA 20، ولا يثبت وحده مطابقة اختيار المحرك: الاختيار النهائي من منحنى المصنّع بحيث لا يتجاوز الحمل قدرة المحرك عند أي نقطة تشغيل (non-overloading عبر المنحنى). تحقق من المنحنى عند 100% و 150% من Q. Reference: NFPA 20.'
       };
     }
   },
@@ -3772,7 +3866,7 @@ P = Q × H × ρ × g / η
     name:'فقد الضغط · Pressure Drop',
     fields:[
       {k:'Q', label:'التصرف', unit:'L/s', def:5},
-      {k:'D', label:'القطر الداخلي', unit:'mm', def:50},
+      {k:'D', label:'القطر الداخلي', unit:'mm', def:50, min:0},
       {k:'L', label:'الطول', unit:'m', def:50},
       {k:'f', label:'معامل الاحتكاك f', unit:'', def:0.02},
     ],
@@ -3801,9 +3895,9 @@ h_f = f × (L/D) × (V²/2g)
     name:'ارتفاع الجهد · Voltage Rise',
     fields:[
       {k:'P', label:'قدرة PV', unit:'kW', def:100},
-      {k:'V', label:'جهد الشبكة', unit:'V', def:400},
+      {k:'V', label:'جهد الشبكة', unit:'V', def:400, min:0},
       {k:'L', label:'طول الخط', unit:'m', def:50},
-      {k:'S', label:'مقطع الكابل', unit:'mm²', def:70},
+      {k:'S', label:'مقطع الكابل', unit:'mm²', def:70, min:0},
     ],
     run(v){
       const I = (v.P*1000)/(Math.sqrt(3)*v.V);
@@ -3827,9 +3921,9 @@ R = ρ·L/S = 0.0175 × ${v.L} / ${v.S} = ${R.toFixed(4)} Ω
     fields:[
       {k:'E', label:'الإضاءة المطلوبة', unit:'lux', def:20},
       {k:'A', label:'المساحة', unit:'m²', def:500},
-      {k:'Φ', label:'التدفق لكل كشاف', unit:'lm', def:10000},
-      {k:'UF', label:'معامل الاستفادة', unit:'', def:0.6},
-      {k:'MF', label:'معامل الصيانة', unit:'', def:0.7},
+      {k:'Φ', label:'التدفق لكل كشاف', unit:'lm', def:10000, min:0},
+      {k:'UF', label:'معامل الاستفادة', unit:'', def:0.6, min:0, max:1},
+      {k:'MF', label:'معامل الصيانة', unit:'', def:0.7, min:0, max:1},
     ],
     run(v){
       const N = (v.E*v.A)/(v.Φ*v.UF*v.MF);
@@ -20885,7 +20979,7 @@ Object.assign(CALCS, {
   motorEfficiency:{
     name:'كفاءة المحرك',
     fields:[
-      {k:'Pin', label:'Input Power (kW)', unit:'', def:90},
+      {k:'Pin', label:'Input Power (kW)', unit:'', def:90, min:0},
       {k:'Pout', label:'Output Power (kW)', unit:'', def:83},
       {k:'hours', label:'Operating Hours / Year', unit:'h', def:8000},
       {k:'rate', label:'Electricity Rate', unit:'$ / kWh', def:0.12},
@@ -20910,10 +21004,19 @@ Annual Cost = ${(loss*v.hours).toFixed(0)} × $${v.rate} = $${annualLoss.toFixed
     name:'تصحيح معامل القدرة',
     fields:[
       {k:'kW', label:'Active Power', unit:'kW', def:500},
-      {k:'pf1', label:'Current PF', unit:'', def:0.78},
-      {k:'pf2', label:'Target PF', unit:'', def:0.95},
+      {k:'pf1', label:'Current PF', unit:'', def:0.78, min:0, max:1},
+      {k:'pf2', label:'Target PF', unit:'', def:0.95, min:0, max:1},
     ],
     run(v){
+      if(v.pf1 >= v.pf2){
+        return {
+          main:'No correction needed · Qc = 0 kVAr',
+          steps:`Current PF (${v.pf1}) is ${v.pf1===v.pf2?'equal to':'already better than'} the target (${v.pf2}).
+A capacitor bank only corrects a lagging PF below target; nothing to install here.`,
+          status:'ok',
+          note:'A target below the current PF is not a compensation case.'
+        };
+      }
       const tan1 = Math.tan(Math.acos(v.pf1));
       const tan2 = Math.tan(Math.acos(v.pf2));
       const Qc = v.kW * (tan1 - tan2);
@@ -20944,9 +21047,9 @@ Number of 50 kVAr steps ≈ ${stepCount}`,
   voltageUnbalance:{
     name:'عدم توازن الجهد',
     fields:[
-      {k:'V1', label:'L1-N Voltage', unit:'V', def:230},
-      {k:'V2', label:'L2-N Voltage', unit:'V', def:232},
-      {k:'V3', label:'L3-N Voltage', unit:'V', def:228},
+      {k:'V1', label:'L1-N Voltage', unit:'V', def:230, min:0},
+      {k:'V2', label:'L2-N Voltage', unit:'V', def:232, min:0},
+      {k:'V3', label:'L3-N Voltage', unit:'V', def:228, min:0},
     ],
     run(v){
       const avg = (v.V1 + v.V2 + v.V3) / 3;
@@ -21004,10 +21107,11 @@ Cd = 1.0 مفترض (مبنى محاط بأجسام بنفس الارتفاع ت
     name:'مراحل المكثفات',
     fields:[
       {k:'Qc', label:'Total kVAr Required', unit:'', def:300},
-      {k:'step', label:'Step Size (kVAr)', unit:'', def:25},
-      {k:'V', label:'System Voltage', unit:'V', def:400},
+      {k:'step', label:'Step Size (kVAr)', unit:'', def:25, min:0},
+      {k:'V', label:'System Voltage', unit:'V', def:400, min:0},
     ],
     run(v){
+      if(v.Qc <= 0) return {main:'No capacitor bank required', steps:`Total kVAr required is ${v.Qc} — with no reactive compensation needed there are no steps to size.`, status:'ok', note:''};
       const count = Math.ceil(v.Qc / v.step);
       const actualQc = count * v.step;
       const In = (actualQc * 1000) / (Math.sqrt(3) * v.V);
@@ -21029,11 +21133,11 @@ Current per step = ${Istep.toFixed(1)} A`,
   generatorTransient:{
     name:'انخفاض جهد المولد عند البدء',
     fields:[
-      {k:'genKva', label:'Generator Rating', unit:'kVA', def:500},
+      {k:'genKva', label:'Generator Rating', unit:'kVA', def:500, min:0},
       {k:'Xp', label:'Transient Reactance X_d"', unit:'p.u.', def:0.15},
       {k:'motorKW', label:'Motor Rating', unit:'kW', def:75},
       {k:'startMult', label:'Starting Multiplier', unit:'', def:6},
-      {k:'pf', label:'Motor PF', unit:'', def:0.85},
+      {k:'pf', label:'Motor PF', unit:'', def:0.85, min:0, max:1},
     ],
     run(v){
       const genKW = v.genKva * 0.8;
@@ -21085,11 +21189,11 @@ With ${v.margin}% margin: ${withMargin.toFixed(1)} m³`,
   cableDerating:{
     name:'تخفيض الكابل متعدد العوامل',
     fields:[
-      {k:'Iz', label:'Base Ampacity', unit:'A', def:145},
-      {k:'Ca', label:'Temp Factor Ca', unit:'', def:0.87},
-      {k:'Cg', label:'Grouping Factor Cg', unit:'', def:0.80},
-      {k:'Ci', label:'Insulation Factor Ci', unit:'', def:1.0},
-      {k:'Cs', label:'Soil Factor Cs', unit:'', def:1.0},
+      {k:'Iz', label:'Base Ampacity', unit:'A', def:145, min:0},
+      {k:'Ca', label:'Temp Factor Ca', unit:'', def:0.87, min:0},
+      {k:'Cg', label:'Grouping Factor Cg', unit:'', def:0.80, min:0},
+      {k:'Ci', label:'Insulation Factor Ci', unit:'', def:1.0, min:0},
+      {k:'Cs', label:'Soil Factor Cs', unit:'', def:1.0, min:0},
       {k:'load', label:'Actual Load', unit:'A', def:95},
     ],
     run(v){
@@ -21111,10 +21215,10 @@ Utilization = ${v.load} / ${IzDerated.toFixed(1)} × 100 = ${util.toFixed(1)}%`,
   busbarSC:{
     name:'تيار قصر الباسبار',
     fields:[
-      {k:'kVA', label:'Transformer kVA', unit:'', def:1000},
-      {k:'Z', label:'Transformer uk (%Z)', unit:'%', def:5},
+      {k:'kVA', label:'Transformer kVA', unit:'', def:1000, min:0},
+      {k:'Z', label:'Transformer uk (%Z)', unit:'%', def:5, min:0},
       {k:'ur', label:'Transformer ur (%R, من الداتاشيت)', unit:'%', def:1},
-      {k:'V', label:'Nominal LV voltage Un', unit:'V', def:400},
+      {k:'V', label:'Nominal LV voltage Un', unit:'V', def:400, min:0},
       {k:'Rc', label:'Cable/Busbar R', unit:'mΩ', def:3},
       {k:'Xc', label:'Cable/Busbar X', unit:'mΩ', def:4},
     ],
@@ -21576,7 +21680,7 @@ calcRun = function(){
     }
     // Additional sanity checks
     if(f.unit === 'mm²' && val <= 0) errors.push(`${f.label}: يجب أن يكون موجباً`);
-    if(f.unit === 'm' && val < 0) errors.push(`${f.label}: الطول لا يمكن أن يكون سالباً`);
+    if(f.unit === 'm' && val < 0 && !f.allowNeg) errors.push(`${f.label}: الطول لا يمكن أن يكون سالباً`);
   });
 
   const outEl = document.getElementById('calcOut');
@@ -21605,6 +21709,7 @@ calcRun = function(){
   setTimeout(()=>{
     const box = document.getElementById('calcOut');
     if(!box) return;
+    if(box.querySelector('.field-error')) return;
     const notice = document.createElement('div');
     notice.className = 'validation-box ok';
     notice.innerHTML = `
@@ -22125,9 +22230,9 @@ PE = ${Spe} mm²
   earthResistance:{
     name:'مقاومة الأرضي (Rod)',
     fields:[
-      {k:'rho', label:'Soil Resistivity ρ', unit:'Ω·m', def:100},
-      {k:'L', label:'Rod Length', unit:'m', def:3},
-      {k:'d', label:'Rod Diameter', unit:'mm', def:16},
+      {k:'rho', label:'Soil Resistivity ρ', unit:'Ω·m', def:100, min:0},
+      {k:'L', label:'Rod Length', unit:'m', def:3, min:0},
+      {k:'d', label:'Rod Diameter', unit:'mm', def:16, min:0},
     ],
     run(v){
       const a = v.d / 1000 / 2; // radius in m
@@ -22147,15 +22252,16 @@ PE = ${Spe} mm²
   },
   pumpPower:{
     name:'قدرة المضخة',
+    guide:'pumps',
     fields:[
       {k:'Q', label:'Flow Rate Q', unit:'m³/h', def:50},
       {k:'H', label:'Total Head H', unit:'m', def:40},
-      {k:'eff', label:'Pump Efficiency η', unit:'', def:0.75},
-      {k:'motorEff', label:'Motor Efficiency', unit:'', def:0.92},
+      {k:'eff', label:'Pump Efficiency η', unit:'', def:0.75, min:0, max:1},
+      {k:'motorEff', label:'Motor Efficiency', unit:'', def:0.92, min:0, max:1},
     ],
     run(v){
       const Q_lps = v.Q / 3.6;
-      const Phyd = (Q_lps * v.H * 1000 * 9.81) / 1000;
+      const Phyd = (Q_lps / 1000) * v.H * 1000 * 9.81 / 1000;
       const Pmotor = Phyd / v.eff;
       const Pinput = Pmotor / v.motorEff;
       return {
@@ -24761,7 +24867,7 @@ Object.assign(CALCS, {
     name:'Pipe Sizing مع Fittings',
     fields:[
       {k:'Q', label:'Flow Rate', unit:'L/s', def:5},
-      {k:'V', label:'Target Velocity', unit:'m/s', def:2},
+      {k:'V', label:'Target Velocity', unit:'m/s', def:2, min:0},
       {k:'L', label:'Pipe Length', unit:'m', def:50},
       {k:'elbows', label:'Number of 90° Elbows', unit:'', def:6},
       {k:'tees', label:'Number of Tees', unit:'', def:2},
@@ -24805,8 +24911,8 @@ Total Equivalent Length = ${totalEquiv.toFixed(2)} m`,
     name:'تصميم Chilled Water Pipe',
     fields:[
       {k:'TR', label:'Cooling Load (TR)', unit:'TR', def:100},
-      {k:'dT', label:'Temperature Difference ΔT', unit:'°C', def:6},
-      {k:'V', label:'Target Velocity', unit:'m/s', def:1.5},
+      {k:'dT', label:'Temperature Difference ΔT', unit:'°C', def:6, min:0},
+      {k:'V', label:'Target Velocity', unit:'m/s', def:1.5, min:0},
     ],
     run(v){
       const kW = v.TR * 3.517;
@@ -25684,10 +25790,10 @@ Object.assign(CALCS, {
     name:'Fire Fighting Hydraulic',
     fields:[
       {k:'flow', label:'Design Flow Rate', unit:'GPM', def:1000},
-      {k:'pipe', label:'Pipe Diameter (ID)', unit:'mm', def:100},
+      {k:'pipe', label:'Pipe Diameter (ID)', unit:'mm', def:100, min:0},
       {k:'length', label:'Pipe Length', unit:'m', def:100},
-      {k:'C', label:'Hazen-Williams C Factor', unit:'', def:120},
-      {k:'elev', label:'Elevation Change', unit:'m', def:10},
+      {k:'C', label:'Hazen-Williams C Factor', unit:'', def:120, min:0},
+      {k:'elev', label:'Elevation Change (سالب = نزول)', unit:'m', def:10, allowNeg:true},
     ],
     run(v){
       // Convert GPM to m³/s
@@ -27760,7 +27866,11 @@ console.log('%c🎯 جرّب: انقر على "هبوط الجهد" → صفحة
   stroke:currentColor;fill:none;
   stroke-width:1.8;stroke-linecap:round;
 }
-.main{padding-top:46px !important}
+.main{padding-top:68px !important}
+@media (max-width:768px){
+  .main{padding-top:60px !important}
+  .tab-bar{top:60px !important}
+}
 
 /* ============ RECENTLY VIEWED ============ */
 .recent-list{
