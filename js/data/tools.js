@@ -45,6 +45,16 @@ const TOOLS = [
         badge: "NEW"
     },
     {
+        id: "control-circuit-simulator",
+        name: "محاكي دوائر الكنترول — نسختنا",
+        nameEn: "Control Circuit Simulator (Ours)",
+        category: "platform",
+        icon: "cpu",
+        desc: "نسخة المكتب من محاكي دوائر الكنترول — فاريك، أوتوترانس، تايمر يومي، فريكوينسي ميتر، وحساب هبوط الجهد.",
+        url: "https://control-circuit-simulator-6ary.vercel.app/",
+        badge: "NEW"
+    },
+    {
         id: "software-guide",
         name: "دليل AutoCAD & Revit",
         nameEn: "AutoCAD & Revit Guide",
