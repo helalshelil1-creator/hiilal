@@ -12,7 +12,7 @@
    
 ======================================== */
 
-const CACHE_VERSION = "v3.3.67";
+const CACHE_VERSION = "v3.3.68";
 const STATIC_CACHE = `eng-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `eng-runtime-${CACHE_VERSION}`;
 
@@ -72,6 +72,7 @@ const CORE_ASSETS = [
     "./js/data/categories.js",
     "./js/data/tools.js",
     "./js/data/calculators.js",
+    "./js/data/market-prices.js",
     "./js/data/encyclopedia.js",
     "./js/data/content.js",
     "./js/data/codes.js",

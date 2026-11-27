@@ -518,12 +518,12 @@ const CALCULATORS = [
             { id: "bag", label: "وزن شكارة الأسمنت", unit: "kg", type: "number", default: 50, min: 1 },
             { id: "wC", label: "هالك الخرسانة", unit: "%", type: "number", default: 5, min: 0 },
             { id: "wR", label: "هالك الحديد (فوق وزن جدول الحديد)", unit: "%", type: "number", default: 0, min: 0, help: "جدول حديد المهندس يشمل الوصلات غالباً. أضف نسبة فقط لو قال ذلك." },
-            { id: "pCem", label: "سعر شكارة الأسمنت (من عندك)", unit: "عملتك", type: "number", min: 0 },
-            { id: "pSand", label: "سعر م³ الرمل", unit: "عملتك", type: "number", min: 0 },
-            { id: "pAgg", label: "سعر م³ الزلط", unit: "عملتك", type: "number", min: 0 },
-            { id: "pReady", label: "سعر م³ الخرسانة الجاهزة", unit: "عملتك", type: "number", min: 0 },
-            { id: "pRebar", label: "سعر طن الحديد", unit: "عملتك", type: "number", min: 0 },
-            { id: "pOther", label: "تكلفة أخرى لكل م³ خرسانة (عمالة، شدة، صب...)", unit: "عملتك", type: "number", min: 0 }
+            { id: "pCem", label: "سعر شكارة الأسمنت (50 كجم)", unit: "ج.م", type: "number", min: 0 },
+            { id: "pSand", label: "سعر م³ الرمل", unit: "ج.م", type: "number", min: 0 },
+            { id: "pAgg", label: "سعر م³ الزلط", unit: "ج.م", type: "number", min: 0 },
+            { id: "pReady", label: "سعر م³ الخرسانة الجاهزة", unit: "ج.م", type: "number", min: 0 },
+            { id: "pRebar", label: "سعر طن الحديد", unit: "ج.م", type: "number", min: 0 },
+            { id: "pOther", label: "تكلفة أخرى لكل م³ خرسانة (عمالة، شدة، صب...)", unit: "ج.م", type: "number", min: 0 }
         ],
         calculate(v) {
             const num = x => { const y = parseFloat(x); return isFinite(y) ? y : null; };
@@ -593,11 +593,13 @@ const CALCULATORS = [
                 return { t, p };
             };
             let grand = 0;
-            els.forEach(e => { const c = costOf(e); grand += c.t; if (c.p) partial = true; rows.push({ label: `تكلفة ${e.name}${c.p ? " (جزئية، سعر ناقص)" : ""}`, value: fmt(c.t), unit: "عملتك" }); });
-            rows.push({ label: partial ? "⚠ إجمالي التكلفة (جزئي: أسعار ناقصة)" : "إجمالي التكلفة", value: fmt(grand), unit: "عملتك" });
+            els.forEach(e => { const c = costOf(e); grand += c.t; if (c.p) partial = true; rows.push({ label: `تكلفة ${e.name}${c.p ? " (جزئية، سعر ناقص)" : ""}`, value: fmt(c.t), unit: "ج.م" }); });
+            rows.push({ label: partial ? "⚠ إجمالي التكلفة (جزئي: أسعار ناقصة)" : "إجمالي التكلفة", value: fmt(grand), unit: "ج.م" });
             const notes = [
                 "كل أبعاد العناصر وعدد الأعمدة والقواعد ووزن الحديد لكل م³ ونسبة الخلط تأتي من التصميم الإنشائي للمهندس. الحاسبة لا تحدد سمك البلاطة ولا عدد الأعمدة ولا التسليح من مساحة الأرض.",
-                "كل الأسعار من إدخالك. لم تُستخدم أسعار سوق.",
+                (typeof MARKET_PRICES !== "undefined" && MARKET_PRICES.items)
+                    ? `الأسعار المعبأة مسبقاً متوسط السوق المصري (القاهرة الكبرى) وهي استرشادية — آخر تحديث ${MARKET_PRICES.updated}، المصدر: ${MARKET_PRICES.source.name}. تختلف الأسعار حسب المحافظة والمورد والكمية، فعدّلها بأسعارك الفعلية قبل الاعتماد على الإجمالي.`
+                    : "كل الأسعار من إدخالك. لم تُستخدم أسعار سوق.",
                 "الحجوم من الأبعاد الصافية ولا تخصم تداخل البلاطة مع الأعمدة أو الكمرات، ولا تشمل الكمرات والسلالم والأسقف الأخرى. اضفها كعناصر منفصلة من المهندس.",
                 "الخلط بالموقع: الأسمنت = (الحجم المطلوب × معامل الحجم الجاف ÷ مجموع النسب) × نسبة الأسمنت × كثافة الأسمنت. الرمل والزلط بنفس الطريقة بدون الكثافة. المعامل 1.54 والكثافة 1440 قيم شائعة من مصادر ثانوية (civilmath.com وconcretecivil.com وbuildnumerics.com) وتختلف مع المواد الفعلية. الخرسانة الإنشائية تُحدد بتصميم الخلطة وليس بنسبة عامة."
             ];
@@ -754,5 +756,24 @@ const CALCULATORS = [
         }
     }
 ];
+
+/* ========================================
+   تعبئة أسعار السوق المصري تلقائياً في حاسبة الكميات
+   (js/data/market-prices.js — تُحدَّث أسبوعياً)
+======================================== */
+(function () {
+    const MP = (typeof MARKET_PRICES !== "undefined") ? MARKET_PRICES : null;
+    if (!MP || !MP.items) return;
+    const calc = CALCULATORS.find(c => c.id === "concrete-quantities");
+    if (!calc) return;
+    const map = { pCem: "cementBag", pSand: "sandM3", pAgg: "gravelM3", pReady: "readyMixM3", pRebar: "rebarTon" };
+    calc.inputs.forEach(inp => {
+        const key = map[inp.id];
+        if (!key || !MP.items[key]) return;
+        const it = MP.items[key];
+        inp.default = it.price;
+        inp.help = `متوسط السوق المصري: ${it.price} ${MP.currency}/${it.unit} (بتاريخ ${it.updated} — ${it.source}). سعر استرشادي، عدّله بسعر موردك الفعلي.`;
+    });
+})();
 
 window.CALCULATORS = CALCULATORS;
