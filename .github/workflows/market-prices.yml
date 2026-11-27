@@ -1,0 +1,31 @@
+name: تحديث أسعار السوق المصري
+
+on:
+  schedule:
+    - cron: '0 4 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Update prices from QS Mind
+        run: node scripts/update-market-prices.mjs
+      - name: Commit and push if changed
+        run: |
+          if [ -n "$(git status --porcelain js/data/market-prices.js)" ]; then
+            git config user.name 'helalshelil1-creator'
+            git config user.email '331034370+helalshelil1-creator@users.noreply.github.com'
+            git add js/data/market-prices.js
+            git commit -m "chore(prices): weekly Egyptian market prices update"
+            git push
+          else
+            echo "no price changes"
+          fi
