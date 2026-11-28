@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script>(function(){try{var k="hilal_visit_theme",n=performance.getEntriesByType("navigation")[0],ok=false;if(n&&n.type!=="reload"&&document.referrer&&new URL(document.referrer).origin===location.origin)ok=true;if(!ok)sessionStorage.removeItem(k);window.__hilalTheme=sessionStorage.getItem(k)||"dark"}catch(e){window.__hilalTheme="dark"}if(window.__hilalTheme==="dark")document.documentElement.setAttribute("data-theme","dark")})()</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حاسبة طرمب الحريق | Eng. Helal Shelil</title>
+<script src="../js/seo-data.js"></script>
+<script src="../js/seo.js"></script>
+<link rel="icon" type="image/png" href="../images/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-wrap{max-width:900px;margin:30px auto;padding:0 5%;}
+.tool-head{text-align:center;margin-bottom:30px;padding:30px;background:linear-gradient(135deg,#0a1628,#5c1a1a);color:#fff;border-radius:24px;}
+.tool-head-icon{width:80px;height:80px;margin:0 auto 15px;background:rgba(255,255,255,.12);border:2px solid rgba(255,120,80,.4);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:38px;}
+.tool-head h1{font-size:26px;font-weight:900;margin-bottom:6px;}
+.tool-head p{color:#f0c8b8;font-size:14px;}
+.card{background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:24px;margin-bottom:20px;}
+.card h2{font-size:17px;font-weight:900;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+@media(max-width:640px){.f-row{grid-template-columns:1fr;}}
+.f label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+.f input,.f select{width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;outline:none;}
+.f input:focus,.f select:focus{border-color:var(--cyan);}
+.res{margin-top:16px;padding:18px;background:rgba(0,217,255,.07);border:1.5px solid var(--cyan);border-radius:14px;}
+.res-big{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--cyan);line-height:1.2;}
+.res-lbl{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:4px;}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:12px;}
+.res-item{background:var(--surface-2);border-radius:10px;padding:12px;}
+.res-item b{display:block;font-family:'JetBrains Mono',monospace;font-size:17px;margin-top:3px;}
+.steps{margin-top:14px;font-size:13px;line-height:2;color:var(--text);background:var(--surface-2);border-radius:12px;padding:14px 18px;font-family:'JetBrains Mono',monospace;direction:ltr;text-align:left;}
+.note{margin-top:16px;padding:14px 18px;background:rgba(255,180,0,.08);border-inline-start:4px solid #e6a800;border-radius:12px;font-size:13px;line-height:1.9;}
+.ref{margin-top:12px;font-size:12px;color:var(--muted);line-height:1.8;}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="../index.html" class="logo">
+            <img src="../images/logo.png" alt="Logo" class="logo-img">
+            <div class="logo-text">منصة هندسية شخصية</div>
+        </a>
+        <div class="nav-links">
+            <a href="../index.html">الرئيسية</a>
+            <a href="../tools.html" class="active">الأدوات</a>
+            <a href="../calculators.html">الحاسبات</a>
+            <a href="../encyclopedia.html">الموسوعة</a>
+        </div>
+        <div class="nav-actions"></div>
+    </div>
+</nav>
+
+<div class="tool-wrap">
+    <a href="../tools.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--cyan);font-weight:700;font-size:13px;text-decoration:none;margin-bottom:20px;">← كل الأدوات</a>
+
+    <div class="tool-head">
+        <div class="tool-head-icon">🚒</div>
+        <h1>حاسبة طرمب الحريق</h1>
+        <p>تقدير التدفق والضغط وقدرة الموتور — طريقة مبسطة للتقدير الأولي</p>
+    </div>
+
+    <div class="card">
+        <h2>١ — التدفق المطلوب (طريقة الكثافة والمساحة)</h2>
+        <div class="f-row">
+            <div class="f">
+                <label>تصنيف الخطر (NFPA 13)</label>
+                <select id="hazard" onchange="calc()">
+                    <option value="light">خفيف Light Hazard</option>
+                    <option value="oh1" selected>عادي 1 Ordinary Group 1</option>
+                    <option value="oh2">عادي 2 Ordinary Group 2</option>
+                    <option value="oh3">عادي 3 Ordinary Group 3</option>
+                    <option value="eh1">مرتفع 1 Extra Hazard 1</option>
+                    <option value="eh2">مرتفع 2 Extra Hazard 2</option>
+                </select>
+            </div>
+            <div class="f">
+                <label>مساحة التشغيل (م²)</label>
+                <input type="number" id="area" value="139" min="1" oninput="calc()">
+            </div>
+        </div>
+        <div class="res">
+            <div class="res-lbl">التدفق الكلي المطلوب (رشاشات + خراطيم)</div>
+            <div class="res-big" id="qMain">—</div>
+            <div class="res-grid">
+                <div class="res-item"><span class="res-lbl">تدفق الرشاشات</span><b id="qSpr">—</b></div>
+                <div class="res-item"><span class="res-lbl">بدل خراطيم الحريق</span><b id="qHose">—</b></div>
+            </div>
+        </div>
+        <div class="steps" id="flowSteps"></div>
+    </div>
+
+    <div class="card">
+        <h2>٢ — ضغط الطرمب وقدرة الموتور</h2>
+        <div class="f-row">
+            <div class="f">
+                <label>ارتفاع أعلى رشاش عن الطرمب (م)</label>
+                <input type="number" id="height" value="12" min="0" step="0.5" oninput="calc()">
+            </div>
+            <div class="f">
+                <label>الضغط المتبقي عند أبعد رشاش (بار)</label>
+                <input type="number" id="resid" value="0.5" min="0" step="0.05" oninput="calc()">
+            </div>
+        </div>
+        <div class="f-row">
+            <div class="f">
+                <label>الطول المكافئ لخط المواسير (م)</label>
+                <input type="number" id="leq" value="60" min="0" oninput="calc()">
+            </div>
+            <div class="f">
+                <label>معدل فقد الاحتكاك (بار/م)</label>
+                <input type="number" id="grad" value="0.012" min="0" step="0.001" oninput="calc()">
+            </div>
+        </div>
+        <div class="res">
+            <div class="res-lbl">ضغط الطرمب المطلوب</div>
+            <div class="res-big" id="pMain">—</div>
+            <div class="res-grid">
+                <div class="res-item"><span class="res-lbl">قدرة الموتور المحسوبة</span><b id="kwCalc">—</b></div>
+                <div class="res-item"><span class="res-lbl">أقرب موتور قياسي</span><b id="kwStd">—</b></div>
+            </div>
+        </div>
+        <div class="steps" id="pressSteps"></div>
+    </div>
+
+    <div class="note">
+        <strong>⚠️ تنبيه:</strong> دي طريقة مبسطة للتقدير الأولي (Density/Area). التصميم النهائي بيحتاج حساب هيدروليكي كامل بمعاملات K لكل رشاش، ومراجعة منحنى الطرمب الفعلي من المورّد. لا تنسَ طرمب الجوكي للحفاظ على الضغط والطرمب الاحتياطي (ديزل) حسب اشتراطات الحماية المدنية.
+    </div>
+    <div class="ref">
+        المراجع: NFPA 13 — Standard for the Installation of Sprinkler Systems (جدول الكثافة/مساحة التشغيل) · NFPA 20 — Stationary Fire Pumps.
+    </div>
+</div>
+
+<script>
+const HAZARD = {
+    light: { d: 4.1,  a: 139, hose: 100, label: "خفيف" },
+    oh1:   { d: 6.1,  a: 139, hose: 250, label: "عادي 1" },
+    oh2:   { d: 8.1,  a: 139, hose: 250, label: "عادي 2" },
+    oh3:   { d: 12.25, a: 232, hose: 250, label: "عادي 3" },
+    eh1:   { d: 12.25, a: 260, hose: 500, label: "مرتفع 1" },
+    eh2:   { d: 16.3,  a: 260, hose: 500, label: "مرتفع 2" }
+};
+const GPM = 3.785; // لتر/د لكل جالون/د
+const MOTORS = [5.5, 7.5, 11, 15, 18.5, 22, 30, 37, 45, 55, 75, 90, 110, 132, 160, 200];
+
+function num(id, fb){ const v = parseFloat(document.getElementById(id).value); return isFinite(v) ? v : fb; }
+
+function calc(){
+    const hz = HAZARD[document.getElementById("hazard").value];
+    const area = Math.max(1, num("area", hz.a));
+    const qSprLpm = hz.d * area;                       // لتر/دقيقة
+    const qHoseLpm = hz.hose * GPM;
+    const qTotLpm = qSprLpm + qHoseLpm;
+    const qTotGpm = qTotLpm / GPM;
+
+    document.getElementById("qSpr").textContent = Math.round(qSprLpm).toLocaleString("en") + " ل/د";
+    document.getElementById("qHose").textContent = hz.hose + " gpm";
+    document.getElementById("qMain").textContent = Math.round(qTotGpm) + " gpm (" + Math.round(qTotLpm).toLocaleString("en") + " ل/د)";
+    document.getElementById("flowSteps").textContent =
+        "Q_sprinkler = density × area = " + hz.d + " × " + area + " = " + Math.round(qSprLpm) + " L/min\n" +
+        "Q_total = Q_sprinkler + hose = " + Math.round(qSprLpm) + " + " + Math.round(qHoseLpm) + " = " + Math.round(qTotLpm) + " L/min ≈ " + Math.round(qTotGpm) + " gpm";
+
+    const h = num("height", 12);
+    const pStatic = h * 0.0981;
+    const pResid = num("resid", 0.5);
+    const pFric = num("leq", 60) * num("grad", 0.012);
+    const pTot = pStatic + pResid + pFric;
+
+    const eta = 0.65;
+    const kw = (qTotLpm * pTot) / (600 * eta);
+    const kwStd = MOTORS.find(m => m >= kw) || ("> " + MOTORS[MOTORS.length-1]);
+
+    document.getElementById("pMain").textContent = pTot.toFixed(2) + " بار (" + (pTot*14.504).toFixed(0) + " psi)";
+    document.getElementById("kwCalc").textContent = kw.toFixed(1) + " kW";
+    document.getElementById("kwStd").textContent = (typeof kwStd === "number" ? kwStd + " kW (" + (kwStd/0.7457).toFixed(0) + " HP)" : kwStd + " kW");
+    document.getElementById("pressSteps").textContent =
+        "P_static = h × 0.0981 = " + h + " × 0.0981 = " + pStatic.toFixed(2) + " bar\n" +
+        "P_friction = L_eq × gradient = " + num("leq",60) + " × " + num("grad",0.012) + " = " + pFric.toFixed(2) + " bar\n" +
+        "P_pump = P_static + P_residual + P_friction = " + pStatic.toFixed(2) + " + " + pResid + " + " + pFric.toFixed(2) + " = " + pTot.toFixed(2) + " bar\n" +
+        "kW = Q × P / (600 × η) = " + Math.round(qTotLpm) + " × " + pTot.toFixed(2) + " / (600 × " + eta + ") = " + kw.toFixed(1) + " kW";
+}
+calc();
+</script>
+</body>
+</html>

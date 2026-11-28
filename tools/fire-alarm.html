@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script>(function(){try{var k="hilal_visit_theme",n=performance.getEntriesByType("navigation")[0],ok=false;if(n&&n.type!=="reload"&&document.referrer&&new URL(document.referrer).origin===location.origin)ok=true;if(!ok)sessionStorage.removeItem(k);window.__hilalTheme=sessionStorage.getItem(k)||"dark"}catch(e){window.__hilalTheme="dark"}if(window.__hilalTheme==="dark")document.documentElement.setAttribute("data-theme","dark")})()</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حاسبة كواشف الحريق | Eng. Helal Shelil</title>
+<script src="../js/seo-data.js"></script>
+<script src="../js/seo.js"></script>
+<link rel="icon" type="image/png" href="../images/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-wrap{max-width:900px;margin:30px auto;padding:0 5%;}
+.tool-head{text-align:center;margin-bottom:30px;padding:30px;background:linear-gradient(135deg,#0a1628,#5c3a10);color:#fff;border-radius:24px;}
+.tool-head-icon{width:80px;height:80px;margin:0 auto 15px;background:rgba(255,255,255,.12);border:2px solid rgba(255,180,60,.4);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:38px;}
+.tool-head h1{font-size:26px;font-weight:900;margin-bottom:6px;}
+.tool-head p{color:#f0dcc0;font-size:14px;}
+.card{background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:24px;margin-bottom:20px;}
+.card h2{font-size:17px;font-weight:900;margin-bottom:16px;}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+@media(max-width:640px){.f-row{grid-template-columns:1fr;}}
+.f label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+.f input,.f select{width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;outline:none;}
+.f input:focus,.f select:focus{border-color:var(--cyan);}
+.res{margin-top:16px;padding:18px;background:rgba(0,217,255,.07);border:1.5px solid var(--cyan);border-radius:14px;}
+.res-big{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:700;color:var(--cyan);}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:12px;}
+.res-item{background:var(--surface-2);border-radius:10px;padding:12px;}
+.res-item b{display:block;font-family:'JetBrains Mono',monospace;font-size:17px;margin-top:3px;}
+.res-lbl{font-size:12px;color:var(--muted);font-weight:700;}
+.steps{margin-top:14px;font-size:13px;line-height:2;background:var(--surface-2);border-radius:12px;padding:14px 18px;font-family:'JetBrains Mono',monospace;direction:ltr;text-align:left;}
+.note{margin-top:16px;padding:14px 18px;background:rgba(255,180,0,.08);border-inline-start:4px solid #e6a800;border-radius:12px;font-size:13px;line-height:1.9;}
+.ref{margin-top:12px;font-size:12px;color:var(--muted);line-height:1.8;}
+.viz{margin-top:16px;background:var(--surface-2);border-radius:14px;padding:14px;overflow-x:auto;}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="../index.html" class="logo">
+            <img src="../images/logo.png" alt="Logo" class="logo-img">
+            <div class="logo-text">منصة هندسية شخصية</div>
+        </a>
+        <div class="nav-links">
+            <a href="../index.html">الرئيسية</a>
+            <a href="../tools.html" class="active">الأدوات</a>
+            <a href="../calculators.html">الحاسبات</a>
+            <a href="../encyclopedia.html">الموسوعة</a>
+        </div>
+        <div class="nav-actions"></div>
+    </div>
+</nav>
+
+<div class="tool-wrap">
+    <a href="../tools.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--cyan);font-weight:700;font-size:13px;text-decoration:none;margin-bottom:20px;">← كل الأدوات</a>
+
+    <div class="tool-head">
+        <div class="tool-head-icon">🔔</div>
+        <h1>حاسبة كواشف الحريق</h1>
+        <p>عدد وتوزيع كواشف الدخان والحرارة حسب المساحة والارتفاع</p>
+    </div>
+
+    <div class="card">
+        <h2>أبعاد المكان ونوع الكاشف</h2>
+        <div class="f-row">
+            <div class="f">
+                <label>طول المكان (م)</label>
+                <input type="number" id="len" value="20" min="1" oninput="calc()">
+            </div>
+            <div class="f">
+                <label>عرض المكان (م)</label>
+                <input type="number" id="wid" value="12" min="1" oninput="calc()">
+            </div>
+        </div>
+        <div class="f-row">
+            <div class="f">
+                <label>نوع الكاشف</label>
+                <select id="type" onchange="calc()">
+                    <option value="smoke" selected>كاشف دخان Smoke</option>
+                    <option value="heat">كاشف حراري Heat</option>
+                </select>
+            </div>
+            <div class="f">
+                <label>ارتفاع السقف (م) — مهم للكاشف الحراري</label>
+                <input type="number" id="ceil" value="3" min="2" max="12" step="0.1" oninput="calc()">
+            </div>
+        </div>
+
+        <div class="res">
+            <div class="res-lbl">عدد الكواشف المطلوب</div>
+            <div class="res-big" id="nMain">—</div>
+            <div class="res-grid">
+                <div class="res-item"><span class="res-lbl">التباعد القياسي S</span><b id="sVal">—</b></div>
+                <div class="res-item"><span class="res-lbl">الشبكة</span><b id="gridVal">—</b></div>
+                <div class="res-item"><span class="res-lbl">التباعد الفعلي</span><b id="actVal">—</b></div>
+                <div class="res-item"><span class="res-lbl">أقصى مسافة من الحائط</span><b id="wallVal">—</b></div>
+            </div>
+        </div>
+        <div class="steps" id="detSteps"></div>
+        <div class="viz" id="viz"></div>
+    </div>
+
+    <div class="note">
+        <strong>⚠️ تنبيه:</strong> الحساب للأسقف المستوية الخالية من العوائق. وجود كمرات بارزة، أو قواطع، أو تيار هواء قوي من التكييف بيأثر على أماكن الكواشف وبيحتاج مراجعة تصميمية. الكاشف الحراري بيقل تباعده كل ما السقف يعلا (الجدول مطبّق تلقائيًا).
+    </div>
+    <div class="ref">
+        المرجع: NFPA 72 — National Fire Alarm and Signaling Code, Chapter 17 (Initiating Devices): تباعد كواشف الدخان 9.1 م للأسقف المستوية، وجدول تقليل تباعد الكواشف الحرارية مع ارتفاع السقف.
+    </div>
+</div>
+
+<script>
+// جدول تقليل تباعد الكاشف الحراري مع ارتفاع السقف (تقريبي حسب NFPA 72)
+const HEAT_TABLE = [[3.05,15.2],[3.66,14.0],[4.27,12.8],[4.88,11.6],[5.49,10.4],[6.10,9.1],[6.71,7.9],[7.32,6.7],[7.93,5.5],[8.54,4.3],[9.14,3.0]];
+const SMOKE_S = 9.1;
+
+function num(id, fb){ const v = parseFloat(document.getElementById(id).value); return isFinite(v) ? v : fb; }
+
+function heatSpacing(h){
+    if (h <= HEAT_TABLE[0][0]) return HEAT_TABLE[0][1];
+    for (let i = 1; i < HEAT_TABLE.length; i++){
+        if (h <= HEAT_TABLE[i][0]){
+            const [h0,s0] = HEAT_TABLE[i-1], [h1,s1] = HEAT_TABLE[i];
+            return s0 + (s1-s0)*(h-h0)/(h1-h0);
+        }
+    }
+    return HEAT_TABLE[HEAT_TABLE.length-1][1];
+}
+
+function calc(){
+    const L = Math.max(1, num("len", 20));
+    const W = Math.max(1, num("wid", 12));
+    const type = document.getElementById("type").value;
+    const h = num("ceil", 3);
+    const S = type === "smoke" ? SMOKE_S : heatSpacing(h);
+
+    const nx = Math.max(1, Math.ceil(L / S));
+    const ny = Math.max(1, Math.ceil(W / S));
+    const total = nx * ny;
+    const ax = L / nx, ay = W / ny;
+    const wall = Math.max(ax, ay) / 2;
+
+    document.getElementById("nMain").textContent = total + " كاشف";
+    document.getElementById("sVal").textContent = S.toFixed(1) + " م";
+    document.getElementById("gridVal").textContent = nx + " × " + ny;
+    document.getElementById("actVal").textContent = ax.toFixed(1) + " × " + ay.toFixed(1) + " م";
+    document.getElementById("wallVal").textContent = wall.toFixed(1) + " م (المسموح ≤ " + (S/2).toFixed(1) + " م)";
+    document.getElementById("detSteps").textContent =
+        (type === "heat" ? "S (heat, ceiling " + h + " m) = " + S.toFixed(2) + " m  [interpolated from NFPA 72 reduction table]\n" : "S (smoke, smooth ceiling) = " + S + " m\n") +
+        "nx = ceil(" + L + " / " + S.toFixed(2) + ") = " + nx + "    ny = ceil(" + W + " / " + S.toFixed(2) + ") = " + ny + "\n" +
+        "Total = " + nx + " × " + ny + " = " + total + " detectors\n" +
+        "Actual spacing = " + ax.toFixed(2) + " × " + ay.toFixed(2) + " m  |  wall distance = " + wall.toFixed(2) + " m ≤ " + (S/2).toFixed(2) + " m " + (wall <= S/2 + 1e-9 ? "OK" : "— EXCEEDS LIMIT");
+
+    // رسم توضيحي للتوزيع
+    const Wpx = 560, Hpx = 340, pad = 30;
+    const sc = Math.min((Wpx-2*pad)/L, (Hpx-2*pad)/W);
+    let dots = "";
+    for (let i = 0; i < nx; i++){
+        for (let j = 0; j < ny; j++){
+            const x = pad + (i + 0.5) * ax * sc;
+            const y = pad + (j + 0.5) * ay * sc;
+            dots += `<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="7" fill="var(--cyan)"/>`;
+        }
+    }
+    document.getElementById("viz").innerHTML =
+        `<svg viewBox="0 0 ${Wpx} ${Hpx}" style="width:100%;max-width:560px;display:block;margin:auto">
+            <rect x="${pad}" y="${pad}" width="${(L*sc).toFixed(0)}" height="${(W*sc).toFixed(0)}" fill="none" stroke="var(--text)" stroke-width="2" rx="4"/>
+            ${dots}
+        </svg>
+        <div style="text-align:center;font-size:12px;color:var(--muted);margin-top:6px">توزيع الكواشف (${total}) على المساحة ${L}×${W} م</div>`;
+}
+calc();
+</script>
+</body>
+</html>

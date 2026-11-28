@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script>(function(){try{var k="hilal_visit_theme",n=performance.getEntriesByType("navigation")[0],ok=false;if(n&&n.type!=="reload"&&document.referrer&&new URL(document.referrer).origin===location.origin)ok=true;if(!ok)sessionStorage.removeItem(k);window.__hilalTheme=sessionStorage.getItem(k)||"dark"}catch(e){window.__hilalTheme="dark"}if(window.__hilalTheme==="dark")document.documentElement.setAttribute("data-theme","dark")})()</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حاسبة مواسير التغذية | Eng. Helal Shelil</title>
+<script src="../js/seo-data.js"></script>
+<script src="../js/seo.js"></script>
+<link rel="icon" type="image/png" href="../images/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-wrap{max-width:900px;margin:30px auto;padding:0 5%;}
+.tool-head{text-align:center;margin-bottom:30px;padding:30px;background:linear-gradient(135deg,#0a1628,#103a5c);color:#fff;border-radius:24px;}
+.tool-head-icon{width:80px;height:80px;margin:0 auto 15px;background:rgba(255,255,255,.12);border:2px solid rgba(80,170,255,.4);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:38px;}
+.tool-head h1{font-size:26px;font-weight:900;margin-bottom:6px;}
+.tool-head p{color:#b8d5f0;font-size:14px;}
+.card{background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:24px;margin-bottom:20px;}
+.card h2{font-size:17px;font-weight:900;margin-bottom:16px;}
+table.fx{width:100%;border-collapse:collapse;font-size:14px;}
+table.fx th,table.fx td{padding:9px 8px;border-bottom:1px solid var(--border);text-align:right;}
+table.fx th{font-size:12px;color:var(--muted);font-weight:800;}
+table.fx input{width:80px;padding:9px 10px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;text-align:center;outline:none;}
+table.fx input:focus{border-color:var(--cyan);}
+.f label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+.f select{width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--text);font-family:inherit;font-size:14px;font-weight:700;outline:none;}
+.res{margin-top:16px;padding:18px;background:rgba(0,217,255,.07);border:1.5px solid var(--cyan);border-radius:14px;}
+.res-big{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--cyan);}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:12px;}
+.res-item{background:var(--surface-2);border-radius:10px;padding:12px;}
+.res-item b{display:block;font-family:'JetBrains Mono',monospace;font-size:16px;margin-top:3px;}
+.res-lbl{font-size:12px;color:var(--muted);font-weight:700;}
+.steps{margin-top:14px;font-size:13px;line-height:2;background:var(--surface-2);border-radius:12px;padding:14px 18px;font-family:'JetBrains Mono',monospace;direction:ltr;text-align:left;}
+.note{margin-top:16px;padding:14px 18px;background:rgba(255,180,0,.08);border-inline-start:4px solid #e6a800;border-radius:12px;font-size:13px;line-height:1.9;}
+.ref{margin-top:12px;font-size:12px;color:var(--muted);line-height:1.8;}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="../index.html" class="logo">
+            <img src="../images/logo.png" alt="Logo" class="logo-img">
+            <div class="logo-text">منصة هندسية شخصية</div>
+        </a>
+        <div class="nav-links">
+            <a href="../index.html">الرئيسية</a>
+            <a href="../tools.html" class="active">الأدوات</a>
+            <a href="../calculators.html">الحاسبات</a>
+            <a href="../encyclopedia.html">الموسوعة</a>
+        </div>
+        <div class="nav-actions"></div>
+    </div>
+</nav>
+
+<div class="tool-wrap">
+    <a href="../tools.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--cyan);font-weight:700;font-size:13px;text-decoration:none;margin-bottom:20px;">← كل الأدوات</a>
+
+    <div class="tool-head">
+        <div class="tool-head-icon">🚿</div>
+        <h1>حاسبة قطر مواسير التغذية</h1>
+        <p>من وحدات الأجهزة الصحية (WSFU) إلى الطلب المحتمل وقطر الماسورة — منحنى هنتر</p>
+    </div>
+
+    <div class="card">
+        <h2>١ — عدد الأجهزة على الخط</h2>
+        <table class="fx">
+            <thead><tr><th>الجهاز</th><th>وحدات التحميل WSFU</th><th>العدد</th></tr></thead>
+            <tbody id="fxBody"></tbody>
+        </table>
+        <div class="f" style="margin-top:14px">
+            <label>نوع السيفون السائد في النظام</label>
+            <select id="flush" onchange="calc()">
+                <option value="tank" selected>خزان (Flush Tank) — سكني وإداري عادي</option>
+                <option value="valve">فلاش فالف (Flush Valve) — عمومي ومولات</option>
+            </select>
+        </div>
+        <div class="res">
+            <div class="res-lbl">إجمالي وحدات التحميل</div>
+            <div class="res-big" id="wsfuMain">—</div>
+            <div class="res-grid">
+                <div class="res-item"><span class="res-lbl">الطلب المحتمل (منحنى هنتر)</span><b id="demandVal">—</b></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>٢ — قطر الماسورة</h2>
+        <div class="f" style="margin-bottom:14px">
+            <label>أقصى سرعة مسموحة في الماسورة</label>
+            <select id="vmax" onchange="calc()">
+                <option value="2.4" selected>2.4 م/ث — خطوط رئيسية (موصى به)</option>
+                <option value="1.5">1.5 م/ث — فروع داخلية هادئة (تقليل الضوضاء)</option>
+                <option value="1.0">1.0 م/ث — حساس للضوضاء/الصدمة المائية</option>
+            </select>
+        </div>
+        <div class="res">
+            <div class="res-lbl">القطر الاسمي المطلوب</div>
+            <div class="res-big" id="pipeMain">—</div>
+            <div class="res-grid">
+                <div class="res-item"><span class="res-lbl">القطر المحسوب</span><b id="dCalc">—</b></div>
+                <div class="res-item"><span class="res-lbl">السرعة الفعلية</span><b id="vAct">—</b></div>
+                <div class="res-item"><span class="res-lbl">التدفق</span><b id="qVal">—</b></div>
+            </div>
+        </div>
+        <div class="steps" id="pipeSteps"></div>
+    </div>
+
+    <div class="note">
+        <strong>⚠️ تنبيه:</strong> طريقة وحدات التحميل (Fixture Units) طريقة تقديرية قياسية لأنظمة التغذية بالضغط، والنتيجة قطر مبدئي. التصميم النهائي بيراجع الضغط المتاح عند أبعد جهاز، وفقد الاحتكاك على أطول مسار، واشتراطات الكود المحلي. القيمة المثبتة لأي جهاز مخصوص (غسيل مركبات، إطفاء، ري) بتتضاف للتدفق مباشرة وليس كوحدات.
+    </div>
+    <div class="ref">
+        المراجع: Hunter's Curve (R. B. Hunter, 1940) — IPC Appendix E: جداول وحدات تحميل أجهزة التغذية WSFU والتحويل للطلب المحتمل بالجالون/دقيقة.
+    </div>
+</div>
+
+<script>
+// قيم WSFU شائعة (IPC App. E — خدمة عامة/خاصة متوسطة)
+const FIXTURES = [
+    { id: "lav",   name: "حوض غسيل أيدي",        wsfu: 1.0, n: 0 },
+    { id: "shower",name: "دش (بانيو دش)",         wsfu: 2.0, n: 0 },
+    { id: "wc_t",  name: "مرحاض بخزان",           wsfu: 3.0, n: 0 },
+    { id: "wc_v",  name: "مرحاض بفلاش فالف",      wsfu: 6.0, n: 0 },
+    { id: "ksink", name: "حوض مطبخ",              wsfu: 1.5, n: 0 },
+    { id: "bidet", name: "بيديه",                 wsfu: 1.5, n: 0 },
+    { id: "wash",  name: "غسالة ملابس",           wsfu: 4.0, n: 0 },
+    { id: "bath",  name: "بانيو",                 wsfu: 4.0, n: 0 },
+    { id: "urinal",name: "مبولة بخزان",           wsfu: 3.0, n: 0 }
+];
+
+// منحنى هنتر — نقاط تقريبية (WSFU → gpm) للنظامين
+const HUNTER_TANK = [[1,3],[5,6],[10,8],[20,14],[30,20],[40,24],[50,28],[60,32],[80,38],[100,43],[150,53],[200,63],[300,83],[400,103],[500,124],[750,170],[1000,208],[1500,280],[2000,350]];
+const HUNTER_VALVE = [[2,15],[5,18],[10,27],[20,35],[30,41],[40,47],[50,53],[60,58],[80,66],[100,73],[150,87],[200,100],[300,124],[400,148],[500,170],[750,225],[1000,270],[1500,360],[2000,440]];
+
+// أقطار اسمية شائعة: [DN مم, بوصة, قطر داخلي تقريبي مم (مواسير بلاستيك/نحاس قياسية)]
+const PIPES = [[20,"¾\"",21],[25,"1\"",27],[32,"1¼\"",35],[40,"1½\"",41],[50,"2\"",53],[65,"2½\"",68],[80,"3\"",80],[100,"4\"",105]];
+
+function interp(tbl, x){
+    if (x <= tbl[0][0]) return tbl[0][1];
+    for (let i = 1; i < tbl.length; i++){
+        if (x <= tbl[i][0]){
+            const [x0,y0] = tbl[i-1], [x1,y1] = tbl[i];
+            return y0 + (y1-y0)*(x-x0)/(x1-x0);
+        }
+    }
+    return tbl[tbl.length-1][1];
+}
+
+function calc(){
+    let total = 0, lines = [];
+    FIXTURES.forEach(fx => {
+        const n = Math.max(0, parseInt(document.getElementById("n_" + fx.id).value) || 0);
+        const w = n * fx.wsfu;
+        total += w;
+        if (n > 0) lines.push(fx.name + ": " + n + " × " + fx.wsfu + " = " + w);
+    });
+
+    const flush = document.getElementById("flush").value;
+    const gpm = total > 0 ? interp(flush === "tank" ? HUNTER_TANK : HUNTER_VALVE, total) : 0;
+    const lps = gpm * 0.06309;
+
+    document.getElementById("wsfuMain").textContent = total.toFixed(1) + " WSFU";
+    document.getElementById("demandVal").textContent = gpm > 0 ? gpm.toFixed(1) + " gpm (" + lps.toFixed(2) + " ل/ث)" : "—";
+
+    const vmax = parseFloat(document.getElementById("vmax").value);
+    if (lps <= 0){
+        document.getElementById("pipeMain").textContent = "—";
+        document.getElementById("dCalc").textContent = "—";
+        document.getElementById("vAct").textContent = "—";
+        document.getElementById("qVal").textContent = "—";
+        document.getElementById("pipeSteps").textContent = "أدخل عدد الأجهزة أولًا";
+        return;
+    }
+
+    const Q = lps / 1000; // م³/ث
+    const dNeed = Math.sqrt(4 * Q / (Math.PI * vmax)) * 1000; // مم
+    const pick = PIPES.find(p => p[2] >= dNeed) || PIPES[PIPES.length-1];
+    const vAct = Q / (Math.PI * Math.pow(pick[2]/1000, 2) / 4);
+
+    document.getElementById("pipeMain").textContent = pick[1] + " (DN" + pick[0] + ")";
+    document.getElementById("dCalc").textContent = dNeed.toFixed(1) + " مم";
+    document.getElementById("vAct").textContent = vAct.toFixed(2) + " م/ث";
+    document.getElementById("qVal").textContent = gpm.toFixed(1) + " gpm";
+
+    document.getElementById("pipeSteps").textContent =
+        (lines.join("\n") || "—") + "\n" +
+        "Total WSFU = " + total.toFixed(1) + "\n" +
+        "Hunter (" + flush + "): demand ≈ " + gpm.toFixed(1) + " gpm = " + lps.toFixed(2) + " L/s\n" +
+        "d = √(4Q / πv) = √(4 × " + Q.toExponential(3) + " / (π × " + vmax + ")) = " + dNeed.toFixed(1) + " mm\n" +
+        "→ nominal " + pick[1] + " (DN" + pick[0] + ", ID≈" + pick[2] + " mm), actual v = " + vAct.toFixed(2) + " m/s";
+}
+
+// بناء جدول الأجهزة
+document.getElementById("fxBody").innerHTML = FIXTURES.map(fx =>
+    `<tr><td>${fx.name}</td><td style="font-family:'JetBrains Mono',monospace">${fx.wsfu}</td>
+     <td><input type="number" id="n_${fx.id}" min="0" value="0" oninput="calc()"></td></tr>`
+).join("");
+calc();
+</script>
+</body>
+</html>

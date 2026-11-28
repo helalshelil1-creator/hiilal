@@ -342,5 +342,11 @@ window.toolPhotos = {
   "site-inspection": "assets/covers/site-inspection.webp",
   "testing-checklist": "assets/covers/testing-checklist.webp",
   "panel-schedule": "assets/covers/panel-schedule.webp",
-  "schedules-reference": "assets/covers/schedules-reference.webp"
+  "schedules-reference": "assets/covers/schedules-reference.webp",
+  "fire-pump": "assets/covers/fire-pump.webp",
+  "fire-alarm": "assets/covers/fire-alarm.webp",
+  "duct-sizing": "assets/covers/duct-sizing.webp",
+  "plumbing": "assets/covers/plumbing.webp",
+  "bim-lod": "assets/covers/bim-lod.webp",
+  "cad-symbols": "assets/covers/cad-symbols.webp"
 };

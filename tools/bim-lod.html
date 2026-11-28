@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script>(function(){try{var k="hilal_visit_theme",n=performance.getEntriesByType("navigation")[0],ok=false;if(n&&n.type!=="reload"&&document.referrer&&new URL(document.referrer).origin===location.origin)ok=true;if(!ok)sessionStorage.removeItem(k);window.__hilalTheme=sessionStorage.getItem(k)||"dark"}catch(e){window.__hilalTheme="dark"}if(window.__hilalTheme==="dark")document.documentElement.setAttribute("data-theme","dark")})()</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دليل مستويات LOD في BIM | Eng. Helal Shelil</title>
+<script src="../js/seo-data.js"></script>
+<script src="../js/seo.js"></script>
+<link rel="icon" type="image/png" href="../images/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-wrap{max-width:900px;margin:30px auto;padding:0 5%;}
+.tool-head{text-align:center;margin-bottom:30px;padding:30px;background:linear-gradient(135deg,#0a1628,#3a1050);color:#fff;border-radius:24px;}
+.tool-head-icon{width:80px;height:80px;margin:0 auto 15px;background:rgba(255,255,255,.12);border:2px solid rgba(190,110,255,.4);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:38px;}
+.tool-head h1{font-size:26px;font-weight:900;margin-bottom:6px;}
+.tool-head p{color:#dcc8f0;font-size:14px;}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:22px;}
+.tab{padding:11px 18px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;cursor:pointer;}
+.tab.active{background:var(--grad-theme);color:var(--navy);border-color:transparent;}
+.panel{display:none;background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:26px;margin-bottom:22px;}
+.panel.active{display:block;}
+.panel h2{font-size:20px;font-weight:900;margin-bottom:4px;}
+.panel .en{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:16px;}
+.lod-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:640px){.lod-row{grid-template-columns:1fr;}}
+.lod-box{background:var(--surface-2);border-radius:14px;padding:16px 18px;}
+.lod-box h3{font-size:13px;font-weight:900;color:var(--cyan);margin-bottom:8px;}
+.lod-box p,.lod-box li{font-size:13.5px;line-height:1.9;}
+.lod-box ul{padding-inline-start:18px;margin:0;}
+.gloss{background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:24px;}
+.gloss h2{font-size:17px;font-weight:900;margin-bottom:14px;}
+details{border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin-bottom:8px;background:var(--surface-2);}
+summary{font-weight:800;font-size:14px;cursor:pointer;}
+details p{font-size:13.5px;line-height:1.9;margin:10px 0 2px;}
+details .en{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);}
+.ref{margin-top:12px;font-size:12px;color:var(--muted);line-height:1.8;}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="../index.html" class="logo">
+            <img src="../images/logo.png" alt="Logo" class="logo-img">
+            <div class="logo-text">منصة هندسية شخصية</div>
+        </a>
+        <div class="nav-links">
+            <a href="../index.html">الرئيسية</a>
+            <a href="../tools.html" class="active">الأدوات</a>
+            <a href="../calculators.html">الحاسبات</a>
+            <a href="../encyclopedia.html">الموسوعة</a>
+        </div>
+        <div class="nav-actions"></div>
+    </div>
+</nav>
+
+<div class="tool-wrap">
+    <a href="../tools.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--cyan);font-weight:700;font-size:13px;text-decoration:none;margin-bottom:20px;">← كل الأدوات</a>
+
+    <div class="tool-head">
+        <div class="tool-head-icon">🏗️</div>
+        <h1>دليل مستويات LOD في BIM</h1>
+        <p>مستويات تطوير النموذج من 100 إلى 500 — التعريف والاستخدام والمخرجات</p>
+    </div>
+
+    <div class="tabs" id="tabs">
+        <button class="tab active" data-lod="100">LOD 100</button>
+        <button class="tab" data-lod="200">LOD 200</button>
+        <button class="tab" data-lod="300">LOD 300</button>
+        <button class="tab" data-lod="350">LOD 350</button>
+        <button class="tab" data-lod="400">LOD 400</button>
+        <button class="tab" data-lod="500">LOD 500</button>
+    </div>
+
+    <div id="panels"></div>
+
+    <div class="gloss">
+        <h2>مصطلحات BIM الأساسية</h2>
+        <details><summary>BIM — نمذجة معلومات البناء <span class="en">Building Information Modeling</span></summary>
+            <p>منهجية إنشاء وإدارة نموذج رقمي للمبنى يجمع الشكل الهندسي مع البيانات (المقاسات، المواد، الأحمال، التواريخ، التكلفة) في مكان واحد يستخدمه كل الأطراف.</p></details>
+        <details><summary>BEP — خطة تنفيذ BIM <span class="en">BIM Execution Plan</span></summary>
+            <p>المستند اللي بيحدد قبل بدء المشروع: مين بيمودّل إيه، ولأي مستوى LOD، وبأي برنامج وإصدار، وقواعد التسمية، ومواعيد التسليم وتبادل النماذج بين التخصصات.</p></details>
+        <details><summary>CDE — بيئة البيانات المشتركة <span class="en">Common Data Environment</span></summary>
+            <p>المكان الموحّد لتخزين وتبادل ملفات المشروع (نماذج، لوحات، مستندات) بحالة واضحة لكل ملف: قيد العمل WIP، مشترك Shared، منشور Published، أرشيف. أمثلة: Autodesk Docs / BIM 360، Trimble Connect.</p></details>
+        <details><summary>IFC <span class="en">Industry Foundation Classes</span></summary>
+            <p>صيغة ملف مفتوحة (ISO 16739) لتبادل نماذج BIM بين البرامج المختلفة من غير فقدان البيانات — زي الـ PDF لكن لنماذج المباني.</p></details>
+        <details><summary>Clash Detection — كشف التعارضات</summary>
+            <p>فحص آلي للنموذج المدمج (Navisworks مثلًا) لاكتشاف تقاطع العناصر قبل التنفيذ: دكت ضد كمرة، مواسير ضد كابل تراي. النوع Hard clash تلامس فعلي، وSoft clash اختراق مسافات التشغيل والصيانة.</p></details>
+        <details><summary>COBie <span class="en">Construction Operations Building information exchange</span></summary>
+            <p>صيغة جداول (Excel) لبيانات التشغيل والصيانة: المعدات، الضمانات، قطع الغيار، أدلة التشغيل — بتتسلم مع LOD 500 لإدارة المرافق.</p></details>
+        <details><summary>4D و 5D</summary>
+            <p>4D = النموذج + الزمن (ربط العناصر بالجدول الزمني ومحاكاة تسلسل التنفيذ). 5D = النموذج + التكلفة (حصر كميات حي مرتبط بالأسعار).</p></details>
+        <details><summary>LOD و LOIN <span class="en">Level of Information Need</span></summary>
+            <p>ISO 19650 استبدلت فكرة "LOD واحد لكل المشروع" بمصطلح LOIN: تحديد مستوى الهندسة ومستوى المعلومات المطلوب لكل عنصر وكل مرحلة على حدة — لتجنب الموديلنج الزائد عن الحاجة.</p></details>
+    </div>
+
+    <div class="ref">
+        المراجع: BIMForum — Level of Development (LOD) Specification · AIA G202-2013 Project BIM Protocol · ISO 19650.
+    </div>
+</div>
+
+<script>
+const LODS = {
+    "100": {
+        title: "LOD 100 — التمثيل الرمزي", en: "Symbolic / Conceptual",
+        def: "العنصر بيتمثل بكتلة أو رمز أو خط عام بدون مقاسات أو شكل دقيق. الوجود مؤكد، لكن المقاس والمكان تقريبيين.",
+        uses: ["دراسات الجدوى والتصور الأولي", "حصر المساحات والأحمال المبدئية", "تقدير تكلفة استرشادي"],
+        mep: "مسارات رئيسية متوقعة للدكت والمواسير، غرفة كهرباء وغرفة طرمبات ككتل، أحمال كهرباء وتكييف تقديرية بالواط/م²."
+    },
+    "200": {
+        title: "LOD 200 — النموذج التقريبي", en: "Approximate Geometry",
+        def: "العنصر له شكل ومقاسات ومكان تقريبي (Generic). المقاسات لسه قابلة للتغيير مع تطور التصميم.",
+        uses: ["مخططات تخطيطية Schematic Design", "تنسيق مبدئي بين التخصصات", "حصر كميات تقريبي"],
+        mep: "دكت ومواسير وكابل تراي بمقاسات تقريبية ومسارات عامة، لوحات وطرمبات بأبعاد استرشادية، أماكن الفتحات الرئيسية Shafts."
+    },
+    "300": {
+        title: "LOD 300 — النموذج الدقيق", en: "Precise Geometry",
+        def: "العنصر دقيق في المقاس والشكل والمكان والاتجاه — ممكن تستخرج منه كميات ومقاسات مباشرة، وهو أقل مستوى معتاد لمستندات التنفيذ والـ Coordination.",
+        uses: ["التنسيق الهندسي بين التخصصات (Coordination)", "استخراج الكميات للحصر", "أساس الشوب دروينج"],
+        mep: "دكت ومواسير وكابلات بمقاسات فعلية وارتفاعات محددة (FFL/SSL)، لوحات وأجهزة بموديلات حقيقية، أماكن كواشف ورشاشات محسوبة."
+    },
+    "350": {
+        title: "LOD 350 — مع التوصيلات", en: "With Connections",
+        def: "زي LOD 300 بالإضافة إلى عناصر الربط والدعم بين الأجزاء: الوصلات، الحوامل، الفتحات والاختراقات.",
+        uses: ["كشف تعارضات دقيق يشمل الحوامل والوصلات", "تفاصيل التركيب", "تنسيق فتحات الخرسانة قبل الصب"],
+        mep: "حوامل الدكت والمواسير Hangers، وصلات الفلانشات، سيلفز Sleeves وفتحات الاختراق في الحوائط والبلاطات، مسافات سحب الكابلات."
+    },
+    "400": {
+        title: "LOD 400 — مستوى التصنيع", en: "Fabrication Ready",
+        def: "تفاصيل كاملة تكفي للتصنيع والتركيب المباشر: كل قطعة معرفة بمقاسها ومادتها وطريقة تجميعها.",
+        uses: ["تصنيع مقاطع الدكت والمواسير (Fabrication / Spooling)", "قطع وتجميع مسبق Prefabrication", "طلبيات شراء دقيقة"],
+        mep: "Spool sheets لقطع المواسير، مقاطع دكت مفصلة للورشة، تفاصيل تثبيت الحوامل، كشف قطع الكابلات بأطوالها."
+    },
+    "500": {
+        title: "LOD 500 — كما هو منفذ", en: "As-Built",
+        def: "النموذج مطابق للمنفّذ فعليًا في الموقع (As-Built) ومربوط ببيانات التشغيل والصيانة لكل عنصر.",
+        uses: ["إدارة المرافق FM والصيانة", "التعديلات والتجديدات المستقبلية", "التوأم الرقمي Digital Twin"],
+        mep: "مسارات فعلية موثقة بعد التنفيذ، بيانات كل معدة: الموديل، السيريال، الضمان، دليل التشغيل، خطة الصيانة — بتتسلم بصيغة COBie غالبًا."
+    }
+};
+
+const panels = document.getElementById("panels");
+panels.innerHTML = Object.keys(LODS).map(k => {
+    const l = LODS[k];
+    return `<div class="panel ${k==="100"?"active":""}" data-lod="${k}">
+        <h2>${l.title}</h2>
+        <div class="en">${l.en}</div>
+        <div class="lod-row">
+            <div class="lod-box"><h3>التعريف</h3><p>${l.def}</p></div>
+            <div class="lod-box"><h3>الاستخدامات</h3><ul>${l.uses.map(u=>`<li>${u}</li>`).join("")}</ul></div>
+        </div>
+        <div class="lod-box" style="margin-top:16px"><h3>مثال في الـ MEP</h3><p>${l.mep}</p></div>
+    </div>`;
+}).join("");
+
+document.getElementById("tabs").addEventListener("click", e => {
+    const btn = e.target.closest(".tab");
+    if (!btn) return;
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    btn.classList.add("active");
+    document.querySelectorAll(".panel").forEach(p => p.classList.toggle("active", p.dataset.lod === btn.dataset.lod));
+});
+</script>
+</body>
+</html>

@@ -223,6 +223,66 @@ const TOOLS = [
     desc: "جدول مرجعي لملء فرغات اللبنات — ماسورة، سلك، قاطع، معامل الطلب والقدرة",
     url: "tools/schedules-reference.html",
     badge: "NEW"
+    },
+    {
+        id: "fire-pump",
+        name: "حاسبة طرمب الحريق",
+        nameEn: "Fire Pump Calculator",
+        category: "fire-fighting",
+        icon: "flame",
+        desc: "تقدير تدفق وضغط طرمب الحريق وقدرة الموتور — طريقة الكثافة والمساحة المبسطة حسب NFPA 13/20.",
+        url: "tools/fire-pump.html",
+        badge: "NEW"
+    },
+    {
+        id: "fire-alarm",
+        name: "حاسبة كواشف الحريق",
+        nameEn: "Fire Detector Layout Calculator",
+        category: "fire-alarm",
+        icon: "alert-triangle",
+        desc: "عدد وتوزيع كواشف الدخان والحرارة على المساحة وارتفاع السقف — حسب NFPA 72 مع رسم توضيحي للشبكة.",
+        url: "tools/fire-alarm.html",
+        badge: "NEW"
+    },
+    {
+        id: "duct-sizing",
+        name: "حاسبة مقاس الدكت",
+        nameEn: "Duct Sizing Calculator",
+        category: "mep",
+        icon: "wrench",
+        desc: "قطر الدكت الدائري والمقاسات المستطيلة المكافئة من التدفق — طريقة السرعة أو الاحتكاك المتساوي (ASHRAE).",
+        url: "tools/duct-sizing.html",
+        badge: "NEW"
+    },
+    {
+        id: "plumbing",
+        name: "حاسبة مواسير التغذية",
+        nameEn: "Pipe Sizing by Fixture Units",
+        category: "mep",
+        icon: "wrench",
+        desc: "قطر ماسورة التغذية من وحدات الأجهزة الصحية WSFU عبر منحنى هنتر — مع السرعة الفعلية في الماسورة.",
+        url: "tools/plumbing.html",
+        badge: "NEW"
+    },
+    {
+        id: "bim-lod",
+        name: "دليل مستويات LOD",
+        nameEn: "BIM LOD Guide",
+        category: "bim",
+        icon: "box",
+        desc: "مستويات تطوير النموذج 100–500: التعريف والاستخدام والمخرجات وأمثلة MEP لكل مستوى + قاموس مصطلحات BIM.",
+        url: "tools/bim-lod.html",
+        badge: "NEW"
+    },
+    {
+        id: "cad-symbols",
+        name: "مكتبة رموز الرسم الكهربائي",
+        nameEn: "CAD Electrical Symbols",
+        category: "technical",
+        icon: "edit",
+        desc: "رموز IEC الشائعة في اللوحات الكهربائية مع بحث سريع واقتراح أسماء الطبقات (E-LITE / E-POWR / E-FIRE).",
+        url: "tools/cad-symbols.html",
+        badge: "NEW"
     }
 ];
 

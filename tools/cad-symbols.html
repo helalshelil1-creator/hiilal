@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script>(function(){try{var k="hilal_visit_theme",n=performance.getEntriesByType("navigation")[0],ok=false;if(n&&n.type!=="reload"&&document.referrer&&new URL(document.referrer).origin===location.origin)ok=true;if(!ok)sessionStorage.removeItem(k);window.__hilalTheme=sessionStorage.getItem(k)||"dark"}catch(e){window.__hilalTheme="dark"}if(window.__hilalTheme==="dark")document.documentElement.setAttribute("data-theme","dark")})()</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مكتبة رموز الرسم الكهربائي | Eng. Helal Shelil</title>
+<script src="../js/seo-data.js"></script>
+<script src="../js/seo.js"></script>
+<link rel="icon" type="image/png" href="../images/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-wrap{max-width:1000px;margin:30px auto;padding:0 5%;}
+.tool-head{text-align:center;margin-bottom:30px;padding:30px;background:linear-gradient(135deg,#0a1628,#14424a);color:#fff;border-radius:24px;}
+.tool-head-icon{width:80px;height:80px;margin:0 auto 15px;background:rgba(255,255,255,.12);border:2px solid rgba(0,217,255,.4);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:38px;}
+.tool-head h1{font-size:26px;font-weight:900;margin-bottom:6px;}
+.tool-head p{color:#b8d9e2;font-size:14px;}
+.search-wrap{max-width:480px;margin:0 auto 24px;}
+.search-wrap input{width:100%;padding:15px 20px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;font-size:15px;font-weight:700;outline:none;text-align:center;}
+.search-wrap input:focus{border-color:var(--cyan);}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;}
+.sym{background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:16px 12px;text-align:center;transition:border-color .2s;}
+.sym:hover{border-color:var(--cyan);}
+.sym svg{width:64px;height:64px;margin-bottom:10px;}
+.sym .ar{font-size:13.5px;font-weight:800;}
+.sym .en{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);margin:3px 0 8px;direction:ltr;}
+.sym .layer{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:3px 10px;direction:ltr;}
+.cat-lbl{grid-column:1/-1;font-size:13px;font-weight:900;color:var(--cyan);margin-top:10px;border-bottom:1.5px solid var(--border);padding-bottom:6px;}
+.note{margin-top:24px;padding:14px 18px;background:rgba(255,180,0,.08);border-inline-start:4px solid #e6a800;border-radius:12px;font-size:13px;line-height:1.9;}
+.ref{margin-top:12px;font-size:12px;color:var(--muted);line-height:1.8;}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="../index.html" class="logo">
+            <img src="../images/logo.png" alt="Logo" class="logo-img">
+            <div class="logo-text">منصة هندسية شخصية</div>
+        </a>
+        <div class="nav-links">
+            <a href="../index.html">الرئيسية</a>
+            <a href="../tools.html" class="active">الأدوات</a>
+            <a href="../calculators.html">الحاسبات</a>
+            <a href="../encyclopedia.html">الموسوعة</a>
+        </div>
+        <div class="nav-actions"></div>
+    </div>
+</nav>
+
+<div class="tool-wrap">
+    <a href="../tools.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--cyan);font-weight:700;font-size:13px;text-decoration:none;margin-bottom:20px;">← كل الأدوات</a>
+
+    <div class="tool-head">
+        <div class="tool-head-icon">✏️</div>
+        <h1>مكتبة رموز الرسم الكهربائي</h1>
+        <p>الرموز الشائعة في اللوحات الكهربائية — مع اقتراح أسماء الطبقات Layers</p>
+    </div>
+
+    <div class="search-wrap">
+        <input type="text" id="q" placeholder="ابحث بالعربي أو الإنجليزي… (بريزة، socket، قاطع)" oninput="filterSyms()">
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="note">
+        <strong>ℹ️ ملحوظة:</strong> الرموز هنا مبسطة للرسم السريع والمراجعة. اللوحات التنفيذية الرسمية بتتبع IEC 60617 (أو رموز الاستشاري المعتمد في المشروع) كاملة. أسماء الطبقات المقترحة متوافقة مع أسلوب AIA CAD Layer Guidelines الشائع: E- للكهرباء، LITE إضاءة، POWR قوى، FIRE حريق، ELV تيار خفيف.
+    </div>
+    <div class="ref">
+        المراجع: IEC 60617 — Graphical symbols for diagrams · AIA CAD Layer Guidelines (U.S. National CAD Standard).
+    </div>
+</div>
+
+<script>
+const P = (d, extra) => `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">${extra||""}<path d="${d}"/></svg>`;
+const C = (cx,cy,r,extra) => `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">${extra||""}<circle cx="${cx}" cy="${cy}" r="${r}"/></svg>`;
+
+const SYMS = [
+    // إضاءة ومفاتيح
+    { cat:"إضاءة ومفاتيح", ar:"كشاف سقف", en:"Ceiling luminaire", layer:"E-LITE-FIXT", svg: C(32,32,18,'<path d="M14 32h36M32 14v36"/>') },
+    { cat:"إضاءة ومفاتيح", ar:"كشاف حائط (براكت)", en:"Wall bracket light", layer:"E-LITE-FIXT", svg: P("M14 32a18 18 0 0 1 36 0z") },
+    { cat:"إضاءة ومفاتيح", ar:"سبوت لايت", en:"Spotlight", layer:"E-LITE-FIXT", svg: C(32,32,16,'<circle cx="32" cy="32" r="7"/>') },
+    { cat:"إضاءة ومفاتيح", ar:"كشاف طوارئ", en:"Emergency light", layer:"E-LITE-EMRG", svg: C(32,32,18,'<path d="M14 32h36M32 14v36" stroke-dasharray="5 4"/>') },
+    { cat:"إضاءة ومفاتيح", ar:"مفتاح أحادي", en:"One-way switch", layer:"E-LITE-SWCH", svg: C(24,44,4,'<path d="M24 44L44 20"/><circle cx="44" cy="20" r="2.5" fill="currentColor"/>') },
+    { cat:"إضاءة ومفاتيح", ar:"مفتاح ثنائي (سلم)", en:"Two-way switch", layer:"E-LITE-SWCH", svg: P("M20 46L42 22M30 52L50 30",'<circle cx="20" cy="46" r="2.5" fill="currentColor"/><circle cx="30" cy="52" r="2.5" fill="currentColor"/>') },
+    { cat:"إضاءة ومفاتيح", ar:"ديمر", en:"Dimmer switch", layer:"E-LITE-SWCH", svg: P("M18 46L44 22M40 18h8v8",'<circle cx="18" cy="46" r="2.5" fill="currentColor"/>') },
+    // قوى وبرايز
+    { cat:"قوى وبرايز", ar:"بريزة عادية", en:"Socket outlet", layer:"E-POWR-SOCKET", svg: C(32,32,17,'<path d="M25 32h5M34 32h5" stroke-width="3.5"/>') },
+    { cat:"قوى وبرايز", ar:"بريزة مزدوجة", en:"Double socket", layer:"E-POWR-SOCKET", svg: C(23,32,12,'<circle cx="41" cy="32" r="12"/><path d="M19 32h8M37 32h8" stroke-width="3"/>') },
+    { cat:"قوى وبرايز", ar:"بريزة مقاومة للمية", en:"Weatherproof socket IP", layer:"E-POWR-SOCKET", svg: C(32,32,17,'<path d="M18 18h28v28H18z" stroke-dasharray="4 3"/>') },
+    { cat:"قوى وبرايز", ar:"مخرج سخان / تكييف", en:"Heater / AC outlet", layer:"E-POWR-EQPT", svg: P("M16 16h32v32H16zM22 22h20v20H22z") },
+    { cat:"قوى وبرايز", ar:"موتور 3 فاز", en:"Motor 3-phase", layer:"E-POWR-EQPT", svg: C(32,32,18,'<path d="M23 40V24l9 9 9-9v16" fill="none"/>') },
+    { cat:"قوى وبرايز", ar:"لوحة توزيع", en:"Distribution board", layer:"E-POWR-PANEL", svg: P("M14 10h36v44H14zM14 22h36M24 30v12M32 30v12M40 30v12") },
+    // حماية وتوزيع
+    { cat:"حماية وتوزيع", ar:"قاطع MCB", en:"Circuit breaker MCB", layer:"E-POWR-PROT", svg: P("M18 18h28v28H18zM22 42L42 22M42 42L22 22") },
+    { cat:"حماية وتوزيع", ar:"فيوز", en:"Fuse", layer:"E-POWR-PROT", svg: P("M8 32h48M22 26h20v12H22z") },
+    { cat:"حماية وتوزيع", ar:"قاطع تسرب أرضي RCD", en:"RCD / ELCB", layer:"E-POWR-PROT", svg: C(32,32,16,'<path d="M22 42L42 22M42 42L22 22"/>') },
+    { cat:"حماية وتوزيع", ar:"كونتاكتور", en:"Contactor", layer:"E-POWR-CTRL", svg: P("M16 20h32v24H16zM20 44l12-14 12 14") },
+    { cat:"حماية وتوزيع", ar:"ريليه حراري", en:"Thermal overload relay", layer:"E-POWR-CTRL", svg: P("M8 32h14M42 32h14M22 32c2-6 4 6 6 0s4 6 6 0 4 6 8 0") },
+    { cat:"حماية وتوزيع", ar:"محول كهرباء", en:"Transformer", layer:"E-POWR-XFMR", svg: C(25,32,12,'<circle cx="39" cy="32" r="12"/>') },
+    { cat:"حماية وتوزيع", ar:"تأريض", en:"Earth / Ground", layer:"E-POWR-ERTH", svg: P("M32 8v22M16 30h32M21 38h22M26 46h12") },
+    { cat:"حماية وتوزيع", ar:"مانع صواعق SPD", en:"Surge protective device", layer:"E-POWR-PROT", svg: P("M16 16h32v32H16zM34 20l-8 12h8l-6 12") },
+    // تيار خفيف وإنذار
+    { cat:"تيار خفيف وإنذار", ar:"كاشف دخان", en:"Smoke detector", layer:"E-FIRE-DET", svg: C(32,32,18,'<path d="M24 36c0-6 4-4 4-8s4-4 8 0 4 2 4 8" fill="none"/>') },
+    { cat:"تيار خفيف وإنذار", ar:"كاشف حراري", en:"Heat detector", layer:"E-FIRE-DET", svg: C(32,32,18,'<circle cx="32" cy="32" r="5" fill="currentColor"/>') },
+    { cat:"تيار خفيف وإنذار", ar:"جرس / سارينة إنذار", en:"Alarm bell / sounder", layer:"E-FIRE-ALRM", svg: P("M20 40a12 12 0 0 1 24 0zM32 40v5M28 48h8") },
+    { cat:"تيار خفيف وإنذار", ar:"كاسر زجاج يدوي", en:"Manual call point", layer:"E-FIRE-MCP", svg: P("M20 18h24v20H20zM26 44h12") },
+    { cat:"تيار خفيف وإنذار", ar:"مخرج داتا / تليفون", en:"Data / phone outlet", layer:"E-ELV-COMM", svg: P("M16 22h32v20H16zM24 42v6M40 42v6M22 30h20") },
+    { cat:"تيار خفيف وإنذار", ar:"كاميرا مراقبة", en:"CCTV camera", layer:"E-ELV-SECU", svg: P("M14 22h30v14H14zM44 25l10-4v16l-10-4z") },
+    { cat:"تيار خفيف وإنذار", ar:"مخرج تلفزيون", en:"TV outlet", layer:"E-ELV-COMM", svg: P("M16 20h32v22H16zM24 26l8 8 8-8") }
+];
+
+function render(list){
+    let html = "", lastCat = "";
+    list.forEach(s => {
+        if (s.cat !== lastCat){ html += `<div class="cat-lbl">${s.cat}</div>`; lastCat = s.cat; }
+        html += `<div class="sym">${s.svg}<div class="ar">${s.ar}</div><div class="en">${s.en}</div><span class="layer">${s.layer}</span></div>`;
+    });
+    document.getElementById("grid").innerHTML = html || `<div class="cat-lbl">لا توجد نتائج</div>`;
+}
+
+function filterSyms(){
+    const q = document.getElementById("q").value.trim().toLowerCase();
+    render(!q ? SYMS : SYMS.filter(s => s.ar.includes(q) || s.en.toLowerCase().includes(q) || s.layer.toLowerCase().includes(q)));
+}
+render(SYMS);
+</script>
+</body>
+</html>

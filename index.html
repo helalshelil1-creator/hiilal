@@ -336,7 +336,7 @@ noscript .ns-box a{color:var(--cobalt);text-decoration:underline}
 <button class="arrow a-prev" id="prevBtn" aria-label="الأداة السابقة"><svg viewBox="0 0 24 12"><path d="M6 1l5 5-5 5M11 6h13"/></svg></button>
 <button class="arrow a-next" id="nextBtn" aria-label="الأداة التالية"><svg viewBox="0 0 24 12"><path d="M18 1l-5 5 5 5M13 6H0"/></svg></button>
 
-<div class="timeline" id="timeline" role="slider" aria-label="شريط الأدوات" aria-valuemin="1" aria-valuemax="22" aria-valuenow="1" tabindex="0">
+<div class="timeline" id="timeline" role="slider" aria-label="شريط الأدوات" aria-valuemin="1" aria-valuemax="28" aria-valuenow="1" tabindex="0">
     <div class="tl-line"></div>
     <div id="tlTicks"></div>
     <div class="tl-dot" id="tlDot"></div>
@@ -626,6 +626,7 @@ for (var ti = 0; ti < N; ti++){
   if (major) tlHtml += '<span class="tl-lab'+(ti%6!==0?" hide-m":"")+'" style="right:'+pos+'%">'+String(ti+1).padStart(2,"0")+'</span>';
 }
 tlTicks.innerHTML = tlHtml;
+document.getElementById("timeline").setAttribute("aria-valuemax", N);
 
 /* state */
 var s = N, T = N;         /* open on tool index 0 */

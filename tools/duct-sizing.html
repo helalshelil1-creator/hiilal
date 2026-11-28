@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script>(function(){try{var k="hilal_visit_theme",n=performance.getEntriesByType("navigation")[0],ok=false;if(n&&n.type!=="reload"&&document.referrer&&new URL(document.referrer).origin===location.origin)ok=true;if(!ok)sessionStorage.removeItem(k);window.__hilalTheme=sessionStorage.getItem(k)||"dark"}catch(e){window.__hilalTheme="dark"}if(window.__hilalTheme==="dark")document.documentElement.setAttribute("data-theme","dark")})()</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حاسبة مقاس الدكت | Eng. Helal Shelil</title>
+<script src="../js/seo-data.js"></script>
+<script src="../js/seo.js"></script>
+<link rel="icon" type="image/png" href="../images/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-wrap{max-width:900px;margin:30px auto;padding:0 5%;}
+.tool-head{text-align:center;margin-bottom:30px;padding:30px;background:linear-gradient(135deg,#0a1628,#0e4a4a);color:#fff;border-radius:24px;}
+.tool-head-icon{width:80px;height:80px;margin:0 auto 15px;background:rgba(255,255,255,.12);border:2px solid rgba(60,220,220,.4);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:38px;}
+.tool-head h1{font-size:26px;font-weight:900;margin-bottom:6px;}
+.tool-head p{color:#b8e2e2;font-size:14px;}
+.card{background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:24px;margin-bottom:20px;}
+.card h2{font-size:17px;font-weight:900;margin-bottom:16px;}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+@media(max-width:640px){.f-row{grid-template-columns:1fr;}}
+.f label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+.f input,.f select{width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;outline:none;}
+.f input:focus,.f select:focus{border-color:var(--cyan);}
+.res{margin-top:16px;padding:18px;background:rgba(0,217,255,.07);border:1.5px solid var(--cyan);border-radius:14px;}
+.res-big{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--cyan);}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:12px;}
+.res-item{background:var(--surface-2);border-radius:10px;padding:12px;}
+.res-item b{display:block;font-family:'JetBrains Mono',monospace;font-size:16px;margin-top:3px;}
+.res-lbl{font-size:12px;color:var(--muted);font-weight:700;}
+table.eq{width:100%;border-collapse:collapse;margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:13px;}
+table.eq th,table.eq td{border:1px solid var(--border);padding:9px 10px;text-align:center;}
+table.eq th{background:var(--surface-2);font-weight:800;}
+.steps{margin-top:14px;font-size:13px;line-height:2;background:var(--surface-2);border-radius:12px;padding:14px 18px;font-family:'JetBrains Mono',monospace;direction:ltr;text-align:left;}
+.note{margin-top:16px;padding:14px 18px;background:rgba(255,180,0,.08);border-inline-start:4px solid #e6a800;border-radius:12px;font-size:13px;line-height:1.9;}
+.ref{margin-top:12px;font-size:12px;color:var(--muted);line-height:1.8;}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="../index.html" class="logo">
+            <img src="../images/logo.png" alt="Logo" class="logo-img">
+            <div class="logo-text">منصة هندسية شخصية</div>
+        </a>
+        <div class="nav-links">
+            <a href="../index.html">الرئيسية</a>
+            <a href="../tools.html" class="active">الأدوات</a>
+            <a href="../calculators.html">الحاسبات</a>
+            <a href="../encyclopedia.html">الموسوعة</a>
+        </div>
+        <div class="nav-actions"></div>
+    </div>
+</nav>
+
+<div class="tool-wrap">
+    <a href="../tools.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--cyan);font-weight:700;font-size:13px;text-decoration:none;margin-bottom:20px;">← كل الأدوات</a>
+
+    <div class="tool-head">
+        <div class="tool-head-icon">🌀</div>
+        <h1>حاسبة مقاس الدكت</h1>
+        <p>قطر الدكت الدائري والمستطيل من التدفق — طريقة السرعة أو الاحتكاك المتساوي</p>
+    </div>
+
+    <div class="card">
+        <h2>المدخلات</h2>
+        <div class="f-row">
+            <div class="f">
+                <label>تدفق الهواء</label>
+                <input type="number" id="flow" value="1000" min="1" oninput="calc()">
+            </div>
+            <div class="f">
+                <label>الوحدة</label>
+                <select id="unit" onchange="calc()">
+                    <option value="cfm" selected>CFM (قدم³/دقيقة)</option>
+                    <option value="m3h">م³/ساعة</option>
+                    <option value="lps">لتر/ثانية</option>
+                </select>
+            </div>
+        </div>
+        <div class="f-row">
+            <div class="f">
+                <label>طريقة التصميم</label>
+                <select id="method" onchange="calc()">
+                    <option value="friction" selected>احتكاك متساوٍ Equal Friction</option>
+                    <option value="velocity">سرعة ثابتة Velocity</option>
+                </select>
+            </div>
+            <div class="f" id="fricWrap">
+                <label>معدل الاحتكاك المستهدف (باسكال/م)</label>
+                <input type="number" id="frate" value="0.8" min="0.1" max="3" step="0.05" oninput="calc()">
+            </div>
+            <div class="f" id="velWrap" style="display:none">
+                <label>السرعة المستهدفة (م/ث)</label>
+                <input type="number" id="vel" value="6" min="1" max="20" step="0.5" oninput="calc()">
+            </div>
+        </div>
+
+        <div class="res">
+            <div class="res-lbl">قطر الدكت الدائري المطلوب</div>
+            <div class="res-big" id="dMain">—</div>
+            <div class="res-grid">
+                <div class="res-item"><span class="res-lbl">أقرب قطر قياسي</span><b id="dStd">—</b></div>
+                <div class="res-item"><span class="res-lbl">السرعة الفعلية</span><b id="vAct">—</b></div>
+                <div class="res-item"><span class="res-lbl">الاحتكاك الفعلي</span><b id="fAct">—</b></div>
+                <div class="res-item"><span class="res-lbl">مساحة المقطع</span><b id="aVal">—</b></div>
+            </div>
+        </div>
+
+        <h2 style="margin-top:22px">مقاسات مستطيلة مكافئة (نفس فقد الاحتكاك)</h2>
+        <table class="eq">
+            <thead><tr><th>نسبة الأبعاد</th><th>مقاس مقترح (مم)</th><th>القطر المكافئ (مم)</th></tr></thead>
+            <tbody id="eqBody"></tbody>
+        </table>
+
+        <div class="steps" id="ductSteps"></div>
+    </div>
+
+    <div class="note">
+        <strong>⚠️ تنبيه:</strong> الحساب لهواء قياسي (20°م، مستوى سطح البحر) ودكت صاج مجلفن (خشونة 0.09 مم) بدون معاملات تصحيح للارتفاع أو الحرارة. القيم النموذجية لمعدل الاحتكاك: 0.8–1.0 باسكال/م للأنظمة التجارية الهادئة، وللسرعة: 6–8 م/ث للخطوط الرئيسية و4–5 م/ث للفروع.
+    </div>
+    <div class="ref">
+        المراجع: ASHRAE Handbook — Fundamentals (Duct Design): معادلة دارسي-فايسباخ للاحتكاك، ومعادلة القطر المستطيل المكافئ De = 1.30(ab)^0.625/(a+b)^0.25.
+    </div>
+</div>
+
+<script>
+const RHO = 1.204, NU = 1.516e-5, EPS = 0.00009; // هواء قياسي + صاج
+const STD_D = [100,125,150,160,180,200,224,250,280,300,315,355,400,450,500,560,630,710,800,900,1000,1120,1250];
+
+function num(id, fb){ const v = parseFloat(document.getElementById(id).value); return isFinite(v) ? v : fb; }
+
+function flowM3s(){
+    const q = Math.max(1e-6, num("flow", 1000));
+    const u = document.getElementById("unit").value;
+    return u === "cfm" ? q * 0.0004719 : u === "m3h" ? q / 3600 : q / 1000;
+}
+
+function frictionRate(D, Q){ // باسكال/م — دارسي فايسباخ + سوامي-جين
+    const A = Math.PI * D * D / 4;
+    const v = Q / A;
+    const Re = v * D / NU;
+    const f = 0.25 / Math.pow(Math.log10(EPS/(3.7*D) + 5.74/Math.pow(Re, 0.9)), 2);
+    return { pl: f * (RHO/2) * v * v / D, v };
+}
+
+function solveD(Q, target){ // bisection على القطر لتحقيق معدل الاحتكاك
+    let lo = 0.05, hi = 2.0;
+    for (let i = 0; i < 60; i++){
+        const mid = (lo + hi) / 2;
+        if (frictionRate(mid, Q).pl > target) lo = mid; else hi = mid;
+    }
+    return (lo + hi) / 2;
+}
+
+// حل a لمستطيل a × (r·a) له قطر مكافئ De (مم)
+function rectFor(DeMm, r){
+    const target = DeMm;
+    let lo = 50, hi = 2000;
+    const de = (a) => { const b = r * a; return 1.30 * Math.pow(a*b, 0.625) / Math.pow(a+b, 0.25); };
+    for (let i = 0; i < 60; i++){
+        const mid = (lo + hi) / 2;
+        if (de(mid) < target) lo = mid; else hi = mid;
+    }
+    let a = (lo + hi) / 2;
+    a = Math.round(a / 25) * 25;
+    let b = Math.round((r * a) / 25) * 25;
+    return { a, b, de: de(a) };
+}
+
+function calc(){
+    const Q = flowM3s();
+    const method = document.getElementById("method").value;
+    document.getElementById("fricWrap").style.display = method === "friction" ? "" : "none";
+    document.getElementById("velWrap").style.display = method === "velocity" ? "" : "none";
+
+    let D, note;
+    if (method === "velocity"){
+        const v = Math.max(1, num("vel", 6));
+        D = Math.sqrt(4 * (Q / v) / Math.PI);
+        note = "A = Q / v = " + Q.toFixed(4) + " / " + v + " = " + (Q/v).toFixed(4) + " m²\nD = √(4A/π) = " + (D*1000).toFixed(0) + " mm";
+    } else {
+        const fr = Math.max(0.05, num("frate", 0.8));
+        D = solveD(Q, fr);
+        note = "target friction = " + fr + " Pa/m → Darcy-Weisbach solve → D = " + (D*1000).toFixed(0) + " mm";
+    }
+
+    const Dmm = D * 1000;
+    const Dstd = STD_D.find(d => d >= Dmm) || STD_D[STD_D.length-1];
+    const res = frictionRate(Dstd/1000, Q);
+
+    document.getElementById("dMain").textContent = "⌀ " + Math.round(Dmm) + " مم";
+    document.getElementById("dStd").textContent = "⌀ " + Dstd + " مم";
+    document.getElementById("vAct").textContent = res.v.toFixed(2) + " م/ث";
+    document.getElementById("fAct").textContent = res.pl.toFixed(2) + " باسكال/م";
+    document.getElementById("aVal").textContent = (Math.PI*D*D/4).toFixed(3) + " م²";
+
+    const rows = [1, 1.5, 2, 3, 4].map(r => {
+        const rec = rectFor(Dmm, r);
+        return `<tr><td>1 : ${r}</td><td>${rec.a} × ${rec.b}</td><td>${rec.de.toFixed(0)}</td></tr>`;
+    }).join("");
+    document.getElementById("eqBody").innerHTML = rows;
+
+    document.getElementById("ductSteps").textContent =
+        "Q = " + Q.toFixed(4) + " m³/s (" + (Q/0.0004719).toFixed(0) + " CFM)\n" + note +
+        "\nstandard size: ⌀" + Dstd + " mm → v = " + res.v.toFixed(2) + " m/s, ΔP/L = " + res.pl.toFixed(2) + " Pa/m" +
+        "\nrect. equivalents: De = 1.30(ab)^0.625 / (a+b)^0.25 (ASHRAE)";
+}
+calc();
+</script>
+</body>
+</html>

@@ -29,3 +29,10 @@
 - هلال وافق صوتيًا على نشر تيمبليت الأرشيف مباشرة على الإنتاج: "لو معجبتوش هقول وترجعها زي ما كانت".
 - نقطة الرجوع (revert point): main عند 6a08372 (قبل الأرشيف). التراجع = إعادة main إلى 6a08372 وإعادة النشر.
 - دُمج archive-work إلى main (fast-forward) ونُشر. شغل الصور المتبقي يكمل على main مباشرة.
+
+## 2026-11-28 15:19 — batch 3: six new tools from user photo pack
+- New pages (classic tools/*.html style, RTL, mobile): tools/fire-pump.html, fire-alarm.html, duct-sizing.html, plumbing.html, bim-lod.html, cad-symbols.html — all real calculators/guides (NFPA 13/20, NFPA 72, ASHRAE, Hunter's curve, BIMForum LOD, IEC 60617), each shows formula+steps+reference+simplified-method note.
+- js/data/tools.js: 22 → 28 archive cards (ids 23-28 appended). js/data.js classic grid: 13 → 19.
+- Covers: all 16 user-pack photos now used; assets/covers/<id>.webp for the 6 new ids; js/art-scenes.js toolPhotos = 19 ids (13 + 6). index.html aria-valuemax dynamic (=N).
+- Smoke test: /home/sandbox/work/test-newpages.js — all 6 pages compute, no jsdom errors.
+- Still pending: 9 generated covers (load-schedule + boq-template in flight on AI Horde; 7 queued in work/horde-remaining.txt).
