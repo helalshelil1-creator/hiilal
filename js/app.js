@@ -154,11 +154,13 @@ function renderCalculators(containerId, filterCat) {
         const catLabel = catName(c.category);
         const isFav = (window.Store && Store.isFavorite("calc:" + c.id));
         const favIconHTML = (window.Icons) ? Icons.build("heart", "", 16) : "";
+        const calcMediaHTML = c.img ? `<div class="tool-card-media"><img src="${c.img}" alt="" loading="lazy"></div>` : "";
         return `
             <a href="${url}" class="tool-card">
                 <div class="fav-badge ${isFav ? 'active' : ''}" onclick="event.preventDefault(); event.stopPropagation(); toggleFav(this, 'calc:${c.id}');">
                     ${favIconHTML}
                 </div>
+                ${calcMediaHTML}
                 <div class="tool-card-head">
                     <div class="cat-icon">${iconHTML}</div>
                     <div style="flex:1;">

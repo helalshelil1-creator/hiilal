@@ -1095,3 +1095,31 @@ const CALCULATORS = [
 })();
 
 window.CALCULATORS = CALCULATORS;
+/* ========================================
+   صور الحاسبات — ربط كل حاسبة بصورة مطابقة لمحتواها
+======================================== */
+const CALC_IMAGES = {
+    "cable-breaker-calc": "assets/covers/v2/cable-breaker.webp",
+    "load-current": "assets/covers/v2/unit-converter.webp",
+    "voltage-drop": "assets/covers/v2/cable-schedule.webp",
+    "pf-correction": "assets/covers/v2/pf-correction.webp",
+    "motor-current": "assets/covers/v2/motor-current.webp",
+    "lighting-design": "assets/covers/v2/lighting-design.webp",
+    "earthing-resistance": "assets/covers/v2/earthing-resistance.webp",
+    "battery-bank": "assets/covers/v2/battery-bank.webp",
+    "ups-sizing": "assets/covers/v2/ups-sizing.webp",
+    "concrete-volume": "assets/covers/v2/concrete-volume.webp",
+    "paint-quantity": "assets/covers/v2/paint-quantity.webp",
+    "brick-quantity": "assets/covers/v2/brick-quantity.webp",
+    "concrete-quantities": "assets/covers/v2/concrete-quantities.webp",
+    "cable-tray": "assets/covers/v2/cable-tray.webp",
+    "cooling-load": "assets/covers/v2/cooling-load.webp",
+    "duct-sizing": "assets/covers/v2/duct-sizing.webp",
+    "water-demand": "assets/covers/v2/water-demand.webp",
+    "short-circuit": "assets/covers/v2/panel-schedule.webp",
+    "transformer-sizing": "assets/covers/v2/transformer-sizing.webp",
+    "generator-sizing": "assets/covers/v2/generator-sizing.webp",
+    "cable-derating": "assets/covers/v2/cable-derating.webp",
+    "earth-fault-loop": "assets/covers/v2/earth-fault-loop.webp"
+};
+CALCULATORS.forEach(c => { if (CALC_IMAGES[c.id]) c.img = CALC_IMAGES[c.id]; });

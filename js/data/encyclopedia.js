@@ -355,3 +355,10 @@ const ENCYCLOPEDIA = [
 ];
 
 window.ENCYCLOPEDIA = ENCYCLOPEDIA;
+/* صور أقسام الموسوعة الظاهرة في الرئيسية */
+const ENC_IMAGES = {
+    "fundamentals": "assets/covers/v2/enc-fundamentals.webp",
+    "design": "assets/covers/v2/enc-design.webp",
+    "protection": "assets/covers/v2/safety-checklist.webp"
+};
+ENCYCLOPEDIA.forEach(c => { if (ENC_IMAGES[c.id]) c.img = ENC_IMAGES[c.id]; });

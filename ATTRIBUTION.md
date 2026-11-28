@@ -12,3 +12,9 @@ Other covers: user-provided photos or AI-generated (Stable Horde, no watermark).
 - `rfi-template.webp` — Pexels photo 8293666 (engineer with clipboard), Pexels License, https://www.pexels.com/photo/a-man-holding-a-clipboard-with-papers-wearing-a-yellow-hardhat-and-a-neon-vest-8293666/
 - `submittal.webp` — Pexels photo 357514 (pile of folders), Pexels License, https://www.pexels.com/photo/pile-of-folders-357514/
 - `variation.webp` — Pexels photo 8961146 (engineers reviewing drawings on site), Pexels License, https://www.pexels.com/photo/a-man-and-woman-wearing-safety-helmets-8961146/
+
+## Batch: full-site card imagery (Nov 28, 2026)
+- User asset pack "Hiilal_Homepage_Card_Assets" (16 images, provided by the site owner) → hub card thumbs in assets/hub/.
+- User asset pack "Hiilal_EngineeringHub_Image_Pack" (owner-provided) → earthing_bonding, cable_tray_installation, plumbing_risers, electrical_testing_site, engineering_library, hero_engineer_blueprints, cad_electrical_drawing.
+- Pexels (pexels.com license): capacitor 7116599, motor 34194564, office lighting 12234617, pendant 37184393, paint 18369835, bricklaying 19688828, rooftop AC 38228166, battery storage install 39057090, cable spools (px-cable-schedule-1), paper bundles (px-submittal-0), site engineers (px-variation-0).
+- Openverse/CC: battery bank (ArtofCulturalEvolution, CC BY-SA, commons curid 29866012), concrete pour (billjacobus1, CC BY, flickr 122497422), rebar (BY-YOUR-⌘, CC BY, flickr 1387142898), transformer (cowlet, CC BY, flickr 36528536), diesel generators (NRCgov, CC BY, flickr 15855170700), breaker switch (rawpixel, CC0, rawpixel 5921188), breaker panel (scottbb, CC BY-SA, flickr 202290560).
