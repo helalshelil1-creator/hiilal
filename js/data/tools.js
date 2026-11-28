@@ -290,7 +290,7 @@ const TOOLS = [
 /* أغلفة الأدوات: كل أداة لها صورة واقعية في assets/covers/<id>.webp */
 TOOLS.forEach(function(t){ t.img = "assets/covers/v2/" + t.id + ".webp"; });
 /* أغلفة مُحدَّثة عن نسخة v2 (مسارات جديدة حتى لا يعرض الكاش نسخة قديمة) */
-var COVER_OVERRIDES = { "habit-tracker": "assets/covers/v3/habit-tracker.webp" };
+var COVER_OVERRIDES = { "habit-tracker": "assets/covers/v3/habit-tracker.webp", "boq-fire": "assets/covers/v3/boq-fire.webp" };
 TOOLS.forEach(function(t){ if (COVER_OVERRIDES[t.id]) t.img = COVER_OVERRIDES[t.id]; });
 
 window.TOOLS = TOOLS;

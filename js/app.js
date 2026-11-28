@@ -465,13 +465,12 @@ function initServiceWorker() {
    20. HUB ACCORDION (homepage)
 ======================================== */
 function initHubAccordion() {
+    /* المجموعات مفتوحة دائمًا — خاصية الطي ملغاة بطلب المستخدم */
     document.querySelectorAll('.hub-acc-head').forEach(function (head) {
-        head.addEventListener('click', function () {
-            var body = head.nextElementSibling;
-            var isOpen = head.classList.toggle('open');
-            if (body) body.classList.toggle('open', isOpen);
-            head.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-        });
+        head.classList.add('open');
+        head.setAttribute('aria-expanded', 'true');
+        var body = head.nextElementSibling;
+        if (body) body.classList.add('open');
     });
 }
 
