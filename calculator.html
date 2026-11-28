@@ -527,7 +527,7 @@ const CalcEngine = {
                 </div>
                 <div class="calc-header-icon">${ic(calc.icon, 32)}</div>
                 <div class="calc-header-info">
-                    <h1>${calc.name}</h1>
+                    <h1>${calc.name}${calc.badge ? ' <span style="display:inline-block;vertical-align:middle;margin-inline-start:8px;padding:2px 9px;border-radius:999px;background:var(--cyan);color:#06202b;font-size:10px;font-weight:900;letter-spacing:.5px">' + calc.badge + '</span>' : ''}</h1>
                     <span class="calc-header-en">${calc.nameEn}</span>
                 </div>
                 <p class="calc-header-desc">${calc.desc}</p>
@@ -547,9 +547,29 @@ const CalcEngine = {
 
         body.innerHTML = headerHTML + formHTML + '<div id="calcResult"></div>';
 
-        document.getElementById("calcForm").addEventListener("submit", e => {
+        const form = document.getElementById("calcForm");
+        form.addEventListener("submit", e => {
             e.preventDefault();
             this.calculate();
+        });
+        // حساب تلقائي أثناء الكتابة (بعد توقف قصير) — لا يعرض رسالة خطأ لو المدخلات ناقصة
+        let liveTimer = null;
+        const liveCalc = () => {
+            clearTimeout(liveTimer);
+            liveTimer = setTimeout(() => {
+                if (this.allRequiredFilled()) this.calculate(true);
+            }, 500);
+        };
+        form.addEventListener("input", liveCalc);
+        form.addEventListener("change", liveCalc);
+    },
+
+    allRequiredFilled() {
+        if (!this.current || !this.current.inputs) return false;
+        return this.current.inputs.every(inp => {
+            if (!inp.required) return true;
+            const el = document.getElementById("in_" + inp.id);
+            return el && String(el.value).trim() !== "" && !isNaN(Number(el.value));
         });
     },
 
@@ -596,7 +616,7 @@ const CalcEngine = {
         this.lastResult = null;
     },
 
-    calculate() {
+    calculate(silent) {
         if (!this.current || typeof this.current.calculate !== "function") return;
         const values = this.getValues();
         const resultEl = document.getElementById("calcResult");
@@ -606,11 +626,13 @@ const CalcEngine = {
         try {
             res = this.current.calculate(values);
         } catch (err) {
+            if (silent) return;
             resultEl.innerHTML = this.errorHTML("حدث خطأ: " + (err.message || "غير معروف"));
             return;
         }
 
         if (!res || res.error) {
+            if (silent) return;
             resultEl.innerHTML = this.errorHTML(res ? res.error : "لا توجد نتيجة");
             return;
         }

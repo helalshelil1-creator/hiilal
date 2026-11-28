@@ -310,7 +310,7 @@
                 <div class="tool-card-head">
                     <div class="cat-icon">${iconHTML}</div>
                     <div style="flex:1;">
-                        <h3>${c.name}</h3>
+                        <h3>${c.name}${c.badge ? ' <span style="display:inline-block;padding:1px 8px;border-radius:999px;background:var(--cyan);color:#06202b;font-size:9px;font-weight:900;vertical-align:middle;margin-inline-start:6px">' + c.badge + '</span>' : ''}</h3>
                         <span class="tool-name-en">${c.nameEn}</span>
                     </div>
                 </div>

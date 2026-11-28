@@ -754,6 +754,324 @@ const CALCULATORS = [
                 references: ["IPC", "ASPE"]
             };
         }
+    },
+    {
+        id: "short-circuit",
+        name: "تيار القصر وقدرة قطع القاطع",
+        nameEn: "Short-Circuit Current & Breaking Capacity",
+        category: "protection",
+        icon: "zap",
+        desc: "تيار القصر من المحول ونهاية الكابل، وقدرة القطع المطلوبة للقاطع، والتحقق الحراري لمقطع الكابل.",
+        badge: "NEW",
+        inputs: [
+            { id: "sn", label: "قدرة المحول", unit: "kVA", type: "number", required: true, min: 25, default: 1000 },
+            { id: "uk", label: "معاوقة المحول uk", unit: "%", type: "number", required: true, min: 2, max: 20, step: 0.1, default: 6, help: "من لوحة المحول — 4% و6% هما الشائعان." },
+            { id: "u", label: "جهد الجانب المنخفض", unit: "V", type: "number", required: true, min: 100, default: 400, help: "400 للشبكات 380/400، و415 للشبكات 415." },
+            { id: "size", label: "مقطع كابل التغذية", unit: "mm²", type: "number", required: true, min: 1, default: 95 },
+            { id: "length", label: "طول كابل التغذية", unit: "m", type: "number", required: true, min: 1, default: 30 },
+            { id: "material", label: "مادة الموصل", type: "select", options: [{ value: "cu", label: "نحاس Cu" }, { value: "al", label: "ألمنيوم Al" }] },
+            { id: "insul", label: "نوع العزل", type: "select", options: [{ value: "pvc", label: "PVC — k=115 (نحاس)" }, { value: "xlpe", label: "XLPE — k=143 (نحاس)" }] },
+            { id: "t", label: "زمن فصل العطل", unit: "s", type: "number", required: true, min: 0.01, max: 5, step: 0.01, default: 0.1, help: "الزمن الفعلي من منحنى القاطع عند تيار القصر، وليس الزمن المقنن." }
+        ],
+        calculate(v) {
+            const Sn = Number(v.sn) * 1000;
+            const uk = Number(v.uk) / 100;
+            const U = Number(v.u);
+            const S = Number(v.size);
+            const L = Number(v.length);
+            const t = Number(v.t);
+            const isAl = v.material === "al";
+            const k = isAl ? (v.insul === "xlpe" ? 94 : 76) : (v.insul === "xlpe" ? 143 : 115);
+            if (!(Sn > 0 && uk > 0 && U > 0 && S > 0 && L > 0 && t > 0)) return { error: "تحقق من القيم المدخلة" };
+            const Zt = (U * U * uk) / Sn;
+            const rho = isAl ? 0.036 : 0.0225;
+            const Rc = (rho * L) / S;
+            const Xc = 0.00008 * L;
+            const Zc = Math.sqrt(Rc * Rc + Xc * Xc);
+            const IscPanel = U / (Math.sqrt(3) * Zt) / 1000;
+            const IscEnd = U / (Math.sqrt(3) * (Zt + Zc)) / 1000;
+            const minS = (IscEnd * 1000 * Math.sqrt(t)) / k;
+            const icuList = [4, 6, 10, 15, 20, 25, 36, 50, 65, 85, 100];
+            const icu = icuList.find(x => x >= IscPanel);
+            const thermalOK = minS <= S;
+            return {
+                results: [
+                    { label: "تيار القصر عند أطراف المحول", value: IscPanel.toFixed(2), unit: "kA" },
+                    { label: "تيار القصر عند نهاية الكابل", value: IscEnd.toFixed(2), unit: "kA" },
+                    { label: "أقل قدرة قطع Icu للقاطع", value: icu ? String(icu) : "أكبر من 100", unit: "kA" },
+                    { label: "أقل مقطع للتحمل الحراري", value: minS.toFixed(1), unit: "mm²" },
+                    { label: "حالة المقطع الحالي", value: thermalOK ? "كافٍ ✓" : "غير كافٍ ✗", unit: "" }
+                ],
+                formula: "Isc = U / (√3 × Z) — Z = Zt + Zc — S ≥ Isc·√t / k",
+                steps: [
+                    "Zt = (U² × uk) / Sn = " + Zt.toFixed(4) + " Ω",
+                    "Zc = " + Zc.toFixed(4) + " Ω (R=" + Rc.toFixed(4) + "، X=" + Xc.toFixed(4) + ")",
+                    "Isc = " + U + " / (√3 × " + (Zt + Zc).toFixed(4) + ") = " + (IscEnd * 1000).toFixed(0) + " A",
+                    "k²S² = " + Math.pow(k * S, 2).toExponential(2) + " ≥ I²t = " + (Math.pow(IscEnd * 1000, 2) * t).toExponential(2)
+                ],
+                notes: [
+                    "حساب مبسّط وفق IEC 60909: لا يشمل مساهمة الموتورات ولا مقاومة شبكة التغذية، ومناسب للتقدير واختيار Icu المبدئي.",
+                    "تيار القصر في الواقع قد يزيد 10–20% في الكابلات الكبيرة بسبب نسبة X/R؛ استخدم برنامج الحساب في التصميم النهائي.",
+                    "قدرة القطع Icu للقاطع يجب أن تكون ≥ تيار القصر عند نقطة التركيب، وتحقق كذلك من Ics (قدرة القطع التشغيلية) وIcm (التحمل الديناميكي).",
+                    "التحقق الحراري: k²S² ≥ I²t. قيمة k من IEC 60364-4-43: نحاس PVC 115، نحاس XLPE 143، ألمنيوم PVC 76، ألمنيوم XLPE 94."
+                ],
+                references: ["IEC 60909", "IEC 60364-4-43", "IEC 60947-2"]
+            };
+        }
+    },
+    {
+        id: "transformer-sizing",
+        name: "اختيار قدرة المحول",
+        nameEn: "Transformer Sizing",
+        category: "design",
+        icon: "layers",
+        desc: "قدرة المحول المطلوبة من الحمل المتصل ومعامل الطلب والهامش المستقبلي، مع نسبة التحميل وتيار القصر.",
+        badge: "NEW",
+        inputs: [
+            { id: "load", label: "الحمل المتصل", unit: "kW", type: "number", required: true, min: 1, default: 600 },
+            { id: "df", label: "معامل الطلب", unit: "%", type: "number", required: true, min: 10, max: 100, default: 80, help: "نسبة الحمل الفعلي إلى المتصل — 70–85% للمباني الإدارية والسكنية." },
+            { id: "pf", label: "معامل القدرة", type: "number", required: true, min: 0.5, max: 1, step: 0.01, default: 0.85 },
+            { id: "growth", label: "هامش مستقبلي", unit: "%", type: "number", required: true, min: 0, max: 100, default: 20 },
+            { id: "u", label: "جهد الجانب المنخفض", unit: "V", type: "number", required: true, min: 100, default: 400 },
+            { id: "uk", label: "معاوقة المحول uk", unit: "%", type: "number", required: true, min: 2, max: 20, step: 0.1, default: 6 }
+        ],
+        calculate(v) {
+            const load = Number(v.load);
+            const df = Number(v.df) / 100;
+            const pf = Number(v.pf);
+            const growth = Number(v.growth) / 100;
+            const U = Number(v.u);
+            const uk = Number(v.uk) / 100;
+            if (!(load > 0 && df > 0 && pf > 0 && U > 0 && uk > 0)) return { error: "تحقق من القيم المدخلة" };
+            const demand = load * df;
+            const kva = (demand / pf) * (1 + growth);
+            const ratings = [100, 160, 250, 315, 400, 500, 630, 800, 1000, 1250, 1600, 2000, 2500];
+            const chosen = ratings.find(r => r >= kva);
+            const loading = chosen ? (kva / chosen) * 100 : 0;
+            const IFL = chosen ? (chosen * 1000) / (Math.sqrt(3) * U) : 0;
+            const Isc = chosen ? (chosen * 1000) / (Math.sqrt(3) * U * uk) / 1000 : 0;
+            return {
+                results: [
+                    { label: "الحمل التصميمي", value: demand.toFixed(0), unit: "kW" },
+                    { label: "القدرة المطلوبة", value: kva.toFixed(1), unit: "kVA" },
+                    { label: "المحول المقترح", value: chosen ? String(chosen) : "أكبر من 2500", unit: "kVA" },
+                    { label: "نسبة التحميل", value: chosen ? loading.toFixed(0) : "—", unit: "%" },
+                    { label: "تيار الحمل الكامل", value: IFL.toFixed(0), unit: "A" },
+                    { label: "تيار القصر المتوقع", value: Isc.toFixed(1), unit: "kA" }
+                ],
+                formula: "kVA = (Load × DF / PF) × (1 + Growth)",
+                steps: [
+                    "الحمل التصميمي = " + load + " × " + (df * 100).toFixed(0) + "% = " + demand.toFixed(0) + " kW",
+                    "kVA = " + demand.toFixed(0) + " / " + pf + " × " + (1 + growth).toFixed(2) + " = " + kva.toFixed(1) + " kVA",
+                    "أقرب مقاس قياسي أعلى = " + (chosen || "—") + " kVA"
+                ],
+                notes: [
+                    "المقاسات القياسية المستخدمة: 100، 160، 250، 315، 400، 500، 630، 800، 1000، 1250، 1600، 2000، 2500 kVA (IEC 60076).",
+                    "نسبة تحميل أعلى من 85% لا تترك مجالًا للاحتياطي — اختر المقاس الأعلى إن كان الحمل قابلًا للزيادة.",
+                    "المحولات تحتاج تخفيض قدرة عند درجات حرارة عالية أو تركيب في غرفة غير جيدة التهوية — راجع داتاشيت المصنع.",
+                    "الأحمال غير الخطية (VFD، UPS، إضاءة LED) تحتاج محولًا بعامل K مناسب أو تكبير القدرة 10–15%."
+                ],
+                references: ["IEC 60076", "IEC 60364-5-52"]
+            };
+        }
+    },
+    {
+        id: "generator-sizing",
+        name: "اختيار المولد وبدء الموتور",
+        nameEn: "Generator Sizing & Motor Starting",
+        category: "design",
+        icon: "activity",
+        desc: "قدرة المولد المطلوبة للحمل المستقر ولبدء أكبر موتور، وهبوط الجهد المتوقع عند البدء.",
+        badge: "NEW",
+        inputs: [
+            { id: "steady", label: "الحمل المستقر", unit: "kW", type: "number", required: true, min: 0, default: 200, help: "إجمالي الأحمال التي تعمل معًا بعد بدء الموتورات." },
+            { id: "pf", label: "معامل القدرة", type: "number", required: true, min: 0.5, max: 1, step: 0.01, default: 0.8 },
+            { id: "motor", label: "قدرة أكبر موتور", unit: "kW", type: "number", required: true, min: 0.1, default: 45 },
+            { id: "motorPf", label: "معامل قدرة الموتور", type: "number", required: true, min: 0.5, max: 1, step: 0.01, default: 0.85 },
+            { id: "motorEff", label: "كفاءة الموتور", unit: "%", type: "number", required: true, min: 50, max: 100, default: 92 },
+            { id: "start", label: "طريقة البدء", type: "select", options: [{ value: "dol", label: "مباشر DOL — 6× التيار" }, { value: "sd", label: "نجمة/دلتا — 2.5×" }, { value: "soft", label: "Soft Starter — 3×" }, { value: "vfd", label: "VFD (عاكس) — 1.5×" }] },
+            { id: "u", label: "الجهد", unit: "V", type: "number", required: true, min: 100, default: 400 },
+            { id: "dip", label: "أقصى هبوط جهد مسموح", unit: "%", type: "number", required: true, min: 5, max: 40, default: 15, help: "15% حد شائع عند بدء الموتور؛ 10% لو فيه أحمال حساسة." },
+            { id: "xd", label: "معاوقة المولد X″d", unit: "pu", type: "number", required: true, min: 0.05, max: 0.4, step: 0.01, default: 0.18, help: "من داتاشيت المولد — 0.10–0.20 للمولدات القياسية." }
+        ],
+        calculate(v) {
+            const steady = Number(v.steady);
+            const pf = Number(v.pf);
+            const motor = Number(v.motor);
+            const motorPf = Number(v.motorPf);
+            const motorEff = Number(v.motorEff) / 100;
+            const U = Number(v.u);
+            const dip = Number(v.dip) / 100;
+            const xd = Number(v.xd);
+            const factors = { dol: 6, sd: 2.5, soft: 3, vfd: 1.5 };
+            const factor = factors[v.start] || 6;
+            if (!(motor > 0 && pf > 0 && motorPf > 0 && motorEff > 0 && U > 0 && dip > 0 && xd > 0)) return { error: "تحقق من القيم المدخلة" };
+            const FLC = (motor * 1000) / (Math.sqrt(3) * U * motorPf * motorEff);
+            const startKVA = (factor * FLC * Math.sqrt(3) * U) / 1000;
+            const genStart = (xd * startKVA) / dip;
+            const genSteady = (steady / pf) * 1.1;
+            const required = Math.max(genStart, genSteady);
+            const ratings = [20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630, 800, 1000, 1250, 1600];
+            const chosen = ratings.find(r => r >= required);
+            const dipActual = chosen ? (xd * startKVA / chosen) * 100 : 0;
+            const engineKW = chosen ? chosen * 0.8 : 0;
+            return {
+                results: [
+                    { label: "تيار الحمل الكامل للموتور", value: FLC.toFixed(1), unit: "A" },
+                    { label: "قدرة البدء (kVA)", value: startKVA.toFixed(0), unit: "kVA" },
+                    { label: "المولد المطلوب للبدء", value: genStart.toFixed(0), unit: "kVA" },
+                    { label: "المولد المطلوب للحمل", value: genSteady.toFixed(0), unit: "kVA" },
+                    { label: "المولد المقترح", value: chosen ? String(chosen) : "أكبر من 1600", unit: "kVA" },
+                    { label: "هبوط الجهد عند البدء", value: chosen ? dipActual.toFixed(1) : "—", unit: "%" },
+                    { label: "أقل قدرة محرك ديزل", value: engineKW ? engineKW.toFixed(0) : "—", unit: "kW" }
+                ],
+                formula: "kVA_gen ≥ X″d × S_start / ΔV — I_start = factor × I_FL",
+                steps: [
+                    "I_FL = " + motor + "×1000 / (√3 × " + U + " × " + motorPf + " × " + motorEff.toFixed(2) + ") = " + FLC.toFixed(1) + " A",
+                    "S_start = " + factor + " × " + FLC.toFixed(1) + " × √3 × " + U + " = " + startKVA.toFixed(0) + " kVA",
+                    "kVA للبدء = " + xd + " × " + startKVA.toFixed(0) + " / " + (dip * 100).toFixed(0) + "% = " + genStart.toFixed(0) + " kVA",
+                    "kVA للحمل المستقر = " + steady + " / " + pf + " × 1.1 = " + genSteady.toFixed(0) + " kVA"
+                ],
+                notes: [
+                    "قانون هبوط الجهد تقريبي: ΔV ≈ X″d × (S_start / S_gen) — بدون حساب الأحمال الأخرى المصاحبة للبدء.",
+                    "ابدأ أكبر موتور أولًا ثم شغّل الباقي بالتتابع؛ بدء موتورين معًا يضاعف قدرة البدء المطلوبة.",
+                    "Soft starter وVFD يقللان قدرة البدء بشكل كبير — راجع منحنى البدء الفعلي من داتاشيت الجهاز.",
+                    "قدرة محرك الديزل يجب ألا تقل عن 0.8 × kVA المولد تقريبًا، مع مراعاة تصنيفات ISO 8528 (PRP/COP) والارتفاع ودرجة الحرارة.",
+                    "هبوط 15% مقبول لمعظم الأحمال؛ لو فيه PLC أو أجهزة حساسة استخدم حدًا 10% أو أضف مثبت جهد."
+                ],
+                references: ["ISO 8528", "IEC 60034", "IEEE 141"]
+            };
+        }
+    },
+    {
+        id: "cable-derating",
+        name: "معاملات تخفيض سعة الكابل",
+        nameEn: "Cable Derating Factors",
+        category: "design",
+        icon: "trending-down",
+        desc: "تطبيق معاملات الحرارة والتجميع والعزل الحراري على سعة الكابل، وحساب السعة الأساسية المطلوبة.",
+        badge: "NEW",
+        inputs: [
+            { id: "ib", label: "تيار التصميم Ib", unit: "A", type: "number", required: true, min: 0.1, default: 100 },
+            { id: "iz", label: "سعة الكابل الأساسية Iz", unit: "A", type: "number", required: true, min: 0.1, default: 130, help: "من جدول المصنع أو الكود لدائرة واحدة بحرارة 30°م — قبل أي تخفيض." },
+            { id: "insul", label: "نوع العزل", type: "select", options: [{ value: "pvc", label: "PVC — 70°م" }, { value: "xlpe", label: "XLPE — 90°م" }] },
+            { id: "ambient", label: "حرارة المحيط التصميمية", unit: "°م", type: "number", required: true, min: 20, max: 60, default: 40, help: "استخدم أعلى حرارة متوقعة: 45–50°م في غرف الماكينات والأسطح في مصر." },
+            { id: "circuits", label: "عدد الدوائر المجمعة", type: "number", required: true, min: 1, max: 9, default: 1 },
+            { id: "insulation", label: "الكابل ملامس لعزل حراري؟", type: "select", options: [{ value: "no", label: "لا" }, { value: "yes", label: "نعم — Ci = 0.75" }] }
+        ],
+        calculate(v) {
+            const Ib = Number(v.ib);
+            const Iz = Number(v.iz);
+            const amb = Number(v.ambient);
+            const n = Math.round(Number(v.circuits));
+            const pvc = { 25: 1.03, 30: 1.0, 35: 0.94, 40: 0.87, 45: 0.79, 50: 0.71, 55: 0.61, 60: 0.50 };
+            const xlpe = { 25: 1.02, 30: 1.0, 35: 0.96, 40: 0.91, 45: 0.87, 50: 0.82, 55: 0.76, 60: 0.71 };
+            const table = v.insul === "xlpe" ? xlpe : pvc;
+            const keys = Object.keys(table).map(Number).sort((a, b) => a - b);
+            let Ca;
+            if (amb <= keys[0]) Ca = table[keys[0]];
+            else if (amb >= keys[keys.length - 1]) Ca = table[keys[keys.length - 1]];
+            else {
+                for (let i = 0; i < keys.length - 1; i++) {
+                    if (amb >= keys[i] && amb <= keys[i + 1]) {
+                        const t = (amb - keys[i]) / (keys[i + 1] - keys[i]);
+                        Ca = table[keys[i]] + t * (table[keys[i + 1]] - table[keys[i]]);
+                        break;
+                    }
+                }
+            }
+            const group = { 1: 1.0, 2: 0.8, 3: 0.7, 4: 0.65, 5: 0.6, 6: 0.57, 7: 0.54, 8: 0.52, 9: 0.5 };
+            const Cg = group[Math.min(Math.max(n, 1), 9)];
+            const Ci = v.insulation === "yes" ? 0.75 : 1.0;
+            if (!(Ib > 0 && Iz > 0 && amb > 0)) return { error: "تحقق من القيم المدخلة" };
+            const total = Ca * Cg * Ci;
+            const corrected = Iz * total;
+            const required = Ib / total;
+            const ok = corrected >= Ib;
+            return {
+                results: [
+                    { label: "معامل الحرارة Ca", value: Ca.toFixed(2), unit: "" },
+                    { label: "معامل التجميع Cg", value: Cg.toFixed(2), unit: "" },
+                    { label: "معامل العزل الحراري Ci", value: Ci.toFixed(2), unit: "" },
+                    { label: "المعامل الكلي", value: total.toFixed(3), unit: "" },
+                    { label: "السعة بعد التخفيض", value: corrected.toFixed(1), unit: "A" },
+                    { label: "أقل Iz أساسية مطلوبة", value: required.toFixed(1), unit: "A" },
+                    { label: "الحالة", value: ok ? "الكابل كافٍ ✓" : "الكابل غير كافٍ ✗", unit: "" }
+                ],
+                formula: "Iz' = Iz × Ca × Cg × Ci ≥ Ib",
+                steps: [
+                    "Ca عند " + amb + "°م (" + (v.insul === "xlpe" ? "XLPE" : "PVC") + ") = " + Ca.toFixed(2),
+                    "Cg لعدد " + n + " دائرة = " + Cg.toFixed(2),
+                    "Iz' = " + Iz + " × " + total.toFixed(3) + " = " + corrected.toFixed(1) + " A",
+                    "المطلوب: Iz ≥ " + Ib + " / " + total.toFixed(3) + " = " + required.toFixed(1) + " A"
+                ],
+                notes: [
+                    "المعاملات من BS 7671: الجدول 4B1 (حرارة المحيط في الهواء) والجدول 4C1 (تجميع الدوائر) — وهي القيم المستخدمة في الكود المصري والممارسة الشائعة.",
+                    "السعة الأساسية Iz يجب أن تكون من جدول المصنع أو الكود لطريقة التركيب الفعلية (هواء، مواسير، مدفون، صينية) — لكل طريقة جدولها.",
+                    "الكابلات المدفونة في الأرض لها معاملات حرارة تربة ومعاملات مقاومة حرارية مختلفة (لا تستخدم هذا الجدول لها).",
+                    "لو النتيجة غير كافية: كبّر المقطع، أو قلل عدد الدوائر في المسار، أو حسّن التهوية — ولا تعتمد على تخمين."
+                ],
+                references: ["BS 7671 Table 4B1", "BS 7671 Table 4C1", "IEC 60364-5-52"]
+            };
+        }
+    },
+    {
+        id: "earth-fault-loop",
+        name: "أقصى طول دائرة وفصل العطل",
+        nameEn: "Earth Fault Loop & Max Circuit Length",
+        category: "protection",
+        icon: "shield",
+        desc: "أقصى طول مسموح للدائرة حتى يفصل القاطع تيار العطل الأرضي في الزمن المطلوب، وفق منحنى القاطع.",
+        badge: "NEW",
+        inputs: [
+            { id: "u0", label: "جهد الطور U0", unit: "V", type: "number", required: true, min: 100, default: 230 },
+            { id: "ze", label: "معاوقة مصدر الأرضي Ze", unit: "Ω", type: "number", required: true, min: 0.01, step: 0.01, default: 0.35, help: "من المحول/المصدر — 0.35Ω شائع في TN-C-S." },
+            { id: "size", label: "مقطع موصل الطور", unit: "mm²", type: "number", required: true, min: 0.5, default: 2.5 },
+            { id: "cpc", label: "مقطع موصل الحماية", unit: "mm²", type: "number", required: true, min: 0.5, default: 2.5 },
+            { id: "in", label: "تيار القاطع المقنن In", unit: "A", type: "number", required: true, min: 1, default: 16 },
+            { id: "curve", label: "منحنى القاطع", type: "select", options: [{ value: "b", label: "B — 5×In" }, { value: "c", label: "C — 10×In" }, { value: "d", label: "D — 20×In" }] },
+            { id: "length", label: "طول الدائرة الفعلي", unit: "m", type: "number", required: true, min: 0.1, default: 30 }
+        ],
+        calculate(v) {
+            const U0 = Number(v.u0);
+            const Ze = Number(v.ze);
+            const S = Number(v.size);
+            const Scpc = Number(v.cpc);
+            const In = Number(v.in);
+            const L = Number(v.length);
+            const mult = v.curve === "d" ? 20 : v.curve === "c" ? 10 : 5;
+            if (!(U0 > 0 && Ze > 0 && S > 0 && Scpc > 0 && In > 0 && L > 0)) return { error: "تحقق من القيم المدخلة" };
+            const Ia = mult * In;
+            const maxZs = (0.95 * U0) / Ia;
+            const rPerM = 0.0225 * (1 / S + 1 / Scpc);
+            const maxLen = (maxZs - Ze) / rPerM;
+            const ok = L <= maxLen;
+            const zsActual = Ze + rPerM * L;
+            return {
+                results: [
+                    { label: "تيار الفصل Ia", value: Ia.toFixed(0), unit: "A" },
+                    { label: "أقصى معاوقة Zs", value: maxZs.toFixed(3), unit: "Ω" },
+                    { label: "مقاومة المتر (R1+R2)", value: rPerM.toFixed(4), unit: "Ω/m" },
+                    { label: "أقصى طول للدائرة", value: maxLen > 0 ? maxLen.toFixed(0) : "0", unit: "m" },
+                    { label: "Zs عند الطول الفعلي", value: zsActual.toFixed(3), unit: "Ω" },
+                    { label: "الحالة", value: ok ? "الطول مسموح ✓" : "الطول كبير ✗ — استخدم RCD", unit: "" }
+                ],
+                formula: "Zs = 0.95·U0 / Ia ≤ Ze + (R1+R2)·L",
+                steps: [
+                    "Ia = " + mult + " × " + In + " = " + Ia + " A",
+                    "Zs_max = 0.95 × " + U0 + " / " + Ia + " = " + maxZs.toFixed(3) + " Ω",
+                    "R1+R2 للمتر = 0.0225 × (1/" + S + " + 1/" + Scpc + ") = " + rPerM.toFixed(4) + " Ω/m",
+                    "L_max = (" + maxZs.toFixed(3) + " − " + Ze + ") / " + rPerM.toFixed(4) + " = " + (maxLen > 0 ? maxLen.toFixed(0) : 0) + " m"
+                ],
+                notes: [
+                    "عامل 0.95 هو Cmin وفق IEC 60364-4-41 (أسوأ حالة جهد).",
+                    "المقاومة محسوبة عند حرارة التشغيل (ρ=0.0225 Ω·mm²/m للنحاس). للألمنيوم استخدم 0.036.",
+                    "لو الطول أكبر من المسموح: قلل تيار القاطع، كبّر المقطع، أو استخدم RCD بتيار 30mA للحماية من الصعق (لا يعفي من فصل العطل).",
+                    "في أنظمة TT يجب استخدام RCD دائمًا؛ هذه الحاسبة لأنظمة TN (TN-S / TN-C-S)."
+                ],
+                references: ["IEC 60364-4-41", "BS 7671 — 411"]
+            };
+        }
     }
 ];
 
