@@ -288,6 +288,6 @@ const TOOLS = [
 
 
 /* أغلفة الأدوات: كل أداة لها صورة واقعية في assets/covers/<id>.webp */
-TOOLS.forEach(function(t){ t.img = "assets/covers/" + t.id + ".webp"; });
+TOOLS.forEach(function(t){ t.img = "assets/covers/v2/" + t.id + ".webp"; });
 
 window.TOOLS = TOOLS;
