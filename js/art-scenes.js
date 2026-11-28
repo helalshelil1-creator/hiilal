@@ -334,10 +334,13 @@ window.toolPhotos = {
   "boq-fire": "assets/covers/boq-fire.webp",
   "calc-v2": "assets/covers/calc-v2.webp",
   "control-simulator": "assets/covers/control-simulator.webp",
+  "distribution-tools": "assets/covers/distribution-tools.webp",
+  "control-circuit-simulator": "assets/covers/control-circuit-simulator.webp",
+  "software-guide": "assets/covers/software-guide.webp",
   "cable-breaker": "assets/covers/cable-breaker.webp",
   "unit-converter": "assets/covers/unit-converter.webp",
   "site-inspection": "assets/covers/site-inspection.webp",
+  "testing-checklist": "assets/covers/testing-checklist.webp",
   "panel-schedule": "assets/covers/panel-schedule.webp",
-  "distribution-tools": "assets/covers/distribution-tools.webp",
-  "control-circuit-simulator": "assets/covers/control-circuit-simulator.webp"
+  "schedules-reference": "assets/covers/schedules-reference.webp"
 };
