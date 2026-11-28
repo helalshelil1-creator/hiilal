@@ -1875,6 +1875,28 @@ html[dir="ltr"] .uc-summary{ border-right:none!important; border-left:3px solid 
   }
 }
 </style>
+<style id="sidebar-always-drawer">
+/* User request (28 Nov): the side index stays hidden at every width and opens
+   only from the ☰ button. The 980px desktop-like layout stays as is; only the
+   sidebar becomes an overlay drawer over it. */
+html .sidebar{
+  position:fixed !important; top:0 !important; bottom:0 !important;
+  right:0 !important; left:auto !important;
+  width:270px !important; max-width:85vw !important;
+  transform:none !important;
+  visibility:hidden !important; opacity:0 !important; pointer-events:none !important;
+  transition:opacity .22s ease, visibility .22s ease !important;
+  box-shadow:-10px 0 34px rgba(0,0,0,.5) !important;
+}
+html[dir="ltr"] .sidebar{ right:auto !important; left:0 !important; box-shadow:10px 0 34px rgba(0,0,0,.5) !important; }
+html .sidebar.open{
+  visibility:visible !important; opacity:1 !important; pointer-events:auto !important;
+}
+html .main{ margin-right:0 !important; margin-left:0 !important; }
+html .topbar{ right:0 !important; left:0 !important; }
+html .mobile-menu{ display:grid !important; }
+html .backdrop{ z-index:205 !important; }
+</style>
 
   <!-- ============ MAIN ============ -->
   <div class="main">
@@ -2110,7 +2132,7 @@ function navigate(id){
   state.route = id;
   document.querySelectorAll('.nav a').forEach(a=>a.classList.toggle('active', a.dataset.id===id));
   render();
-  if(window.innerWidth<960) toggleSidebar(false);
+  toggleSidebar(false); /* drawer at all widths: close after picking a section */
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function toggleSidebar(force){
