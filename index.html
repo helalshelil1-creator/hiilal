@@ -279,7 +279,9 @@ noscript .ns-box a{color:var(--cobalt);text-decoration:underline}
   .topbar{height:60px;padding:0 16px}
   .topnav a{display:none}
   .brand-line{width:22px}
-  .kanji{font-size:22vw;opacity:.8}
+  .kanji{font-size:17vw;opacity:.8}
+  .k-r{top:8vh}
+  .k-l{top:24vh}
   #capTitle{font-size:24px}
   .a-prev{right:8px}.a-next{left:8px}
   .arrow{top:auto;bottom:118px}
@@ -616,7 +618,7 @@ for (var ti = 0; ti < N; ti++){
   var pos = (1 - ti/(N-1))*100;
   var major = ti % 2 === 0 || ti === N-1;
   tlHtml += '<span class="tl-tick '+(major?"major":"minor")+'" style="right:'+pos+'%"></span>';
-  if (major) tlHtml += '<span class="tl-lab'+((ti%4!==0 && ti!==N-1)?" hide-m":"")+'" style="right:'+pos+'%">'+String(ti+1).padStart(2,"0")+'</span>';
+  if (major) tlHtml += '<span class="tl-lab'+(ti%6!==0?" hide-m":"")+'" style="right:'+pos+'%">'+String(ti+1).padStart(2,"0")+'</span>';
 }
 tlTicks.innerHTML = tlHtml;
 
@@ -740,18 +742,22 @@ window.addEventListener("keydown", function(e){
   else if (e.key === "Enter") openDetail();
 });
 
+var captured = false;
 shelf.addEventListener("pointerdown", function(e){
-  dragging = true; dragged = false; dragX0 = e.clientX; T0 = T;
-  if (shelf.setPointerCapture) try { shelf.setPointerCapture(e.pointerId); } catch(_){}
+  dragging = true; dragged = false; captured = false; dragX0 = e.clientX; T0 = T;
 });
 shelf.addEventListener("pointermove", function(e){
   mx = e.clientX; my = e.clientY;
   if (!dragging) return;
   var dx = e.clientX - dragX0;
-  if (Math.abs(dx) > 5) { dragged = true; T = T0 - dx/(ws+gap); }
+  if (Math.abs(dx) > 5) {
+    if (!captured && shelf.setPointerCapture) { try { shelf.setPointerCapture(e.pointerId); captured = true; } catch(_){} }
+    dragged = true; T = T0 - dx/(ws+gap);
+  }
 });
 shelf.addEventListener("pointerup", function(e){
   dragging = false;
+  if (captured && shelf.releasePointerCapture) { try { shelf.releasePointerCapture(e.pointerId); } catch(_){} captured = false; }
   if (dragged) { snap(); setTimeout(function(){ dragged = false; }, 50); }
 });
 shelf.addEventListener("pointercancel", function(){ dragging = false; snap(); });
