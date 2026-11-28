@@ -200,7 +200,7 @@
             '<div class="dt-file-top"><span class="dt-badge ' + typeClass(f.type) + '">' + esc(f.type) + '</span>' +
             '<h3>' + esc(f.t) + '</h3></div>' +
             '<p>' + esc(f.d) + '</p>' +
-            '<div class="dt-file-foot"><span>محاضرة ' + esc(f.lec) + ' · ' + esc(f.size) + '</span><span class="open">تحميل ↓</span></div>' +
+            '<div class="dt-file-foot"><span>' + (f.lec === "عام" ? "ملف عام" : "محاضرة " + esc(f.lec)) + ' · ' + esc(f.size) + '</span><span class="open">تحميل ↓</span></div>' +
             '</a>';
     }
 
