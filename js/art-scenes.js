@@ -327,3 +327,10 @@ window.toolScene = function (id, main, sub) {
     P("M0-60 52 0 0 60-52 0Z", null, {stroke: INK, sw: 7}) + C(0, 0, 16, sub);
 };
 })();
+
+/* photo covers: ids with a real photo in assets/covers/<id>.webp */
+window.toolPhotos = {
+  "distribution-tools": "assets/covers/distribution-tools.webp",
+  "mep-hub": "assets/covers/mep-hub.webp",
+  "control-circuit-simulator": "assets/covers/control-circuit-simulator.webp"
+};
