@@ -8656,19 +8656,19 @@ const MOCK_QUESTIONS = {
     title:'مهندس تصميم كهربائي',
     questions:[
       {q:'Explain how you would size a cable for a 100A feeder over 80m in an industrial environment.',
-       dimension:'Technical Depth', maxPoints:10,
+       dimension:'Technical Depth', maxPoints:10, lv:'mid',
        keywords:['ampacity','voltage drop','derating','Iz','short circuit','IEC 60364'],
        sample:'1) Calculate Ib=100A, apply derating (Ca·Cg·Ci), select Iz≥Ib. 2) Check voltage drop ΔV≤3%. 3) Verify thermal withstand to short circuit (S≥Isc²·t/k²). 4) Verify PE conductor per IEC 60364-5-54. 5) Final check protection coordination.'},
       {q:'What is the difference between Demand Factor, Diversity Factor, and Load Factor?',
-       dimension:'Fundamentals', maxPoints:10,
+       dimension:'Fundamentals', maxPoints:10, lv:'fresh',
        keywords:['demand factor','diversity','load factor','maximum demand','connected load'],
        sample:'Demand Factor = Max Demand / Connected Load. Diversity Factor = Sum of individual max demands / Max demand on system. Load Factor = Average Load / Peak Load.'},
       {q:'Describe the process of Short Circuit Study in ETAP.',
-       dimension:'Software', maxPoints:10,
+       dimension:'Software', maxPoints:10, lv:'senior',
        keywords:['single line diagram','utility fault','transformer impedance','IEC 60909','report'],
        sample:'1) Build SLD. 2) Enter utility fault level + transformer %Z + cable impedances. 3) Run IEC 60909 method. 4) Check Icu of breakers at each node. 5) Generate report and store for coordination.'},
       {q:'How do you coordinate protection in a multi-level distribution system?',
-       dimension:'Protection', maxPoints:10,
+       dimension:'Protection', maxPoints:10, lv:'senior',
        keywords:['selectivity','coordination','time delay','energy based','IEC 60947'],
        sample:'Coordinate upstream/downstream with In ratio ≥1.6, time delay ≥0.2s, use manufacturer coordination tables. Verify selectivity at overload, short circuit, and earth fault levels.'},
     ]
@@ -8677,15 +8677,15 @@ const MOCK_QUESTIONS = {
     title:'مهندس موقع',
     questions:[
       {q:'The contractor installed a cable with a smaller cross-section than approved. What do you do?',
-       dimension:'Site Discipline', maxPoints:10,
+       dimension:'Site Discipline', maxPoints:10, lv:'mid',
        keywords:['stop work','document','NCR','consultant','verify shop drawing'],
        sample:'1) Stop further installation. 2) Photograph with location/panel ID. 3) Raise NCR. 4) Compare with approved shop drawing. 5) Notify consultant. 6) Await written instruction — replace or accept with justification.'},
       {q:'How do you prepare a Daily Report?',
-       dimension:'Documentation', maxPoints:10,
+       dimension:'Documentation', maxPoints:10, lv:'fresh',
        keywords:['manpower','activities','equipment','deliveries','issues','photos'],
        sample:'Structure: date/weather, manpower by trade, activities with location/status, equipment on site, material deliveries, visitors, safety toolbox talks, issues & actions, photos.'},
       {q:'A fire pump fails during acceptance testing. Walk me through the investigation.',
-       dimension:'Troubleshooting', maxPoints:10,
+       dimension:'Troubleshooting', maxPoints:10, lv:'senior',
        keywords:['power supply','controller','NPSH','pump curve','valves','report'],
        sample:'1) Verify power supply & voltage. 2) Check controller settings (start pressure, sequence). 3) Check for air lock/NPSH. 4) Verify valve positions. 5) Compare pump curve vs system curve. 6) Document findings and NCR.'},
     ]
@@ -8694,15 +8694,15 @@ const MOCK_QUESTIONS = {
     title:'مهندس BIM',
     questions:[
       {q:'Explain the difference between LOD 300, 350, and 400.',
-       dimension:'BIM Fundamentals', maxPoints:10,
+       dimension:'BIM Fundamentals', maxPoints:10, lv:'junior',
        keywords:['level of development','model detail','fabrication','installation','coordination'],
        sample:'LOD 300: Design intent with dimensions. LOD 350: Coordination with interfaces and clearances. LOD 400: Fabrication and installation level with shop drawing detail.'},
       {q:'Walk me through a Clash Detection workflow in Navisworks.',
-       dimension:'Coordination', maxPoints:10,
+       dimension:'Coordination', maxPoints:10, lv:'mid',
        keywords:['federation','clash detective','BCF','assign','resolution','close loop'],
        sample:'1) Federate architecture, structure, MEP. 2) Set clash tests (hard/soft/clearance). 3) Run detection. 4) Export BCF, assign owners. 5) Weekly coordination review. 6) Re-run detection to close loop.'},
       {q:'What are Shared Parameters and why do they matter?',
-       dimension:'Revit', maxPoints:10,
+       dimension:'Revit', maxPoints:10, lv:'junior',
        keywords:['shared parameters','schedules','tags','consistency','BEP'],
        sample:'Shared Parameters are user-defined parameters stored in a shared parameters file, allowing consistent schedules, tags, and data across multiple projects and disciplines. Essential for model data consistency and quantity takeoff.'},
     ]
@@ -8711,11 +8711,11 @@ const MOCK_QUESTIONS = {
     title:'مهندس QA/QC',
     questions:[
       {q:'What is the difference between an IR and a MIR?',
-       dimension:'Documentation', maxPoints:10,
+       dimension:'Documentation', maxPoints:10, lv:'fresh',
        keywords:['inspection request','material inspection','installation','delivery','approval'],
        sample:'IR (Inspection Request): raised for site installation inspection. MIR (Material Inspection Request): raised for delivered materials inspection before installation.'},
       {q:'How do you handle an NCR from root cause to closure?',
-       dimension:'Quality Management', maxPoints:10,
+       dimension:'Quality Management', maxPoints:10, lv:'mid',
        keywords:['root cause','corrective action','preventive','verify','close'],
        sample:'1) Identify problem. 2) Root cause analysis (5-Why / Fishbone). 3) Define corrective action. 4) Implement. 5) Verify effectiveness. 6) Preventive action for future. 7) Close with consultant approval.'},
     ]
@@ -8724,11 +8724,11 @@ const MOCK_QUESTIONS = {
     title:'HR & Behavioral',
     questions:[
       {q:'Tell me about yourself.',
-       dimension:'Communication', maxPoints:10,
+       dimension:'Communication', maxPoints:10, lv:'fresh',
        keywords:['experience','projects','skills','role','growth'],
        sample:'Structure: Name + current role → Years of experience → Main projects/domains → Key skills → Why this role now. Keep under 90 seconds.'},
       {q:'Describe a time when you had a conflict on site. How did you resolve it?',
-       dimension:'Behavioral (STAR)', maxPoints:10,
+       dimension:'Behavioral (STAR)', maxPoints:10, lv:'junior',
        keywords:['situation','task','action','result','communication'],
        sample:'Use STAR: Situation → Task → Action (how you communicated) → Result (outcome + lesson). Focus on resolution through engineering dialogue, not conflict.'},
     ]
@@ -8737,23 +8737,23 @@ const MOCK_QUESTIONS = {
     title:'مهندس ميكانيكا',
     questions:[
       {q:'How do you calculate the cooling load of an office floor and select the chiller capacity?',
-       dimension:'HVAC Design', maxPoints:10,
+       dimension:'HVAC Design', maxPoints:10, lv:'mid',
        keywords:['heat gain','envelope','occupancy','lighting','equipment','ventilation','ASHRAE','safety factor','TR'],
        sample:'1) Sum sensible + latent heat gains: envelope, people, lighting, equipment, fresh air. 2) Calculate per ASHRAE (CLTD or HAP/TRACE software). 3) Convert kW to TR (1 TR = 3.517 kW). 4) Select chiller with 10-15% safety factor. 5) Check part-load performance and redundancy for critical loads.'},
       {q:'Explain the Equal Friction method for duct sizing and how you select the fan static pressure.',
-       dimension:'HVAC Design', maxPoints:10,
+       dimension:'HVAC Design', maxPoints:10, lv:'junior',
        keywords:['equal friction','friction rate','airflow','velocity','static pressure','fan'],
        sample:'1) Assign airflow to each branch from the load. 2) Fix a design friction rate (~1 Pa/m typical). 3) Size each section from the duct chart at constant friction rate within velocity limits. 4) Sum critical path friction + fittings + equipment pressure drops. 5) Select the fan at total static pressure with margin.'},
       {q:'How do you size a fire pump according to NFPA 20?',
-       dimension:'Fire Fighting', maxPoints:10,
+       dimension:'Fire Fighting', maxPoints:10, lv:'senior',
        keywords:['rated flow','churn','150%','jockey','NFPA 20','test header'],
        sample:'1) Hydraulic demand from the most remote standpipe/sprinkler zone gives rated flow and pressure. 2) Verify churn (shutoff) pressure stays below system rating. 3) At 150% rated flow, head must be ≥ 65% of rated head. 4) Jockey pump maintains pressure. 5) Provide test header or flow meter per NFPA 20.'},
       {q:'What is NPSH and how does it affect pump selection?',
-       dimension:'Pumps', maxPoints:10,
+       dimension:'Pumps', maxPoints:10, lv:'junior',
        keywords:['NPSHa','NPSHr','cavitation','vapor pressure','margin'],
        sample:'NPSH available (suction level, friction losses, liquid temperature/vapor pressure) must exceed NPSH required from the pump curve with margin. Otherwise cavitation: noise, vibration, impeller damage, loss of flow. Fix by lowering suction lift or reducing suction line losses.'},
       {q:'How do you size a sanitary drainage pipe and choose its slope?',
-       dimension:'Plumbing', maxPoints:10,
+       dimension:'Plumbing', maxPoints:10, lv:'fresh',
        keywords:['fixture units','slope','vent','trap','code tables'],
        sample:'1) Assign drainage fixture units per code tables. 2) Select diameter from DFU tables for branch/stack. 3) Slope typically 1-2% per pipe size for self-cleaning velocity. 4) Provide venting to protect trap seals. 5) Provide cleanouts and testing per code.'},
     ]
@@ -8762,23 +8762,23 @@ const MOCK_QUESTIONS = {
     title:'مهندس MEP',
     questions:[
       {q:'Walk me through the MEP coordination process for a typical floor, from drawings to sign-off.',
-       dimension:'Coordination', maxPoints:10,
+       dimension:'Coordination', maxPoints:10, lv:'mid',
        keywords:['clash detection','priorities','ceiling void','levels','sign-off','shop drawings'],
        sample:'1) Collect architectural/structural backgrounds and MEP design drawings. 2) Agree service priorities and ceiling void zoning (levels). 3) Overlay services and run clash detection. 4) Resolve clashes in coordination meetings. 5) Freeze the coordinated layout with sign-off, then issue coordinated shop drawings.'},
       {q:'A gravity drainage line clashes with a supply air duct and a cable tray at the same point. How do you resolve it?',
-       dimension:'Clash Resolution', maxPoints:10,
+       dimension:'Clash Resolution', maxPoints:10, lv:'mid',
        keywords:['gravity','slope','drainage','duct','cable tray','access'],
        sample:'Priority: gravity drainage first (fixed slope), then large ducts (costly to reroute), then cable tray and small pipes (most flexible). Reroute the flexible services around the drainage while keeping maintenance access and ceiling levels, and document the decision in the coordination log.'},
       {q:'What is a Builder\'s Work drawing and when is it issued?',
-       dimension:'Site Interface', maxPoints:10,
+       dimension:'Site Interface', maxPoints:10, lv:'fresh',
        keywords:['openings','sleeves','concrete','civil','before casting'],
        sample:'A drawing showing all MEP openings, sleeves and sockets in slabs and walls with sizes and levels, issued to the civil team before casting concrete. It prevents core cutting and structural damage later.'},
       {q:'Explain the Reflected Ceiling Plan (RCP) and its role in coordination.',
-       dimension:'Ceiling Services', maxPoints:10,
+       dimension:'Ceiling Services', maxPoints:10, lv:'junior',
        keywords:['lighting','diffusers','sprinklers','detectors','ceiling levels','access panels'],
        sample:'The RCP shows the ceiling viewed from above: lighting fixtures, AC diffusers and grilles, sprinklers, smoke detectors, speakers, access panels, ceiling levels and materials. It aligns all ceiling services with the architecture and prevents clashes above the false ceiling.'},
       {q:'How do you verify smoke detector spacing during ceiling coordination?',
-       dimension:'Code Compliance', maxPoints:10,
+       dimension:'Code Compliance', maxPoints:10, lv:'mid',
        keywords:['spacing','coverage','smooth ceiling','walls','NFPA 72','airflow'],
        sample:'Check listed spacing per NFPA 72 (smooth ceiling commonly ~9.1 m between detectors, half that distance from walls), keep detectors away from supply air diffusers and dead-air spots near corners and beams, adjust for ceiling height and beam pockets, and document in the Cause and Effect matrix.'},
     ]
@@ -8791,6 +8791,26 @@ let MOCK_STATE = {
   answers:[],
   done:false
 };
+
+/* Experience levels for the mock interview */
+const MOCK_LEVELS = [
+  {id:'fresh', icon:'🌱', title:'حديث التخرج', desc:'0 – 1 سنة · أساسيات وتعريفات'},
+  {id:'junior', icon:'⚙️', title:'جونيور', desc:'1 – 3 سنين · تطبيق وحسابات'},
+  {id:'mid', icon:'🧭', title:'ميد ليفل', desc:'3 – 5 سنين · تصميم كامل ومواقف'},
+  {id:'senior', icon:'🏗️', title:'سينيور', desc:'+5 سنين · قرارات وتنسيق وقيادة'},
+];
+const MOCK_PER_LEVEL = 15;
+function mockPool(modeKey, level){
+  const qs = MOCK_QUESTIONS[modeKey].questions;
+  const pri = {fresh:['fresh','junior'], junior:['junior','fresh','mid'], mid:['mid','senior','junior'], senior:['senior','mid']}[level] || [level];
+  let out = [];
+  pri.forEach(lv=>{ out = out.concat(qs.filter(q=>(q.lv||'mid')===lv)); });
+  return out.slice(0, MOCK_PER_LEVEL);
+}
+function mockLevelTitle(id){
+  const l = MOCK_LEVELS.find(x=>x.id===id);
+  return l ? l.title : id;
+}
 
 /* Per-question timer (seconds) for the mock interview */
 const MOCK_TIME = 90;
@@ -9002,21 +9022,38 @@ function viewMockInterview(){
           <div class="card hoverable" onclick="startMock('${k}')">
             <div style="font-size:26px;margin-bottom:10px">◔</div>
             <h4>${m.title}</h4>
-            <p>${m.questions.length} أسئلة · ⏱ ${MOCK_TIME}s لكل سؤال · تقييم تفصيلي</p>
+            <p>${MOCK_PER_LEVEL} سؤال على حسب مستوى خبرتك · ⏱ ${MOCK_TIME}s لكل سؤال</p>
           </div>`).join('')}
       </div>
 
       <div class="note tip" style="margin-top:24px"><strong>كيف يعمل:</strong> يجيب AI على كل سؤال، يقيّم الإجابة على 7 أبعاد (تغطية تقنية · هيكل · مصطلحات · أمثلة · عمق · وضوح · اكتمال)، ثم يعطيك Best Practice للإجابة.</div>
     `;
   }
+  if(MOCK_STATE.mode && !MOCK_STATE.level){
+    const mode = MOCK_QUESTIONS[MOCK_STATE.mode];
+    return `
+      ${crumb([{id:'dashboard',label:'لوحة التحكم'},{id:'interview',label:'المقابلات'},{label:mode.title}])}
+      <div class="eyebrow" style="margin-bottom:10px">// EXPERIENCE · LEVEL</div>
+      <h1 class="h1">${mode.title}</h1>
+      <p class="sub">اختار سنين خبرتك — الأسئلة وصعوبتها وعمقها بتتظبط على مستواك.</p>
+      <div class="grid c2" style="margin-top:20px">
+        ${MOCK_LEVELS.map(l=>`
+          <div class="card hoverable" onclick="startMockLevel('${l.id}')">
+            <div style="font-size:26px;margin-bottom:10px">${l.icon}</div>
+            <h4>${l.title}</h4>
+            <p>${l.desc}</p>
+          </div>`).join('')}
+      </div>
+    `;
+  }
   if(MOCK_STATE.done){
     return renderMockResults();
   }
   const mode = MOCK_QUESTIONS[MOCK_STATE.mode];
-  const q = mode.questions[MOCK_STATE.qIdx];
+  const q = MOCK_STATE.pool[MOCK_STATE.qIdx];
   return `
     ${crumb([{id:'dashboard',label:'لوحة التحكم'},{id:'interview',label:'المقابلات'},{label:mode.title}])}
-    <div class="eyebrow" style="margin-bottom:10px">// QUESTION ${MOCK_STATE.qIdx+1} OF ${mode.questions.length}</div>
+    <div class="eyebrow" style="margin-bottom:10px">// ${mockLevelTitle(MOCK_STATE.level)} · QUESTION ${MOCK_STATE.qIdx+1} OF ${MOCK_STATE.pool.length}</div>
     <h1 class="h1">${mode.title}</h1>
 
     <div class="card" style="border-color:var(--primary);margin-top:20px">
@@ -9041,14 +9078,22 @@ function viewMockInterview(){
   `;
 }
 function startMock(mode){
-  MOCK_STATE = {mode, qIdx:0, answers:[], done:false};
+  MOCK_STATE = {mode, level:null, pool:null, qIdx:0, answers:[], done:false};
+  render();
+}
+function startMockLevel(lv){
+  MOCK_STATE.level = lv;
+  MOCK_STATE.pool = mockPool(MOCK_STATE.mode, lv);
+  MOCK_STATE.qIdx = 0;
+  MOCK_STATE.answers = [];
+  MOCK_STATE.done = false;
   render();
   setTimeout(armMockTimer, 120);
 }
 function skipMock(){
-  MOCK_STATE.answers.push({answer:'', q:MOCK_QUESTIONS[MOCK_STATE.mode].questions[MOCK_STATE.qIdx]});
+  MOCK_STATE.answers.push({answer:'', q:MOCK_STATE.pool[MOCK_STATE.qIdx]});
   MOCK_STATE.qIdx++;
-  const total = MOCK_QUESTIONS[MOCK_STATE.mode].questions.length;
+  const total = MOCK_STATE.pool.length;
   if(MOCK_STATE.qIdx >= total) MOCK_STATE.done = true;
   render();
   setTimeout(armMockTimer, 120);
@@ -9056,10 +9101,10 @@ function skipMock(){
 function submitMockAnswer(){
   const ta = document.getElementById('mock_answer');
   const answer = ta ? ta.value : '';
-  const q = MOCK_QUESTIONS[MOCK_STATE.mode].questions[MOCK_STATE.qIdx];
+  const q = MOCK_STATE.pool[MOCK_STATE.qIdx];
   MOCK_STATE.answers.push({answer, q});
   MOCK_STATE.qIdx++;
-  const total = MOCK_QUESTIONS[MOCK_STATE.mode].questions.length;
+  const total = MOCK_STATE.pool.length;
   if(MOCK_STATE.qIdx >= total) MOCK_STATE.done = true;
   render();
   setTimeout(armMockTimer, 120);
