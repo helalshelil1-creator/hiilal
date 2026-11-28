@@ -46129,5 +46129,104 @@ window.__MEP_CMS = {
   }
 })();
 </script>
+<style id="lec-css">
+.lec-block{margin:28px 0 8px;padding:18px 20px;border:1px solid var(--border,#233041);border-radius:14px;background:linear-gradient(135deg,rgba(34,211,238,.07),rgba(34,211,238,.02));direction:rtl}
+.lec-block h3{margin:0 0 4px;font-size:16px;font-weight:800;color:var(--cyan,#22d3ee)}
+.lec-block .lec-sub{margin:0 0 14px;font-size:12.5px;color:var(--muted,#8fa3b8)}
+.lec-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.lec-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border,#233041);border-radius:10px;background:var(--surface,#12161d);color:var(--fg,#e6edf5);text-decoration:none;transition:border-color .2s,transform .2s}
+.lec-item:hover{border-color:var(--cyan,#22d3ee);transform:translateY(-1px)}
+.lec-item .lec-n{flex-shrink:0;font-size:11px;font-weight:800;color:var(--cyan,#22d3ee);background:rgba(34,211,238,.12);border-radius:6px;padding:3px 8px;white-space:nowrap}
+.lec-item .lec-t{flex:1;font-size:13px;font-weight:600;line-height:1.5}
+.lec-item .lec-play{flex-shrink:0;color:#f43f5e;font-size:13px}
+.lec-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.lec-links a{font-size:12px;font-weight:700;color:var(--cyan,#22d3ee);border:1px dashed var(--border,#233041);border-radius:8px;padding:6px 12px;text-decoration:none}
+.lec-links a:hover{border-color:var(--cyan,#22d3ee)}
+</style>
+<script>
+/* محاضرات دبلومة التوزيع 2022 (م. محمد إمام) — ربط المحاضرات بالأقسام */
+(function(){
+var LECTURES = [
+ {n:0,  vid:'T0CqOBY9TiQ', t:'محاضرة تمهيدية — مجالات قسم كهرباء ومتطلبات الدورة'},
+ {n:1,  vid:'SDf8WFt7AB4', t:'قراءة لوحات المعماري + DIALux evo (ج1)'},
+ {n:2,  vid:'JWd24ptsL1c', t:'DIALux evo (ج2)'},
+ {n:3,  vid:'ACOGTurnVmk', t:'DIALux evo (ج3)'},
+ {n:4,  vid:'RNXC6Y6Gj-I', t:'تصميم نظام الإضاءة'},
+ {n:5,  vid:'31UZKFvS9dY', t:'تصميم نظام القوى (ج1)'},
+ {n:6,  vid:'ej-JJgYmg4I', t:'تصميم نظام القوى (ج2) — أحمال الميكانيكا'},
+ {n:7,  vid:'hGHjg90TopE', t:'تصميم لوحات الكهرباء (ج1) — Panel Design'},
+ {n:8,  vid:'uJBX_LQm9AI', t:'تصميم لوحات الكهرباء (ج2)'},
+ {n:9,  vid:'oNfvBqJWDCE', t:'SLD والمحولات — SLD & Transformer'},
+ {n:10, vid:'B_hJV8NH2yw', t:'SLD — المولد ومعامل القدرة Generator & PF'},
+ {n:11, vid:'QaeCwam2AnI', t:'SLD — RMU وUPS والموزعات'},
+ {n:12, vid:'3PcKL0eH-xg', t:'مسارات الكابلات — Cable Routing System'},
+ {n:13, vid:'vmxzmeKMxS8', t:'إنارة الشوارع — Street Lighting'},
+ {n:14, vid:'jo9Unmf7oT0', t:'تصميم نظام التأريض — Earthing System'},
+ {n:15, vid:'N-PGeuioLv4', t:'الحماية من الصواعق — Lightning Protection'},
+ {n:16, vid:'U6l8zur7zhM', t:'ETAP وEcodial'},
+ {n:17, vid:'DitB8xncYW0', t:'تقدير الأحمال والفراغات الكهربائية — Load Estimation'},
+ {n:18, vid:'jmhs8E0lnAA', t:'المقايسة وحصر الكميات — Electrical BOQ'}
+];
+var YT = 'https://www.youtube.com/watch?v=';
+var LECTURE_MAP = {
+ 'dashboard':[0,17],
+ 'electrical':[0,17],
+ 'lighting':[1,2,3,4,13],
+ 'power':[5,6,7,8],
+ 'lv':[7,8,11],
+ 'mv':[11],
+ 'generator':[10,11],
+ 'cables':[12],
+ 'earthing':[14,15],
+ 'design-office':[1,9,10,11],
+ 'technical-office':[7,18],
+ 'boq':[18],
+ 'software-academy':[1,2,3,16],
+ 'calculators':[16],
+ 'site-execution':[12]
+};
+var DIPLOMA_LINKS = [
+ ['قايمة الدبلومة كاملة على يوتيوب','https://youtube.com/playlist?list=PLxNbro6QtRYsFAcXhy9rXoE2y9mJ-iTu9'],
+ ['كتاب تفريغ المحاضرات (Distribution Diploma 2022)','https://drive.google.com/file/d/18Jf3SJBnbm_aoeJAqouTu2KuXJ7TPa0e/view?usp=sharing'],
+ ['ملفات المحاضرات (Drive)','https://drive.google.com/drive/folders/1yo_RLbVA5aWfG66DjIWooLQGWazHjTWT?usp=sharing'],
+ ['فهرس الدبلومة وملفاتها على ملفات إنستنكت','https://files.instinct.com/gti9m4svq5al-2022']
+];
+function lectureItem(L){
+ return '<a class="lec-item" href="'+YT+L.vid+'" target="_blank" rel="noopener">'
+  +'<span class="lec-n">محاضرة '+L.n+'</span><span class="lec-t">'+L.t+'</span><span class="lec-play">\u25B6</span></a>';
+}
+function linksRow(){
+ return '<div class="lec-links">'+DIPLOMA_LINKS.map(function(l){
+  return '<a href="'+l[1]+'" target="_blank" rel="noopener">'+l[0]+' \u2197</a>';}).join('')+'</div>';
+}
+function buildBlock(route){
+ var nums = LECTURE_MAP[route] || [];
+ var html = '<section class="lec-block" data-lec-route="'+route+'">'
+  + '<h3>\uD83C\uDF93 محاضرات دبلومة التوزيع 2022 — م. محمد إمام</h3>'
+  + '<p class="lec-sub">المرجع المعتمد للمنصة في التصميم الكهربائي — المحاضرات المرتبطة بهذا القسم مباشرة</p>';
+ if(nums.length){
+  html += '<div class="lec-list">'+nums.map(function(n){return lectureItem(LECTURES[n]);}).join('')+'</div>';
+ }
+ if(route==='dashboard' || route==='resources' || route==='electrical'){ html += linksRow(); }
+ return html + '</section>';
+}
+function injectLectures(){
+ try{
+  var c = document.getElementById('content');
+  if(!c || !c.firstChild || !window.state) return;
+  var route = state.route;
+  if(!LECTURE_MAP[route] && route!=='resources') return;
+  var old = c.querySelector('.lec-block');
+  if(old && old.getAttribute('data-lec-route')===route) return;
+  if(old) old.remove();
+  c.insertAdjacentHTML('beforeend', buildBlock(route));
+ }catch(e){}
+}
+var obs = new MutationObserver(function(){ injectLectures(); });
+function arm(){ var c=document.getElementById('content'); if(c){ obs.observe(c,{childList:true}); injectLectures(); } }
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ setTimeout(arm,600); });
+else setTimeout(arm,600);
+})();
+</script>
 </body>
 </html>
