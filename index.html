@@ -597,7 +597,7 @@ for (var v = 0; v < TOTAL; v++){
     cv.innerHTML = '<svg viewBox="0 0 474 900" preserveAspectRatio="none">'+coverArt(t, i)+'</svg>';
     el.appendChild(sp); el.appendChild(cv);
     stage.appendChild(el);
-    tapes.push({v:v, el:el, sp:sp, cv:cv, lift:0, liftT:0});
+    tapes.push({v:v, el:el, sp:sp, cv:cv, lift:0, liftT:0, sx:W/2, sy:cy, sw:ws});
   })(v);
 }
 function sizeFaces(){
@@ -696,6 +696,7 @@ function frame(now){
     var rx = tiltX*o;
     tp.el.style.transform = "translate3d("+x.toFixed(2)+"px,"+y.toFixed(2)+"px,"+z.toFixed(2)+"px) rotateX("+rx.toFixed(2)+"deg) rotateY("+ry.toFixed(2)+"deg)";
     tp.el.style.zIndex = Math.round(3000+z);
+    tp.sx = W/2 + x; tp.sy = cy + y; tp.sw = (Math.abs(r) < .5 ? d : ws) * sc;
     tp.sp.style.setProperty("--shade", Math.min(.6, o*.55 + (1-sc)*.32).toFixed(3));
     tp.cv.style.setProperty("--shade", ((1-o)*.82).toFixed(3));
   }
@@ -764,22 +765,36 @@ shelf.addEventListener("pointercancel", function(){ dragging = false; snap(); })
 
 window.addEventListener("pointermove", function(e){ mx = e.clientX; my = e.clientY; });
 
-stage.addEventListener("click", function(e){
+function pickTape(x, y){
+  var best = null, bd = 1e9;
+  for (var q = 0; q < TOTAL; q++){
+    var tp = tapes[q];
+    if (tp.el.style.display === "none") continue;
+    var dx = Math.abs(x - tp.sx), dy = Math.abs(y - tp.sy);
+    if (dx < Math.max(tp.sw/2 + 6, 14) && dy < H*.6 && dx < bd) { bd = dx; best = tp; }
+  }
+  return best;
+}
+
+shelf.addEventListener("click", function(e){
   if (dragged || detailOpen) return;
-  var el = e.target.closest ? e.target.closest(".tape") : null;
-  if (!el) return;
-  var v = parseInt(el.getAttribute("data-v"), 10);
-  var r = rel(v, s);
-  if (Math.abs(r) < .5) openDetail();
+  var x = e.clientX, y = e.clientY;
+  var settled = Math.abs(T - s) < .3;
+  if (settled && Math.abs(x - W/2) < .55*d && Math.abs(y - cy) < .55*H) { openDetail(); return; }
+  var tp = pickTape(x, y);
+  if (!tp) return;
+  var r = rel(tp.v, s);
+  if (Math.abs(r) < .5) { if (settled) openDetail(); }
   else T = Math.round(T + r);
 });
 
-stage.addEventListener("pointerover", function(e){
-  var el = e.target.closest ? e.target.closest(".tape") : null;
-  hovered = el ? tapes[parseInt(el.getAttribute("data-v"), 10)] : null;
-  cursor.classList.toggle("spine", !!el && !detailOpen);
+shelf.addEventListener("pointermove", function(e){
+  if (dragging || detailOpen) { hovered = null; cursor.classList.remove("spine"); return; }
+  var tp = pickTape(e.clientX, e.clientY);
+  hovered = (tp && Math.abs(rel(tp.v, s)) > .5) ? tp : null;
+  cursor.classList.toggle("spine", !!hovered);
 });
-stage.addEventListener("pointerout", function(){ hovered = null; cursor.classList.remove("spine"); });
+shelf.addEventListener("pointerout", function(){ hovered = null; cursor.classList.remove("spine"); });
 
 document.querySelectorAll("a,button,.timeline").forEach(function(el){
   el.addEventListener("pointerover", function(){ cursor.classList.add("btn"); });
