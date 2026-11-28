@@ -25,7 +25,8 @@
 .f input:focus,.f select:focus{border-color:var(--cyan);}
 .res{margin-top:16px;padding:18px;background:rgba(0,217,255,.07);border:1.5px solid var(--cyan);border-radius:14px;}
 .res-big{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--cyan);line-height:1.2;}
-.res-lbl{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:4px;}
+.res-lbl{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:4px;}.res-big,.res-item b{direction:ltr;unicode-bidi:isolate;}
+
 .res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:12px;}
 .res-item{background:var(--surface-2);border-radius:10px;padding:12px;}
 .res-item b{display:block;font-family:'JetBrains Mono',monospace;font-size:17px;margin-top:3px;}
@@ -67,12 +68,12 @@
             <div class="f">
                 <label>تصنيف الخطر (NFPA 13)</label>
                 <select id="hazard" onchange="calc()">
-                    <option value="light">خفيف Light Hazard</option>
-                    <option value="oh1" selected>عادي 1 Ordinary Group 1</option>
-                    <option value="oh2">عادي 2 Ordinary Group 2</option>
-                    <option value="oh3">عادي 3 Ordinary Group 3</option>
-                    <option value="eh1">مرتفع 1 Extra Hazard 1</option>
-                    <option value="eh2">مرتفع 2 Extra Hazard 2</option>
+                    <option value="light" dir="auto">خفيف Light Hazard</option>
+                    <option value="oh1" selected dir="auto">عادي 1 Ordinary Group 1</option>
+                    <option value="oh2" dir="auto">عادي 2 Ordinary Group 2</option>
+                    <option value="oh3" dir="auto">عادي 3 Ordinary Group 3</option>
+                    <option value="eh1" dir="auto">مرتفع 1 Extra Hazard 1</option>
+                    <option value="eh2" dir="auto">مرتفع 2 Extra Hazard 2</option>
                 </select>
             </div>
             <div class="f">

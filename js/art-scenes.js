@@ -348,5 +348,6 @@ window.toolPhotos = {
   "duct-sizing": "assets/covers/duct-sizing.webp",
   "plumbing": "assets/covers/plumbing.webp",
   "bim-lod": "assets/covers/bim-lod.webp",
-  "cad-symbols": "assets/covers/cad-symbols.webp"
+  "cad-symbols": "assets/covers/cad-symbols.webp",
+  "boq-template": "assets/covers/boq-template.webp"
 };
