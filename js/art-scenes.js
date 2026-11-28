@@ -330,7 +330,10 @@ window.toolScene = function (id, main, sub) {
 
 /* photo covers: ids with a real photo in assets/covers/<id>.webp */
 window.toolPhotos = {
-  "distribution-tools": "assets/covers/distribution-tools.webp",
   "mep-hub": "assets/covers/mep-hub.webp",
+  "boq-fire": "assets/covers/boq-fire.webp",
+  "calc-v2": "assets/covers/calc-v2.webp",
+  "control-simulator": "assets/covers/control-simulator.webp",
+  "distribution-tools": "assets/covers/distribution-tools.webp",
   "control-circuit-simulator": "assets/covers/control-circuit-simulator.webp"
 };
