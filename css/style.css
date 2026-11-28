@@ -595,6 +595,51 @@ input, select, textarea {
     }
 }
 
+/* ===== توسيط الكارت الوحيد في الصف الأخير (تنظيم بصري فقط) ===== */
+/* شبكات 3 أعمدة: الكارت اليتيم يجلس في العمود الأوسط */
+@media (min-width: 701px) {
+    .grid-3 > :last-child:nth-child(3n+1),
+    .hub-grid > :last-child:nth-child(3n+1) {
+        grid-column: 2;
+    }
+}
+/* grid-4 يعرض 3 أعمدة بين 701 و1000px */
+@media (min-width: 701px) and (max-width: 1000px) {
+    .grid-4 > :last-child:nth-child(3n+1) {
+        grid-column: 2;
+    }
+}
+/* grid-4 يعرض 4 أعمدة فوق 1000px: اليتيم يمتد على العمودين الأوسطين */
+@media (min-width: 1001px) {
+    .grid-4 > :last-child:nth-child(4n+1) {
+        grid-column: 2 / span 2;
+    }
+}
+/* سياقات العمودين: اليتيم يتوسط الصف */
+@media (min-width: 480px) {
+    .grid-2 > :last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        justify-self: center;
+        width: calc(50% - 9px);
+    }
+}
+@media (min-width: 480px) and (max-width: 700px) {
+    .grid-2 > :last-child:nth-child(odd),
+    .grid-3 > :last-child:nth-child(odd),
+    .grid-4 > :last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        justify-self: center;
+        width: calc(50% - 7px);
+    }
+}
+@media (max-width: 700px) {
+    .hub-grid > :last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        justify-self: center;
+        width: calc(50% - 5px);
+    }
+}
+
 /* ========================================
    CARDS
 ======================================== */
