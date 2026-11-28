@@ -12,7 +12,7 @@
    
 ======================================== */
 
-const CACHE_VERSION = "v3.4.17";
+const CACHE_VERSION = "v3.4.18";
 const STATIC_CACHE = `eng-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `eng-runtime-${CACHE_VERSION}`;
 
