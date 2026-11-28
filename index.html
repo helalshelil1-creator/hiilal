@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<html lang="ar" dir="rtl">
-<head>
 <script>(function(){try{var k="hilal_visit_theme",n=performance.getEntriesByType("navigation")[0],ok=false;if(n&&n.type!=="reload"&&document.referrer&&new URL(document.referrer).origin===location.origin)ok=true;if(!ok)sessionStorage.removeItem(k);window.__hilalTheme=sessionStorage.getItem(k)||"dark"}catch(e){window.__hilalTheme="dark"}if(window.__hilalTheme==="dark")document.documentElement.setAttribute("data-theme","dark")})()</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
@@ -47,7 +45,7 @@
      PWA / MOBILE
 ======================================== -->
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#ECE8E0">
+<meta name="theme-color" content="#06b6d4">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -69,10 +67,22 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="dns-prefetch" href="https://www.youtube.com">
-<!-- FONTS: Inter Tight + Newsreader + Tajawal (Google Fonts, SIL OFL) -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;800&family=Newsreader:ital,wght@0,400;1,400&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+<!-- ========================================
+     FONTS
+======================================== -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<!-- ========================================
+     STYLES
+======================================== -->
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/welcome.css">
+
+<!-- ========================================
+     STRUCTURED DATA
+======================================== -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -154,772 +164,766 @@
     }]
 }
 </script>
+
+<!-- ========================================
+     STAT CARDS — Pulsing Dark Border
+======================================== -->
+<style>
+.stat-card-custom {
+    position: relative;
+    display: block;
+    padding: 24px 20px;
+    background: var(--surface);
+    border: 2px solid #0a1628;
+    border-radius: 22px;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: all .4s cubic-bezier(.16,1,.3,1);
+    animation: none;
+    overflow: hidden;
+}
+
+
+
+.stat-card-custom:hover {
+    border-color: #00d9ff;
+    transform: translateY(-8px) scale(1.03);
+    box-shadow:
+        0 0 0 3px rgba(0,217,255,.2),
+        0 0 40px rgba(0,217,255,.5),
+        0 25px 55px -15px rgba(0,217,255,.5);
+}
+
+.stat-icon-custom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 12px;
+    color: #00d9ff;
+    transition: all .4s cubic-bezier(.16,1,.3,1);
+}
+.stat-icon-custom svg {
+    width: 40px;
+    height: 40px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.stat-card-custom:hover .stat-icon-custom {
+    transform: rotate(-10deg) scale(1.2);
+    filter: drop-shadow(0 0 12px rgba(0,217,255,.7));
+}
+
+.stat-number-custom {
+    font-size: 32px;
+    font-weight: 900;
+    color: #0a1628;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1;
+    margin-bottom: 8px;
+    transition: all .4s cubic-bezier(.16,1,.3,1);
+}
+.stat-card-custom:hover .stat-number-custom {
+    color: #00d9ff;
+    text-shadow: 0 0 20px rgba(0,217,255,.6);
+    transform: scale(1.1);
+}
+
+.stat-label-custom {
+    font-size: 12.5px;
+    color: var(--muted);
+    font-weight: 700;
+    letter-spacing: .5px;
+}
+
+[data-theme="dark"] .stat-card-custom {
+    border-color: #00d9ff;
+}
+[data-theme="dark"] .stat-number-custom {
+    color: #f1f5f9;
+}
+
+@media (max-width: 700px) {
+    .stat-card-custom {
+        padding: 18px 14px;
+        border-radius: 18px;
+    }
+    .stat-icon-custom {
+        width: 44px;
+        height: 44px;
+    }
+    .stat-icon-custom svg {
+        width: 32px;
+        height: 32px;
+    }
+    .stat-number-custom {
+        font-size: 26px;
+    }
+    .stat-label-custom {
+        font-size: 11px;
+    }
+}
+
+
+
+/* Chatbot Window */
+.chatbot-window{position:fixed;bottom:100px;right:20px;width:360px;height:500px;background:rgba(10,22,40,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(0,217,255,.3);border-radius:20px;display:flex;flex-direction:column;z-index:10000;overflow:hidden;transform:translateY(20px);opacity:0;visibility:hidden;transition:all .4s cubic-bezier(.16,1,.3,1);box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 40px rgba(0,217,255,.2);font-family:'Tajawal',sans-serif}
+.chatbot-window.show{transform:translateY(0);opacity:1;visibility:visible}
+.chatbot-header{display:flex;justify-content:space-between;align-items:center;padding:15px;background:linear-gradient(135deg,rgba(0,217,255,.15),rgba(0,217,255,.05));border-bottom:1px solid rgba(0,217,255,.2)}
+.chatbot-header-info{display:flex;align-items:center;gap:10px}
+.chatbot-avatar{width:42px;height:42px;background:linear-gradient(135deg,#00d9ff,#22d3ee);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 15px rgba(0,217,255,.4)}
+.chatbot-header-info h3{font-size:14px;color:#fff;margin:0;font-weight:700}
+.chatbot-header-info span{font-size:11px;color:#67e8f9}
+.chatbot-close{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:5px;transition:transform .3s}
+.chatbot-close:hover{transform:rotate(90deg)}
+.chatbot-messages{flex:1;padding:15px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+.chat-message{display:flex;max-width:85%;animation:msgIn .3s ease}
+.chat-message.user{align-self:flex-end}
+.chat-message.bot{align-self:flex-start}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.chat-bubble{padding:10px 15px;border-radius:15px;font-size:13px;line-height:1.7;word-wrap:break-word}
+.chat-message.user .chat-bubble{background:linear-gradient(135deg,#00d9ff,#22d3ee);color:#0a1628;border-radius:15px 15px 0 15px;font-weight:600}
+.chat-message.bot .chat-bubble{background:rgba(255,255,255,.08);color:#fff;border-radius:15px 15px 15px 0;border:1px solid rgba(255,255,255,.1)}
+.chat-bubble a{color:#67e8f9;text-decoration:underline}
+.chatbot-input-area{padding:12px;border-top:1px solid rgba(0,217,255,.2);display:flex;gap:8px}
+.chatbot-input-area input{flex:1;padding:10px 15px;border-radius:20px;border:1px solid rgba(0,217,255,.3);background:rgba(0,0,0,.3);color:#fff;font-family:inherit;font-size:13px;outline:none}
+.chatbot-input-area input::placeholder{color:rgba(255,255,255,.5)}
+.chatbot-input-area button{padding:0 18px;border-radius:20px;border:none;background:linear-gradient(135deg,#00d9ff,#22d3ee);color:#0a1628;font-weight:700;cursor:pointer;font-family:inherit;transition:transform .3s}
+.chatbot-input-area button:hover{transform:scale(1.05)}
+.typing{display:flex;gap:4px;align-items:center;padding:12px 15px}
+.typing span{width:6px;height:6px;background:#67e8f9;border-radius:50%;animation:typingAnim 1.4s infinite ease-in-out both}
+.typing span:nth-child(1){animation-delay:-.32s}
+.typing span:nth-child(2){animation-delay:-.16s}
+@keyframes typingAnim{0%,80%,100%{transform:scale(0)}40%{transform:scale(1)}}
+@media(max-width:600px){.chatbot-window{width:calc(100% - 30px);right:15px;left:15px;bottom:90px;height:65vh}}
+</style>
 <link rel="alternate" hreflang="ar" href="https://hiilal.vercel.app/" />
 <link rel="alternate" hreflang="en" href="https://hiilal.vercel.app/" />
 <link rel="alternate" hreflang="x-default" href="https://hiilal.vercel.app/" />
-<style>
-/* ===== hiilal VHS archive — curved shelf template, hiilal content ===== */
-:root{
-  --paper:#ECE8E0; --sheet:#F3F0EA; --ink:#141414; --muted:#6D6A63; --cobalt:#1F3FB0; --rule:rgba(20,20,20,.9);
-  --ease:cubic-bezier(.2,.8,.2,1);
-  --H:min(47vh,33vw);
-  --cy:41%;
-  --sans:"Inter Tight","Tajawal",system-ui,sans-serif;
-  --ar:"Tajawal",system-ui,sans-serif;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%}
-body{background:var(--paper);color:var(--ink);font-family:var(--ar);overflow:hidden;user-select:none;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}
-button{font:inherit;background:none;border:0;cursor:pointer;color:inherit}
-.grain{position:fixed;inset:0;z-index:40;pointer-events:none;mix-blend-mode:multiply;opacity:.6;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .42 0 0 0 0 .38 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)'/%3E%3C/svg%3E")}
-.lbl{font-family:var(--sans);font-weight:600;font-size:10.5px;line-height:1;letter-spacing:.14em;text-transform:uppercase}
-.box{display:inline-flex;align-items:center;height:21px;padding:0 8px;border:1px solid var(--rule)}
 
-/* top bar */
-.topbar{position:fixed;top:0;left:0;right:0;height:76px;padding:0 36px;display:flex;align-items:center;justify-content:space-between;z-index:30;color:var(--cobalt)}
-.brand{display:flex;align-items:center;gap:16px}
-.brand-line{width:40px;height:1px;background:var(--cobalt)}
-.topnav{display:flex;align-items:center;gap:34px}
-.topnav a.lbl:hover{opacity:.65}
-.burger{width:26px;height:12px;display:flex;flex-direction:column;justify-content:space-between}
-.burger i{display:block;height:1.5px;background:var(--cobalt)}
 
-/* giant halftone words */
-.kanji{position:fixed;z-index:1;top:11vh;font-family:var(--ar);font-weight:900;font-size:min(24vh,16vw);line-height:1.05;color:transparent;
-  background-image:radial-gradient(circle at 50% 50%, rgba(64,82,138,.55) 0 36%, transparent 40%),linear-gradient(rgba(110,122,160,.26),rgba(110,122,160,.26));
-  background-size:3px 3px,auto;-webkit-background-clip:text;background-clip:text;pointer-events:none}
-.k-r{right:2.4vw}
-.k-l{left:2.4vw;top:15vh}
-
-/* floor shadow */
-.floor{position:fixed;left:50%;transform:translateX(-50%);top:calc(var(--cy) + var(--H)*.47);width:min(96vw,calc(var(--H)*3.6));height:calc(var(--H)*.26);
-  background:radial-gradient(50% 50% at 50% 40%, rgba(40,32,20,.30), rgba(40,32,20,.10) 55%, transparent 72%);z-index:2;pointer-events:none}
-
-/* shelf */
-.shelf{position:fixed;left:0;right:0;top:calc(var(--cy) - var(--H)/2 - 50px);height:calc(var(--H) + 100px);perspective:1400px;perspective-origin:50% 50%;z-index:10;touch-action:pan-y}
-.stage{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
-.tape{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d}
-.face{position:absolute;top:calc(var(--H)/-2);backface-visibility:hidden;border-radius:2px;overflow:hidden}
-.face svg{width:100%;height:100%;display:block}
-.face::after{content:"";position:absolute;inset:0;background:#000;opacity:var(--shade,0);pointer-events:none}
-.cv{box-shadow:0 34px 60px -30px rgba(20,16,10,.6)}
-
-/* play ring */
-.playring{position:fixed;width:42px;height:42px;border:1px solid var(--cobalt);border-radius:50%;background:rgba(236,232,224,.8);display:flex;align-items:center;justify-content:center;z-index:25;pointer-events:none;transform:translate(-50%,-50%) scale(0)}
-.playring svg{width:12px;height:12px;fill:var(--cobalt)}
-
-/* caption */
-.caption{position:fixed;left:50%;transform:translateX(-50%);top:calc(var(--cy) + var(--H)/2 + 4.2vh);display:grid;justify-items:center;gap:10px;z-index:20;text-align:center}
-.cap-mask{overflow:hidden;width:min(80vw,640px);display:flex;justify-content:center}
-.cap-mask span{display:block;will-change:transform}
-#capTitle{font-family:var(--ar);font-weight:800;font-size:clamp(24px,3.4vw,42px);color:var(--cobalt);letter-spacing:0;line-height:1.25}
-#capSub{color:var(--cobalt);font-size:9.5px;letter-spacing:.24em}
-.cap-rule{width:18px;height:1px;background:var(--cobalt)}
-#capMeta{font-family:var(--sans);font-weight:500;font-size:10.5px;letter-spacing:.08em;color:var(--ink)}
-.arrow{position:fixed;top:calc(var(--cy) + var(--H)/2 + 4.2vh + 6px);width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--cobalt);z-index:21}
-.arrow svg{width:24px;height:12px;stroke:currentColor;stroke-width:1.2;fill:none}
-.arrow:hover{opacity:.6}
-.a-prev{right:calc(50% - min(19vw,250px) - 44px)}
-.a-next{left:calc(50% - min(19vw,250px) - 44px)}
-
-/* timeline */
-.timeline{position:fixed;left:36px;right:36px;bottom:64px;height:40px;z-index:20;cursor:pointer}
-.tl-line{position:absolute;left:0;right:0;top:12px;height:1px;background:var(--cobalt);opacity:.75}
-.tl-tick{position:absolute;top:12px;width:1px;background:var(--cobalt)}
-.tl-tick.minor{height:7px;opacity:.4;transform:translateY(-3px)}
-.tl-tick.major{height:13px;opacity:.75;transform:translateY(-6px)}
-.tl-lab{position:absolute;top:26px;font-family:var(--sans);font-weight:500;font-size:9.5px;color:var(--cobalt);transform:translateX(50%)}
-.tl-dot{position:absolute;top:12px;width:9px;height:9px;border-radius:50%;background:var(--cobalt);transform:translate(50%,-50%)}
-
-/* footer */
-.pagefoot{position:fixed;left:36px;right:36px;bottom:24px;display:flex;justify-content:space-between;align-items:center;color:var(--cobalt);z-index:20}
-.pagefoot nav{display:flex;gap:22px}
-.pagefoot a:hover{opacity:.65}
-
-/* cursor */
-.cursor{position:fixed;left:0;top:0;width:58px;height:58px;z-index:100;pointer-events:none;transform:translate(-50%,-50%);display:none}
-@media (pointer:fine){.cursor{display:block} body{cursor:none} a,button,.timeline,.tape{cursor:none}}
-.cur-ring{position:absolute;inset:0;border:1.5px solid var(--ink);border-radius:50%;transition:transform .5s var(--ease),background .4s,border-color .4s}
-.cur-dot{position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:var(--ink);transition:transform .4s var(--ease),opacity .4s}
-.cur-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:#fff;font-family:var(--sans);font-weight:600;font-size:10px;opacity:0;transition:opacity .45s}
-.cursor.open .cur-ring{transform:scale(1.75);background:var(--cobalt);border-color:var(--cobalt)}
-.cursor.open .cur-dot{transform:scale(0)}
-.cursor.open .cur-label{opacity:1}
-.cursor.spine .cur-ring{transform:scale(.72)}
-.cursor.btn .cur-ring{transform:scale(.55)}
-.cursor.btn .cur-dot{opacity:0}
-
-/* detail sheet */
-.detail{position:fixed;inset:0;background:var(--sheet);z-index:60;display:grid;grid-template-columns:1fr 1fr;gap:4vw;padding:110px 6vw 56px 7vw;visibility:hidden}
-.detail.show{visibility:visible}
-.det-close{position:absolute;top:28px;right:36px;gap:8px}
-.det-brand{position:absolute;top:36px;left:36px;color:var(--cobalt);display:flex;align-items:center;gap:16px}
-.det-brand .brand-line{width:30px}
-.det-text{display:flex;flex-direction:column;justify-content:center;gap:18px;max-width:520px;justify-self:center}
-.det-mask{overflow:hidden}
-.det-mask>span{display:block;will-change:transform}
-.det-sub{color:var(--cobalt);letter-spacing:.24em}
-.det-title{font-family:var(--ar);font-weight:800;font-size:clamp(34px,4.6vw,64px);line-height:1.2;color:var(--cobalt)}
-.det-meta{font-family:var(--sans);font-weight:500;font-size:11px;letter-spacing:.08em;color:var(--muted)}
-.det-desc{font-family:var(--ar);font-weight:400;font-size:17px;line-height:1.7;max-width:42ch}
-.det-credit{font-family:var(--ar);font-weight:400;font-style:normal;font-size:13px;color:var(--muted)}
-.det-open{align-self:flex-start;height:44px;padding:0 22px;border:1px solid var(--cobalt);color:var(--cobalt);font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:10px;border-radius:0}
-.det-open:hover{background:var(--cobalt);color:var(--sheet)}
-.det-cta{display:block}
-#detPoster{cursor:pointer}
-.det-poster{display:flex;align-items:center;justify-content:center;min-height:0}
-.det-poster svg{height:min(100%,78vh);width:auto;max-width:100%}
-
-/* seo fallback */
-.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-noscript .ns-box{position:fixed;inset:0;background:var(--paper);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-size:16px}
-noscript .ns-box a{color:var(--cobalt);text-decoration:underline}
-
-@media (max-width:767px){
-  :root{--H:min(68vw,40svh);--cy:43%}
-  .topbar{height:60px;padding:0 16px}
-  .topnav a{display:none}
-  .brand-line{width:22px}
-  .kanji{font-size:17vw;opacity:.8}
-  .k-r{top:8vh}
-  .k-l{top:24vh}
-  #capTitle{font-size:24px}
-  .a-prev{right:8px}.a-next{left:8px}
-  .arrow{top:auto;bottom:118px}
-  .timeline{left:16px;right:16px;bottom:54px}
-  .tl-lab.hide-m{display:none}
-  .pagefoot{left:16px;right:16px}
-  .pagefoot nav{gap:14px}
-  .detail{display:flex;flex-direction:column;overflow-y:auto;padding:84px 5vw 40px}
-  .det-poster{order:-1}
-  .det-poster svg{height:40svh}
-  .det-text{justify-content:flex-start;min-height:0;padding-bottom:100px}
-  .det-cta{position:fixed;bottom:0;left:0;right:0;margin:0;padding:12px 5vw calc(12px + env(safe-area-inset-bottom));background:var(--sheet);border-top:1px solid rgba(64,82,138,.25);z-index:70}
-  .det-open{display:flex;justify-content:center;width:100%;height:52px;background:var(--cobalt);color:var(--sheet);font-size:16px}
-  .det-title{font-size:34px}
-  .det-text{gap:14px;padding-bottom:30px}
-}
-@media (prefers-reduced-motion:reduce){
-  .cur-ring,.cur-dot,.cur-label{transition:none}
-}
-</style>
 </head>
-<body>
+<body data-page="index">
 
-<header class="topbar">
-    <div class="brand">
-        <a class="lbl" href="about.html">هلال شليل</a>
-        <span class="brand-line"></span>
-        <span class="lbl">أرشيف الأدوات</span>
+<!-- ========================================
+     Loader
+======================================== -->
+<div id="loader">
+    <img src="images/logo.png" alt="شعار هلال شليل" class="loader-logo-img" width="120" height="120">
+    <div class="loader-logo">هلال شليل</div>
+    <div class="loader-wave"></div>
+</div>
+
+<!-- ========================================
+     Navbar
+======================================== -->
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="index.html" class="logo" aria-label="هلال شليل - الصفحة الرئيسية">
+            <img src="images/logo.png" alt="شعار Eng. Helal Shelil" class="logo-img" width="44" height="44">
+            <div class="logo-text">منصة هندسية شخصية</div>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="active" data-i18n="nav.home">الرئيسية</a>
+            <a href="tools.html" data-i18n="nav.tools">الأدوات</a>
+            <a href="calculators.html" data-i18n="nav.calculators">الحاسبات</a>
+            <a href="encyclopedia.html" data-i18n="nav.encyclopedia">الموسوعة</a>
+            <a href="content.html" data-i18n="nav.content">المحتوى</a>
+            <a href="projects.html" data-i18n="nav.projects">المشاريع</a>
+        </div>
+        <div class="nav-actions">
+            <a href="admin.html" class="icon-btn" title="لوحة التحكم" aria-label="لوحة التحكم">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+            </a>
+        </div>
     </div>
-    <nav class="topnav">
-        <a class="lbl" href="tools.html">الأدوات</a>
-        <a class="lbl" href="calculators.html">الحاسبات</a>
-        <a class="lbl" href="encyclopedia.html">الموسوعة</a>
-        <a class="lbl" href="library.html">المكتبة</a>
-        <span class="burger" aria-hidden="true"><i></i><i></i></span>
-    </nav>
-</header>
+</nav>
 
-<div class="kanji k-r" aria-hidden="true">هلال</div>
-<div class="kanji k-l" aria-hidden="true">هندسة</div>
-<div class="floor" aria-hidden="true"></div>
+<!-- ========================================
+     Welcome / Hero
+======================================== -->
+<section class="welcome">
+    <div class="electric-bg" aria-hidden="true">
+        <svg class="circuit-svg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
+            <defs>
+                <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#00d9ff" stop-opacity="0"/>
+                    <stop offset="50%" stop-color="#00d9ff" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="#00d9ff" stop-opacity="0"/>
+                </linearGradient>
+                <filter id="glow">
+                    <feGaussianBlur stdDeviation="2" result="blur"/>
+                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+            </defs>
+            <path class="circuit-line" d="M0,180 L150,180 L180,150 L280,150 L310,180 L500,180 L530,210 L700,210" stroke="url(#lineGrad)" stroke-width="2" fill="none" filter="url(#glow)"/>
+            <path class="circuit-line" d="M1200,420 L1050,420 L1020,390 L850,390 L820,420 L600,420 L570,450 L400,450" stroke="url(#lineGrad)" stroke-width="2" fill="none" style="animation-delay: 1.5s;" filter="url(#glow)"/>
+            <path class="circuit-line" d="M100,520 L250,520 L280,550 L450,550 L480,520 L700,520" stroke="url(#lineGrad)" stroke-width="2" fill="none" style="animation-delay: 3s;" filter="url(#glow)"/>
+            <path class="circuit-line" d="M950,100 L800,100 L770,130 L600,130 L570,100 L350,100 L320,130 L200,130" stroke="url(#lineGrad)" stroke-width="2" fill="none" style="animation-delay: 2s;" filter="url(#glow)"/>
+            <circle class="pulse-node" cx="180" cy="150" r="4" fill="#00d9ff"/>
+            <circle class="pulse-node" cx="820" cy="420" r="4" fill="#00d9ff" style="animation-delay: 0.7s;"/>
+            <circle class="pulse-node" cx="280" cy="550" r="4" fill="#00d9ff" style="animation-delay: 1.4s;"/>
+            <circle class="pulse-node" cx="770" cy="130" r="4" fill="#00d9ff" style="animation-delay: 2.1s;"/>
+            <circle class="pulse-node" cx="1050" cy="420" r="4" fill="#00d9ff" style="animation-delay: 1s;"/>
+            <circle class="pulse-node" cx="320" cy="130" r="4" fill="#00d9ff" style="animation-delay: 2.5s;"/>
+        </svg>
 
-<section class="shelf" id="shelf" aria-label="أرشيف الأدوات">
-    <div class="stage" id="stage"></div>
+        <div class="sparks">
+            <span class="spark" style="left: 10%; animation-delay: 0s;"></span>
+            <span class="spark" style="left: 25%; animation-delay: 1.5s;"></span>
+            <span class="spark" style="left: 42%; animation-delay: 3s;"></span>
+            <span class="spark" style="left: 58%; animation-delay: 0.8s;"></span>
+            <span class="spark" style="left: 72%; animation-delay: 2.2s;"></span>
+            <span class="spark" style="left: 88%; animation-delay: 3.7s;"></span>
+        </div>
+
+        <svg class="lightning" viewBox="0 0 100 200" preserveAspectRatio="none">
+            <polygon points="55,0 40,70 55,70 30,140 45,140 25,200 75,90 55,90 85,0" fill="rgba(0,217,255,0.15)"/>
+        </svg>
+    </div>
+
+    <div class="welcome-inner">
+        <button class="welcome-icon" onclick="EngBot.greet()" title="اضغط للتحدث مع المساعد الهندسي" aria-label="المساعد الهندسي">
+            <img src="images/alamein.jpg" alt="المهندس هلال شليل — Electrical & MEP Engineer" width="130" height="130" loading="eager">
+            <span class="icon-pulse" aria-hidden="true"></span>
+            <span class="icon-pulse-2" aria-hidden="true"></span>
+        </button>
+
+        <h1 class="welcome-title">
+            <span class="title-top">مرحبا بك في</span>
+            <span class="title-main">مكتب المهندس هلال شليل</span>
+        </h1>
+
+        <p data-i18n="welcome.desc">منصة هندسية متكاملة لمهندس الكهرباء والـ MEP — التصميم، التنفيذ، المكتب الفني، الحصر، الأكواد، والمواصفات… في مكان واحد.</p>
+
+        <div class="search-wrap">
+            <input type="text" id="globalSearch" class="search-input" placeholder="ابحث عن أداة، حاسبة، موضوع، كود، منتج، أو مواصفة..." data-i18n-placeholder="welcome.search" aria-label="بحث">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+        </div>
+    </div>
 </section>
 
-<div class="playring" id="playRing" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z"/></svg></div>
+<!-- ========================================
+     Tools
+======================================== -->
+<section class="container section">
+    <div class="section-head">
+        <h2 data-i18n="section.tools">أدوات هندسية متقدمة</h2>
+        <a href="tools.html" data-i18n="section.viewAll">عرض الكل ←</a>
+    </div>
+    <div class="grid grid-4" id="toolsHomeGrid"></div>
+</section>
 
-<div class="caption" aria-live="polite">
-    <div class="cap-mask" id="capTitleMask"><span id="capTitle"></span></div>
-    <div class="cap-mask" id="capSubMask"><span id="capSub" class="lbl"></span></div>
-    <div class="cap-rule"></div>
-    <div class="cap-mask" id="capMetaMask"><span id="capMeta"></span></div>
-</div>
-<button class="arrow a-prev" id="prevBtn" aria-label="الأداة السابقة"><svg viewBox="0 0 24 12"><path d="M6 1l5 5-5 5M11 6h13"/></svg></button>
-<button class="arrow a-next" id="nextBtn" aria-label="الأداة التالية"><svg viewBox="0 0 24 12"><path d="M18 1l-5 5 5 5M13 6H0"/></svg></button>
+<!-- ========================================
+     Calculators
+======================================== -->
+<section class="container section">
+    <div class="section-head">
+        <h2 data-i18n="section.calc">حاسبات سريعة</h2>
+        <a href="calculators.html" data-i18n="section.viewAll">عرض الكل ←</a>
+    </div>
+    <div class="grid grid-3" id="calcGrid"></div>
+</section>
 
-<div class="timeline" id="timeline" role="slider" aria-label="شريط الأدوات" aria-valuemin="1" aria-valuemax="28" aria-valuenow="1" tabindex="0">
-    <div class="tl-line"></div>
-    <div id="tlTicks"></div>
-    <div class="tl-dot" id="tlDot"></div>
-</div>
+<!-- ========================================
+     Encyclopedia
+======================================== -->
+<section class="container section">
+    <div class="section-head">
+        <h2 data-i18n="section.enc">الموسوعة الهندسية</h2>
+        <a href="encyclopedia.html" data-i18n="section.viewAll">عرض الكل ←</a>
+    </div>
+    <div class="grid grid-3" id="encHomeGrid"></div>
+</section>
 
-<footer class="pagefoot">
-    <span class="lbl">© م. هلال شليل. جميع الحقوق محفوظة.</span>
-    <nav>
-        <a class="lbl" href="tools.html">أدوات</a>
-        <a class="lbl" href="calculators.html">حاسبات</a>
-        <a class="lbl" href="https://wa.me/201551405418" target="_blank" rel="noopener">واتساب</a>
-    </nav>
+<!-- ========================================
+     Libraries
+======================================== -->
+<section class="container section">
+    <div class="section-head">
+        <h2 data-i18n="section.lib">المكتبات الهندسية</h2>
+    </div>
+    <div class="grid grid-2">
+        <a href="content.html" class="cat-card">
+            <div class="cat-icon" data-icon="book-open" aria-hidden="true"></div>
+            <h3>المحتوى الشامل</h3>
+            <p>ملفات، برامج، صور، فيديوهات، مقالات</p>
+        </a>
+        <a href="codes.html" class="cat-card">
+            <div class="cat-icon" data-icon="file-text" aria-hidden="true"></div>
+            <h3>الأكواد والمعايير</h3>
+            <p>الكود المصري، IEC، NFPA، NEC، BS</p>
+        </a>
+        <a href="specs.html" class="cat-card">
+            <div class="cat-icon" data-icon="clipboard-list" aria-hidden="true"></div>
+            <h3>المواصفات الفنية</h3>
+            <p>كابلات، قواطع، لوحات، محولات، إضاءة</p>
+        </a>
+        <a href="products.html" class="cat-card">
+            <div class="cat-icon" data-icon="package" aria-hidden="true"></div>
+            <h3>المنتجات والمعدات</h3>
+            <p>قاعدة بيانات المنتجات والمصنعين</p>
+        </a>
+        <a href="favorites.html" class="cat-card">
+            <div class="cat-icon" data-icon="heart" aria-hidden="true"></div>
+            <h3>المفضلة</h3>
+            <p>كل ما حفظته للوصول السريع</p>
+        </a>
+    </div>
+</section>
+
+<!-- ========================================
+     Contact
+======================================== -->
+<section class="container section">
+    <div class="section-head">
+        <h2 data-i18n="section.contact">تواصل معي</h2>
+    </div>
+    <div class="grid grid-4">
+        <a href="mailto:helalshelil1@gmail.com" class="cat-card">
+            <div class="cat-icon" data-icon="mail" aria-hidden="true"></div>
+            <h3 data-i18n="contact.email">البريد الإلكتروني</h3>
+            <p data-i18n="contact.inquiries">للتواصل الشخصي</p>
+        </a>
+    </div>
+</section>
+
+
+<!-- ========================================
+     MEP Hub Cards (moved from sidebar)
+======================================== -->
+<section class="container section" id="mep-hub-cards">
+  <div class="section-head">
+    <h2>منصة MEP HUB الهندسية</h2>
+    <p>جميع الأدوات والأنظمة الهندسية في مكان واحد — اضغط على أي مجموعة لعرضها</p>
+  </div>
+  <div class="hub-accordion">
+    <div class="hub-acc-item">
+      <button class="hub-acc-head" type="button" aria-expanded="false">
+        <span>CORE</span>
+        <span class="arrow">▸</span>
+      </button>
+      <div class="hub-acc-body">
+        <div class="hub-grid">
+          <a href="mep-hub/index.html#dashboard" class="hub-card">
+      <div class="hub-card-icon">◈</div>
+      <h4>لوحة التحكم</h4>
+    </a>
+          <a href="mep-hub/index.html#electrical" class="hub-card">
+      <div class="hub-card-icon">⚡</div>
+      <h4>الهندسة الكهربائية</h4>
+    </a>
+          <a href="mep-hub/index.html#mep" class="hub-card">
+      <div class="hub-card-icon">◧</div>
+      <h4>هندسة MEP</h4>
+    </a>
+          <a href="mep-hub/index.html#design-office" class="hub-card">
+      <div class="hub-card-icon">◱</div>
+      <h4>مكتب التصميم</h4>
+    </a>
+          <a href="mep-hub/index.html#site-execution" class="hub-card">
+      <div class="hub-card-icon">◰</div>
+      <h4>التنفيذ بالموقع</h4>
+    </a>
+          <a href="mep-hub/index.html#technical-office" class="hub-card">
+      <div class="hub-card-icon">▤</div>
+      <h4>المكتب الفني</h4>
+    </a>
+        </div>
+      </div>
+    </div>
+    <div class="hub-acc-item">
+      <button class="hub-acc-head" type="button" aria-expanded="false">
+        <span>DIGITAL DELIVERY</span>
+        <span class="arrow">▸</span>
+      </button>
+      <div class="hub-acc-body">
+        <div class="hub-grid">
+          <a href="mep-hub/index.html#bim" class="hub-card">
+      <div class="hub-card-icon">◫</div>
+      <h4>نمذجة BIM</h4>
+    </a>
+          <a href="mep-hub/index.html#autocad" class="hub-card">
+      <div class="hub-card-icon">✎</div>
+      <h4>أوتوكاد</h4>
+    </a>
+          <a href="mep-hub/index.html#revit" class="hub-card">
+      <div class="hub-card-icon">▦</div>
+      <h4>ريفيت</h4>
+    </a>
+          <a href="mep-hub/index.html#software-academy" class="hub-card">
+      <div class="hub-card-icon">◇</div>
+      <h4>أكاديمية البرامج</h4>
+    </a>
+        </div>
+      </div>
+    </div>
+    <div class="hub-acc-item">
+      <button class="hub-acc-head" type="button" aria-expanded="false">
+        <span>SYSTEMS</span>
+        <span class="arrow">▸</span>
+      </button>
+      <div class="hub-acc-body">
+        <div class="hub-grid">
+          <a href="mep-hub/index.html#power" class="hub-card">
+      <div class="hub-card-icon">⌁</div>
+      <h4>أنظمة القوى</h4>
+    </a>
+          <a href="mep-hub/index.html#lighting" class="hub-card">
+      <div class="hub-card-icon">◉</div>
+      <h4>الإضاءة</h4>
+    </a>
+          <a href="mep-hub/index.html#lv" class="hub-card">
+      <div class="hub-card-icon">▭</div>
+      <h4>الجهد المنخفض</h4>
+    </a>
+          <a href="mep-hub/index.html#mv" class="hub-card">
+      <div class="hub-card-icon">▬</div>
+      <h4>الجهد المتوسط</h4>
+    </a>
+          <a href="mep-hub/index.html#earthing" class="hub-card">
+      <div class="hub-card-icon">⊕</div>
+      <h4>التأريض والصواعق</h4>
+    </a>
+          <a href="mep-hub/index.html#cables" class="hub-card">
+      <div class="hub-card-icon">≡</div>
+      <h4>إدارة الكابلات</h4>
+    </a>
+          <a href="mep-hub/index.html#generator" class="hub-card">
+      <div class="hub-card-icon">▣</div>
+      <h4>المولدات والـUPS</h4>
+    </a>
+          <a href="mep-hub/index.html#solar" class="hub-card">
+      <div class="hub-card-icon">☼</div>
+      <h4>الطاقة الشمسية</h4>
+    </a>
+          <a href="mep-hub/index.html#fire-fighting" class="hub-card">
+      <div class="hub-card-icon">✚</div>
+      <h4>مكافحة الحريق</h4>
+    </a>
+          <a href="mep-hub/index.html#fire-alarm" class="hub-card">
+      <div class="hub-card-icon">◭</div>
+      <h4>إنذار الحريق</h4>
+    </a>
+          <a href="mep-hub/index.html#elv" class="hub-card">
+      <div class="hub-card-icon">◐</div>
+      <h4>أنظمة ELV</h4>
+    </a>
+          <a href="mep-hub/index.html#hvac" class="hub-card">
+      <div class="hub-card-icon">❄</div>
+      <h4>تنسيق التكييف</h4>
+    </a>
+          <a href="mep-hub/index.html#plumbing" class="hub-card">
+      <div class="hub-card-icon">◍</div>
+      <h4>تنسيق الصحي</h4>
+    </a>
+          <a href="mep-hub/index.html#bms" class="hub-card">
+      <div class="hub-card-icon">◒</div>
+      <h4>أتمتة المباني</h4>
+    </a>
+        </div>
+      </div>
+    </div>
+    <div class="hub-acc-item">
+      <button class="hub-acc-head" type="button" aria-expanded="false">
+        <span>TOOLKIT</span>
+        <span class="arrow">▸</span>
+      </button>
+      <div class="hub-acc-body">
+        <div class="hub-grid">
+          <a href="mep-hub/index.html#calculators" class="hub-card">
+      <div class="hub-card-icon">∑</div>
+      <h4>الحاسبات الهندسية</h4>
+    </a>
+          <a href="mep-hub/index.html#codes" class="hub-card">
+      <div class="hub-card-icon">§</div>
+      <h4>الأكواد والمعايير</h4>
+    </a>
+          <a href="mep-hub/index.html#details" class="hub-card">
+      <div class="hub-card-icon">▥</div>
+      <h4>التفاصيل الهندسية</h4>
+    </a>
+          <a href="mep-hub/index.html#checklists" class="hub-card">
+      <div class="hub-card-icon">☑</div>
+      <h4>قوائم الفحص</h4>
+    </a>
+          <a href="mep-hub/index.html#method-statements" class="hub-card">
+      <div class="hub-card-icon">▤</div>
+      <h4>منهجيات التنفيذ</h4>
+    </a>
+          <a href="mep-hub/index.html#submittals" class="hub-card">
+      <div class="hub-card-icon">▧</div>
+      <h4>اعتمادات المواد</h4>
+    </a>
+          <a href="mep-hub/index.html#shop-drawings" class="hub-card">
+      <div class="hub-card-icon">▨</div>
+      <h4>مخططات التنفيذ</h4>
+    </a>
+          <a href="mep-hub/index.html#boq" class="hub-card">
+      <div class="hub-card-icon">$</div>
+      <h4>BOQ والحصر</h4>
+    </a>
+          <a href="mep-hub/index.html#qa-qc" class="hub-card">
+      <div class="hub-card-icon">◬</div>
+      <h4>الجودة QA/QC</h4>
+    </a>
+          <a href="mep-hub/index.html#testing" class="hub-card">
+      <div class="hub-card-icon">⌾</div>
+      <h4>الاختبارات والتشغيل</h4>
+    </a>
+          <a href="mep-hub/index.html#rfi" class="hub-card">
+      <div class="hub-card-icon">✉</div>
+      <h4>RFI والتقارير</h4>
+    </a>
+        </div>
+      </div>
+    </div>
+    <div class="hub-acc-item">
+      <button class="hub-acc-head" type="button" aria-expanded="false">
+        <span>KNOWLEDGE</span>
+        <span class="arrow">▸</span>
+      </button>
+      <div class="hub-acc-body">
+        <div class="hub-grid">
+          <a href="mep-hub/index.html#library" class="hub-card">
+      <div class="hub-card-icon">▥</div>
+      <h4>المكتبة الهندسية</h4>
+    </a>
+          <a href="mep-hub/index.html#interview" class="hub-card">
+      <div class="hub-card-icon">◔</div>
+      <h4>أكاديمية المقابلات</h4>
+    </a>
+          <a href="mep-hub/index.html#career" class="hub-card">
+      <div class="hub-card-icon">↗</div>
+      <h4>مركز المسار المهني</h4>
+    </a>
+          <a href="mep-hub/index.html#flashcards" class="hub-card">
+      <div class="hub-card-icon">◫</div>
+      <h4>البطاقات</h4>
+    </a>
+          <a href="mep-hub/index.html#mistakes" class="hub-card">
+      <div class="hub-card-icon">⚠</div>
+      <h4>الأخطاء الشائعة</h4>
+    </a>
+          <a href="mep-hub/index.html#resources" class="hub-card">
+      <div class="hub-card-icon">◍</div>
+      <h4>دليل المصادر</h4>
+    </a>
+        </div>
+      </div>
+    </div>
+    <div class="hub-acc-item">
+      <button class="hub-acc-head" type="button" aria-expanded="false">
+        <span>WORKSPACE</span>
+        <span class="arrow">▸</span>
+      </button>
+      <div class="hub-acc-body">
+        <div class="hub-grid">
+          <a href="mep-hub/index.html#projects" class="hub-card">
+      <div class="hub-card-icon">▤</div>
+      <h4>مساحة المشاريع</h4>
+    </a>
+          <a href="mep-hub/index.html#favorites" class="hub-card">
+      <div class="hub-card-icon">☆</div>
+      <h4>المفضلة</h4>
+    </a>
+          <a href="mep-hub/index.html#settings" class="hub-card">
+      <div class="hub-card-icon">⚙</div>
+      <h4>الإعدادات</h4>
+    </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================
+     Footer
+======================================== -->
+<footer>
+    <div class="footer-wave">
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M0,40 C240,90 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="currentColor"/>
+        </svg>
+    </div>
+    <div class="footer-main">
+        <div class="footer-container">
+            <div class="footer-col footer-brand">
+                <div class="footer-logo">
+                    <img src="images/logo.png" alt="شعار Eng. Helal Shelil" class="footer-logo-img" width="52" height="52" loading="lazy">
+                    <div class="footer-logo-text">
+                        منصة هندسية شخصية
+                        <small>Eng. Helal Shelil</small>
+                    </div>
+                </div>
+                <p class="footer-desc">منصة هندسية شخصية تجمع أدوات وحاسبات مهندس الكهرباء والـ MEP في مكان واحد.</p>
+                <div class="footer-social">
+                    <a href="mailto:helalshelil1@gmail.com" class="social-btn email" aria-label="Email">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </a>
+                    <a href="https://wa.me/201551405418" target="_blank" rel="noopener" class="social-btn whatsapp" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title" data-i18n="footer.quick">روابط سريعة</h4>
+                <ul class="footer-list">
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="tools.html">الأدوات الهندسية</a></li>
+                    <li><a href="calculators.html">الحاسبات</a></li>
+                    <li><a href="encyclopedia.html">الموسوعة</a></li>
+                    <li><a href="projects.html">المشاريع</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title" data-i18n="footer.libs">المكتبات</h4>
+                <ul class="footer-list">
+                    <li><a href="content.html">المحتوى الشامل</a></li>
+                    <li><a href="codes.html">الأكواد والمعايير</a></li>
+                    <li><a href="specs.html">المواصفات الفنية</a></li>
+                    <li><a href="products.html">المنتجات</a></li>
+                    <li><a href="favorites.html">المفضلة</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title" data-i18n="footer.contact">التواصل</h4>
+                <ul class="footer-contact">
+                    <li>
+                        <span class="fc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+                        <div><small>البريد</small><a href="mailto:helalshelil1@gmail.com">helalshelil1@gmail.com</a></div>
+                    </li>
+                    <li>
+                        <span class="fc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></span>
+                        <div><small>واتساب</small><a href="https://wa.me/201551405418" target="_blank" rel="noopener" dir="ltr">01551405418</a></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="footer-container">
+            <p class="copyright">© 2026 <strong>هلال شليل</strong> — <span data-i18n="footer.rights">جميع الحقوق محفوظة</span></p>
+            <p class="credit">
+                🎨 <span data-i18n="footer.credit">حقوق التصميم للمهندس</span> <strong>هلال شليل</strong>
+                <span class="divider">|</span>
+                <a href="admin.html" style="background: linear-gradient(135deg, #00d9ff, #22d3ee); color: #0a1628; padding: 4px 14px; border-radius: 20px; font-weight: 800;">لوحة التحكم</a>
+            </p>
+        </div>
+    </div>
 </footer>
 
-<div class="cursor" id="cursor" aria-hidden="true">
-    <div class="cur-ring"></div>
-    <div class="cur-dot"></div>
-    <div class="cur-label"><span>افتح</span><span>OPEN</span></div>
-</div>
-
-<div class="detail" id="detail" role="dialog" aria-modal="true" aria-labelledby="detTitle">
-    <button class="det-close box lbl" id="detClose">إغلاق / CLOSE</button>
-    <div class="det-brand"><span class="lbl">هلال شليل</span><span class="brand-line"></span><span class="lbl">أرشيف الأدوات</span></div>
-    <div class="det-text">
-        <div class="det-mask"><span class="det-sub lbl" id="detSub"></span></div>
-        <div class="det-mask"><span class="det-title" id="detTitle"></span></div>
-        <div class="det-mask"><span class="det-meta" id="detMeta"></span></div>
-        <div class="det-mask"><span class="det-desc" id="detDesc"></span></div>
-        <div class="det-mask"><span class="det-credit" id="detCredit">إعداد المهندس هلال شليل</span></div>
-        <div class="det-cta"><a class="det-open" id="detOpen" href="#">افتح الأداة ←</a></div>
+<!-- ========================================
+     Chatbot Window
+======================================== -->
+<div id="chatbotWindow" class="chatbot-window" role="dialog" aria-label="المساعد الهندسي">
+    <div class="chatbot-header">
+        <div class="chatbot-header-info">
+            <div class="chatbot-avatar" aria-hidden="true">👷‍♂️</div>
+            <div>
+                <h3>مساعد المهندس هلال</h3>
+                <span>مساعدك الهندسي الذكي</span>
+            </div>
+        </div>
+        <button class="chatbot-close" onclick="EngBot.toggle()" aria-label="إغلاق">✕</button>
     </div>
-    <div class="det-poster" id="detPoster"></div>
+    <div id="chatbotMessages" class="chatbot-messages" role="log" aria-live="polite"></div>
+    <div class="chatbot-input-area">
+        <input type="text" id="chatbotInput" placeholder="اكتب سؤالك الهندسي..." onkeypress="if(event.key === 'Enter') EngBot.send()" aria-label="اكتب سؤالك">
+        <button onclick="EngBot.send()">إرسال</button>
+    </div>
 </div>
 
-<div class="grain" aria-hidden="true"></div>
+<!-- ========================================
+     Scripts
+======================================== -->
+<script src="js/storage.js" defer></script>
+<script src="js/i18n.js" defer></script>
+<script src="js/icons.js" defer></script>
+<script src="js/data/categories.js" defer></script>
+<script src="js/data/tools.js" defer></script>
+<script src="js/data/calculators.js" defer></script>
+<script src="js/data/encyclopedia.js" defer></script>
+<script src="js/data/content.js" defer></script>
+<script src="js/data/codes.js" defer></script>
+<script src="js/data/specs.js" defer></script>
+<script src="js/data/products.js" defer></script>
+<script src="js/data/projects.js" defer></script>
+<script src="js/favorites.js" defer></script>
+<script src="js/content-manager.js" defer></script>
+<script src="js/app.js" defer></script>
+<script src="js/animations.js" defer></script>
+<script src="js/eng-bot.js" defer></script>
 
-<div class="sr-only">
-    <h1>هلال شليل | حاسبات وأدوات هندسية للكهرباء والـ MEP</h1>
-    <p>منصة هندسية شخصية مجانية بالعربي من المهندس هلال شليل: حاسبات تصميم كهربائي، محاكيات، أكواد IEC/NFPA، موسوعة هندسية، وأدلة AutoCAD و Revit.</p>
-    <nav>
-        <a href="tools.html">كل الأدوات</a>
-        <a href="calculators.html">الحاسبات الهندسية</a>
-        <a href="encyclopedia.html">الموسوعة الهندسية</a>
-        <a href="library.html">المكتبة</a>
-        <a href="codes.html">الأكواد</a>
-        <a href="about.html">عن المهندس هلال شليل</a>
-        <a href="mep-hub/index.html">MEP Engineering Hub</a>
-        <a href="boq/index.htm">مقايسة خط حريق BOQ</a>
-        <a href="calc-v2/index.html">حاسبة كابل وقاطع V2</a>
-        <a href="tools/distribution.html">أدوات التوزيع</a>
-        <a href="tools/habits.html">جدول متابعة العادات</a>
-        <a href="tools/software-guide.html">دليل AutoCAD و Revit</a>
-        <a href="calculators/cable-breaker.html">حاسبة الكابل والقاطع</a>
-        <a href="tools/unit-converter.html">محول الوحدات</a>
-        <a href="tools/ip-rating.html">دليل أكواد IP</a>
-        <a href="tools/checklists.html">قوائم الفحص</a>
-        <a href="tools/schedules.html">جداول الكابلات واللوحات والأحمال</a>
-        <a href="tools/documents.html">مستندات المكتب الفني</a>
-        <a href="tools/schedules-reference.html">جدول اللبنات الاسترشادي</a>
-    </nav>
-</div>
-<noscript><div class="ns-box"><p>الأرشيف محتاج JavaScript عشان يشتغل.</p><a href="tools.html">ادخل على قائمة الأدوات الكاملة</a></div></noscript>
-
-<script src="js/data/categories.js"></script>
-<script src="js/data/tools.js"></script>
-<script src="js/art-scenes.js"></script>
 <script>
-(function(){
-"use strict";
-var TOOLS = window.TOOLS, CATS = {};
-(window.CATEGORIES||[]).forEach(function(c){ CATS[c.id]=c.name; });
-var N = TOOLS.length, TOTAL = N*3;
-var RM = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+document.addEventListener("DOMContentLoaded", () => {
+    const toolsCount = (typeof TOOLS !== "undefined") ? TOOLS.length : 0;
+    const calcsCount = (typeof CALCULATORS !== "undefined") ? CALCULATORS.length : 0;
+    const topicsCount = (typeof ENCYCLOPEDIA !== "undefined") ? ENCYCLOPEDIA.reduce((sum, c) => sum + (c.topics ? c.topics.length : 0), 0) : 0;
+    let projectsCount = (typeof Store !== "undefined") ? Store.getCustom("projects").length : 0;
+    if (projectsCount === 0 && typeof PROJECTS !== "undefined") projectsCount = PROJECTS.length;
 
-var PAL = [
-  {bg:"#F3F0EA", main:"#1F3FB0", sub:"#C63B1E"},
-  {bg:"#F3F0EA", main:"#C63B1E", sub:"#1F3FB0"},
-  {bg:"#EFE9DC", main:"#141414", sub:"#1F3FB0"},
-  {bg:"#F1EEE4", main:"#5B6D33", sub:"#C63B1E"},
-  {bg:"#F3F0EA", main:"#0E6E6B", sub:"#C63B1E"},
-  {bg:"#F2EDE6", main:"#6B2D5B", sub:"#1F3FB0"}
-];
+    function animateNumber(el, target) {
+        if (!el) return;
+        if (target === 0) { el.textContent = "0"; return; }
+        let current = 0;
+        const step = Math.max(1, Math.ceil(target / 25));
+        const interval = setInterval(() => {
+            current += step;
+            if (current >= target) { current = target; clearInterval(interval); }
+            el.textContent = current;
+        }, 40);
+    }
 
-function toolType(t){
-  var n = t.name;
-  if (/HUB/.test(n)) return "منصة متكاملة";
-  if (/محاكي/.test(n)) return "محاكاة";
-  if (/حاسبة/.test(n)) return "حاسبة";
-  if (/BOQ|مقايسة|الكميات/.test(n)) return "حصر وتسعير";
-  if (/Checklist/.test(n)) return "قائمة فحص";
-  if (/دليل/.test(n)) return "دليل";
-  if (/جدول/.test(n)) return "جدول";
-  if (/طلب|اعتماد|أمر/.test(n)) return "مستند فني";
-  return "أداة";
-}
 
-function motif(icon, c, sub){
-  var s = "";
-  switch(icon){
-    case "layers":
-      s = '<path d="M0-52 52-20 0 12-52-20Z" fill="none" stroke="'+c+'" stroke-width="7"/>'+
-          '<path d="M-52 4 0 36 52 4" fill="none" stroke="'+c+'" stroke-width="7"/>'+
-          '<path d="M-52 28 0 60 52 28" fill="none" stroke="'+sub+'" stroke-width="7"/>';
-      break;
-    case "clipboard-list":
-      s = '<rect x="-40" y="-56" width="80" height="112" rx="6" fill="none" stroke="'+c+'" stroke-width="7"/>'+
-          '<rect x="-16" y="-68" width="32" height="20" rx="5" fill="'+sub+'"/>'+
-          '<path d="M-24-20h48M-24 4h48M-24 28h32" stroke="'+c+'" stroke-width="7" stroke-linecap="round"/>';
-      break;
-    case "plug":
-      s = '<circle cx="0" cy="8" r="44" fill="none" stroke="'+c+'" stroke-width="8"/>'+
-          '<path d="M-16-40v-26M16-40v-26" stroke="'+sub+'" stroke-width="9" stroke-linecap="round"/>'+
-          '<circle cx="0" cy="8" r="14" fill="'+c+'"/>';
-      break;
-    case "cpu":
-      s = '<rect x="-40" y="-40" width="80" height="80" rx="8" fill="none" stroke="'+c+'" stroke-width="7"/>'+
-          '<rect x="-16" y="-16" width="32" height="32" fill="'+sub+'"/>'+
-          '<path d="M-24-52v-14M0-52v-14M24-52v-14M-24 52v14M0 52v14M24 52v14M-52-24h-14M-52 0h-14M-52 24h-14M52-24h14M52 0h14M52 24h14" stroke="'+c+'" stroke-width="6" stroke-linecap="round"/>';
-      break;
-    case "check":
-      s = '<circle cx="0" cy="0" r="52" fill="none" stroke="'+c+'" stroke-width="8"/>'+
-          '<path d="M-26 2 18 32 30-28" fill="none" stroke="'+sub+'" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>';
-      break;
-    case "refresh":
-      s = '<path d="M-44 10a44 44 0 0 1 78-28M44-10a44 44 0 0 1-78 28" fill="none" stroke="'+c+'" stroke-width="8" stroke-linecap="round"/>'+
-          '<path d="M34-46l2 28-28-6" fill="'+sub+'"/>'+
-          '<path d="M-34 46l-2-28 28 6" fill="'+sub+'"/>';
-      break;
-    case "shield-check":
-      s = '<path d="M0-58 46-38v34c0 34-22 52-46 62-24-10-46-28-46-62v-34Z" fill="none" stroke="'+c+'" stroke-width="7"/>'+
-          '<path d="M-20 0 12 26 24-20" fill="none" stroke="'+sub+'" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>';
-      break;
-    case "file-text":
-      s = '<path d="M-34-58h40l28 28v88h-68Z" fill="none" stroke="'+c+'" stroke-width="7" stroke-linejoin="round"/>'+
-          '<path d="M6-58v28h28" fill="none" stroke="'+sub+'" stroke-width="7"/>'+
-          '<path d="M-18 6h36M-18 26h36" stroke="'+c+'" stroke-width="7" stroke-linecap="round"/>';
-      break;
-    case "grid":
-      s = '<g fill="'+c+'"><rect x="-48" y="-48" width="28" height="28"/><rect x="-14" y="-48" width="28" height="28"/><rect x="20" y="-48" width="28" height="28"/>'+
-          '<rect x="-48" y="-14" width="28" height="28"/><rect x="-14" y="-14" width="28" height="28" fill="'+sub+'"/><rect x="20" y="-14" width="28" height="28"/>'+
-          '<rect x="-48" y="20" width="28" height="28"/><rect x="-14" y="20" width="28" height="28"/><rect x="20" y="20" width="28" height="28"/></g>';
-      break;
-    case "bar-chart":
-      s = '<rect x="-48" y="0" width="24" height="56" fill="'+c+'"/><rect x="-12" y="-32" width="24" height="88" fill="'+sub+'"/><rect x="24" y="-56" width="24" height="112" fill="'+c+'"/>';
-      break;
-    case "calculator":
-      s = '<rect x="-38" y="-58" width="76" height="116" rx="8" fill="none" stroke="'+c+'" stroke-width="7"/>'+
-          '<rect x="-22" y="-42" width="44" height="22" fill="'+sub+'"/>'+
-          '<g fill="'+c+'"><circle cx="-18" cy="2" r="7"/><circle cx="0" cy="2" r="7"/><circle cx="18" cy="2" r="7"/><circle cx="-18" cy="24" r="7"/><circle cx="0" cy="24" r="7"/><circle cx="18" cy="24" r="7"/></g>';
-      break;
-    case "info":
-      s = '<circle cx="0" cy="0" r="50" fill="none" stroke="'+c+'" stroke-width="8"/>'+
-          '<circle cx="0" cy="-22" r="7" fill="'+sub+'"/><path d="M0-6v34" stroke="'+sub+'" stroke-width="9" stroke-linecap="round"/>';
-      break;
-    case "package":
-      s = '<path d="M0-50 48-22v48L0 52-48 26v-48Z" fill="none" stroke="'+c+'" stroke-width="7" stroke-linejoin="round"/>'+
-          '<path d="M-48-22 0 6 48-22M0 6v46" fill="none" stroke="'+sub+'" stroke-width="7"/>';
-      break;
-    case "edit":
-      s = '<path d="M-40 40 -8 32 36-34 14-52Z" fill="none" stroke="'+c+'" stroke-width="7" stroke-linejoin="round"/>'+
-          '<path d="M6-44l20 16" stroke="'+sub+'" stroke-width="7"/><path d="M-46 52h58" stroke="'+c+'" stroke-width="7" stroke-linecap="round"/>';
-      break;
-    default:
-      s = '<path d="M0-52 44 0 0 52-44 0Z" fill="none" stroke="'+c+'" stroke-width="7"/><circle cx="0" cy="0" r="14" fill="'+sub+'"/>';
-  }
-  return s;
-}
+    // Render Tools Home
+    const toolsEl = document.getElementById("toolsHomeGrid");
+    if (toolsEl && typeof TOOLS !== "undefined") {
+        const list = TOOLS.slice(0, 7);
+        toolsEl.innerHTML = list.map(t => {
+            const iconHTML = (window.Icons) ? Icons.build(t.icon, "", 26) : "";
+            return '<a href="' + t.url + '" class="tool-card">' + (t.img ? '<div class="tool-card-media"><img src="' + t.img + '" alt="" loading="lazy"></div>' : '') + '<div class="tool-card-head"><div class="cat-icon">' + iconHTML + '</div><div><h3>' + t.name + '</h3><span class="tool-name-en">' + t.nameEn + '</span></div></div><p>' + t.desc + '</p><div class="tool-card-footer"><span class="tool-tag">' + catName(t.category) + '</span><span style="color: var(--theme-color); font-weight: 800; font-size: 13px;">فتح ←</span></div></a>';
+        }).join("");
+    }
 
-function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+    // Render Encyclopedia Home
+    const encEl = document.getElementById("encHomeGrid");
+    if (encEl && typeof ENCYCLOPEDIA !== "undefined") {
+        const list = ENCYCLOPEDIA.slice(0, 3);
+        encEl.innerHTML = list.map(cat => {
+            const iconHTML = (window.Icons) ? Icons.build(cat.icon, "", 26) : "";
+            return '<a href="topic.html?cat=' + cat.id + '" class="tool-card"><div class="tool-card-head"><div class="cat-icon">' + iconHTML + '</div><div><h3>' + cat.name + '</h3><span class="tool-name-en">' + cat.nameEn + '</span></div></div><p>' + cat.desc + '</p><div class="tool-card-footer"><span class="tool-tag">' + (cat.topics ? cat.topics.length : 0) + ' موضوع</span><span style="color: var(--theme-color); font-weight: 800; font-size: 13px;">فتح ←</span></div></a>';
+        }).join("");
+    }
 
-function titleLines(name){
-  if (name.length <= 16) return [name];
-  var words = name.split(" "), a = "", b = "";
-  words.forEach(function(w){ if ((a+" "+w).trim().length <= Math.ceil(name.length/2)) a = (a+" "+w).trim(); else b = (b+" "+w).trim(); });
-  if (!b) return [name];
-  return [a, b];
-}
+    if (typeof renderCalculators === "function") renderCalculators("calcGrid");
 
-/* cover 474x900 */
-function coverArt(t, i){
-  var p = PAL[i % PAL.length];
-  var lines = titleLines(t.name);
-  var fs = t.name.length <= 14 ? 46 : (t.name.length <= 24 ? 38 : 31);
-  var ty = 150, tspans = lines.map(function(l, k){ return '<tspan x="237" dy="'+(k===0?0:fs*1.3)+'">'+esc(l)+'</tspan>'; }).join("");
-  var num = String(i+1).padStart(2,"0");
-  return '<rect width="474" height="900" fill="'+p.bg+'"/>'+
-    '<rect x="14" y="14" width="446" height="872" fill="none" stroke="#141414" stroke-opacity=".85" stroke-width="1.5"/>'+
-    '<rect x="20" y="20" width="434" height="860" fill="none" stroke="#141414" stroke-opacity=".3" stroke-width="1"/>'+
-    '<text x="237" y="62" text-anchor="middle" font-family="Inter Tight,sans-serif" font-weight="600" font-size="14" letter-spacing=".32em" fill="'+p.main+'">HIILAL ENGINEERING</text>'+
-    '<text x="237" y="'+ty+'" text-anchor="middle" font-family="Tajawal,sans-serif" font-weight="800" font-size="'+fs+'" fill="#141414">'+tspans+'</text>'+
-    ((window.toolPhotos && window.toolPhotos[t.id]) ?
-      '<image href="'+window.toolPhotos[t.id]+'" x="42" y="238" width="390" height="520" preserveAspectRatio="xMidYMid slice"/>'+
-      '<rect x="42" y="238" width="390" height="520" fill="none" stroke="#141414" stroke-opacity=".85" stroke-width="1.5"/>' :
-      '<g transform="translate(237,408)">'+window.toolScene(t.id, p.main, p.sub)+'</g>')+
-    '<text x="42" y="868" font-family="Inter Tight,sans-serif" font-weight="800" font-size="118" fill="'+p.main+'" opacity=".12">'+num+'</text>'+
-    '<text x="237" y="788" text-anchor="middle" font-family="Tajawal,sans-serif" font-weight="500" font-size="16" fill="#6D6A63">أداة مجانية</text>'+
-    '<rect x="187" y="806" width="100" height="40" fill="none" stroke="#141414" stroke-width="1.5"/>'+
-    '<text x="237" y="833" text-anchor="middle" font-family="Inter Tight,sans-serif" font-weight="600" font-size="15" letter-spacing=".2em" fill="#141414">HIILAL</text>';
-}
+    document.querySelectorAll("[data-icon]").forEach(el => {
+        const name = el.getAttribute("data-icon");
+        if (window.Icons && Icons.build) el.innerHTML = Icons.build(name, "", 26);
+    });
 
-/* spine 189x1089 */
-function spineArt(t, i){
-  var p = PAL[i % PAL.length];
-  var len = t.name.length;
-  var fs = len <= 12 ? 34 : (len <= 20 ? 27 : 21);
-  return '<rect width="189" height="1089" fill="'+p.main+'"/>'+
-    '<rect x="8" y="8" width="173" height="1073" fill="none" stroke="'+p.bg+'" stroke-opacity=".35" stroke-width="1"/>'+
-    '<g transform="translate(94.5,112) scale(.42)">'+motif(t.icon, p.bg, p.sub)+'</g>'+
-    '<text x="94.5" y="252" text-anchor="middle" writing-mode="vertical-rl" font-family="Tajawal,sans-serif" font-weight="800" font-size="'+fs+'" fill="'+p.bg+'">'+esc(t.name)+'</text>'+
-    '<text x="94.5" y="992" text-anchor="middle" font-family="Tajawal,sans-serif" font-weight="700" font-size="19" fill="'+p.bg+'">هلال</text>'+
-    '<rect x="55" y="1012" width="80" height="34" fill="none" stroke="'+p.bg+'" stroke-width="1.5"/>'+
-    '<text x="95" y="1035" text-anchor="middle" font-family="Tajawal,sans-serif" font-weight="700" font-size="14" fill="'+p.bg+'">أداة</text>';
-}
+    const searchInput = document.getElementById("globalSearch");
+    if (searchInput) {
+        searchInput.addEventListener("keypress", e => {
+            if (e.key === "Enter") {
+                const q = searchInput.value.trim();
+                if (q) window.location.href = "tools.html?search=" + encodeURIComponent(q);
+            }
+        });
+    }
 
-/* ===== shelf engine (template arc geometry, generalized to N tools) ===== */
-var stage = document.getElementById("stage");
-var shelf = document.getElementById("shelf");
-var probe = document.createElement("div");
-probe.style.cssText = "position:absolute;visibility:hidden;height:var(--H);width:0";
-document.body.appendChild(probe);
-
-function measureH(){
-  var h = probe.offsetHeight;
-  if (!h) {
-    var phone = window.innerWidth <= 767;
-    h = phone ? Math.min(window.innerWidth*.68, window.innerHeight*.40) : Math.min(window.innerHeight*.47, window.innerWidth*.33);
-  }
-  return h;
-}
-
-var H = measureH(), W = window.innerWidth, VH = window.innerHeight;
-var ws, d, gap, U, P = 1400, XS = [], cy;
-function dims(){
-  H = measureH(); W = window.innerWidth; VH = window.innerHeight;
-  ws = H*142/840; d = H*474/900; gap = H*.035;
-  U = H * (W < 768 ? 1.05 : 1.3);
-  cy = VH * (W < 768 ? .43 : .41);
-  XS = [0];
-  for (var u = 2; u <= 3*U; u += 2) XS.push(XS[XS.length-1] + 2/(1+Math.pow(u/U,1.6)));
-}
-dims();
-
-function scl(u){ return 1/(1+Math.pow(Math.abs(u)/U,1.6)); }
-function xsc(u){ var i = Math.min(XS.length-1, Math.round(Math.abs(u)/2)); return Math.sign(u)*XS[i]; }
-function B(r){ if (Math.abs(r) < 1) return (r + Math.sin(Math.PI*r)/Math.PI)/2; return r < 0 ? -.5 : .5; }
-function F(r){ return r*(ws+gap) + (d - ws + 1.4*gap)*B(r); }
-function rel(v, s){ var r = ((v - s) % TOTAL + TOTAL) % TOTAL; if (r >= TOTAL/2) r -= TOTAL; return r; }
-function smooth(x){ x = Math.max(0, Math.min(1, x)); return x*x*(3-2*x); }
-
-/* build tapes */
-var tapes = [];
-for (var v = 0; v < TOTAL; v++){
-  (function(v){
-    var i = v % N, t = TOOLS[i];
-    var el = document.createElement("div");
-    el.className = "tape";
-    el.setAttribute("data-v", v);
-    var sp = document.createElement("div");
-    sp.className = "face sp";
-    sp.innerHTML = '<svg viewBox="0 0 189 1089" preserveAspectRatio="none">'+spineArt(t, i)+'</svg>';
-    var cv = document.createElement("div");
-    cv.className = "face cv";
-    cv.innerHTML = '<svg viewBox="0 0 474 900" preserveAspectRatio="none">'+coverArt(t, i)+'</svg>';
-    el.appendChild(sp); el.appendChild(cv);
-    stage.appendChild(el);
-    tapes.push({v:v, el:el, sp:sp, cv:cv, lift:0, liftT:0, sx:W/2, sy:cy, sw:ws});
-  })(v);
-}
-function sizeFaces(){
-  tapes.forEach(function(tp){
-    tp.sp.style.width = ws+"px"; tp.sp.style.height = H+"px";
-    tp.sp.style.transform = "translateX(-50%) translateZ("+(d/2)+"px)";
-    tp.cv.style.width = d+"px"; tp.cv.style.height = H+"px";
-    tp.cv.style.left = (-d/2)+"px";
-    tp.cv.style.transform = "rotateY(90deg) translateZ("+(ws/2)+"px)";
-  });
-}
-sizeFaces();
-
-/* timeline ticks */
-var tlTicks = document.getElementById("tlTicks");
-var tlHtml = "";
-for (var ti = 0; ti < N; ti++){
-  var pos = (1 - ti/(N-1))*100;
-  var major = ti % 2 === 0 || ti === N-1;
-  tlHtml += '<span class="tl-tick '+(major?"major":"minor")+'" style="right:'+pos+'%"></span>';
-  if (major) tlHtml += '<span class="tl-lab'+(ti%6!==0?" hide-m":"")+'" style="right:'+pos+'%">'+String(ti+1).padStart(2,"0")+'</span>';
-}
-tlTicks.innerHTML = tlHtml;
-document.getElementById("timeline").setAttribute("aria-valuemax", N);
-
-/* state */
-var s = N, T = N;         /* open on tool index 0 */
-var tiltX = 0, tiltY = 0, mx = W/2, my = VH/2;
-var curX = W/2, curY = VH/2;
-var detailOpen = false;
-var dragging = false, dragged = false, dragX0 = 0, T0 = 0;
-var activeIdx = -1, dispIdx = 0;
-var hovered = null;
-
-var capTitle = document.getElementById("capTitle"), capSub = document.getElementById("capSub"), capMeta = document.getElementById("capMeta");
-var capTitleMask = document.getElementById("capTitleMask"), capSubMask = document.getElementById("capSubMask"), capMetaMask = document.getElementById("capMetaMask");
-var tlDot = document.getElementById("tlDot"), playRing = document.getElementById("playRing");
-var cursor = document.getElementById("cursor");
-var timeline = document.getElementById("timeline");
-
-function metaOf(t){
-  var cat = CATS[t.category] || t.category;
-  return cat + " — " + toolType(t);
-}
-function setCaption(i, dir){
-  var t = TOOLS[i];
-  swap(capTitleMask, capTitle, t.name, dir);
-  swap(capSubMask, capSub, (t.nameEn||"").toUpperCase(), dir);
-  swap(capMetaMask, capMeta, metaOf(t), dir);
-  timeline.setAttribute("aria-valuenow", i+1);
-}
-function swap(mask, oldSpan, text, dir){
-  if (RM || !oldSpan.animate) { oldSpan.textContent = text; return; }
-  var ns = oldSpan.cloneNode(false);
-  ns.textContent = text;
-  mask.appendChild(ns);
-  ns.animate([{transform:"translateY("+(dir*105)+"%)"},{transform:"translateY(0)"}], {duration:650, easing:"cubic-bezier(.2,.8,.2,1)", fill:"both"});
-  oldSpan.animate([{transform:"translateY(0)"},{transform:"translateY("+(-dir*105)+"%)"}], {duration:650, easing:"cubic-bezier(.2,.8,.2,1)", fill:"both"}).onfinish = function(){ oldSpan.remove(); };
-  if (mask === capTitleMask) capTitle = ns; else if (mask === capSubMask) capSub = ns; else capMeta = ns;
-}
-setCaption(0, 1);
-
-/* main loop */
-var last = performance.now();
-function frame(now){
-  var dt = Math.min(50, now - last)/1000; last = now;
-  if (RM) { s = T; } else {
-    var k = dragging ? 18 : 5.2;
-    s += (T - s)*(1 - Math.exp(-k*dt));
-  }
-  while (s >= N*3 + N/2) { s -= TOTAL; T -= TOTAL; }
-  while (s < N/2) { s += TOTAL; T += TOTAL; }
-
-  var settled = Math.abs(T - s) < .3;
-  var onCover = Math.abs(mx - W/2) < .55*d && Math.abs(my - cy) < .55*H && settled && !detailOpen;
-  var tYt = onCover ? (mx - W/2)/(.55*d)*8 : (mx - W/2)/W*4;
-  var tXt = onCover ? -(my - cy)/(H/2)*5 : 0;
-  if (RM) { tiltY = tYt; tiltX = tXt; } else {
-    tiltY += (tYt - tiltY)*(1 - Math.exp(-7*dt));
-    tiltX += (tXt - tiltX)*(1 - Math.exp(-7*dt));
-  }
-
-  for (var q = 0; q < TOTAL; q++){
-    var tp = tapes[q];
-    var r = rel(tp.v, s);
-    var o = smooth(Math.max(0, 1 - Math.abs(r)));
-    var u = F(r);
-    if (Math.abs(u) > U*1.95) { tp.el.style.display = "none"; continue; }
-    tp.el.style.display = "";
-    if (hovered === tp && Math.abs(r) > .5) tp.liftT = 1; else tp.liftT = 0;
-    if (RM) tp.lift = tp.liftT; else tp.lift += (tp.liftT - tp.lift)*(1 - Math.exp(-12*dt));
-    var sc = scl(u), kk = 1/sc;
-    var z = P*(1-kk) + o*H*.1;
-    var x = xsc(u)*kk;
-    var y = (H*.5*(1-sc)*.42 + o*H*.012 - tp.lift*H*.05)*kk;
-    var ry = Math.sign(u)*Math.min(1, Math.abs(u)/U)*26*(1-o) - 90*o + tiltY*o;
-    var rx = tiltX*o;
-    tp.el.style.transform = "translate3d("+x.toFixed(2)+"px,"+y.toFixed(2)+"px,"+z.toFixed(2)+"px) rotateX("+rx.toFixed(2)+"deg) rotateY("+ry.toFixed(2)+"deg)";
-    tp.el.style.zIndex = Math.round(3000+z);
-    tp.sx = W/2 + x; tp.sy = cy + y; tp.sw = (Math.abs(r) < .5 ? d : ws) * sc;
-    tp.sp.style.setProperty("--shade", Math.min(.6, o*.55 + (1-sc)*.32).toFixed(3));
-    tp.cv.style.setProperty("--shade", ((1-o)*.82).toFixed(3));
-  }
-
-  var ai = ((Math.round(s) % N) + N) % N;
-  if (ai !== activeIdx){
-    var dir = Math.sign(T - s) || 1;
-    activeIdx = ai;
-    setCaption(ai, dir);
-  }
-
-  var v0 = Math.floor(s), fr = s - v0;
-  var i0 = ((v0 % N) + N) % N, i1 = (((v0+1) % N) + N) % N;
-  var idxT = (i1 < i0) ? (fr < .5 ? i0 : i1) : i0 + (i1 - i0)*fr;
-  if (RM || Math.abs(idxT - dispIdx) > N/2) dispIdx = idxT;
-  else dispIdx += (idxT - dispIdx)*(1 - Math.exp(-14*dt));
-  tlDot.style.right = (dispIdx/(N-1)*100) + "%";
-
-  var pr = detailOpen ? 0 : smooth(Math.max(0, 1 - Math.abs(T - s)*3));
-  playRing.style.left = (W/2 - d/2 - 6) + "px";
-  playRing.style.top = (cy + .36*H) + "px";
-  playRing.style.transform = "translate(-50%,-50%) scale(" + pr.toFixed(3) + ")";
-
-  curX += (mx - curX)*(1 - Math.exp(-16*dt));
-  curY += (my - curY)*(1 - Math.exp(-16*dt));
-  cursor.style.transform = "translate("+(curX-29)+"px,"+(curY-29)+"px)";
-  cursor.classList.toggle("open", onCover);
-
-  requestAnimationFrame(frame);
-}
-requestAnimationFrame(frame);
-
-window.addEventListener("resize", function(){ dims(); sizeFaces(); });
-/* ===== inputs ===== */
-function snap(){ T = Math.round(T); }
-document.getElementById("nextBtn").addEventListener("click", function(){ T = Math.round(T) + 1; });
-document.getElementById("prevBtn").addEventListener("click", function(){ T = Math.round(T) - 1; });
-
-window.addEventListener("keydown", function(e){
-  if (e.key === "Escape" && detailOpen) { closeDetail(); return; }
-  if (detailOpen) return;
-  if (e.key === "ArrowLeft") T = Math.round(T) + 1;
-  else if (e.key === "ArrowRight") T = Math.round(T) - 1;
-  else if (e.key === "Enter") openDetail();
+    setTimeout(() => { if (window.Icons && Icons.replaceAll) Icons.replaceAll(document); }, 500);
+    setTimeout(() => { if (window.Icons && Icons.replaceAll) Icons.replaceAll(document); }, 1500);
 });
-
-var captured = false;
-shelf.addEventListener("pointerdown", function(e){
-  dragging = true; dragged = false; captured = false; dragX0 = e.clientX; T0 = T;
-});
-shelf.addEventListener("pointermove", function(e){
-  mx = e.clientX; my = e.clientY;
-  if (!dragging) return;
-  var dx = e.clientX - dragX0;
-  if (Math.abs(dx) > 5) {
-    if (!captured && shelf.setPointerCapture) { try { shelf.setPointerCapture(e.pointerId); captured = true; } catch(_){} }
-    dragged = true; T = T0 - dx/(ws+gap);
-  }
-});
-shelf.addEventListener("pointerup", function(e){
-  dragging = false;
-  if (captured && shelf.releasePointerCapture) { try { shelf.releasePointerCapture(e.pointerId); } catch(_){} captured = false; }
-  if (dragged) { snap(); setTimeout(function(){ dragged = false; }, 50); }
-});
-shelf.addEventListener("pointercancel", function(){ dragging = false; snap(); });
-
-window.addEventListener("pointermove", function(e){ mx = e.clientX; my = e.clientY; });
-
-function pickTape(x, y){
-  var best = null, bd = 1e9;
-  for (var q = 0; q < TOTAL; q++){
-    var tp = tapes[q];
-    if (tp.el.style.display === "none") continue;
-    var dx = Math.abs(x - tp.sx), dy = Math.abs(y - tp.sy);
-    if (dx < Math.max(tp.sw/2 + 6, 14) && dy < H*.6 && dx < bd) { bd = dx; best = tp; }
-  }
-  return best;
-}
-
-shelf.addEventListener("click", function(e){
-  if (dragged || detailOpen) return;
-  var x = e.clientX, y = e.clientY;
-  var settled = Math.abs(T - s) < .3;
-  if (settled && Math.abs(x - W/2) < .55*d && Math.abs(y - cy) < .55*H) { openDetail(); return; }
-  var tp = pickTape(x, y);
-  if (!tp) return;
-  var r = rel(tp.v, s);
-  if (Math.abs(r) < .5) { if (settled) openDetail(); }
-  else T = Math.round(T + r);
-});
-
-shelf.addEventListener("pointermove", function(e){
-  if (dragging || detailOpen) { hovered = null; cursor.classList.remove("spine"); return; }
-  var tp = pickTape(e.clientX, e.clientY);
-  hovered = (tp && Math.abs(rel(tp.v, s)) > .5) ? tp : null;
-  cursor.classList.toggle("spine", !!hovered);
-});
-shelf.addEventListener("pointerout", function(){ hovered = null; cursor.classList.remove("spine"); });
-
-document.querySelectorAll("a,button,.timeline").forEach(function(el){
-  el.addEventListener("pointerover", function(){ cursor.classList.add("btn"); });
-  el.addEventListener("pointerout", function(){ cursor.classList.remove("btn"); });
-});
-
-var wheelT = null;
-window.addEventListener("wheel", function(e){
-  if (detailOpen) return;
-  var dlt = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-  T += dlt/(ws+gap)*.5;
-  clearTimeout(wheelT);
-  wheelT = setTimeout(snap, 160);
-}, {passive:true});
-
-timeline.addEventListener("click", function(e){
-  if (detailOpen) return;
-  var rect = timeline.getBoundingClientRect();
-  var f = 1 - (e.clientX - rect.left)/rect.width;
-  var idx = Math.round(Math.max(0, Math.min(1, f))*(N-1));
-  T = idx + N*Math.round((T - idx)/N);
-});
-
-/* ===== detail sheet ===== */
-var detail = document.getElementById("detail");
-var detOpenBtn = document.getElementById("detOpen");
-var CIRCLES = [[150,330,0],[340,600,120],[250,120,220],[90,760,300],[400,250,360],[260,860,420],[230,470,180]];
-
-function posterSVG(i){
-  var t = TOOLS[i];
-  var cs = CIRCLES.map(function(c, k){
-    return '<circle class="inkc" cx="'+c[0]+'" cy="'+c[1]+'" r="0" data-delay="'+c[2]+'" fill="#fff"/>';
-  }).join("");
-  return '<svg viewBox="0 0 474 900" role="img" aria-label="'+esc(t.name)+'">'+
-    '<defs><filter id="inkf" x="-20%" y="-20%" width="140%" height="140%">'+
-    '<feTurbulence type="fractalNoise" baseFrequency=".011" numOctaves="3" seed="7" result="n"/>'+
-    '<feDisplacementMap in="SourceGraphic" in2="n" scale="120" xChannelSelector="R" yChannelSelector="G"/>'+
-    '</filter>'+
-    '<mask id="inkm"><g filter="url(#inkf)">'+cs+'</g></mask></defs>'+
-    '<g mask="url(#inkm)">'+coverArt(t, i)+'</g></svg>';
-}
-
-function coverRect(){
-  var r = rel(activeIdx + N, s); /* copy 1 is the active one nearest centre */
-  var best = null, bd = 1e9;
-  for (var c = 0; c < 3; c++){
-    var v = activeIdx + c*N;
-    var rr = rel(v, s);
-    if (Math.abs(rr) < bd) { bd = Math.abs(rr); best = tapes[v]; }
-  }
-  return best.cv.getBoundingClientRect();
-}
-
-function openDetail(){
-  if (detailOpen) return;
-  detailOpen = true;
-  snap();
-  var i = activeIdx < 0 ? 0 : activeIdx;
-  var t = TOOLS[i];
-  document.getElementById("detSub").textContent = (CATS[t.category]||"") ;
-  document.getElementById("detTitle").textContent = t.name;
-  document.getElementById("detMeta").textContent = metaOf(t) + " / " + (t.nameEn||"").toUpperCase() + " / مجانية";
-  document.getElementById("detDesc").textContent = t.desc;
-  detOpenBtn.href = t.url;
-  if (/^https?:/.test(t.url)) { detOpenBtn.target = "_blank"; detOpenBtn.rel = "noopener"; }
-  else { detOpenBtn.removeAttribute("target"); detOpenBtn.removeAttribute("rel"); }
-  document.getElementById("detPoster").innerHTML = posterSVG(i);
-
-  detail.classList.add("show");
-  var cr = coverRect();
-  if (!detail.animate) return;
-  var dur = RM ? 1 : 1050;
-  detail.animate([
-    {clipPath:"inset("+cr.top+"px "+(W-cr.right)+"px "+(VH-cr.bottom)+"px "+cr.left+"px round 3px)"},
-    {clipPath:"inset(0 0 0 0 round 0)"}
-  ], {duration:dur, easing:"cubic-bezier(.76,0,.18,1)", fill:"both"});
-
-  var spans = detail.querySelectorAll(".det-mask > span");
-  spans.forEach(function(sp, k){
-    sp.animate([{transform:"translateY(110%)"},{transform:"translateY(0)"}],
-      {duration: RM?1:900, delay: RM?0:620+k*75, easing:"cubic-bezier(.2,.8,.2,1)", fill:"both"});
-  });
-  detail.querySelectorAll(".inkc").forEach(function(c){
-    var dl = parseInt(c.getAttribute("data-delay"), 10);
-    c.animate([{r:0},{r:720}], {duration: RM?1:1250, delay: RM?0:520+dl, easing:"cubic-bezier(0,0,.2,1)", fill:"both"});
-  });
-  document.getElementById("detClose").focus();
-}
-
-function closeDetail(){
-  if (!detailOpen) return;
-  var cr = coverRect();
-  if (!detail.animate) { detail.classList.remove("show"); detailOpen = false; return; }
-  var anim = detail.animate([
-    {clipPath:"inset(0 0 0 0 round 0)"},
-    {clipPath:"inset("+cr.top+"px "+(W-cr.right)+"px "+(VH-cr.bottom)+"px "+cr.left+"px round 3px)"}
-  ], {duration: RM?1:850, easing:"cubic-bezier(.76,0,.18,1)", fill:"both"});
-  anim.onfinish = function(){
-    detail.classList.remove("show");
-    detailOpen = false;
-    if (detail.getAnimations) detail.getAnimations().forEach(function(a){ a.cancel(); });
-    detail.querySelectorAll(".inkc, .det-mask > span").forEach(function(el){ el.getAnimations().forEach(function(a){ a.cancel(); }); });
-  };
-}
-document.getElementById("detClose").addEventListener("click", closeDetail);
-document.getElementById("detPoster").addEventListener("click", function(){
-  var u = detOpenBtn.getAttribute("href");
-  if (!u || u === "#") return;
-  if (/^https?:/.test(u)) window.open(u, "_blank", "noopener");
-  else window.location.href = u;
-});
-detOpenBtn.addEventListener("click", function(){ setTimeout(closeDetail, 60); });
-playRing.addEventListener("click", function(){});
-})();
 </script>
+
 </body>
 </html>

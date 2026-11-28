@@ -110,6 +110,7 @@ function renderToolsHome(containerId, limit = 3) {
         const iconHTML = (window.Icons) ? Icons.build(t.icon, "", 26) : "";
         return `
             <a href="${t.url}" class="tool-card">
+                ${t.img ? `<div class="tool-card-media"><img src="${t.img}" alt="" loading="lazy"></div>` : ""}
                 <div class="tool-card-head">
                     <div class="cat-icon">${iconHTML}</div>
                     <div>

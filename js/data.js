@@ -1347,6 +1347,9 @@ const CONTENT = [
    Expose to window
 ======================================== */
 window.CATEGORIES = CATEGORIES;
+/* أغلفة الأدوات: كل أداة لها صورة واقعية في assets/covers/<id>.webp (نفس صور بطاقات الأرشيف) */
+TOOLS.forEach(function(t){ t.img = "assets/covers/" + t.id + ".webp"; });
+
 window.TOOLS = TOOLS;
 window.CALCULATORS = CALCULATORS;
 window.ENCYCLOPEDIA = ENCYCLOPEDIA;

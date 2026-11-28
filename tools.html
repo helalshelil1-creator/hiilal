@@ -540,6 +540,7 @@
         return `
             <a href="${tool.url}" class="tool-card">
                 ${badgeHTML}
+                ${tool.img ? `<div class="tool-card-media"><img src="${tool.img}" alt="" loading="lazy"></div>` : ""}
                 <div class="fav-badge ${isFav ? 'active' : ''}" onclick="event.preventDefault(); event.stopPropagation(); toggleFav(this, 'tool:${tool.id}');">
                     ${favIconHTML}
                 </div>
