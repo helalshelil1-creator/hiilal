@@ -45,6 +45,16 @@ const TOOLS = [
         badge: "NEW"
     },
     {
+        id: "distribution-tools",
+        name: "أدوات التوزيع",
+        nameEn: "Distribution Tools",
+        category: "design",
+        icon: "layers",
+        desc: "كل ملفات دورة ودبلومة التوزيع — 18 محاضرة بالترتيب، مخططات SLD، جداول لوحات، حساب سعة المولد، حصر BOQ، وقواعد التصميم.",
+        url: "tools/distribution.html",
+        badge: "NEW"
+    },
+    {
         id: "control-circuit-simulator",
         name: "محاكي دوائر الكنترول — المجاني",
         nameEn: "Control Circuit Simulator (Ours)",

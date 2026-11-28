@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script>(function(){try{var k="hilal_visit_theme",n=performance.getEntriesByType("navigation")[0],ok=false;if(n&&n.type!=="reload"&&document.referrer&&new URL(document.referrer).origin===location.origin)ok=true;if(!ok)sessionStorage.removeItem(k);window.__hilalTheme=sessionStorage.getItem(k)||"dark"}catch(e){window.__hilalTheme="dark"}if(window.__hilalTheme==="dark")document.documentElement.setAttribute("data-theme","dark")})()</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>أدوات التوزيع — ملفات دورة ودبلومة التوزيع | هلال شليل</title>
+<script src="../js/seo-data.js"></script>
+<script src="../js/seo.js"></script>
+<meta name="theme-color" content="#06b6d4">
+<link rel="manifest" href="../manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="icon" type="image/x-icon" href="../favicon.ico">
+<link rel="icon" type="image/png" href="../images/logo.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.dt-wrap{max-width:1100px;margin:26px auto;padding:0 4%;}
+.dt-back{display:inline-flex;align-items:center;gap:8px;color:var(--cyan);font-weight:700;font-size:13px;text-decoration:none;margin-bottom:18px;}
+.dt-head{position:relative;text-align:center;margin-bottom:22px;padding:34px 22px;background:linear-gradient(135deg,#0a1628,#1e4976);color:#fff;border-radius:24px;overflow:hidden;}
+.dt-head::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 30% 15%,rgba(0,217,255,.25),transparent 62%);pointer-events:none;}
+.dt-head-icon{position:relative;width:76px;height:76px;margin:0 auto 14px;background:rgba(255,255,255,.12);border:2px solid rgba(0,217,255,.45);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:36px;}
+.dt-head h1{position:relative;font-size:clamp(22px,5vw,30px);font-weight:900;margin:0 0 8px;}
+.dt-head p{position:relative;color:#b8d9e2;font-size:14px;line-height:1.8;margin:0 auto;max-width:52ch;}
+.dt-stats{position:relative;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:18px;}
+.dt-stat{background:rgba(255,255,255,.1);border:1px solid rgba(0,217,255,.3);border-radius:14px;padding:9px 16px;font-size:12.5px;font-weight:700;color:#dff6ff;}
+.dt-stat b{display:block;font-size:19px;font-weight:900;color:#fff;font-family:'JetBrains Mono',monospace;}
+.dt-sec{margin:30px 0;}
+.dt-sec-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+.dt-sec-head h2{font-size:18px;font-weight:900;color:var(--navy);margin:0;display:flex;align-items:center;gap:10px;}
+[data-theme="dark"] .dt-sec-head h2{color:var(--aqua,#7ff0ff);}
+.dt-sec-head .dt-count{font-size:12px;font-weight:800;color:var(--text-2);background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:4px 12px;}
+.dt-search{width:100%;padding:13px 16px;border-radius:14px;border:2px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;font-size:14px;outline:none;margin-bottom:16px;}
+.dt-search:focus{border-color:var(--cyan);}
+.dt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;}
+.dt-file{display:flex;flex-direction:column;gap:8px;background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:16px;text-decoration:none;color:var(--text);transition:.18s;}
+.dt-file:hover{border-color:var(--cyan);transform:translateY(-2px);}
+.dt-file-top{display:flex;align-items:center;gap:10px;}
+.dt-badge{flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:8px;background:rgba(0,217,255,.14);color:var(--cyan);border:1px solid rgba(0,217,255,.35);}
+.dt-badge.xlsx{background:rgba(34,197,94,.14);color:#22c55e;border-color:rgba(34,197,94,.35);}
+.dt-badge.docx{background:rgba(59,130,246,.14);color:#3b82f6;border-color:rgba(59,130,246,.35);}
+.dt-file h3{font-size:14px;font-weight:800;margin:0;line-height:1.5;}
+.dt-file p{font-size:12px;color:var(--text-2);margin:0;line-height:1.7;}
+.dt-file-foot{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--text-2);font-weight:700;margin-top:auto;padding-top:6px;border-top:1px dashed var(--border);}
+.dt-file-foot .open{color:var(--cyan);font-weight:900;}
+.dt-lecs{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px;}
+.dt-lec{background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:14px 16px;}
+.dt-lec-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;}
+.dt-lec-num{font-family:'JetBrains Mono',monospace;font-weight:900;font-size:15px;color:var(--navy);background:var(--grad-theme);border-radius:10px;padding:4px 11px;}
+[data-theme="dark"] .dt-lec-num{color:#06202b;}
+.dt-lec-head a{font-size:12.5px;font-weight:800;color:var(--cyan);text-decoration:none;white-space:nowrap;}
+.dt-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.dt-chip{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:999px;background:rgba(0,217,255,.08);border:1px solid var(--border);color:var(--text);text-decoration:none;}
+.dt-chip:hover{border-color:var(--cyan);color:var(--cyan);}
+.dt-empty{font-size:11.5px;color:var(--text-2);}
+.dt-book{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:linear-gradient(135deg,rgba(0,217,255,.12),rgba(0,217,255,.03));border:2px solid var(--cyan);border-radius:20px;padding:20px 22px;}
+.dt-book-icon{font-size:40px;line-height:1;}
+.dt-book div{flex:1;min-width:200px;}
+.dt-book h3{margin:0 0 4px;font-size:16px;font-weight:900;color:var(--navy);}
+[data-theme="dark"] .dt-book h3{color:var(--aqua,#7ff0ff);}
+.dt-book p{margin:0;font-size:12.5px;color:var(--text-2);line-height:1.7;}
+.dt-btn{display:inline-flex;align-items:center;gap:8px;background:var(--grad-theme);color:#06202b;font-weight:900;font-size:13.5px;padding:12px 20px;border-radius:12px;text-decoration:none;white-space:nowrap;}
+.dt-note{background:rgba(245,158,11,.1);border-inline-start:4px solid #f59e0b;border-radius:12px;padding:14px 18px;font-size:12.5px;line-height:1.9;color:var(--text);}
+.dt-note b{font-weight:900;}
+.dt-hidden{display:none !important;}
+@media(max-width:520px){.dt-grid{grid-template-columns:1fr;}.dt-lecs{grid-template-columns:1fr;}}
+</style>
+</head>
+<body data-page="distribution">
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="../index.html" class="logo">
+            <img src="../images/logo.png" alt="Logo" class="logo-img">
+            <div class="logo-text">منصة هندسية شخصية</div>
+        </a>
+        <div class="nav-links">
+            <a href="../index.html">الرئيسية</a>
+            <a href="../tools.html" class="active">الأدوات</a>
+            <a href="../calculators.html">الحاسبات</a>
+            <a href="../encyclopedia.html">الموسوعة</a>
+        </div>
+        <div class="nav-actions"></div>
+    </div>
+</nav>
+
+<div class="dt-wrap">
+    <a href="../tools.html" class="dt-back">← كل الأدوات</a>
+
+    <div class="dt-head">
+        <div class="dt-head-icon">🧰</div>
+        <h1>أدوات التوزيع</h1>
+        <p>كل ملفات دورة ودبلومة التوزيع في مكان واحد — المحاضرات من 1 إلى 18 بالترتيب، ومخططات SLD، وجداول اللوحات، وحسابات المولدات، والحصر، وقواعد التصميم.</p>
+        <div class="dt-stats">
+            <div class="dt-stat"><b>18</b>محاضرة</div>
+            <div class="dt-stat"><b id="statFiles">13</b>ملف جاهز للتحميل</div>
+            <div class="dt-stat"><b>549</b>صفحة في كتاب الدبلومة</div>
+        </div>
+    </div>
+
+    <div class="dt-sec">
+        <div class="dt-sec-head">
+            <h2>📥 الملفات الجاهزة للتحميل</h2>
+            <span class="dt-count" id="fileCount"></span>
+        </div>
+        <input type="search" id="fileSearch" class="dt-search" placeholder="ابحث في الملفات… (SLD، لوحة، BOQ، مولد)">
+        <div class="dt-grid" id="filesGrid"></div>
+    </div>
+
+    <div class="dt-sec">
+        <div class="dt-sec-head">
+            <h2>🎓 المحاضرات 1 → 18</h2>
+            <span class="dt-count">كل محاضرة بمجلدها على Drive</span>
+        </div>
+        <div class="dt-lecs" id="lecsGrid"></div>
+    </div>
+
+    <div class="dt-sec">
+        <div class="dt-book">
+            <div class="dt-book-icon">📕</div>
+            <div>
+                <h3>كتاب الدبلومة — 549 صفحة</h3>
+                <p>المرجع الكامل للدبلومة على Google Drive. الملف كبير، فالأفضل تفتحه من الكمبيوتر أو تحمّله.</p>
+            </div>
+            <a class="dt-btn" href="https://drive.google.com/file/d/18Jf3SJBnbm_aoeJAqouTu2KuXJ7TPa0e/view?usp=sharing" target="_blank" rel="noopener">فتح الكتاب ↗</a>
+        </div>
+    </div>
+
+    <div class="dt-sec">
+        <div class="dt-note">
+            <b>ملاحظة:</b> الملفات المرفوعة على الموقع جاهزة للتحميل مباشرة بضغطة واحدة. مجلدات المحاضرات وكتاب الدبلومة على Google Drive وبتفتح في تاب جديد — لو محتاج نسخة من أي ملف على الموقع نفسه، قولي وأرفعه.
+            ملف <span dir="ltr">EX601.dwg</span> موجود على Drive فقط (محاضرة 10 و18).
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+    "use strict";
+
+    var BASE = "distribution/files/";
+
+    var FILES = [
+        { t: "قواعد التصميم من الدبلومة", d: "ملخص قواعد التصميم المستخلصة من محاضرات الدبلومة.", f: "dist-rules.pdf", type: "PDF", size: "83 KB", lec: "عام" },
+        { t: "قواعد التصميم من الدبلومة (Word)", d: "نفس الملف بصيغة Word لو حبيت تعدّل عليه.", f: "dist-rules.docx", type: "DOCX", size: "40 KB", lec: "عام" },
+        { t: "جدول لوحة LP-G — محاضرة 7", d: "جدول لوحة توزيع LP-G جاهز للاستخدام.", f: "L07-panel-schedule-LP-G.xlsx", type: "XLSX", size: "24 KB", lec: "7" },
+        { t: "مخطط SLD — محاضرة 9", d: "Single Line Diagram من المحاضرة التاسعة.", f: "L09-sld.pdf", type: "PDF", size: "1.7 MB", lec: "9" },
+        { t: "مخطط SLD — محاضرة 10", d: "Single Line Diagram من المحاضرة العاشرة.", f: "L10-sld.pdf", type: "PDF", size: "1.1 MB", lec: "10" },
+        { t: "حساب حجم المولد D.G — محاضرة 10", d: "شيت حساب سعة مولد الديزل مع الأحمال.", f: "L10-dg-size-calculation.xlsx", type: "XLSX", size: "118 KB", lec: "10" },
+        { t: "مخطط SLD — محاضرة 11", d: "Single Line Diagram من المحاضرة الحادية عشرة.", f: "L11-sld.pdf", type: "PDF", size: "905 KB", lec: "11" },
+        { t: "جدول لوحة LP-G — محاضرة 13", d: "نسخة محدّثة من جدول لوحة LP-G.", f: "L13-panel-schedule-LP-G.xlsx", type: "XLSX", size: "24 KB", lec: "13" },
+        { t: "مخطط SLD — محاضرة 16", d: "Single Line Diagram من المحاضرة السادسة عشرة.", f: "L16-sld.pdf", type: "PDF", size: "235 KB", lec: "16" },
+        { t: "SLD وتخطيط تنفيذي — محاضرة 18", d: "مخطط أحادي وتخطيط As-Built لمشروع القمر الصناعي المصري.", f: "L18-sld-asbuilt.pdf", type: "PDF", size: "775 KB", lec: "18" },
+        { t: "ملف محاضرة 18", d: "ملف المحاضرة الأخيرة كامل.", f: "L18-lecture.pdf", type: "PDF", size: "181 KB", lec: "18" },
+        { t: "حصر كميات كهربائية BOQ", d: "جدول كميات كهربائي جاهز للتعبئة والتسعير.", f: "electrical-boq.xlsx", type: "XLSX", size: "132 KB", lec: "عام" },
+        { t: "قائمة موردين كهربائية", d: "قائمة موردين للمهمات الكهربائية.", f: "electrical-vendor-list.xlsx", type: "XLSX", size: "11 KB", lec: "عام" }
+    ];
+
+    var LECTURES = [
+        { n: 1, id: "1yo_RLbVA5aWfG66DjIWooLQGWazHjTWT" },
+        { n: 2, id: "1e5w5rgRuEoz1ZiaLOHSoZfcM4SV_leEd" },
+        { n: 3, id: "1VWH8esqVq66sjIhPzOXsF8BmVx4hRh44" },
+        { n: 4, id: "1j-f_tzpseuTmZTpy899rieV3Sv0vrHZU" },
+        { n: 5, id: "1Rm-GJ8e56Y5r99rp9O55HY9N7zNtzp0M" },
+        { n: 6, id: "1CapTmRHx4aOlwWlLvALnOuJj8xK6lh-p" },
+        { n: 7, id: "1c7ndRKtHSsQR8n93HNffBA2SkRh7pHn1" },
+        { n: 8, id: "1SZyo5SZK_9Fvq3YP9McROtzv5zjUZ8-Y" },
+        { n: 9, id: "1vl7r0tPkV2olXsuUI8lPQ0a_TL6CFD0E" },
+        { n: 10, id: "1VXiOGiIS8HGJdg0L-xPAP-5ODOX8wk0T", extra: "EX601.dwg على Drive" },
+        { n: 11, id: "1CfUcusMX7ET3BilF0clfIpJsq64cj-Ze" },
+        { n: 12, id: "1OlSveBqI9m6J10z6t6hJTwLtejF5BAK1" },
+        { n: 13, id: "1pHXRfyT1X7h8B--5RHT-S1lwqSvU9zhl" },
+        { n: 14, id: "15rJTK3KuS9r4IISvRaDhuJtFnxg_QD7d" },
+        { n: 15, id: "1ls7nPpHL1wV1BylVM7soOGMJmDZkR3Yn" },
+        { n: 16, id: "1i7dSrmKmhbpdahijMYw7egGG_TZynIpJ" },
+        { n: 17, id: "1sJwiKhjjbCId1hIxm6YNoDT4jQ-1QdJi" },
+        { n: 18, id: "1u1bBQTQxMK1FOCXW5Zpcl4GmHeG1DqP7", extra: "EX601.dwg على Drive" }
+    ];
+
+    function esc(s) {
+        return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+            return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+        });
+    }
+
+    function typeClass(t) {
+        var x = String(t || "").toLowerCase();
+        if (x === "xlsx" || x === "xls") return "xlsx";
+        if (x === "docx" || x === "doc") return "docx";
+        return "";
+    }
+
+    function fileCard(f) {
+        var href = BASE + f.f;
+        return '<a class="dt-file" href="' + href + '" download data-search="' + esc((f.t + " " + f.d + " " + f.f + " " + f.lec).toLowerCase()) + '">' +
+            '<div class="dt-file-top"><span class="dt-badge ' + typeClass(f.type) + '">' + esc(f.type) + '</span>' +
+            '<h3>' + esc(f.t) + '</h3></div>' +
+            '<p>' + esc(f.d) + '</p>' +
+            '<div class="dt-file-foot"><span>محاضرة ' + esc(f.lec) + ' · ' + esc(f.size) + '</span><span class="open">تحميل ↓</span></div>' +
+            '</a>';
+    }
+
+    function lecCard(l) {
+        var chips = FILES.filter(function (f) { return f.lec === String(l.n); })
+            .map(function (f) {
+                return '<a class="dt-chip" href="' + BASE + f.f + '" download>' + esc(f.type) + ' · ' + esc(f.t.replace(/ — محاضرة \d+$/, "")) + ' ↓</a>';
+            }).join("");
+        if (l.extra) chips += '<span class="dt-chip" style="opacity:.75">📎 ' + esc(l.extra) + '</span>';
+        if (!chips) chips = '<span class="dt-empty">مجلد المحاضرة على Drive</span>';
+        return '<div class="dt-lec">' +
+            '<div class="dt-lec-head"><span class="dt-lec-num">' + l.n + '</span>' +
+            '<a href="https://drive.google.com/drive/folders/' + l.id + '" target="_blank" rel="noopener">فتح المجلد ↗</a></div>' +
+            '<div class="dt-chips">' + chips + '</div>' +
+            '</div>';
+    }
+
+    var grid = document.getElementById("filesGrid");
+    var lecs = document.getElementById("lecsGrid");
+    var countEl = document.getElementById("fileCount");
+    var statEl = document.getElementById("statFiles");
+
+    if (grid) grid.innerHTML = FILES.map(fileCard).join("");
+    if (lecs) lecs.innerHTML = LECTURES.map(lecCard).join("");
+    if (countEl) countEl.textContent = FILES.length + " ملف";
+    if (statEl) statEl.textContent = FILES.length;
+
+    var search = document.getElementById("fileSearch");
+    if (search && grid) {
+        search.addEventListener("input", function () {
+            var q = search.value.trim().toLowerCase();
+            var shown = 0;
+            Array.prototype.forEach.call(grid.children, function (card) {
+                var hit = !q || (card.getAttribute("data-search") || "").indexOf(q) !== -1;
+                card.classList.toggle("dt-hidden", !hit);
+                if (hit) shown++;
+            });
+            if (countEl) countEl.textContent = shown + " من " + FILES.length;
+        });
+    }
+})();
+</script>
+</body>
+</html>
