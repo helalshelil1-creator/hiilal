@@ -2059,6 +2059,24 @@ const INTERVIEW = [
   {q:'ما الفرق بين UPS والمولد؟', cat:'القوى', level:'مبتدئ',
    answer:'UPS: فوري، مدة قصيرة، لأحمال IT والطبي. المولد: تأخير، مدة طويلة، للأحمال الأساسية.',
    testing:'هندسة الطاقة الاحتياطية.'},
+  {q:'كيف تحسب الحمل التبريدي لدور مكاتب وتختار قدرة التشيلر؟', cat:'ميكانيكا', level:'متوسط',
+   answer:'اجمع الأحمال المحسوسة والكامنة (هيكل المبنى، إشغال، إضاءة، أجهزة، هواء تغيير) بطريقة CLTD أو برنامج مثل HAP، حوّل kW إلى TR (1TR = 3.517kW)، واختر التشيلر بعامل أمان 10-15% مع مراعاة الأداء عند الأحمال الجزئية.',
+   testing:'أساسيات تصميم التكييف.'},
+  {q:'اشرح طريقة الاحتكاك المتساوي لتصميم مجاري الهواء.', cat:'ميكانيكا', level:'متوسط',
+   answer:'نحدد كمية الهواء لكل فرع من الحمل، نثبّت معدل احتكاك تصميمي (~1 Pa/m)، نختار مقطع كل جزء من منحنى المجاري عند نفس المعدل مع الالتزام بحدود السرعة، ثم نجمع فقد المسار الحرج + الملحقات + الأجهزة لتحديد الضغط الاستاتيكي الكلي للمروحة.',
+   testing:'تصميم توزيع الهواء.'},
+  {q:'كيف تختار مضخة الحريق طبقًا لـ NFPA 20؟', cat:'ميكانيكا', level:'متقدم',
+   answer:'من الحساب الهيدروليكي لأبعد نقطة نحدد التصريف والضغط المقنن، نتحقق أن ضغط الغلق (churn) لا يتجاوز تحمّل الشبكة، وأن عند 150% من التصريف المقنن يكون الضغط ≥ 65% من المقنن، مع مضخة جوكي للحفاظ على الضغط ووصلة اختبار أو عداد تدفق.',
+   testing:'أنظمة مكافحة الحريق المائية.'},
+  {q:'خط صرف بالجاذبية يتعارض مع مجري هواء وكابل تراي في نفس النقطة. كيف تحل التعارض؟', cat:'MEP', level:'متوسط',
+   answer:'الأولوية لخطوط الجاذبية (ميل ثابت)، ثم مجاري الهواء الكبيرة، ثم المواسير الصغيرة والكابل تراي (الأكثر مرونة). نعيد توجيه الخدمات المرنة حول خط الصرف مع الحفاظ على مناسيب السقف وإمكانية الوصول للصيانة، ونوثق القرار في محضر التنسيق.',
+   testing:'منهجية حل التعارضات.'},
+  {q:'ما هي لوحة أعمال البناء Builder\'s Work ومتى تُصدر؟', cat:'MEP', level:'مبتدئ',
+   answer:'لوحة توضح فتحات وقلاووظ الخدمات في البلاطات والحوائط بأبعادها ومناسيبها، تُسلَّم للفريق المدني قبل صب الخرسانة لتجنب التكسير وعمل الفتحات لاحقًا.',
+   testing:'الربط بين المدني والكهروميكانيكي.'},
+  {q:'كيف تراجع تباعد كواشر الدخان على السقف المستعار؟', cat:'MEP', level:'متوسط',
+   answer:'نتحقق من التباعد المسموح طبقًا لـ NFPA 72 (سقف أملس ~9.1م بين الكواشر ونصف هذه المسافة من الحوائط)، والبعد عن مخارج الهواء والمناطق الميتة عند الزوايا والكمرات، مع تعديل الحساب عند ارتفاعات الأسقف الكبيرة، وتوثيق كل ذلك في مصفوفة السبب والنتيجة.',
+   testing:'امتثال إنذار الحريق للكود.'},
 ];
 
 const MISTAKES = [
@@ -8714,6 +8732,56 @@ const MOCK_QUESTIONS = {
        keywords:['situation','task','action','result','communication'],
        sample:'Use STAR: Situation → Task → Action (how you communicated) → Result (outcome + lesson). Focus on resolution through engineering dialogue, not conflict.'},
     ]
+  },
+  'mech':{
+    title:'مهندس ميكانيكا',
+    questions:[
+      {q:'How do you calculate the cooling load of an office floor and select the chiller capacity?',
+       dimension:'HVAC Design', maxPoints:10,
+       keywords:['heat gain','envelope','occupancy','lighting','equipment','ventilation','ASHRAE','safety factor','TR'],
+       sample:'1) Sum sensible + latent heat gains: envelope, people, lighting, equipment, fresh air. 2) Calculate per ASHRAE (CLTD or HAP/TRACE software). 3) Convert kW to TR (1 TR = 3.517 kW). 4) Select chiller with 10-15% safety factor. 5) Check part-load performance and redundancy for critical loads.'},
+      {q:'Explain the Equal Friction method for duct sizing and how you select the fan static pressure.',
+       dimension:'HVAC Design', maxPoints:10,
+       keywords:['equal friction','friction rate','airflow','velocity','static pressure','fan'],
+       sample:'1) Assign airflow to each branch from the load. 2) Fix a design friction rate (~1 Pa/m typical). 3) Size each section from the duct chart at constant friction rate within velocity limits. 4) Sum critical path friction + fittings + equipment pressure drops. 5) Select the fan at total static pressure with margin.'},
+      {q:'How do you size a fire pump according to NFPA 20?',
+       dimension:'Fire Fighting', maxPoints:10,
+       keywords:['rated flow','churn','150%','jockey','NFPA 20','test header'],
+       sample:'1) Hydraulic demand from the most remote standpipe/sprinkler zone gives rated flow and pressure. 2) Verify churn (shutoff) pressure stays below system rating. 3) At 150% rated flow, head must be ≥ 65% of rated head. 4) Jockey pump maintains pressure. 5) Provide test header or flow meter per NFPA 20.'},
+      {q:'What is NPSH and how does it affect pump selection?',
+       dimension:'Pumps', maxPoints:10,
+       keywords:['NPSHa','NPSHr','cavitation','vapor pressure','margin'],
+       sample:'NPSH available (suction level, friction losses, liquid temperature/vapor pressure) must exceed NPSH required from the pump curve with margin. Otherwise cavitation: noise, vibration, impeller damage, loss of flow. Fix by lowering suction lift or reducing suction line losses.'},
+      {q:'How do you size a sanitary drainage pipe and choose its slope?',
+       dimension:'Plumbing', maxPoints:10,
+       keywords:['fixture units','slope','vent','trap','code tables'],
+       sample:'1) Assign drainage fixture units per code tables. 2) Select diameter from DFU tables for branch/stack. 3) Slope typically 1-2% per pipe size for self-cleaning velocity. 4) Provide venting to protect trap seals. 5) Provide cleanouts and testing per code.'},
+    ]
+  },
+  'mep':{
+    title:'مهندس MEP',
+    questions:[
+      {q:'Walk me through the MEP coordination process for a typical floor, from drawings to sign-off.',
+       dimension:'Coordination', maxPoints:10,
+       keywords:['clash detection','priorities','ceiling void','levels','sign-off','shop drawings'],
+       sample:'1) Collect architectural/structural backgrounds and MEP design drawings. 2) Agree service priorities and ceiling void zoning (levels). 3) Overlay services and run clash detection. 4) Resolve clashes in coordination meetings. 5) Freeze the coordinated layout with sign-off, then issue coordinated shop drawings.'},
+      {q:'A gravity drainage line clashes with a supply air duct and a cable tray at the same point. How do you resolve it?',
+       dimension:'Clash Resolution', maxPoints:10,
+       keywords:['gravity','slope','drainage','duct','cable tray','access'],
+       sample:'Priority: gravity drainage first (fixed slope), then large ducts (costly to reroute), then cable tray and small pipes (most flexible). Reroute the flexible services around the drainage while keeping maintenance access and ceiling levels, and document the decision in the coordination log.'},
+      {q:'What is a Builder\'s Work drawing and when is it issued?',
+       dimension:'Site Interface', maxPoints:10,
+       keywords:['openings','sleeves','concrete','civil','before casting'],
+       sample:'A drawing showing all MEP openings, sleeves and sockets in slabs and walls with sizes and levels, issued to the civil team before casting concrete. It prevents core cutting and structural damage later.'},
+      {q:'Explain the Reflected Ceiling Plan (RCP) and its role in coordination.',
+       dimension:'Ceiling Services', maxPoints:10,
+       keywords:['lighting','diffusers','sprinklers','detectors','ceiling levels','access panels'],
+       sample:'The RCP shows the ceiling viewed from above: lighting fixtures, AC diffusers and grilles, sprinklers, smoke detectors, speakers, access panels, ceiling levels and materials. It aligns all ceiling services with the architecture and prevents clashes above the false ceiling.'},
+      {q:'How do you verify smoke detector spacing during ceiling coordination?',
+       dimension:'Code Compliance', maxPoints:10,
+       keywords:['spacing','coverage','smooth ceiling','walls','NFPA 72','airflow'],
+       sample:'Check listed spacing per NFPA 72 (smooth ceiling commonly ~9.1 m between detectors, half that distance from walls), keep detectors away from supply air diffusers and dead-air spots near corners and beams, adjust for ceiling height and beam pockets, and document in the Cause and Effect matrix.'},
+    ]
   }
 };
 
@@ -8723,6 +8791,35 @@ let MOCK_STATE = {
   answers:[],
   done:false
 };
+
+/* Per-question timer (seconds) for the mock interview */
+const MOCK_TIME = 90;
+let MOCK_TIMER = null;
+function armMockTimer(){
+  if(MOCK_TIMER){ clearInterval(MOCK_TIMER); MOCK_TIMER = null; }
+  const num = document.getElementById('mockTimerNum');
+  if(!num) return;
+  const total = MOCK_TIME;
+  const endAt = Date.now() + total*1000;
+  MOCK_TIMER = setInterval(()=>{
+    const n = document.getElementById('mockTimerNum');
+    const b = document.getElementById('mockTimerBar');
+    if(!n || !b){ clearInterval(MOCK_TIMER); MOCK_TIMER = null; return; }
+    const left = Math.max(0, Math.ceil((endAt - Date.now())/1000));
+    n.textContent = left;
+    b.style.width = (left/total*100) + '%';
+    b.style.background = left <= 15 ? '#e5484d' : 'var(--primary)';
+    if(left <= 0){
+      clearInterval(MOCK_TIMER); MOCK_TIMER = null;
+      mockTimeUp();
+    }
+  }, 250);
+}
+function mockTimeUp(){
+  const ta = document.getElementById('mock_answer');
+  if(!ta || !MOCK_STATE.mode || MOCK_STATE.done) return;
+  submitMockAnswer();
+}
 
 /* ============================================================
    2. NOTIFICATIONS
@@ -8898,14 +8995,14 @@ function viewMockInterview(){
       ${crumb([{id:'dashboard',label:'لوحة التحكم'},{id:'interview',label:'المقابلات'},{label:'AI Mock Interview'}])}
       <div class="eyebrow" style="margin-bottom:10px">// AI · MOCK · INTERVIEW</div>
       <h1 class="h1">🎤 مقابلة تجريبية بالذكاء الاصطناعي</h1>
-      <p class="sub">اختر الدور، أجب على الأسئلة، واحصل على تحليل تفصيلي لكل إجابة.</p>
+      <p class="sub">اختر الدور، أجب على الأسئلة قبل انتهاء وقت كل سؤال، واحصل على تحليل تفصيلي لكل إجابة.</p>
 
       <div class="grid c2">
         ${Object.entries(MOCK_QUESTIONS).map(([k,m])=>`
           <div class="card hoverable" onclick="startMock('${k}')">
             <div style="font-size:26px;margin-bottom:10px">◔</div>
             <h4>${m.title}</h4>
-            <p>${m.questions.length} أسئلة · تقييم تفصيلي</p>
+            <p>${m.questions.length} أسئلة · ⏱ ${MOCK_TIME}s لكل سؤال · تقييم تفصيلي</p>
           </div>`).join('')}
       </div>
 
@@ -8925,6 +9022,11 @@ function viewMockInterview(){
     <div class="card" style="border-color:var(--primary);margin-top:20px">
       <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--primary);letter-spacing:0.14em;margin-bottom:10px">DIMENSION · ${q.dimension}</div>
       <div style="font-size:16px;line-height:1.7;color:var(--fg);margin-bottom:20px">${q.q}</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <span style="font-size:15px">⏱</span>
+        <div style="flex:1;height:6px;background:#1a2027;border-radius:3px;overflow:hidden"><div id="mockTimerBar" style="height:100%;background:var(--primary);width:100%;transition:width .3s linear"></div></div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--primary)"><span id="mockTimerNum">90</span>s</span>
+      </div>
       <div class="input-group">
         <label>Your Answer</label>
         <textarea id="mock_answer" rows="8" style="width:100%;padding:12px;border-radius:4px;border:1px solid var(--border);background:#0f1216;color:var(--fg);font-size:13.5px;font-family:'IBM Plex Sans Arabic',sans-serif;line-height:1.7;outline:none;resize:vertical" placeholder="اكتب إجابتك هنا..."></textarea>
@@ -8935,12 +9037,13 @@ function viewMockInterview(){
       </div>
     </div>
 
-    <div class="note tip" style="margin-top:20px"><strong>نصيحة:</strong> استخدم هيكل: تعريف → مثال → ربط بالموقع → مرجع.</div>
+    <div class="note tip" style="margin-top:20px"><strong>نصيحة:</strong> استخدم هيكل: تعريف → مثال → ربط بالموقع → مرجع. عند انتهاء الوقت تُرسل إجابتك الحالية تلقائيًا وتنتقل للسؤال التالي.</div>
   `;
 }
 function startMock(mode){
   MOCK_STATE = {mode, qIdx:0, answers:[], done:false};
   render();
+  setTimeout(armMockTimer, 120);
 }
 function skipMock(){
   MOCK_STATE.answers.push({answer:'', q:MOCK_QUESTIONS[MOCK_STATE.mode].questions[MOCK_STATE.qIdx]});
@@ -8948,6 +9051,7 @@ function skipMock(){
   const total = MOCK_QUESTIONS[MOCK_STATE.mode].questions.length;
   if(MOCK_STATE.qIdx >= total) MOCK_STATE.done = true;
   render();
+  setTimeout(armMockTimer, 120);
 }
 function submitMockAnswer(){
   const ta = document.getElementById('mock_answer');
@@ -8958,6 +9062,7 @@ function submitMockAnswer(){
   const total = MOCK_QUESTIONS[MOCK_STATE.mode].questions.length;
   if(MOCK_STATE.qIdx >= total) MOCK_STATE.done = true;
   render();
+  setTimeout(armMockTimer, 120);
 }
 function analyzeAnswer(answer, q){
   const lower = (answer||'').toLowerCase();
