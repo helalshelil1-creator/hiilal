@@ -63,6 +63,70 @@ const TOOLS = [
         desc: "كل أوامر واختصارات AutoCAD و Revit مع روابط وفيديوهات شرح.",
         url: "tools/software-guide.html",
         badge: "NEW"
+   DATA - الأدوات الهندسية
+   الإصدار: 2.0 — مع دليل AutoCAD & Revit
+======================================== */
+
+const TOOLS = [
+    {
+        id: "mep-hub",
+        name: "MEP ENGINEERING HUB",
+        nameEn: "MEP Engineering Hub",
+        category: "platform",
+        icon: "layers",
+        desc: "منصة عمل هندسية متكاملة — حاسبات، أكواد، مواصفات، موسوعة، وأدوات في مكان واحد.",
+        url: "mep-hub/index.html",
+        badge: "NEW"
+    },
+    {
+        id: "boq-fire",
+        name: "BOQ — مقايسة خط حريق",
+        nameEn: "Fire Line BOQ Estimator",
+        category: "design",
+        icon: "clipboard-list",
+        desc: "أداة مقايسة وتسعير لخط حريق — رشاشات، ماسورة، صمامات، مضخات.",
+        url: "boq/index.htm",
+        badge: "NEW"
+    },
+    {
+        id: "calc-v2",
+        name: "حاسبة كابل وقاطع V2",
+        nameEn: "Cable & Breaker Calculator V2",
+        category: "design",
+        icon: "plug",
+        desc: "نسخة محسّنة من حاسبة الكابل والقاطع — dark mode، حساب تلقائي، تصميم عصري.",
+        url: "calc-v2/index.html",
+        badge: "NEW"
+    },
+    {
+        id: "control-simulator",
+        name: "محاكي دوائر الكنترول",
+        nameEn: "Control Circuit Simulator",
+        category: "platform",
+        icon: "cpu",
+        desc: "محاكاة فعلية لدوائر الكنترول — contactors, relays, timers, sensors.",
+        url: "https://classic-control-simulator.app/",
+        badge: "NEW"
+    },
+    {
+        id: "control-circuit-simulator",
+        name: "محاكي دوائر الكنترول — نسختنا",
+        nameEn: "Control Circuit Simulator (Ours)",
+        category: "platform",
+        icon: "cpu",
+        desc: "نسخة المكتب من محاكي دوائر الكنترول — فاريك، أوتوترانس، تايمر يومي، فريكوينسي ميتر، وحساب هبوط الجهد.",
+        url: "https://control-circuit-simulator-6ary.vercel.app/",
+        badge: "NEW"
+    },
+    {
+        id: "software-guide",
+        name: "دليل AutoCAD & Revit",
+        nameEn: "AutoCAD & Revit Guide",
+        category: "bim",
+        icon: "cpu",
+        desc: "كل أوامر واختصارات AutoCAD و Revit مع روابط وفيديوهات شرح.",
+        url: "tools/software-guide.html",
+        badge: "NEW"
     },
     {
         id: "cable-breaker",
