@@ -7,7 +7,7 @@
 <title>جدول متابعة العادات | هلال شليل</title>
 <script src="../js/seo-data.js"></script>
 <script src="../js/seo.js"></script>
-<meta name="theme-color" content="#06b6d4">
+<meta name="theme-color" content="#232323">
 <link rel="manifest" href="../manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,64 +16,114 @@
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
 <style>
-.hb-wrap{max-width:1000px;margin:24px auto;padding:0 4%;}
-.hb-back{display:inline-flex;align-items:center;gap:8px;color:var(--cyan);font-weight:700;font-size:13px;text-decoration:none;margin-bottom:16px;}
-.hb-head{text-align:center;padding:28px 20px;background:linear-gradient(135deg,#0a1628,#1e4976);color:#fff;border-radius:22px;margin-bottom:18px;position:relative;overflow:hidden;}
-.hb-head::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 30% 15%,rgba(0,217,255,.25),transparent 62%);pointer-events:none;}
-.hb-head-icon{position:relative;width:66px;height:66px;margin:0 auto 12px;background:rgba(255,255,255,.12);border:2px solid rgba(0,217,255,.45);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:30px;}
-.hb-head h1{position:relative;font-size:clamp(20px,5vw,27px);font-weight:900;margin:0 0 6px;}
-.hb-head p{position:relative;color:#b8d9e2;font-size:13px;line-height:1.8;margin:0 auto;max-width:46ch;}
-.hb-card{background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:18px;margin-bottom:14px;}
-.hb-card > h2{font-size:15px;font-weight:900;color:var(--navy);margin:0 0 14px;display:flex;align-items:center;gap:8px;}
-[data-theme="dark"] .hb-card > h2{color:var(--aqua,#7ff0ff);}
-.hb-month{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;}
-.hb-month-name{font-size:19px;font-weight:900;color:var(--navy);}
-[data-theme="dark"] .hb-month-name{color:var(--aqua,#7ff0ff);}
-.hb-nav{min-width:44px;min-height:44px;border:2px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);font-size:20px;font-weight:900;cursor:pointer;}
-.hb-nav:hover{border-color:var(--cyan);color:var(--cyan);}
-.hb-days{display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:6px;margin-bottom:12px;}
-.hb-day{height:40px;border:1px solid var(--border);border-radius:10px;background:transparent;color:var(--text);font:inherit;font-weight:700;font-size:13px;cursor:pointer;}
-.hb-day.is-today{box-shadow:inset 0 -3px 0 var(--cyan);}
-.hb-day.is-on{background:var(--grad-theme);color:#06202b;border-color:transparent;}
-.hb-dayline{font-size:12.5px;color:var(--text-2);margin:0 0 12px;font-weight:700;}
-.hb-list{display:grid;gap:8px;}
-.hb-item{display:flex;align-items:center;gap:12px;min-height:52px;padding:8px 14px;border:2px solid var(--border);border-radius:14px;background:transparent;color:var(--text);font:inherit;font-size:14px;font-weight:700;text-align:start;cursor:pointer;}
-.hb-item.is-done{border-color:var(--cyan);background:rgba(0,217,255,.09);}
-.hb-box{width:26px;height:26px;flex:none;display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--border);border-radius:8px;font-weight:900;font-size:14px;}
-.hb-item.is-done .hb-box{background:var(--cyan);border-color:var(--cyan);color:#06202b;}
-.hb-donut{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
-.hb-counts{display:flex;gap:22px;}
-.hb-counts div{display:grid;}
-.hb-counts strong{font-size:26px;font-weight:900;font-family:'JetBrains Mono',monospace;}
-.hb-counts span{color:var(--text-2);font-size:12px;font-weight:700;}
-.hb-chart{width:100%;height:auto;display:block;}
-.hb-bars{display:grid;gap:10px;}
-.hb-bar{display:grid;gap:5px;}
-.hb-bar-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;}
-.hb-bar-top .v{color:var(--cyan);font-family:'JetBrains Mono',monospace;}
-.hb-track{height:9px;border-radius:999px;background:var(--border);overflow:hidden;}
-.hb-fill{height:100%;border-radius:999px;background:var(--grad-theme);}
-.hb-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:14px;-webkit-overflow-scrolling:touch;}
-.hb-table{border-collapse:collapse;font-size:12.5px;}
-.hb-table th,.hb-table td{padding:3px;text-align:center;border-bottom:1px solid var(--border);white-space:nowrap;}
-.hb-table thead th{font-size:11px;color:var(--text-2);font-weight:800;}
-.hb-sticky{position:sticky;inset-inline-start:0;background:var(--surface);min-width:120px;max-width:130px;white-space:normal !important;text-align:start !important;padding:6px 8px !important;z-index:1;border-inline-end:1px solid var(--border);font-size:12px;font-weight:800;}
-.hb-wd{font-weight:400;color:var(--text-2);font-size:9.5px;}
-.hb-cell{width:34px;height:34px;border:1px solid var(--border);border-radius:8px;background:transparent;color:#06202b;font-weight:900;padding:0;cursor:pointer;}
-.hb-cell.is-done{background:var(--cyan);border-color:var(--cyan);}
-.hb-total{padding:0 10px !important;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--cyan);}
-.hb-edit{display:grid;gap:10px;margin-top:12px;}
-.hb-edit label{display:grid;gap:5px;font-size:12px;font-weight:700;color:var(--text-2);}
-.hb-edit input{padding:11px 13px;border-radius:10px;border:2px solid var(--border);background:var(--bg,#0b0f17);color:var(--text);font:inherit;font-size:14px;outline:none;}
-.hb-edit input:focus{border-color:var(--cyan);}
-.hb-btn{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--border);background:var(--surface);color:var(--text);font:inherit;font-weight:800;font-size:13px;padding:11px 16px;border-radius:12px;cursor:pointer;}
-.hb-btn:hover{border-color:var(--cyan);color:var(--cyan);}
-.hb-note{background:rgba(245,158,11,.1);border-inline-start:4px solid #f59e0b;border-radius:12px;padding:13px 16px;font-size:12.5px;line-height:1.9;margin-top:12px;}
-.hb-status{font-size:11.5px;color:var(--text-2);font-weight:700;margin-top:6px;}
-.hb-caption{font-size:11.5px;color:var(--text-2);line-height:1.8;margin:0 0 10px;}
+/* ===== Power BI report look (light canvas, white tiles, dark header) ===== */
+body[data-page="habits"]{background:#e9e9e9;color:#252423;font-family:'Segoe UI',Tahoma,Tajawal,sans-serif;}
+.pbi-wrap{max-width:1100px;margin:0 auto;padding:0 12px 34px;font-family:'Segoe UI',Tahoma,Tajawal,sans-serif;}
+.pbi-back{display:inline-flex;align-items:center;gap:8px;color:#605e5c;font-weight:600;font-size:12px;text-decoration:none;margin:14px 2px 10px;}
+.pbi-back:hover{color:#000;}
+
+/* header band */
+.pbi-header{background:#232323;color:#fff;border-radius:4px;padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.pbi-header-mark{width:42px;height:42px;flex:none;background:#6e7f42;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;}
+.pbi-header h1{font-size:20px;font-weight:600;margin:0;line-height:1.25;}
+.pbi-header .brand{font-size:11px;font-weight:700;letter-spacing:2.5px;color:#a9bf6e;text-transform:uppercase;margin:0 0 2px;}
+.pbi-header p{margin:2px 0 0;font-size:11.5px;color:#c8c8c8;font-weight:400;}
+
+/* tiles */
+.pbi-tile{background:#fff;border:1px solid #e1dfdd;border-radius:4px;box-shadow:0 1.6px 3.6px rgba(0,0,0,.07),0 .3px .9px rgba(0,0,0,.05);padding:14px 16px;margin-bottom:12px;}
+.pbi-tile-title{font-size:12.5px;font-weight:700;color:#323130;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid #edebe9;display:flex;align-items:center;gap:8px;}
+.pbi-tile-title::before{content:"";width:4px;height:14px;background:#6e7f42;border-radius:1px;flex:none;}
+.pbi-cap{font-size:11px;color:#797775;margin:0 0 10px;line-height:1.7;}
+
+/* slicers */
+.pbi-slicers{display:grid;grid-template-columns:1fr 1.6fr;gap:12px;margin-bottom:12px;}
+.pbi-slicers .pbi-tile{margin-bottom:0;}
+.pbi-slicer-list{display:grid;gap:4px;}
+.pbi-slicer-months{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;}
+.pbi-slice{display:flex;align-items:center;gap:8px;border:1px solid transparent;background:transparent;font:inherit;font-size:12.5px;font-weight:600;color:#323130;padding:7px 10px;border-radius:2px;cursor:pointer;text-align:start;min-height:34px;}
+.pbi-slice::before{content:"";width:13px;height:13px;flex:none;border:1.5px solid #a19f9d;border-radius:2px;background:#fff;}
+.pbi-slice:hover{background:#f3f2f1;}
+.pbi-slice.is-on{background:#232323;color:#fff;}
+.pbi-slice.is-on::before{background:#6e7f42;border-color:#6e7f42;box-shadow:inset 0 0 0 2px #232323;}
+.pbi-slice-month{justify-content:center;text-align:center;}
+.pbi-slice-month::before{display:none;}
+
+/* KPI row */
+.pbi-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;}
+.pbi-kpis .pbi-tile{margin-bottom:0;}
+.pbi-kpi-num{font-size:clamp(22px,7vw,34px);font-weight:700;font-family:'Segoe UI',Tahoma,Tajawal,sans-serif;line-height:1.1;color:#323130;}
+.pbi-kpi-num.olive{color:#5b6d33;}
+.pbi-kpi-num.gray{color:#8a8886;}
+.pbi-kpi-sub{font-size:11px;color:#797775;margin-top:3px;}
+
+/* day record */
+.pbi-days{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:5px;margin-bottom:12px;}
+.pbi-day{height:38px;border:1px solid #d2d0ce;border-radius:2px;background:#fff;color:#323130;font:inherit;font-weight:600;font-size:12.5px;cursor:pointer;}
+.pbi-day:hover{border-color:#6e7f42;}
+.pbi-day.is-today{box-shadow:inset 0 -3px 0 #6e7f42;}
+.pbi-day.is-on{background:#232323;color:#fff;border-color:#232323;}
+.pbi-dayline{font-size:12px;color:#605e5c;margin:0 0 10px;font-weight:600;}
+.pbi-list{display:grid;gap:6px;}
+.pbi-item{display:flex;align-items:center;gap:10px;min-height:46px;padding:7px 12px;border:1px solid #e1dfdd;border-radius:2px;background:#fff;color:#323130;font:inherit;font-size:13px;font-weight:600;text-align:start;cursor:pointer;}
+.pbi-item:hover{border-color:#a19f9d;}
+.pbi-item.is-done{border-color:#6e7f42;background:#f2f5ea;}
+.pbi-box{width:22px;height:22px;flex:none;display:inline-flex;align-items:center;justify-content:center;border:1.5px solid #a19f9d;border-radius:2px;font-weight:700;font-size:13px;background:#fff;}
+.pbi-item.is-done .pbi-box{background:#6e7f42;border-color:#6e7f42;color:#fff;}
+.pbi-status{font-size:11px;color:#797775;font-weight:600;margin-top:8px;}
+
+/* donut */
+.pbi-donut{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+.pbi-legend{display:grid;gap:8px;}
+.pbi-leg{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:#323130;}
+.pbi-leg i{width:12px;height:12px;border-radius:2px;flex:none;}
+.pbi-leg .v{margin-inline-start:auto;font-weight:700;color:#605e5c;}
+
+/* charts */
+.pbi-hscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.pbi-chart{display:block;width:100%;min-width:560px;height:auto;}
+.pbi-cols{display:flex;align-items:flex-end;gap:10px;height:190px;padding-top:18px;}
+.pbi-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0;height:100%;justify-content:flex-end;}
+.pbi-col-v{font-size:10.5px;font-weight:700;color:#5b6d33;white-space:nowrap;}
+.pbi-col-bar{width:100%;max-width:52px;background:#6e7f42;border-radius:2px 2px 0 0;}
+.pbi-col-l{font-size:10.5px;color:#605e5c;font-weight:600;text-align:center;white-space:nowrap;}
+
+/* ranking bars */
+.pbi-bars{display:grid;gap:9px;}
+.pbi-bar{display:grid;gap:4px;}
+.pbi-bar-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12px;font-weight:600;color:#323130;}
+.pbi-bar-top .v{color:#5b6d33;font-weight:700;}
+.pbi-track{height:8px;border-radius:1px;background:#edebe9;overflow:hidden;}
+.pbi-fill{height:100%;border-radius:1px;background:#6e7f42;}
+
+/* matrix */
+.pbi-scroll{overflow-x:auto;border:1px solid #e1dfdd;border-radius:2px;-webkit-overflow-scrolling:touch;}
+.pbi-table{border-collapse:collapse;font-size:11.5px;background:#fff;}
+.pbi-table th,.pbi-table td{padding:3px;text-align:center;border-bottom:1px solid #edebe9;white-space:nowrap;}
+.pbi-table thead th{font-size:10.5px;color:#fff;font-weight:700;background:#6e7f42;padding:5px 3px;}
+.pbi-table thead th .wd{font-weight:400;font-size:9px;color:#e4e9d5;}
+.pbi-sticky{position:sticky;inset-inline-start:0;background:#fff;min-width:118px;max-width:130px;white-space:normal !important;text-align:start !important;padding:6px 8px !important;z-index:1;border-inline-end:1px solid #e1dfdd;font-size:11.5px;font-weight:700;color:#323130;}
+.pbi-table thead th.pbi-sticky{background:#5b6d33;color:#fff;}
+.pbi-cell{width:30px;height:30px;border:1px solid #d2d0ce;border-radius:2px;background:#fff;color:#fff;font-weight:700;padding:0;cursor:pointer;font-size:12px;}
+.pbi-cell:hover{border-color:#6e7f42;}
+.pbi-cell.is-done{background:#6e7f42;border-color:#6e7f42;}
+.pbi-total{padding:0 10px !important;font-weight:700;color:#5b6d33;font-size:11.5px;}
+
+/* edit + note */
+.pbi-edit{display:grid;gap:10px;margin-top:12px;}
+.pbi-edit label{display:grid;gap:4px;font-size:11.5px;font-weight:600;color:#605e5c;}
+.pbi-edit input{padding:9px 12px;border-radius:2px;border:1px solid #d2d0ce;background:#fff;color:#323130;font:inherit;font-size:13px;outline:none;}
+.pbi-edit input:focus{border-color:#6e7f42;}
+.pbi-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #8a8886;background:#fff;color:#323130;font:inherit;font-weight:600;font-size:12.5px;padding:9px 16px;border-radius:2px;cursor:pointer;}
+.pbi-btn:hover{background:#f3f2f1;border-color:#323130;}
+.pbi-note{background:#fdf6e5;border-inline-start:3px solid #f2c811;border-radius:2px;padding:11px 14px;font-size:11.5px;line-height:1.8;margin-top:12px;color:#605e5c;}
+
+@media (min-width:900px){
+  .pbi-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+  .pbi-grid-2 .pbi-tile{margin-bottom:0;}
+}
 </style>
 </head>
 <body data-page="habits">
@@ -94,75 +144,103 @@
     </div>
 </nav>
 
-<div class="hb-wrap">
-    <a href="../tools.html" class="hb-back">← كل الأدوات</a>
+<div class="pbi-wrap">
+    <a href="../tools.html" class="pbi-back">← كل الأدوات</a>
 
-    <div class="hb-head">
-        <div class="hb-head-icon">✅</div>
-        <h1>جدول متابعة العادات</h1>
-        <p>علّم على العادة اللي عملتها النهارده، والرسوم والنسب بتتحدّث لوحدها. بتتحفظ على جهازك.</p>
-    </div>
-
-    <div class="hb-card">
-        <div class="hb-month">
-            <button type="button" class="hb-nav" id="prevMonth" aria-label="الشهر اللي فات">›</button>
-            <div class="hb-month-name" id="monthName">—</div>
-            <button type="button" class="hb-nav" id="nextMonth" aria-label="الشهر الجاي">‹</button>
+    <header class="pbi-header">
+        <div class="pbi-header-mark">✓</div>
+        <div>
+            <p class="brand">Khalendar</p>
+            <h1>جدول العادات</h1>
+            <p>علّم على العادة اللي عملتها النهارده، والرسوم والنسب بتتحدّث لوحدها. بتتحفظ على جهازك.</p>
         </div>
-        <div class="hb-status" id="statusLine"></div>
+    </header>
+
+    <div class="pbi-slicers">
+        <div class="pbi-tile">
+            <div class="pbi-tile-title">السنة</div>
+            <div class="pbi-slicer-list" id="yearSlicer"></div>
+        </div>
+        <div class="pbi-tile">
+            <div class="pbi-tile-title">الشهر</div>
+            <div class="pbi-slicer-months" id="monthSlicer"></div>
+        </div>
     </div>
 
-    <div class="hb-card">
-        <h2>🗓️ سجّل يومك</h2>
-        <div class="hb-days" id="daysGrid" role="group" aria-label="اختار اليوم"></div>
-        <p class="hb-dayline" id="dayLine"></p>
-        <div class="hb-list" id="habitList"></div>
+    <div class="pbi-kpis">
+        <div class="pbi-tile">
+            <div class="pbi-tile-title">نسبة الإنجاز</div>
+            <div class="pbi-kpi-num" id="kpiPct">0%</div>
+            <div class="pbi-kpi-sub" id="kpiMonthName">—</div>
+        </div>
+        <div class="pbi-tile">
+            <div class="pbi-tile-title">مكتمل</div>
+            <div class="pbi-kpi-num olive" id="kpiDone">0</div>
+            <div class="pbi-kpi-sub">من <span id="kpiTotal">0</span> تعليمة ممكنة</div>
+        </div>
+        <div class="pbi-tile">
+            <div class="pbi-tile-title">غير مكتمل</div>
+            <div class="pbi-kpi-num gray" id="kpiMiss">0</div>
+            <div class="pbi-kpi-sub">أيام كاملة 8/8: <span id="kpiFull">0</span></div>
+        </div>
     </div>
 
-    <div class="hb-card">
-        <h2>📊 التقدم الشهري</h2>
-        <div class="hb-donut">
-            <svg viewBox="0 0 140 140" width="140" height="140" role="img" id="ringSvg" aria-label="نسبة الإنجاز">
-                <circle cx="70" cy="70" r="54" fill="none" stroke="var(--border)" stroke-width="16"></circle>
-                <circle id="ringArc" cx="70" cy="70" r="54" fill="none" stroke="var(--cyan)" stroke-width="16" stroke-dasharray="0 339.29" transform="rotate(-90 70 70)" stroke-linecap="round"></circle>
-                <text id="ringText" x="70" y="79" text-anchor="middle" font-size="26" font-weight="900" fill="currentColor">0%</text>
-            </svg>
-            <div class="hb-counts">
-                <div><strong id="doneCount">0</strong><span>مكتمل</span></div>
-                <div><strong id="missCount">0</strong><span>غير مكتمل</span></div>
+    <div class="pbi-tile">
+        <div class="pbi-tile-title">تسجيل اليوم</div>
+        <div class="pbi-days" id="daysGrid" role="group" aria-label="اختار اليوم"></div>
+        <p class="pbi-dayline" id="dayLine"></p>
+        <div class="pbi-list" id="habitList"></div>
+        <div class="pbi-status" id="statusLine"></div>
+    </div>
+
+    <div class="pbi-grid-2">
+        <div class="pbi-tile">
+            <div class="pbi-tile-title">التقدم الشهري</div>
+            <div class="pbi-donut">
+                <svg viewBox="0 0 140 140" width="150" height="150" role="img" aria-label="نسبة الإنجاز">
+                    <circle cx="70" cy="70" r="54" fill="none" stroke="#e1dfdd" stroke-width="17"></circle>
+                    <circle id="ringArc" cx="70" cy="70" r="54" fill="none" stroke="#6e7f42" stroke-width="17" stroke-dasharray="0 339.29" transform="rotate(-90 70 70)"></circle>
+                    <text id="ringText" x="70" y="78" text-anchor="middle" font-size="24" font-weight="700" fill="#323130" font-family="'Segoe UI',Tahoma,Tajawal,sans-serif">0%</text>
+                </svg>
+                <div class="pbi-legend">
+                    <div class="pbi-leg"><i style="background:#6e7f42"></i>مكتمل<span class="v" id="legDone">0</span></div>
+                    <div class="pbi-leg"><i style="background:#d2d0ce"></i>غير مكتمل<span class="v" id="legMiss">0</span></div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="hb-card" id="dailyCard">
-        <h2>📈 التقدم اليومي</h2>
-        <p class="hb-caption">نسبة العادات المكتملة كل يوم (من 8).</p>
-        <svg class="hb-chart" id="dailyChart" viewBox="0 0 620 170" preserveAspectRatio="none" role="img" aria-label="نسبة العادات المكتملة كل يوم"></svg>
-    </div>
-
-    <div class="hb-card">
-        <h2>📅 التقدم الأسبوعي</h2>
-        <div class="hb-bars" id="weeklyBars"></div>
-    </div>
-
-    <div class="hb-card">
-        <h2>🏅 أكتر العادات التزامًا</h2>
-        <div class="hb-bars" id="rankBars"></div>
-    </div>
-
-    <div class="hb-card">
-        <h2>🧾 الجدول الشهري</h2>
-        <p class="hb-caption">اسحب يمين وشمال لباقي الأيام، واضغط على أي خانة لتعليمها.</p>
-        <div class="hb-scroll" tabindex="0" id="tableScroll">
-            <table class="hb-table" id="monthTable"></table>
+        <div class="pbi-tile">
+            <div class="pbi-tile-title">التقدم الأسبوعي</div>
+            <div class="pbi-cols" id="weeklyCols"></div>
         </div>
     </div>
 
-    <div class="hb-card">
-        <h2>⚙️ العادات</h2>
-        <button type="button" class="hb-btn" id="editBtn">تعديل أسماء العادات</button>
-        <div class="hb-edit" id="editPanel" hidden></div>
-        <div class="hb-note">التعليمات محفوظة على نفس الجهاز والمتصفح اللي فتحت منه. لو مسحت بيانات المتصفح هتضيع. الشهر بيتحسب بعدد أيامه الفعلي، والنسب من كل العادات في كل أيام الشهر.</div>
+    <div class="pbi-tile">
+        <div class="pbi-tile-title">التقدم اليومي</div>
+        <p class="pbi-cap">نسبة العادات المكتملة كل يوم (من 8).</p>
+        <div class="pbi-hscroll">
+            <svg class="pbi-chart" id="dailyChart" viewBox="0 0 720 190" role="img" aria-label="نسبة العادات المكتملة كل يوم"></svg>
+        </div>
+    </div>
+
+    <div class="pbi-tile">
+        <div class="pbi-tile-title">أكثر العادات التزامًا</div>
+        <div class="pbi-bars" id="rankBars"></div>
+    </div>
+
+    <div class="pbi-tile">
+        <div class="pbi-tile-title">الجدول الشهري</div>
+        <p class="pbi-cap">اسحب يمين وشمال لباقي الأيام، واضغط على أي خانة لتعليمها.</p>
+        <div class="pbi-scroll" tabindex="0" id="tableScroll">
+            <table class="pbi-table" id="monthTable"></table>
+        </div>
+    </div>
+
+    <div class="pbi-tile">
+        <div class="pbi-tile-title">العادات</div>
+        <button type="button" class="pbi-btn" id="editBtn">تعديل أسماء العادات</button>
+        <div class="pbi-edit" id="editPanel" hidden></div>
+        <div class="pbi-note">التعليمات محفوظة على نفس الجهاز والمتصفح اللي فتحت منه. لو مسحت بيانات المتصفح هتضيع. الشهر بيتحسب بعدد أيامه الفعلي، والنسب من كل العادات في كل أيام الشهر.</div>
     </div>
 </div>
 
@@ -255,12 +333,24 @@
         pickedDay = day;
         var ld = lastDay();
 
-        document.getElementById("monthName").textContent = MONTHS[ym.m] + " " + ym.y;
+        // slicers
+        var yHtml = "";
+        var thisY = now.getFullYear();
+        [thisY - 1, thisY, thisY + 1].forEach(function (y) {
+            yHtml += '<button type="button" class="pbi-slice' + (y === ym.y ? " is-on" : "") + '" data-year="' + y + '" aria-pressed="' + (y === ym.y) + '">' + y + "</button>";
+        });
+        document.getElementById("yearSlicer").innerHTML = yHtml;
+
+        var mHtml = "";
+        for (var m = 0; m < 12; m++) {
+            mHtml += '<button type="button" class="pbi-slice pbi-slice-month' + (m === ym.m ? " is-on" : "") + '" data-month="' + m + '" aria-pressed="' + (m === ym.m) + '">' + MONTHS[m] + "</button>";
+        }
+        document.getElementById("monthSlicer").innerHTML = mHtml;
 
         // days grid
         var daysHtml = "";
         for (var d = 1; d <= n; d++) {
-            var cls = "hb-day" + (d === day ? " is-on" : "") + (isCurrent() && d === now.getDate() ? " is-today" : "");
+            var cls = "pbi-day" + (d === day ? " is-on" : "") + (isCurrent() && d === now.getDate() ? " is-today" : "");
             daysHtml += '<button type="button" class="' + cls + '" data-day="' + d + '" aria-pressed="' + (d === day) + '">' + d + "</button>";
         }
         document.getElementById("daysGrid").innerHTML = daysHtml;
@@ -272,40 +362,50 @@
         var listHtml = "";
         for (var h = 0; h < 8; h++) {
             var doneH = isDone(r, h, day);
-            listHtml += '<button type="button" class="hb-item' + (doneH ? " is-done" : "") + '" data-habit="' + h + '" aria-pressed="' + doneH + '">' +
-                '<span class="hb-box" aria-hidden="true">' + (doneH ? "✓" : "") + "</span>" +
-                '<span class="hb-name" data-name="' + h + '">' + esc(names[h]) + "</span></button>";
+            listHtml += '<button type="button" class="pbi-item' + (doneH ? " is-done" : "") + '" data-habit="' + h + '" aria-pressed="' + doneH + '">' +
+                '<span class="pbi-box" aria-hidden="true">' + (doneH ? "✓" : "") + "</span>" +
+                '<span class="pbi-name" data-name="' + h + '">' + esc(names[h]) + "</span></button>";
         }
         document.getElementById("habitList").innerHTML = listHtml;
 
-        // totals
+        // totals + KPIs + donut
         var total = 0;
         for (var i = 0; i < 8; i++) total += habitCount(r, i, n);
         var possible = 8 * n;
         var mp = pct(total, possible);
+        var fullDays = 0;
+        for (var fd = 1; fd <= n; fd++) if (dayCount(r, fd) === 8) fullDays++;
         var C = 2 * Math.PI * 54;
         document.getElementById("ringArc").setAttribute("stroke-dasharray", ((C * mp) / 100).toFixed(2) + " " + C.toFixed(2));
         document.getElementById("ringText").textContent = mp + "%";
-        document.getElementById("doneCount").textContent = total;
-        document.getElementById("missCount").textContent = possible - total;
+        document.getElementById("kpiPct").textContent = mp + "%";
+        document.getElementById("kpiMonthName").textContent = MONTHS[ym.m] + " " + ym.y;
+        document.getElementById("kpiDone").textContent = total;
+        document.getElementById("kpiMiss").textContent = possible - total;
+        document.getElementById("kpiTotal").textContent = possible;
+        document.getElementById("kpiFull").textContent = fullDays;
+        document.getElementById("legDone").textContent = total + " · " + mp + "%";
+        document.getElementById("legMiss").textContent = (possible - total) + " · " + (100 - mp) + "%";
 
-        // daily chart
+        // daily area chart
         var daily = [];
         for (var dd = 1; dd <= n; dd++) {
             daily.push({ d: dd, v: dd <= ld ? pct(dayCount(r, dd), 8) : null });
         }
         drawDaily(daily, n);
 
-        // weekly bars
+        // weekly columns
         var weeks = Math.ceil(n / 7);
         var wHtml = "";
         for (var w = 0; w < weeks; w++) {
             var from = w * 7 + 1, to = Math.min(n, from + 6), s = 0;
             for (var x = from; x <= to; x++) s += dayCount(r, x);
             var p = pct(s, 8 * (to - from + 1));
-            wHtml += barRow(WEEK_NAMES[w] + " (" + from + "–" + to + ")", p + "%", p, 100);
+            wHtml += '<div class="pbi-col"><div class="pbi-col-v">' + p + '%</div>' +
+                '<div class="pbi-col-bar" style="height:' + Math.max(2, Math.round(p * 1.5)) + 'px" title="' + WEEK_NAMES[w] + " " + from + "–" + to + ': ' + p + '%"></div>' +
+                '<div class="pbi-col-l">' + WEEK_NAMES[w] + '<br>' + from + '–' + to + "</div></div>";
         }
-        document.getElementById("weeklyBars").innerHTML = wHtml;
+        document.getElementById("weeklyCols").innerHTML = wHtml;
 
         // ranking
         var rank = [];
@@ -315,20 +415,20 @@
             return barRow(it.name, it.c + " من " + n + " · " + pct(it.c, n) + "%", it.c, n);
         }).join("");
 
-        // month table
-        var thead = "<thead><tr><th class=\"hb-sticky\">العادة</th>";
+        // month matrix
+        var thead = "<thead><tr><th class=\"pbi-sticky\">العادة</th>";
         for (var t = 1; t <= n; t++) {
-            thead += "<th>" + t + '<div class="hb-wd">' + WEEKDAYS[new Date(ym.y, ym.m, t).getDay()].slice(0, 3) + "</div></th>";
+            thead += "<th>" + t + '<div class="wd">' + WEEKDAYS[new Date(ym.y, ym.m, t).getDay()].slice(0, 3) + "</div></th>";
         }
         thead += "<th>المكتمل</th></tr></thead>";
         var tbody = "<tbody>";
         for (var hh = 0; hh < 8; hh++) {
-            tbody += "<tr><th class=\"hb-sticky\" scope=\"row\">" + esc(names[hh]) + "</th>";
+            tbody += "<tr><th class=\"pbi-sticky\" scope=\"row\">" + esc(names[hh]) + "</th>";
             for (var tt = 1; tt <= n; tt++) {
                 var on = isDone(r, hh, tt);
-                tbody += '<td><button type="button" class="hb-cell' + (on ? " is-done" : "") + '" data-cell-h="' + hh + '" data-cell-d="' + tt + '" aria-pressed="' + on + '" aria-label="' + esc(names[hh]) + " يوم " + tt + '">' + (on ? "✓" : "") + "</button></td>";
+                tbody += '<td><button type="button" class="pbi-cell' + (on ? " is-done" : "") + '" data-cell-h="' + hh + '" data-cell-d="' + tt + '" aria-pressed="' + on + '" aria-label="' + esc(names[hh]) + " يوم " + tt + '">' + (on ? "✓" : "") + "</button></td>";
             }
-            tbody += '<td class="hb-total">' + habitCount(r, hh, n) + "/" + n + "</td></tr>";
+            tbody += '<td class="pbi-total">' + habitCount(r, hh, n) + "/" + n + "</td></tr>";
         }
         tbody += "</tbody>";
         document.getElementById("monthTable").innerHTML = thead + tbody;
@@ -348,43 +448,44 @@
 
     function barRow(label, valueLabel, value, max) {
         var w = max > 0 ? Math.max(0, Math.min(100, (value / max) * 100)) : 0;
-        return '<div class="hb-bar"><div class="hb-bar-top"><span>' + esc(label) + '</span><span class="v">' + esc(valueLabel) + "</span></div>" +
-            '<div class="hb-track"><div class="hb-fill" style="width:' + w.toFixed(1) + '%"></div></div></div>';
+        return '<div class="pbi-bar"><div class="pbi-bar-top"><span>' + esc(label) + '</span><span class="v">' + esc(valueLabel) + "</span></div>" +
+            '<div class="pbi-track"><div class="pbi-fill" style="width:' + w.toFixed(1) + '%"></div></div></div>';
     }
 
     function drawDaily(daily, n) {
         var svg = document.getElementById("dailyChart");
-        var W = 620, H = 170, padL = 34, padR = 10, padT = 12, padB = 26;
+        var W = 720, H = 190, padL = 36, padR = 12, padT = 20, padB = 26;
         var plotW = W - padL - padR, plotH = H - padT - padB;
         var parts = [];
-        // gridlines
-        [0, 50, 100].forEach(function (g) {
+        [0, 25, 50, 75, 100].forEach(function (g) {
             var y = padT + plotH - (g / 100) * plotH;
-            parts.push('<line x1="' + padL + '" y1="' + y.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + y.toFixed(1) + '" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3"></line>');
-            parts.push('<text x="' + (padL - 6) + '" y="' + (y + 3).toFixed(1) + '" text-anchor="end" font-size="9" fill="var(--text-2)">' + g + '%</text>');
+            parts.push('<line x1="' + padL + '" y1="' + y.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + y.toFixed(1) + '" stroke="#edebe9" stroke-width="1"></line>');
+            parts.push('<text x="' + (padL - 6) + '" y="' + (y + 3).toFixed(1) + '" text-anchor="end" font-size="9" fill="#797775">' + g + '%</text>');
         });
         var pts = [];
         daily.forEach(function (p) {
             if (p.v === null) return;
             var x = padL + ((p.d - 1) / Math.max(1, n - 1)) * plotW;
             var y = padT + plotH - (p.v / 100) * plotH;
-            pts.push([x, y]);
+            pts.push([x, y, p.v]);
         });
         if (pts.length > 1) {
-            parts.push('<polyline fill="none" stroke="var(--cyan)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points="' + pts.map(function (p) { return p[0].toFixed(1) + "," + p[1].toFixed(1); }).join(" ") + '"></polyline>');
-            var area = pts.map(function (p) { return p[0].toFixed(1) + "," + p[1].toFixed(1); }).join(" ") + " " + pts[pts.length - 1][0].toFixed(1) + "," + (padT + plotH) + " " + pts[0][0].toFixed(1) + "," + (padT + plotH);
-            parts.push('<polygon points="' + area + '" fill="rgba(0,217,255,.12)"></polygon>');
+            var line = pts.map(function (p) { return p[0].toFixed(1) + "," + p[1].toFixed(1); }).join(" ");
+            parts.push('<polygon points="' + line + " " + pts[pts.length - 1][0].toFixed(1) + "," + (padT + plotH) + " " + pts[0][0].toFixed(1) + "," + (padT + plotH) + '" fill="rgba(110,127,66,.18)"></polygon>');
+            parts.push('<polyline fill="none" stroke="#6e7f42" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" points="' + line + '"></polyline>');
         }
-        pts.forEach(function (p) {
-            parts.push('<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="2.6" fill="var(--cyan)"></circle>');
+        pts.forEach(function (p, i) {
+            parts.push('<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="2.4" fill="#6e7f42"></circle>');
+            var ly = p[1] - 7;
+            if (ly < 10) ly = p[1] + 14;
+            parts.push('<text x="' + p[0].toFixed(1) + '" y="' + ly.toFixed(1) + '" text-anchor="middle" font-size="8" fill="#5b6d33" font-weight="600">' + p[2] + '%</text>');
         });
-        // x labels every ~5 days
-        for (var d = 1; d <= n; d += (n > 20 ? 5 : 3)) {
+        for (var d = 1; d <= n; d++) {
             var x2 = padL + ((d - 1) / Math.max(1, n - 1)) * plotW;
-            parts.push('<text x="' + x2.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="9" fill="var(--text-2)">' + d + "</text>");
+            parts.push('<text x="' + x2.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="9" fill="#797775">' + d + "</text>");
         }
         if (!pts.length) {
-            parts.push('<text x="' + (W / 2) + '" y="' + (H / 2) + '" text-anchor="middle" font-size="12" fill="var(--text-2)">مفيش بيانات الشهر ده لسه</text>');
+            parts.push('<text x="' + (W / 2) + '" y="' + (H / 2) + '" text-anchor="middle" font-size="12" fill="#797775">مفيش بيانات الشهر ده لسه</text>');
         }
         svg.innerHTML = parts.join("");
     }
@@ -397,11 +498,11 @@
 
     // events (delegated)
     document.addEventListener("click", function (e) {
-        var t = e.target.closest ? e.target.closest("[data-day],[data-habit],[data-cell-h],#prevMonth,#nextMonth,#editBtn") : null;
+        var t = e.target.closest ? e.target.closest("[data-day],[data-habit],[data-cell-h],[data-year],[data-month],#editBtn") : null;
         if (!t) return;
-        if (t.id === "prevMonth") { go(-1); return; }
-        if (t.id === "nextMonth") { go(1); return; }
         if (t.id === "editBtn") { editing = !editing; render(); return; }
+        if (t.hasAttribute("data-year")) { ym = { y: parseInt(t.getAttribute("data-year"), 10), m: ym.m }; pickedDay = isCurrent() ? now.getDate() : 1; render(); return; }
+        if (t.hasAttribute("data-month")) { ym = { y: ym.y, m: parseInt(t.getAttribute("data-month"), 10) }; pickedDay = isCurrent() ? now.getDate() : 1; render(); return; }
         if (t.hasAttribute("data-day")) { pickedDay = parseInt(t.getAttribute("data-day"), 10); render(); return; }
         if (t.hasAttribute("data-habit")) { toggle(parseInt(t.getAttribute("data-habit"), 10), pickedDay); return; }
         if (t.hasAttribute("data-cell-h")) {
@@ -415,7 +516,7 @@
         if (t && t.hasAttribute && t.hasAttribute("data-rename")) {
             rename(parseInt(t.getAttribute("data-rename"), 10), t.value);
             var idx = t.getAttribute("data-rename");
-            var el = document.querySelector('.hb-name[data-name="' + idx + '"]');
+            var el = document.querySelector('.pbi-name[data-name="' + idx + '"]');
             if (el) el.textContent = t.value;
         }
     });
@@ -424,13 +525,6 @@
         var t = e.target;
         if (t && t.hasAttribute && t.hasAttribute("data-rename")) render();
     });
-
-    function go(delta) {
-        var d = new Date(ym.y, ym.m + delta, 1);
-        ym = { y: d.getFullYear(), m: d.getMonth() };
-        pickedDay = 1;
-        render();
-    }
 
     render();
 })();
