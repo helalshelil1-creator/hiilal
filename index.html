@@ -266,6 +266,8 @@ button{font:inherit;background:none;border:0;cursor:pointer;color:inherit}
 .det-credit{font-family:var(--ar);font-weight:400;font-style:normal;font-size:13px;color:var(--muted)}
 .det-open{align-self:flex-start;height:44px;padding:0 22px;border:1px solid var(--cobalt);color:var(--cobalt);font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:10px;border-radius:0}
 .det-open:hover{background:var(--cobalt);color:var(--sheet)}
+.det-cta{display:block}
+#detPoster{cursor:pointer}
 .det-poster{display:flex;align-items:center;justify-content:center;min-height:0}
 .det-poster svg{height:min(100%,78vh);width:auto;max-width:100%}
 
@@ -291,7 +293,10 @@ noscript .ns-box a{color:var(--cobalt);text-decoration:underline}
   .pagefoot nav{gap:14px}
   .detail{display:flex;flex-direction:column;overflow-y:auto;padding:84px 5vw 40px}
   .det-poster{order:-1}
-  .det-poster svg{height:46svh}
+  .det-poster svg{height:40svh}
+  .det-text{justify-content:flex-start;min-height:0}
+  .det-cta{position:sticky;bottom:0;margin:4px -5vw -40px;padding:12px 5vw calc(12px + env(safe-area-inset-bottom));background:var(--sheet);border-top:1px solid rgba(64,82,138,.25)}
+  .det-open{display:flex;justify-content:center;width:100%;height:52px;background:var(--cobalt);color:var(--sheet);font-size:16px}
   .det-title{font-size:34px}
   .det-text{gap:14px;padding-bottom:30px}
 }
@@ -366,7 +371,7 @@ noscript .ns-box a{color:var(--cobalt);text-decoration:underline}
         <div class="det-mask"><span class="det-meta" id="detMeta"></span></div>
         <div class="det-mask"><span class="det-desc" id="detDesc"></span></div>
         <div class="det-mask"><span class="det-credit" id="detCredit">إعداد المهندس هلال شليل</span></div>
-        <div class="det-mask"><span><a class="det-open" id="detOpen" href="#">افتح الأداة ←</a></span></div>
+        <div class="det-cta"><a class="det-open" id="detOpen" href="#">افتح الأداة ←</a></div>
     </div>
     <div class="det-poster" id="detPoster"></div>
 </div>
@@ -906,6 +911,12 @@ function closeDetail(){
   };
 }
 document.getElementById("detClose").addEventListener("click", closeDetail);
+document.getElementById("detPoster").addEventListener("click", function(){
+  var u = detOpenBtn.getAttribute("href");
+  if (!u || u === "#") return;
+  if (/^https?:/.test(u)) window.open(u, "_blank", "noopener");
+  else window.location.href = u;
+});
 detOpenBtn.addEventListener("click", function(){ setTimeout(closeDetail, 60); });
 playRing.addEventListener("click", function(){});
 })();
