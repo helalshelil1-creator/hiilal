@@ -46247,9 +46247,17 @@ window.__MEP_CMS = {
 .lec-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .lec-links a{font-size:12px;font-weight:700;color:var(--cyan,#22d3ee);border:1px dashed var(--border,#233041);border-radius:8px;padding:6px 12px;text-decoration:none}
 .lec-links a:hover{border-color:var(--cyan,#22d3ee)}
+.rules-block{background:linear-gradient(135deg,rgba(52,211,153,.06),rgba(52,211,153,.015))}
+.rules-block h3{color:#34d399}
+.rules-block ul{margin:0;padding:0;list-style:none}
+.rules-block li{position:relative;padding:7px 16px 7px 0;font-size:13px;line-height:1.7;color:var(--fg,#e6edf5);border-bottom:1px dashed var(--border,#233041)}
+.rules-block li:last-child{border-bottom:none}
+.rules-block li::before{content:"";position:absolute;right:0;top:14px;width:7px;height:7px;border-radius:2px;background:#34d399}
+.rules-block .pg{flex-shrink:0;font-size:10.5px;color:#34d399;opacity:.85;white-space:nowrap}
+.rules-block .rule-num{font-weight:800;color:#34d399;direction:ltr;unicode-bidi:isolate}
 </style>
 <script>
-/* محاضرات دبلومة التوزيع 2022 (م. محمد إمام) — ربط المحاضرات بالأقسام */
+/* دبلومة التوزيع 2022 (م. محمد إمام): محاضرات + قواعد كود مستخرجة من كتاب التفريغ */
 (function(){
 var LECTURES = [
  {n:0,  vid:'T0CqOBY9TiQ', t:'محاضرة تمهيدية — مجالات قسم كهرباء ومتطلبات الدورة'},
@@ -46274,21 +46282,11 @@ var LECTURES = [
 ];
 var YT = 'https://www.youtube.com/watch?v=';
 var LECTURE_MAP = {
- 'dashboard':[0,17],
- 'electrical':[0,17],
- 'lighting':[1,2,3,4,13],
- 'power':[5,6,7,8],
- 'lv':[7,8,11],
- 'mv':[11],
- 'generator':[10,11],
- 'cables':[12],
- 'earthing':[14,15],
- 'design-office':[1,9,10,11],
- 'technical-office':[7,18],
- 'boq':[18],
- 'software-academy':[1,2,3,16],
- 'calculators':[16],
- 'site-execution':[12]
+ 'dashboard':[0,17], 'electrical':[0,17],
+ 'lighting':[1,2,3,4,13], 'power':[5,6,7,8], 'lv':[7,8,11], 'mv':[11],
+ 'generator':[10,11], 'cables':[12], 'earthing':[14,15],
+ 'design-office':[1,9,10,11], 'technical-office':[7,18], 'boq':[18],
+ 'software-academy':[1,2,3,16], 'calculators':[16], 'site-execution':[12]
 };
 var DIPLOMA_LINKS = [
  ['قايمة الدبلومة كاملة على يوتيوب','https://youtube.com/playlist?list=PLxNbro6QtRYsFAcXhy9rXoE2y9mJ-iTu9'],
@@ -46296,6 +46294,51 @@ var DIPLOMA_LINKS = [
  ['ملفات المحاضرات (Drive)','https://drive.google.com/drive/folders/1yo_RLbVA5aWfG66DjIWooLQGWazHjTWT?usp=sharing'],
  ['فهرس الدبلومة وملفاتها على ملفات إنستنكت','https://files.instinct.com/gti9m4svq5al-2022']
 ];
+/* قواعد مستخرجة من كتاب تفريغ الدبلومة (أرقام الصفحات من الكتاب نفسه) */
+var CODE_RULES = {
+ 'lighting':{title:'قواعد الإضاءة (الكود المصري / EN 12464)', rules:[
+  ['التجانس Uo لا يقل عن 0.5','ص36'],
+  ['مستوى العمل 0.8م للمكاتب، وقياس الـ500 لوكس عليه','ص40'],
+  ['لوكس الكود المصري: سكني عام 150، قراءة 300، سفرة 120، نوم 120، مطبخ 120 عام و500 فوق سطح العمل، حمام 300، مكتب 300 عام و500 على المكتب، طرقات سكني 60، كمبيوتر 500، سلالم ومصاعد 120، علاج 300، انتظار 120، كشف 500','ص47'],
+  ['غرف التحكم وIT والسيرفر والسويتشات والتكييف وUPS: 200 لوكس، والطرقات 100 (EN 12464)','ص48'],
+  ['دائرة الإضاءة: حد أقصى 1200VA وحوالي 10 وحدات، ولا تغذي أكثر من 3 غرف من دائرة واحدة','ص101-105'],
+  ['دوائر العادي والطوارئ منفصلة؛ لافتات الخروج دائرة مستقلة والسلالم دائرة مستقلة','ص101-105']
+ ]},
+ 'power':{title:'قواعد القواطع والكابلات واللوحات', rules:[
+  ['القاطع = 1.25 × تيار الحمل (مثال: 2000VA/220V = 9.1A × 1.25 → قاطع 20A)','ص192'],
+  ['تيار الكابل = القاطع / 0.8 (معامل خفض)، واختيار المقطع من كتالوج السويدي','ص192'],
+  ['القاطع الرئيسي = تيار الطلب × 1.25 ولا يقل عن أكبر قاطع فرعي','ص199'],
+  ['دوائر احتياطية 20% من دوائر اللوحة + 10% خانات فارغة؛ مقاسات اللوحات: 6/12/18/24/42/48','ص192'],
+  ['معامل الطلب IEC للوحات: 2-3 دوائر 0.9، 4-5 ← 0.8، 6-9 ← 0.7، 10+ ← 0.6؛ محركات حتى 10kW ← 0.8 وفوقها 1.0','ص191'],
+  ['الكود المصري: إضاءة DF = 0.9 وPF = 0.95، وقيمة DF تحددها شركة الكهرباء','ص190'],
+  ['حماية المحركات (NEC): MCCB زمني عكسي 250% FLC، MCP 800%، MPCP 125%','ص228-231'],
+  ['تكييف حتى 3kVA: قاطع 25/32A، سلك 3x4 أو 3x6 مم²، ماسورة 25/32 مم','ص189']
+ ]},
+ 'lv':{title:'قواعد البرايز والتيار المنخفض', rules:[
+  ['ارتفاعات البرايز: عام 30-40 سم، مبلل/حوض 120 سم، شاشات 1.5-1.8م، وظهر لظهر 15 سم','ص115'],
+  ['حد دائرة البرايز 2000VA = 8 برايز مفرد أو 4 مزدوج','ص116'],
+  ['قدرة البريزة: مفرد 250VA، مزدوج 500VA، باور 500VA (NEC: 180VA للبريزة)','ص196'],
+  ['برايز الأماكن المبللة (مطبخ/حمام) بمعزل Weatherproof، وبرايز الطوارئ على دائرة مستقلة','ص116'],
+  ['Floor box: أبيض = عادي، أحمر = UPS/مولد','ص119'],
+  ['على الحيطة الفاضية: بريزة عند 180 سم من بداية الحيطة وبين كل بريزتين 365 سم','ص115']
+ ]},
+ 'earthing':{title:'قواعد التأريض (BS 7430)', rules:[
+  ['مقطع موصل الأرض s ≥ I√t/k — للنحاس k=226 (مثال: قصر 30kA عند t=1s وT2=250°C → 132.46mm² فيُختار 150mm²)','ص394-420'],
+  ['مقاومة الشريط/القضيب بمعادلة BS 7430 (مثال: ρ=200Ω.m وL=260m وعمق 0.8m → 1.87Ω، ومع الأعمدة 1.52Ω)','ص408-414'],
+  ['المستهدف لأنظمة التيار الخفيف 0.5Ω','تاسك محاضرة 14'],
+  ['كابل إنذار الحريق مقاوم للحريق ≥ 2x1.5mm² وتأريث حسب ANSI-J-STD-607-B','لوحة B02 — ملفات محاضرة 5']
+ ]},
+ 'electrical':{title:'تقدير الأحمال بالمساحة (دليل 2020)', rules:[
+  ['قرى: سكني 2 kVA لكل 100م² — تجاري/إداري 5 kVA لكل 100م²','ص496-500'],
+  ['مدن (شعبي/متوسط): سكني 4 — تجاري/إداري 10 kVA لكل 100م²','ص496-500'],
+  ['مدن (راقي): سكني 8 — تجاري/إداري 10 kVA لكل 100م²','ص496-500'],
+  ['يُضاف: أسانسير 9 kVA وطلمبة مياه 5 kVA؛ التكييف المركزي من الميكانيكا (~10 kVA لكل 100م²)','ص496-500']
+ ]},
+ 'technical-office':{title:'نموذج جدول أحمال اللوحة (LP-G — محاضرة 7)', rules:[
+  ['أعمدة اللوحة: الوصف وVA لكل فاز (A/B/C)، عدد الأقطاب، معامل الطلب DF، Amp Trip/Amp Frame، معامل القدرة PF، حمل كل دائرة، الماسورة والسلك','محاضرة 7'],
+  ['الإجماليات: kVA المتصل، تيار الطلب، DF، تيار القصر kA، إجمالي kW وkVAR، وتوازن الفازات','محاضرة 7']
+ ]}
+};
 function lectureItem(L){
  return '<a class="lec-item" href="'+YT+L.vid+'" target="_blank" rel="noopener">'
   +'<span class="lec-n">محاضرة '+L.n+'</span><span class="lec-t">'+L.t+'</span><span class="lec-play">\u25B6</span></a>';
@@ -46304,7 +46347,18 @@ function linksRow(){
  return '<div class="lec-links">'+DIPLOMA_LINKS.map(function(l){
   return '<a href="'+l[1]+'" target="_blank" rel="noopener">'+l[0]+' \u2197</a>';}).join('')+'</div>';
 }
-function buildBlock(route){
+function rulesBlock(route){
+ var R = CODE_RULES[route];
+ if(!R) return '';
+ var lis = R.rules.map(function(r){
+  return '<li>'+r[0]+' <span class="pg">['+r[1]+']</span></li>';
+ }).join('');
+ return '<section class="lec-block rules-block" data-rules-route="'+route+'">'
+  + '<h3>\uD83D\uDCD0 '+R.title+'</h3>'
+  + '<p class="lec-sub">مستخرجة من كتاب تفريغ دبلومة التوزيع 2022 (م. محمد إمام) — أرقام الصفحات من الكتاب</p>'
+  + '<ul>'+lis+'</ul></section>';
+}
+function buildLecBlock(route){
  var nums = LECTURE_MAP[route] || [];
  var html = '<section class="lec-block" data-lec-route="'+route+'">'
   + '<h3>\uD83C\uDF93 محاضرات دبلومة التوزيع 2022 — م. محمد إمام</h3>'
@@ -46320,11 +46374,15 @@ function injectLectures(){
   var c = document.getElementById('content');
   if(!c || !c.firstChild || typeof state==='undefined') return;
   var route = state.route;
-  if(!LECTURE_MAP[route] && route!=='resources') return;
-  var old = c.querySelector('.lec-block');
-  if(old && old.getAttribute('data-lec-route')===route) return;
+  var hasLec = !!LECTURE_MAP[route] || route==='resources';
+  var hasRules = !!CODE_RULES[route];
+  if(!hasLec && !hasRules) return;
+  var sig = route + '|' + (hasLec?'L':'') + (hasRules?'R':'');
+  var old = c.querySelector('.dip-wrap');
+  if(old && old.getAttribute('data-dip')===sig) return;
   if(old) old.remove();
-  c.insertAdjacentHTML('beforeend', buildBlock(route));
+  var inner = (hasRules?rulesBlock(route):'') + (hasLec?buildLecBlock(route):'');
+  c.insertAdjacentHTML('beforeend','<div class="dip-wrap" data-dip="'+sig+'">'+inner+'</div>');
  }catch(e){}
 }
 var obs = new MutationObserver(function(){ injectLectures(); });
