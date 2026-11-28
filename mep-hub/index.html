@@ -46213,7 +46213,7 @@ function buildBlock(route){
 function injectLectures(){
  try{
   var c = document.getElementById('content');
-  if(!c || !c.firstChild || !window.state) return;
+  if(!c || !c.firstChild || typeof state==='undefined') return;
   var route = state.route;
   if(!LECTURE_MAP[route] && route!=='resources') return;
   var old = c.querySelector('.lec-block');
