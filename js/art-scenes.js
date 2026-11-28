@@ -349,5 +349,9 @@ window.toolPhotos = {
   "plumbing": "assets/covers/plumbing.webp",
   "bim-lod": "assets/covers/bim-lod.webp",
   "cad-symbols": "assets/covers/cad-symbols.webp",
-  "boq-template": "assets/covers/boq-template.webp"
+  "boq-template": "assets/covers/boq-template.webp",
+  "load-schedule": "assets/covers/load-schedule.webp",
+  "habit-tracker": "assets/covers/habit-tracker.webp",
+  "ip-rating": "assets/covers/ip-rating.webp",
+  "safety-checklist": "assets/covers/safety-checklist.webp"
 };
