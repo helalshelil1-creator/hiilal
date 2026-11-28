@@ -12,7 +12,7 @@
    
 ======================================== */
 
-const CACHE_VERSION = "v3.4.2";
+const CACHE_VERSION = "v3.4.3";
 const STATIC_CACHE = `eng-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `eng-runtime-${CACHE_VERSION}`;
 
@@ -100,6 +100,10 @@ const CORE_ASSETS = [
     "./images/hero-bg.jpg",
     "./images/icon-192.png",
     "./images/icon-512.png",
+    "./images/photo-icon-192.png",
+    "./images/photo-icon-512.png",
+    "./images/photo-icon-192-maskable.png",
+    "./images/photo-icon-512-maskable.png",
     "./images/prog-autocad.svg",
     "./images/prog-revit.svg",
     "./images/prog-automation-studio.png"
