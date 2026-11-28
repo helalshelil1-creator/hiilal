@@ -334,6 +334,10 @@ window.toolPhotos = {
   "boq-fire": "assets/covers/boq-fire.webp",
   "calc-v2": "assets/covers/calc-v2.webp",
   "control-simulator": "assets/covers/control-simulator.webp",
+  "cable-breaker": "assets/covers/cable-breaker.webp",
+  "unit-converter": "assets/covers/unit-converter.webp",
+  "site-inspection": "assets/covers/site-inspection.webp",
+  "panel-schedule": "assets/covers/panel-schedule.webp",
   "distribution-tools": "assets/covers/distribution-tools.webp",
   "control-circuit-simulator": "assets/covers/control-circuit-simulator.webp"
 };
