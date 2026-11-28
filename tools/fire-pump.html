@@ -155,9 +155,9 @@ function calc(){
     const qTotLpm = qSprLpm + qHoseLpm;
     const qTotGpm = qTotLpm / GPM;
 
-    document.getElementById("qSpr").textContent = Math.round(qSprLpm).toLocaleString("en") + " ل/د";
+    document.getElementById("qSpr").textContent = Math.round(qSprLpm).toLocaleString("en") + " L/min";
     document.getElementById("qHose").textContent = hz.hose + " gpm";
-    document.getElementById("qMain").textContent = Math.round(qTotGpm) + " gpm (" + Math.round(qTotLpm).toLocaleString("en") + " ل/د)";
+    document.getElementById("qMain").textContent = Math.round(qTotGpm) + " gpm (" + Math.round(qTotLpm).toLocaleString("en") + " L/min)";
     document.getElementById("flowSteps").textContent =
         "Q_sprinkler = density × area = " + hz.d + " × " + area + " = " + Math.round(qSprLpm) + " L/min\n" +
         "Q_total = Q_sprinkler + hose = " + Math.round(qSprLpm) + " + " + Math.round(qHoseLpm) + " = " + Math.round(qTotLpm) + " L/min ≈ " + Math.round(qTotGpm) + " gpm";
@@ -172,7 +172,7 @@ function calc(){
     const kw = (qTotLpm * pTot) / (600 * eta);
     const kwStd = MOTORS.find(m => m >= kw) || ("> " + MOTORS[MOTORS.length-1]);
 
-    document.getElementById("pMain").textContent = pTot.toFixed(2) + " بار (" + (pTot*14.504).toFixed(0) + " psi)";
+    document.getElementById("pMain").textContent = pTot.toFixed(2) + " bar (" + (pTot*14.504).toFixed(0) + " psi)";
     document.getElementById("kwCalc").textContent = kw.toFixed(1) + " kW";
     document.getElementById("kwStd").textContent = (typeof kwStd === "number" ? kwStd + " kW (" + (kwStd/0.7457).toFixed(0) + " HP)" : kwStd + " kW");
     document.getElementById("pressSteps").textContent =

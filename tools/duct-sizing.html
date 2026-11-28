@@ -192,11 +192,11 @@ function calc(){
     const Dstd = STD_D.find(d => d >= Dmm) || STD_D[STD_D.length-1];
     const res = frictionRate(Dstd/1000, Q);
 
-    document.getElementById("dMain").textContent = "⌀ " + Math.round(Dmm) + " مم";
-    document.getElementById("dStd").textContent = "⌀ " + Dstd + " مم";
-    document.getElementById("vAct").textContent = res.v.toFixed(2) + " م/ث";
-    document.getElementById("fAct").textContent = res.pl.toFixed(2) + " باسكال/م";
-    document.getElementById("aVal").textContent = (Math.PI*D*D/4).toFixed(3) + " م²";
+    document.getElementById("dMain").textContent = "Ø " + Math.round(Dmm) + " mm";
+    document.getElementById("dStd").textContent = "Ø " + Dstd + " mm";
+    document.getElementById("vAct").textContent = res.v.toFixed(2) + " m/s";
+    document.getElementById("fAct").textContent = res.pl.toFixed(2) + " Pa/m";
+    document.getElementById("aVal").textContent = (Math.PI*D*D/4).toFixed(3) + " m²";
 
     const rows = [1, 1.5, 2, 3, 4].map(r => {
         const rec = rectFor(Dmm, r);

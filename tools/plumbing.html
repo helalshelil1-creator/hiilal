@@ -162,7 +162,7 @@ function calc(){
     const lps = gpm * 0.06309;
 
     document.getElementById("wsfuMain").textContent = total.toFixed(1) + " WSFU";
-    document.getElementById("demandVal").textContent = gpm > 0 ? gpm.toFixed(1) + " gpm (" + lps.toFixed(2) + " ل/ث)" : "—";
+    document.getElementById("demandVal").textContent = gpm > 0 ? gpm.toFixed(1) + " gpm (" + lps.toFixed(2) + " L/s)" : "—";
 
     const vmax = parseFloat(document.getElementById("vmax").value);
     if (lps <= 0){

@@ -143,10 +143,10 @@ function calc(){
     const wall = Math.max(ax, ay) / 2;
 
     document.getElementById("nMain").textContent = total + " كاشف";
-    document.getElementById("sVal").textContent = S.toFixed(1) + " م";
+    document.getElementById("sVal").textContent = S.toFixed(1) + " m";
     document.getElementById("gridVal").textContent = nx + " × " + ny;
-    document.getElementById("actVal").textContent = ax.toFixed(1) + " × " + ay.toFixed(1) + " م";
-    document.getElementById("wallVal").textContent = wall.toFixed(1) + " م (المسموح ≤ " + (S/2).toFixed(1) + " م)";
+    document.getElementById("actVal").textContent = ax.toFixed(1) + " × " + ay.toFixed(1) + " m";
+    document.getElementById("wallVal").textContent = wall.toFixed(1) + " m (max " + (S/2).toFixed(1) + " m)";
     document.getElementById("detSteps").textContent =
         (type === "heat" ? "S (heat, ceiling " + h + " m) = " + S.toFixed(2) + " m  [interpolated from NFPA 72 reduction table]\n" : "S (smoke, smooth ceiling) = " + S + " m\n") +
         "nx = ceil(" + L + " / " + S.toFixed(2) + ") = " + nx + "    ny = ceil(" + W + " / " + S.toFixed(2) + ") = " + ny + "\n" +
