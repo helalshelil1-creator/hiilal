@@ -46,7 +46,7 @@ const TOOLS = [
     },
     {
         id: "control-circuit-simulator",
-        name: "محاكي دوائر الكنترول — نسختنا",
+        name: "محاكي دوائر الكنترول — المجاني",
         nameEn: "Control Circuit Simulator (Ours)",
         category: "platform",
         icon: "cpu",
