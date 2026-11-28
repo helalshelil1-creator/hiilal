@@ -528,8 +528,8 @@ function coverArt(t, i){
     '<text x="237" y="62" text-anchor="middle" font-family="Inter Tight,sans-serif" font-weight="600" font-size="14" letter-spacing=".32em" fill="'+p.main+'">HIILAL ENGINEERING</text>'+
     '<text x="237" y="'+ty+'" text-anchor="middle" font-family="Tajawal,sans-serif" font-weight="800" font-size="'+fs+'" fill="#141414">'+tspans+'</text>'+
     ((window.toolPhotos && window.toolPhotos[t.id]) ?
-      '<image href="'+window.toolPhotos[t.id]+'" x="42" y="238" width="390" height="380" preserveAspectRatio="xMidYMid slice"/>'+
-      '<rect x="42" y="238" width="390" height="380" fill="none" stroke="#141414" stroke-opacity=".85" stroke-width="1.5"/>' :
+      '<image href="'+window.toolPhotos[t.id]+'" x="42" y="238" width="390" height="520" preserveAspectRatio="xMidYMid slice"/>'+
+      '<rect x="42" y="238" width="390" height="520" fill="none" stroke="#141414" stroke-opacity=".85" stroke-width="1.5"/>' :
       '<g transform="translate(237,408)">'+window.toolScene(t.id, p.main, p.sub)+'</g>')+
     '<text x="42" y="868" font-family="Inter Tight,sans-serif" font-weight="800" font-size="118" fill="'+p.main+'" opacity=".12">'+num+'</text>'+
     '<text x="237" y="788" text-anchor="middle" font-family="Tajawal,sans-serif" font-weight="500" font-size="16" fill="#6D6A63">أداة مجانية</text>'+
