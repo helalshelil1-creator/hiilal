@@ -65,6 +65,16 @@ const TOOLS = [
         badge: "NEW"
     },
     {
+        id: "habit-tracker",
+        name: "جدول متابعة العادات",
+        nameEn: "Habit Tracker",
+        category: "design",
+        icon: "check",
+        desc: "جدول شهري لتتبع 8 عادات يومية — علّم على اللي عملته، والدايرة والنسب والرسوم بتتحدّث لوحدها، وبيتحفظ على جهازك.",
+        url: "tools/habits.html",
+        badge: "NEW"
+    },
+    {
         id: "software-guide",
         name: "دليل AutoCAD & Revit",
         nameEn: "AutoCAD & Revit Guide",

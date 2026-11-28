@@ -12,7 +12,7 @@
    
 ======================================== */
 
-const CACHE_VERSION = "v3.4.1";
+const CACHE_VERSION = "v3.4.2";
 const STATIC_CACHE = `eng-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `eng-runtime-${CACHE_VERSION}`;
 
@@ -89,6 +89,7 @@ const CORE_ASSETS = [
     "./tools/schedules-reference.html",
     "./tools/documents.html",
     "./tools/distribution.html",
+    "./tools/habits.html",
 
     // Calculators
     "./calculators/cable-breaker.html",
