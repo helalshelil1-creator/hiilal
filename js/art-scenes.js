@@ -353,5 +353,9 @@ window.toolPhotos = {
   "load-schedule": "assets/covers/load-schedule.webp",
   "habit-tracker": "assets/covers/habit-tracker.webp",
   "ip-rating": "assets/covers/ip-rating.webp",
-  "safety-checklist": "assets/covers/safety-checklist.webp"
+  "safety-checklist": "assets/covers/safety-checklist.webp",
+  "cable-schedule": "assets/covers/cable-schedule.webp",
+  "rfi-template": "assets/covers/rfi-template.webp",
+  "submittal": "assets/covers/submittal.webp",
+  "variation": "assets/covers/variation.webp"
 };
