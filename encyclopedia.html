@@ -274,8 +274,10 @@
 
         el.innerHTML = list.map(cat => {
             const iconHTML = (window.Icons && Icons.build) ? Icons.build(cat.icon, "", 26) : "";
+            const mediaHTML = cat.img ? `<div class="tool-card-media"><img src="${cat.img}" alt="" loading="lazy"></div>` : "";
             return `
                 <a href="topic.html?cat=${cat.id}" class="tool-card">
+                    ${mediaHTML}
                     <div class="tool-card-head">
                         <div class="cat-icon">${iconHTML}</div>
                         <div style="flex:1;">

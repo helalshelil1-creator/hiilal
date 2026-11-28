@@ -302,11 +302,13 @@
         const catData = CAT_NAMES[c.category] || { name: c.category, icon: "📁" };
         const isFav = (window.Store && Store.isFavorite("calc:" + c.id));
         const favIconHTML = (window.Icons && Icons.build) ? Icons.build("heart", "", 16) : "";
+        const mediaHTML = c.img ? `<div class="tool-card-media"><img src="${c.img}" alt="" loading="lazy"></div>` : "";
         return `
             <a href="${url}" class="tool-card">
                 <div class="fav-badge ${isFav ? 'active' : ''}" data-fav-id="calc:${c.id}" onclick="event.preventDefault(); event.stopPropagation(); toggleFav(this, 'calc:${c.id}');">
                     ${favIconHTML}
                 </div>
+                ${mediaHTML}
                 <div class="tool-card-head">
                     <div class="cat-icon">${iconHTML}</div>
                     <div style="flex:1;">

@@ -359,6 +359,11 @@ window.ENCYCLOPEDIA = ENCYCLOPEDIA;
 const ENC_IMAGES = {
     "fundamentals": "assets/covers/v2/enc-fundamentals.webp",
     "design": "assets/covers/v2/enc-design.webp",
-    "protection": "assets/covers/v2/safety-checklist.webp"
+    "protection": "assets/covers/v2/safety-checklist.webp",
+    "cables": "assets/covers/v2/cable-schedule.webp",
+    "earthing": "assets/covers/v2/earthing-resistance.webp",
+    "lighting": "assets/covers/v2/lighting-design.webp",
+    "motors": "assets/covers/v2/motor-current.webp",
+    "fire": "assets/covers/v2/fire-alarm.webp"
 };
 ENCYCLOPEDIA.forEach(c => { if (ENC_IMAGES[c.id]) c.img = ENC_IMAGES[c.id]; });
